@@ -601,6 +601,8 @@ const Historial = () => {
     selectAllRowsItem: true,
     selectAllRowsItemText: "Todos",
   };
+  const [getDateAttention, setGetDateAttention] = useState([]);
+
   const columnas = [
     {
       name: "Item",
