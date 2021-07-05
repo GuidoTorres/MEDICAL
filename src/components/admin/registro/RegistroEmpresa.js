@@ -16,8 +16,6 @@ const RegistroEmpresa = () => {
   const [editar, setEditar] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
-
-
   const getCorporations = () => {
     fetchGETPOSTPUTDELETE('company')
       .then((info) => info.json())
@@ -114,38 +112,38 @@ const RegistroEmpresa = () => {
       ),
     },
   ];
-  useEffect(() => {
-    const filtrarElemento = () => {
-      const search = getRegistro.filter((data) => {
-        return (
-          data.ruc.toString().includes(busqueda) ||
-          data.business_name
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.commercial_name
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.contacts.phone.toString().includes(busqueda) ||
-          data.contacts.email
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.actividad
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda)
-        );
-      });
-      setListRegistro(search);
-    };
-    filtrarElemento();
-  }, [busqueda, getRegistro]);
+  // useEffect(() => {
+  //   const filtrarElemento = () => {
+  //     const search = corporations.filter((data) => {
+  //       return (
+  //         data.ruc.toString().includes(busqueda) ||
+  //         data.business_name
+  //           .normalize('NFD')
+  //           .replace(/[\u0300-\u036f]/g, '')
+  //           .toLocaleLowerCase()
+  //           .includes(busqueda) ||
+  //         data.commercial_name
+  //           .normalize('NFD')
+  //           .replace(/[\u0300-\u036f]/g, '')
+  //           .toLocaleLowerCase()
+  //           .includes(busqueda) ||
+  //         data.contacts.phone.toString().includes(busqueda) ||
+  //         data.contacts.email
+  //           .normalize('NFD')
+  //           .replace(/[\u0300-\u036f]/g, '')
+  //           .toLocaleLowerCase()
+  //           .includes(busqueda) ||
+  //         data.actividad
+  //           .normalize('NFD')
+  //           .replace(/[\u0300-\u036f]/g, '')
+  //           .toLocaleLowerCase()
+  //           .includes(busqueda)
+  //       );
+  //     });
+  //     setListRegistro(search);
+  //   };
+  //   filtrarElemento();
+  // }, [busqueda, corporations]);
   //
 
   console.log(corporations);
@@ -210,7 +208,7 @@ const RegistroEmpresa = () => {
 
           <DataTable
             columns={columnas}
-            data={corporations}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
@@ -225,7 +223,7 @@ const RegistroEmpresa = () => {
           setOpenModal={setOpenModal}
           getCorporations={getCorporations}
           dataSelected={dataSelected}
-          setDataSelected= {setDataSelected}
+          setDataSelected={setDataSelected}
           editar={editar}
           setEditar={setEditar}
         />
