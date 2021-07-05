@@ -34,11 +34,10 @@ const RegistroClinica = () => {
   }, []);
   
 
-  console.log(metGetClinic);
   const columnas = [
     {
       name: "Item",
-      selector: "id",
+      selector: row => row.id ? row.id : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -47,7 +46,7 @@ const RegistroClinica = () => {
     },
     {
       name: "Razón social",
-      selector: "business_name",
+      selector: row => row.business_name ? row.business_name : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -56,7 +55,7 @@ const RegistroClinica = () => {
     },
     {
       name: "RUC",
-      selector: "ruc",
+      selector: row => row.ruc ? row.ruc : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -65,7 +64,7 @@ const RegistroClinica = () => {
     },
     {
       name: "Responsable",
-      selector: "responsible.name",
+      selector: row => row.responsible && row.responsible.name ? row.responsible.name : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -74,7 +73,7 @@ const RegistroClinica = () => {
     },
     {
       name: "Telefono",
-      selector: "responsible.phone",
+      selector: row => row.responsible && row.responsible.phone ? row.responsible.phone : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -83,7 +82,7 @@ const RegistroClinica = () => {
     },
     {
       name: "Correo",
-      selector: "responsible.email",
+      selector: row => row.responsible && row.responsible.email ? row.responsible.email : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -92,7 +91,7 @@ const RegistroClinica = () => {
     },
     {
       name: "Actividad",
-      selector: "actividad",
+      selector: row => row.clinic_type === 1 ? "Toma muestra" : "Toma y procesa",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -121,8 +120,7 @@ const RegistroClinica = () => {
       ),
     },
   ];
-  console.log(metGetClinic);
-  // console.log(events);
+
   useEffect(() => {
     const filtrarElemento = () => {
       const search = metGetClinic.filter((data) => {
@@ -218,7 +216,7 @@ const RegistroClinica = () => {
 
           <DataTable
             columns={columnas}
-            data={metGetClinic}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
