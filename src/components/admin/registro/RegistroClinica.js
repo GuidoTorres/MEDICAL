@@ -123,7 +123,7 @@ const RegistroClinica = () => {
 
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = metGetClinic.filter((data) => {
+      const search = metGetClinic.length > 0 && metGetClinic.filter((data) => {
         return (
           data.ruc.toString().includes(busqueda) ||
           data.business_name
@@ -216,7 +216,7 @@ const RegistroClinica = () => {
 
           <DataTable
             columns={columnas}
-            data={listRegistro}
+            data={metGetClinic}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
