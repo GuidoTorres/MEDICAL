@@ -3,11 +3,31 @@ import DataTable from 'react-data-table-component';
 import { lasubir } from '../../data/LASubir';
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
 import MSubirLaboratorio from './MSubirLaboratorio';
+import {
+  fetchGETPOSTPUTDELETE,
+  fetchGETPOSTPUTDELETEJSON,
+} from "../../helpers/fetch";
 
 const SubirLaboratorio = () => {
   const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [attention, setAttention] = useState({})
+
+  const getAtencion = () =>{
+
+    fetchGETPOSTPUTDELETE("attention")
+      .then((data) => data.json())
+      .then((datos) => setAttention(datos.data));
+  }
+
+  useEffect(()=>{
+
+    getAtencion()
+
+  },[])
+
+  console.log(attention);
 
   const columnas = [
     {
@@ -21,7 +41,7 @@ const SubirLaboratorio = () => {
     },
     {
       name: 'Tipo de usuario',
-      selector: 'tipo',
+      selector: (row) => (row.status === 1 ? "Particular" : "Empresa"),
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -29,8 +49,15 @@ const SubirLaboratorio = () => {
       },
     },
     {
-      name: 'DNI',
-      selector: 'dni',
+      name: 'Nro de documento',
+      selector: (row) =>
+      row.person && row.person.document_type_id === 3
+        ? "Carné de extranjería"
+        : row.person && row.person.document_type_id === 2
+        ? "Pasaporte"
+        : row.person && row.person.document_type_id === 1
+        ? "DNI"
+        : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -47,7 +74,7 @@ const SubirLaboratorio = () => {
       },
     },
     {
-      name: 'Nombre',
+      name: 'Nombres y apellidos',
       selector: 'nombre',
       sortable: true,
       style: {
@@ -55,15 +82,7 @@ const SubirLaboratorio = () => {
         color: '#555555',
       },
     },
-    {
-      name: 'Apellido',
-      selector: 'apellido',
-      sortable: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
-    },
+
     {
       name: 'Acción',
       button: true,
@@ -161,7 +180,7 @@ const SubirLaboratorio = () => {
 
             <DataTable
               columns={columnas}
-              data={listRegistro}
+              data={attention}
               pagination
               paginationComponentOptions={paginacionOpciones}
               fixedHeader

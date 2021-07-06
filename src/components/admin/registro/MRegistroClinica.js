@@ -21,7 +21,7 @@ const MRegistroClinica = ({
   const [avatar, setAvatar] = useState(null);
   const [dataMapa, setDataMapa] = useState();
   const [data, setData] = useState();
-  const [editarCLinica, setEditarClinica] = useState(null)
+  // const [editarCLinica, setEditarClinica] = useState(null)
 
 
   const closeModal = () => {
@@ -34,36 +34,36 @@ const MRegistroClinica = ({
   const postClinics = () => {
     const formData = new FormData();
 
-    formData.set("ruc",  data.ruc || "");
-    formData.set("business_name",  data.business_name || "");
-    formData.set("clinic_type",  data.clinic_type_id || "");
-    formData.set("commercial_name",  data.business_name || "");
-    formData.set("logo",  data.business_name || "");
+    formData.set("ruc", data.ruc  ? data.ruc : "");
+    formData.set("business_name", data.business_name ?  data.business_name : "");
+    formData.set("clinic_type",  data.clinic_type_id ? data.clinic_type_id : "");
+    formData.set("commercial_name", data.business_name ?  data.business_name : "");
+    formData.set("logo",  "logo");
 
     formData.set("address[id]",  1);
 
-    formData.set("address[address]",  data.address.address || "");
-    formData.set("address[reference]",  data.address.reference || "");
+    formData.set("address[address]", data.address?  data.address.address : "");
+    formData.set("address[reference]",  data.address?  data.address.reference : "");
     formData.set("address[district_id]", 14);
-    formData.set("address[map_latitude]", dataMapa && dataMapa.lat || "");
-    formData.set("address[map_length]", dataMapa && dataMapa.lng || "");
+    formData.set("address[map_latitude]", dataMapa ? dataMapa.lat : "");
+    formData.set("address[map_length]", dataMapa ? dataMapa.lng : "");
 
-    formData.set("responsible[name]",  data.responsible.name || "");
-    formData.set("responsible[phone]",  data.responsible.phone || "");
-    formData.set("responsible[email]",  data.responsible.email || "");
+    formData.set("responsible[name]", data.responsible ? data.responsible.name : "");
+    formData.set("responsible[phone]", data.responsible ? data.responsible.phone : "");
+    formData.set("responsible[email]", data.responsible ? data.responsible.email : "");
     formData.set("responsible[contact_type]", 1);
     formData.set("responsible[corporation_id]", 1);
 
     formData.set("workday[corporation_id]", 1);
-    formData.set("workday[opening]",  data.workday.opening || "");
-    formData.set("workday[closing]",  data.workday.closing || "");
-    formData.set("workday[monday]",  data.workday.monday || "");
-    formData.set("workday[tuesday]",  data.workday.tuesday || "");
-    formData.set("workday[wednesday]",  data.workday.wednesday || "");
-    formData.set("workday[thursday]",  data.workday.thursday || "");
-    formData.set("workday[friday]",  data.workday.friday || "");
-    formData.set("workday[saturday]",  data.workday.saturday || "");
-    formData.set("workday[sunday]",  data.workday.sunday || "");
+    formData.set("workday[opening]", data.workday ? data.workday.opening : "");
+    formData.set("workday[closing]", data.workday ? data.workday.closing : "");
+    formData.set("workday[monday]", data.workday ? data.workday.monday : "");
+    formData.set("workday[tuesday]", data.workday ? data.workday.tuesday : "");
+    formData.set("workday[wednesday]", data.workday ? data.workday.wednesday : "");
+    formData.set("workday[thursday]", data.workday ? data.workday.thursday : "");
+    formData.set("workday[friday]", data.workday ? data.workday.friday : "");
+    formData.set("workday[saturday]", data.workday ? data.workday.saturday : "");
+    formData.set("workday[sunday]", data.workday ? data.workday.sunday : "");
     fetchGETPOSTPUTDELETE("clinics", formData, "POST").then((resp) => {
       console.log(resp)
       if (resp.status === 200) {
@@ -148,8 +148,6 @@ const MRegistroClinica = ({
   const handleAgregar = (e) => {
     e.preventDefault();
   };
-  console.log(data);
-  // console.log(data);
   useEffect(()=>{
 
     if(dataSelected){
@@ -194,7 +192,7 @@ const MRegistroClinica = ({
       setData(null)
     }
 
-  },[dataSelected])
+  },[dataSelected,data])
 
   return (
     <div>

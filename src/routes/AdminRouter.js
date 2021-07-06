@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Navbar from '../components/ui/Navbar';
 // import PrivateRoutes from './PrivateRoutes';
@@ -9,7 +9,7 @@ import Estadistica from '../components/admin/estadistica/Estadistica';
 import Usuarios from '../components/admin/usuario/Usuario';
 import Servicios from '../components/admin/servicio/Servicio';
 import Trabajador from '../components/admin/trabajador/Trabajador';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 
 const AdminRouter = ({ ...rest }) => {
   // let history = useHistory();
