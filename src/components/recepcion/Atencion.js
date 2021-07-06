@@ -26,7 +26,7 @@ const Atencion = () => {
 
   },[])
 
-  console.log(attention);
+  console.log(dataBarCode);
 
   const columnas = [
     {
