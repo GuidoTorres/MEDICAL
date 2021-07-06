@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import DataTable from "react-data-table-component";
+import DataTable from 'react-data-table-component';
+import Swal from 'sweetalert2';
 
-import Swal from "sweetalert2";
+import { paginacionOpciones } from '../../../helpers/tablaOpciones';
+import { fetchGETPOSTPUTDELETE } from '../../../helpers/fetch';
 
-// import { registro } from '../../../data/ACRegistro';
-import { paginacionOpciones } from "../../../helpers/tablaOpciones";
-import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
-
-import MRegistroClinica from "./MRegistroClinica";
-// import { fetchGET } from '../../../helpers/fetch';
+import MRegistroClinica from './MRegistroClinica';
 
 const RegistroClinica = () => {
-  // console.log(events);
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState('');
   const [openModal, setOpenModal] = useState(false);
   const [editar, setEditar] = useState(false);
   const [dataSelected, setDataSelected] = useState();
@@ -22,7 +18,7 @@ const RegistroClinica = () => {
   const [listRegistro, setListRegistro] = useState([]);
 
   const getClinica = () => {
-    fetchGETPOSTPUTDELETE("clinics")
+    fetchGETPOSTPUTDELETE('clinics')
       .then((data) => data.json())
       .then((datos) => {
         setMetGetClinic(datos);
@@ -32,74 +28,74 @@ const RegistroClinica = () => {
   useEffect(() => {
     getClinica();
   }, []);
-  
 
+  // console.log(metGetClinic);
   const columnas = [
     {
-      name: "Item",
-      selector: row => row.id ? row.id : "",
+      name: 'Item',
+      selector: 'id',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Razón social",
-      selector: row => row.business_name ? row.business_name : "",
+      name: 'Razón social',
+      selector: 'business_name',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "RUC",
-      selector: row => row.ruc ? row.ruc : "",
+      name: 'RUC',
+      selector: 'ruc',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Responsable",
-      selector: row => row.responsible && row.responsible.name ? row.responsible.name : "",
+      name: 'Responsable',
+      selector: 'responsible.name',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Telefono",
-      selector: row => row.responsible && row.responsible.phone ? row.responsible.phone : "",
+      name: 'Telefono',
+      selector: 'responsible.phone',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Correo",
-      selector: row => row.responsible && row.responsible.email ? row.responsible.email : "",
+      name: 'Correo',
+      selector: 'responsible.email',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Actividad",
-      selector: row => row.clinic_type === 1 ? "Toma muestra" : "Toma y procesa",
+      name: 'Actividad',
+      selector: 'actividad',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Editar",
+      name: 'Editar',
       button: true,
       cell: (e) => (
         <button onClick={() => handleEditar(e)} className="table__tablebutton">
@@ -108,7 +104,7 @@ const RegistroClinica = () => {
       ),
     },
     {
-      name: "Eliminar",
+      name: 'Eliminar',
       button: true,
       cell: (e) => (
         <button
@@ -120,7 +116,8 @@ const RegistroClinica = () => {
       ),
     },
   ];
-
+  // console.log(metGetClinic);
+  // console.log(events);
   useEffect(() => {
     const filtrarElemento = () => {
       const search = metGetClinic.length > 0 && metGetClinic.filter((data) => {
@@ -142,18 +139,14 @@ const RegistroClinica = () => {
             .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda)
-          //   ||
-          // data.actividad
-          //   .normalize('NFD')
-          //   .replace(/[\u0300-\u036f]/g, '')
-          //   .toLocaleLowerCase()
-          //   .includes(busqueda)
         );
       });
       setListRegistro(search);
     };
     filtrarElemento();
   }, [busqueda, metGetClinic]);
+
+  // console.log(listRegistro);
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -168,24 +161,22 @@ const RegistroClinica = () => {
   };
   const handleEliminar = (e) => {
     Swal.fire({
-      title: "¿Desea eliminar?",
+      title: '¿Desea eliminar?',
       text: `${e.business_name}`,
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Eliminar",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Eliminar',
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Eliminado!", "Se ha eliminado correctamente.", "success");
-        fetchGETPOSTPUTDELETE(`clinics/${e.id}`, {}, "DELETE").then((result) =>
-          result.json()
-        ).then(data=> {
-          if(data === "Has been deleted")
-          console.log(data)
-          getClinica();
-        
-        })
+        Swal.fire('Eliminado!', 'Se ha eliminado correctamente.', 'success');
+        fetchGETPOSTPUTDELETE(`clinics/${e.id}`, {}, 'DELETE')
+          .then((result) => result.json())
+          .then((data) => {
+            if (data === 'Has been deleted') console.log(data);
+            getClinica();
+          });
       }
     });
   };
@@ -205,11 +196,11 @@ const RegistroClinica = () => {
             </div>
             <div>
               <label>
-                Agregar clinica{" "}
+                Agregar clinica{' '}
                 <i
                   className="fas fa-plus-circle"
                   onClick={handleAddRegistro}
-                ></i>{" "}
+                ></i>{' '}
               </label>
             </div>
           </div>
