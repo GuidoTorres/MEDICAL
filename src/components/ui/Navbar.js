@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, NavLink, useHistory } from 'react-router-dom';
+import { Link, NavLink} from 'react-router-dom';
 import { startLogout } from '../../actions/auth';
 // import { useSelector } from 'react-redux';
 import logo from '../../assets/icons/Isotipo.png';

@@ -15,7 +15,7 @@ const MRegistroEmpresa = ({
 }) => {
   const [avatar, setAvatar] = useState(null);
   const [empresa, setEmpresa] = useState({});
-  const [empresaEditar, setEditarEmpresa] = useState(null)
+  // const [empresaEditar, setEditarEmpresa] = useState(null)
 
   const closeModal = () => {
     setOpenModal(false);

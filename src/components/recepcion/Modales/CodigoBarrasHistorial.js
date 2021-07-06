@@ -19,7 +19,7 @@ function BarCode({ textobarcode }) {
 
 const CodigoBarrasHistorial = ({codigoHistorial, setCodigoHistorial, dataBarCode}) => {
   console.log(dataBarCode);
-  const { dni} = dataBarCode;
+  // const { dni} = dataBarCode;
   const closeModal = () => {
     setCodigoHistorial(false);
   };

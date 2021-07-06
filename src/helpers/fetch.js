@@ -50,4 +50,17 @@ const fetchGETPOSTPUTDELETE = (endpoint, data, method) => {
   });
 };
 
-export { fetchSinToken, fetchConToken, fetchGETPOSTPUTDELETE };
+const fetchGETPOSTPUTDELETEJSON = (endpoint, data, method) => {
+  const url = `${baseUrl}/${endpoint}`;
+  const token = localStorage.getItem('token') || '';
+  return fetch(url, {
+    method,
+    headers: {
+      Authorization: `bearer ${token}`,
+    },
+    body: data,
+  });
+};
+
+export { fetchSinToken, fetchConToken, fetchGETPOSTPUTDELETE, fetchGETPOSTPUTDELETEJSON };
+

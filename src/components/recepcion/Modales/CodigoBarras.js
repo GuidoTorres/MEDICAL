@@ -18,7 +18,7 @@ function BarCode({ textobarcode }) {
 
 const CodigoBarras = ({ openModalBar, setOpenModalBar, dataBarCode }) => {
   console.log(dataBarCode);
-  const { dni} = dataBarCode;
+  // const { dni} = dataBarCode;
   const closeModal = () => {
     setOpenModalBar(false);
   };

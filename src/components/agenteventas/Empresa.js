@@ -3,7 +3,7 @@ import DataTable from 'react-data-table-component';
 import Swal from 'sweetalert2';
 import { empresa } from '../../data/AVEmpresa';
 
-import { servicio } from '../../data/AVServicio';
+// import { servicio } from '../../data/AVServicio';
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
 
 const Empresa = () => {
