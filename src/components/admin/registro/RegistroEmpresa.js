@@ -10,7 +10,6 @@ import MRegistroEmpresa from './MRegistroEmpresa';
 const RegistroEmpresa = () => {
   const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
-  const [getRegistro, setGetRegistro] = useState([]);
   const [corporations, setCorporations] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
   const [editar, setEditar] = useState(false);
@@ -56,7 +55,7 @@ const RegistroEmpresa = () => {
     },
     {
       name: 'Responsable',
-      selector: 'commercial_name',
+      selector: 'corporation.commercial_name',
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -65,7 +64,7 @@ const RegistroEmpresa = () => {
     },
     {
       name: 'Telefono',
-      // selector: 'contacts[0].phone',
+      selector: 'corporation.contacts[0].phone',
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -74,7 +73,7 @@ const RegistroEmpresa = () => {
     },
     {
       name: 'Correo',
-      // selector: 'contacts[0].email',
+      selector: 'corporation.contacts[0].email',
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -112,41 +111,35 @@ const RegistroEmpresa = () => {
       ),
     },
   ];
-  // useEffect(() => {
-  //   const filtrarElemento = () => {
-  //     const search = corporations.filter((data) => {
-  //       return (
-  //         data.ruc.toString().includes(busqueda) ||
-  //         data.business_name
-  //           .normalize('NFD')
-  //           .replace(/[\u0300-\u036f]/g, '')
-  //           .toLocaleLowerCase()
-  //           .includes(busqueda) ||
-  //         data.commercial_name
-  //           .normalize('NFD')
-  //           .replace(/[\u0300-\u036f]/g, '')
-  //           .toLocaleLowerCase()
-  //           .includes(busqueda) ||
-  //         data.contacts.phone.toString().includes(busqueda) ||
-  //         data.contacts.email
-  //           .normalize('NFD')
-  //           .replace(/[\u0300-\u036f]/g, '')
-  //           .toLocaleLowerCase()
-  //           .includes(busqueda) ||
-  //         data.actividad
-  //           .normalize('NFD')
-  //           .replace(/[\u0300-\u036f]/g, '')
-  //           .toLocaleLowerCase()
-  //           .includes(busqueda)
-  //       );
-  //     });
-  //     setListRegistro(search);
-  //   };
-  //   filtrarElemento();
-  // }, [busqueda, corporations]);
-  //
 
-  console.log(corporations);
+  useEffect(() => {
+    const filtrarElemento = () => {
+      const search = corporations.filter((data) => {
+        return (
+          data.corporation.business_name
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLocaleLowerCase()
+            .includes(busqueda) ||
+          data.corporation.ruc.toString().includes(busqueda) ||
+          data.corporation.commercial_name
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLocaleLowerCase()
+            .includes(busqueda) ||
+          data.corporation.contacts[0].phone.toString().includes(busqueda) ||
+          data.corporation.contacts[0].email
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLocaleLowerCase()
+            .includes(busqueda)
+        );
+      });
+      setListRegistro(search);
+    };
+    filtrarElemento();
+  }, [busqueda, corporations]);
+
   const handleAddRegistro = () => {
     setOpenModal(true);
   };
@@ -156,7 +149,6 @@ const RegistroEmpresa = () => {
     setEditar(true);
   };
   const handleEliminar = (e) => {
-    // console.log(e.id);
     Swal.fire({
       title: '¿Desea eliminar?',
       text: `${e.corporation.business_name}`,
@@ -174,7 +166,6 @@ const RegistroEmpresa = () => {
             getCorporations();
           }
         );
-        // resp();
       }
     });
   };
