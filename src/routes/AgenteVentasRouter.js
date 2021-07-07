@@ -4,14 +4,14 @@ import Empresa from '../components/agenteventas/Empresa';
 import Registro from '../components/agenteventas/Registro';
 import Servicio from '../components/agenteventas/Servicio';
 import Navbar from '../components/ui/Navbar';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 
 const AgenteVentasRouter = () => {
-  let history = useHistory();
+  // let history = useHistory();
 
-  useEffect(() => {
-    history.push('/ventas/registro');
-  }, [history]);
+  // useEffect(() => {
+  //   history.push('/ventas/registro');
+  // }, [history]);
 
   return (
     <div>

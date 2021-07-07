@@ -1,22 +1,23 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { startCkecking } from '../actions/auth';
-import Login from '../components/auth/Login';
-import Register from '../components/auth/Register';
-import Error404 from '../pages/Error404';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { startCkecking } from "../actions/auth";
+import Login from "../components/auth/Login";
+import Register from "../components/auth/Register";
+import Error404 from "../pages/Error404";
 // import { roles } from '../config/roles';
-import AdminRouter from './AdminRouter';
-import AgenteVentasRouter from './AgenteVentasRouter';
-import ClinicaProcesaRouter from './ClinicaProcesaRouter';
-import ClinicaTomaRouter from './ClinicaTomaRouter';
-import EmpresaAsociadaRouter from './EmpresaAsociadaRouter';
-import LaboratoristaRouter from './LaboratoristaRouter';
-import OrganizadorRouter from './OrganizadorRouter';
+import AdminRouter from "./AdminRouter";
+import AgenteVentasRouter from "./AgenteVentasRouter";
+import ClinicaProcesaRouter from "./ClinicaProcesaRouter";
+import ClinicaTomaRouter from "./ClinicaTomaRouter";
+import EmpresaAsociadaRouter from "./EmpresaAsociadaRouter";
+import FacturacionRouter from "./FacturacionRouter";
+import LaboratoristaRouter from "./LaboratoristaRouter";
+import OrganizadorRouter from "./OrganizadorRouter";
 
-import PrivateRoutes from './PrivateRoutes';
-import RecepcionistaRouter from './RecepcionistaRouter';
+import PrivateRoutes from "./PrivateRoutes";
+import RecepcionistaRouter from "./RecepcionistaRouter";
 
 const AppRoute = () => {
   // const dispatch = useDispatch();
@@ -56,7 +57,7 @@ const AppRoute = () => {
           rol
         />
         <PrivateRoutes
-          path="/laboratorista"
+          path="/laboratorio"
           component={LaboratoristaRouter}
           isAuthenticated
           rol
@@ -76,6 +77,13 @@ const AppRoute = () => {
         <PrivateRoutes
           path="/organizador"
           component={OrganizadorRouter}
+          isAuthenticated
+          rol
+        />
+
+        <PrivateRoutes
+          path="/facturacion"
+          component={FacturacionRouter}
           isAuthenticated
           rol
         />

@@ -56,10 +56,7 @@ const RegistroEmpresa = () => {
     },
     {
       name: 'Responsable',
-      selector: (row) =>
-        row.corporation && row.corporation.contacts[0]
-          ? row.corporation.contacts[0].name
-          : '',
+      selector: row => row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].name : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -68,10 +65,7 @@ const RegistroEmpresa = () => {
     },
     {
       name: 'Telefono',
-      selector: (row) =>
-        row.corporation && row.corporation.contacts[0]
-          ? row.corporation.contacts[0].phone
-          : '',
+      selector: row => row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].phone : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -80,10 +74,7 @@ const RegistroEmpresa = () => {
     },
     {
       name: 'Correo',
-      selector: (row) =>
-        row.corporation && row.corporation.contacts[0]
-          ? row.corporation.contacts[0].email
-          : '',
+      selector: row => row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].email : "",
       sortable: true,
       style: {
         borderBotton: 'none',

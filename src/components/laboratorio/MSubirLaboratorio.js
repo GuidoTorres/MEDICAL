@@ -1,12 +1,14 @@
-import React from 'react';
-import Modal from 'react-modal';
+import React from "react";
+import Modal from "react-modal";
 
-import { customStyles } from '../../helpers/tablaOpciones';
+import { customStyles } from "../../helpers/tablaOpciones";
 
-const MSubirLaboratorio = ({ openModal, setOpenModal }) => {
+const MSubirLaboratorio = ({ openModal, setOpenModal, dataSelected }) => {
   const closeModal = () => {
     setOpenModal(false);
   };
+
+  console.log(dataSelected);
   return (
     <Modal
       isOpen={openModal}
@@ -22,23 +24,41 @@ const MSubirLaboratorio = ({ openModal, setOpenModal }) => {
       <div className="container">
         <div className="row">
           <div className="col-12 mlaboratorio_cargar ">
-            <p>Datos del paciente</p>
-            <div>
-              <div>
+            <p>
+              <strong>Datos del paciente</strong>{" "}
+            </p>
+            <div className="mt-2">
+              <div style={{ display: "flex", alignItems: "center" }}>
                 <label>DNI:</label>
-                <label>123464578</label>
+                <label>
+                  {dataSelected.person.dni ? dataSelected.person.dni : ""}
+                </label>
               </div>
               <div>
                 <label>Nombre</label>
-                <label>Jorge luis ttito carazas</label>
+                <label>
+                  {dataSelected.person.name && dataSelected.person.pat_lastname
+                    ? dataSelected.person.name +
+                      " " +
+                      dataSelected.person.pat_lastname
+                    : ""}
+                </label>
               </div>
               <div>
                 <label>Tipo de usuario</label>
-                <label>Jorge luis ttito carazas</label>
+                <label>
+                  {dataSelected.people_id === 1
+                    ? "Particular"
+                    : dataSelected.people_id === 0
+                    ? "Empresa"
+                    : ""}
+                </label>
               </div>
             </div>
-            <p>Datos del paciente</p>
-            <div>
+            <p>
+              <strong>Cargar Resultados</strong>{" "}
+            </p>
+            <div className="mt-2">
               <div>
                 <label>El resultado de la prueba es:</label>
                 <select
@@ -46,9 +66,8 @@ const MSubirLaboratorio = ({ openModal, setOpenModal }) => {
                   aria-label="Default select example"
                 >
                   <option>Seleccione</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option value="1">Detectado</option>
+                  <option value="2">No Detectado</option>
                 </select>
               </div>
             </div>
