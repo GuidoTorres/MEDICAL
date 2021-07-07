@@ -37,7 +37,8 @@ const RegistroEmpresa = () => {
     },
     {
       name: 'Razón social',
-      selector: row => row.corporation.business_name ? row.corporation.business_name : "",
+      selector: (row) =>
+        row.corporation.business_name ? row.corporation.business_name : '',
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -46,7 +47,7 @@ const RegistroEmpresa = () => {
     },
     {
       name: 'RUC',
-      selector: row => row.corporation.ruc ? row.corporation.ruc : "",
+      selector: (row) => (row.corporation.ruc ? row.corporation.ruc : ''),
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -55,7 +56,10 @@ const RegistroEmpresa = () => {
     },
     {
       name: 'Responsable',
-      selector: row => row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].name : "",
+      selector: (row) =>
+        row.corporation && row.corporation.contacts[0]
+          ? row.corporation.contacts[0].name
+          : '',
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -64,7 +68,10 @@ const RegistroEmpresa = () => {
     },
     {
       name: 'Telefono',
-      selector: row => row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].phone : "",
+      selector: (row) =>
+        row.corporation && row.corporation.contacts[0]
+          ? row.corporation.contacts[0].phone
+          : '',
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -73,7 +80,10 @@ const RegistroEmpresa = () => {
     },
     {
       name: 'Correo',
-      selector: row => row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].email : "",
+      selector: (row) =>
+        row.corporation && row.corporation.contacts[0]
+          ? row.corporation.contacts[0].email
+          : '',
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -82,7 +92,7 @@ const RegistroEmpresa = () => {
     },
     {
       name: 'Actividad',
-      selector: 'actividad',
+      // selector: 'corporation_type_id',
       sortable: true,
       style: {
         borderBotton: 'none',

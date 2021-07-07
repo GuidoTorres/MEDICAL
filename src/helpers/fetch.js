@@ -62,5 +62,9 @@ const fetchGETPOSTPUTDELETEJSON = (endpoint, data, method) => {
   });
 };
 
-export { fetchSinToken, fetchConToken, fetchGETPOSTPUTDELETE, fetchGETPOSTPUTDELETEJSON };
-
+export {
+  fetchSinToken,
+  fetchConToken,
+  fetchGETPOSTPUTDELETE,
+  fetchGETPOSTPUTDELETEJSON,
+};

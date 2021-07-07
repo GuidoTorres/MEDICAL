@@ -29,7 +29,7 @@ const RegistroClinica = () => {
     getClinica();
   }, []);
 
-  // console.log(metGetClinic);
+  console.log(metGetClinic);
   const columnas = [
     {
       name: 'Item',
@@ -120,27 +120,29 @@ const RegistroClinica = () => {
   // console.log(events);
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = metGetClinic.length > 0 && metGetClinic.filter((data) => {
-        return (
-          data.ruc.toString().includes(busqueda) ||
-          data.business_name
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.responsible.name
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.responsible.phone.toString().includes(busqueda) ||
-          data.responsible.email
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda)
-        );
-      });
+      const search =
+        metGetClinic.length > 0 &&
+        metGetClinic.filter((data) => {
+          return (
+            data.ruc.toString().includes(busqueda) ||
+            data.business_name
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .toLocaleLowerCase()
+              .includes(busqueda) ||
+            data.responsible.name
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .toLocaleLowerCase()
+              .includes(busqueda) ||
+            data.responsible.phone.toString().includes(busqueda) ||
+            data.responsible.email
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .toLocaleLowerCase()
+              .includes(busqueda)
+          );
+        });
       setListRegistro(search);
     };
     filtrarElemento();

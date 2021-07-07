@@ -72,7 +72,7 @@ const Reservas = () => {
           onClick={() => handleDetalles(e)}
           className="table__tablebutton"
         >
-          <i class="fas fa-angle-right"></i>
+          <i className="fas fa-angle-right"></i>
         </button>
       ),
     },

@@ -2,11 +2,25 @@ import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 
 import { historial } from '../../data/PHistorial';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
 
 const CargarResultado = () => {
   const [busqueda, setBusqueda] = useState('');
-  const [listRegistro, setListRegistro] = useState([]);
+  const [listResult, setListResult] = useState([]);
+  const [result, setResult] = useState([]);
+
+  const getResult = () => {
+    fetchGETPOSTPUTDELETE('result')
+      .then((info) => info.json())
+      .then((datos) => setResult(datos.data));
+  };
+
+  useEffect(() => {
+    getResult();
+  }, []);
+
+  console.log(result);
 
   const columnas = [
     {
@@ -71,43 +85,44 @@ const CargarResultado = () => {
           onClick={() => handleDetalles(e)}
           className="table__tablebutton"
         >
-          <i class="far fa-file-pdf"></i>
+          <i className="far fa-file-pdf"></i>
         </button>
       ),
     },
   ];
+
   //
-  useEffect(() => {
-    const filtrarElemento = () => {
-      const search = historial.filter((data) => {
-        return (
-          data.dni.toString().includes(busqueda) ||
-          data.nombre
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.apellido
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.tipo
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.solicitud
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda)
-        );
-      });
-      setListRegistro(search);
-    };
-    filtrarElemento();
-  }, [busqueda]);
+  // useEffect(() => {
+  //   const filtrarElemento = () => {
+  //     const search = historial.filter((data) => {
+  //       return (
+  //         data.dni.toString().includes(busqueda) ||
+  //         data.nombre
+  //           .normalize('NFD')
+  //           .replace(/[\u0300-\u036f]/g, '')
+  //           .toLocaleLowerCase()
+  //           .includes(busqueda) ||
+  //         data.apellido
+  //           .normalize('NFD')
+  //           .replace(/[\u0300-\u036f]/g, '')
+  //           .toLocaleLowerCase()
+  //           .includes(busqueda) ||
+  //         data.tipo
+  //           .normalize('NFD')
+  //           .replace(/[\u0300-\u036f]/g, '')
+  //           .toLocaleLowerCase()
+  //           .includes(busqueda) ||
+  //         data.solicitud
+  //           .normalize('NFD')
+  //           .replace(/[\u0300-\u036f]/g, '')
+  //           .toLocaleLowerCase()
+  //           .includes(busqueda)
+  //       );
+  //     });
+  //     setListRegistro(search);
+  //   };
+  //   filtrarElemento();
+  // }, [busqueda]);
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -134,7 +149,7 @@ const CargarResultado = () => {
 
           <DataTable
             columns={columnas}
-            data={listRegistro}
+            // data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
