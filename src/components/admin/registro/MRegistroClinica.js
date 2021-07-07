@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
+import React, { useState } from 'react';
+import Modal from 'react-modal';
 
-import { UploadAvatar } from "../../uploadAvatar/uploadAvatar";
-import { customStyles } from "../../../helpers/tablaOpciones";
-import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
-import MapaGoogle from "../../Mapa/MapaGoogle";
+import { UploadAvatar } from '../../uploadAvatar/uploadAvatar';
+import { customStyles } from '../../../helpers/tablaOpciones';
+import { fetchGETPOSTPUTDELETE } from '../../../helpers/fetch';
+import MapaGoogle from '../../Mapa/MapaGoogle';
 
 // import MapaGoogle from '../../../Mapa/MapaGoogle';
 // import mapa from '../../../assets/mapa/mapa.jpg';
@@ -18,6 +18,8 @@ const MRegistroClinica = ({
   editar,
   setEditar,
 }) => {
+  // const [clinica, setClinica] = useState([]);
+
   const [avatar, setAvatar] = useState(null);
   const [dataMapa, setDataMapa] = useState();
   const [data, setData] = useState({});
@@ -59,10 +61,10 @@ const MRegistroClinica = ({
     // formData.set("map_latitude", dataMapa ? dataMapa.lat : "");
     // formData.set("map_length]", dataMapa ? dataMapa.lng : "");
 
-    formData.set("contacts[0][name]", data.name ? data.name : "");
-    formData.set("contacts[0][phone]", data.phone ? data.phone : "");
-    formData.set("contacts[0][email]", data.email ? data.email : "");
-    formData.set("contact[0][contact_type]", 1);
+    formData.set('contacts[0][name]', data.name ? data.name : '');
+    formData.set('contacts[0][phone]', data.phone ? data.phone : '');
+    formData.set('contacts[0][email]', data.email ? data.email : '');
+    formData.set('contact[0][contact_type]', 1);
 
     // formData.set("work_days[0]", data.workday ? data.workday.monday : "");
     // formData.set("work_days[1][tuesday]", data.workday ? data.workday.tuesday : "");
@@ -117,12 +119,12 @@ const MRegistroClinica = ({
     // formData.set("map_latitude", dataMapa ? dataMapa.lat : "");
     // formData.set("map_length]", dataMapa ? dataMapa.lng : "");
 
-    formData.set("contacts[0][name]", data.name ? data.name : "");
-    formData.set("contacts[0][phone]", data.phone ? data.phone : "");
-    formData.set("contacts[0][email]", data.email ? data.email : "");
-    formData.set("contact[0][contact_type]", 1);
+    formData.set('contacts[0][name]', data.name ? data.name : '');
+    formData.set('contacts[0][phone]', data.phone ? data.phone : '');
+    formData.set('contacts[0][email]', data.email ? data.email : '');
+    formData.set('contact[0][contact_type]', 1);
 
-    fetchGETPOSTPUTDELETE(`clinics/${dataSelected.id}`, formData, "PUT").then(
+    fetchGETPOSTPUTDELETE(`clinics/${dataSelected.id}`, formData, 'PUT').then(
       (resp) => {
         console.log(resp);
         if (resp) {
@@ -211,7 +213,7 @@ const MRegistroClinica = ({
         preventScroll={true}
         ariaHideApp={false}
       >
-        <h3 className="title__modal">{"Registrar Clínica"}</h3>
+        <h3 className="title__modal">{'Registrar Clínica'}</h3>
         <div className="container">
           <form className="row mt-3" onSubmit={handleAgregar}>
             <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6  mregistro__cliente mb-3">
@@ -250,7 +252,7 @@ const MRegistroClinica = ({
                     defaultValue={
                       dataSelected && dataSelected.responsible
                         ? dataSelected.responsible.name
-                        : ""
+                        : ''
                     }
                     onChange={(e) => handleChange(e)}
                   />
@@ -263,7 +265,7 @@ const MRegistroClinica = ({
                     defaultValue={
                       dataSelected && dataSelected.responsible
                         ? dataSelected.responsible.phone
-                        : ""
+                        : ''
                     }
                     onChange={(e) => handleChange(e)}
                   />
@@ -276,7 +278,7 @@ const MRegistroClinica = ({
                     defaultValue={
                       dataSelected && dataSelected.responsible
                         ? dataSelected.responsible.email
-                        : ""
+                        : ''
                     }
                     onChange={(e) => handleChange(e)}
                   />
@@ -289,7 +291,7 @@ const MRegistroClinica = ({
                     defaultValue={
                       dataSelected && dataSelected.address
                         ? dataSelected.address.address
-                        : ""
+                        : ''
                     }
                     onChange={(e) => handleChange(e)}
                   />
@@ -325,7 +327,7 @@ const MRegistroClinica = ({
                       onChange={(e) =>
                         e.target.checked === true
                           ? setData({ ...data, clinic_type_id: 1 })
-                          : ""
+                          : ''
                       }
                     />
                     <label>Toma muestra</label>
@@ -344,7 +346,7 @@ const MRegistroClinica = ({
                       onChange={(e) =>
                         e.target.checked === true
                           ? setData({ ...data, clinic_type_id: 2 })
-                          : ""
+                          : ''
                       }
                     />
                     <label>Toma y analiza muestra</label>
@@ -360,7 +362,7 @@ const MRegistroClinica = ({
                     defaultValue={
                       dataSelected && dataSelected.work_day
                         ? dataSelected.work_day.opening
-                        : ""
+                        : ''
                     }
                     onChange={(e) =>
                       setData({
@@ -378,7 +380,7 @@ const MRegistroClinica = ({
                     defaultValue={
                       dataSelected && dataSelected.work_day
                         ? dataSelected.work_day.closing
-                        : ""
+                        : ''
                     }
                     onChange={(e) =>
                       setData({
