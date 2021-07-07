@@ -6,7 +6,7 @@ import { fempresa } from "../../data/FEmpresa";
 import { paginacionOpciones } from "../../helpers/tablaOpciones";
 import MEmpresa from "./MEmpresa";
 
-const Empresa = () => {
+const Liquidacion = () => {
   const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
@@ -68,14 +68,14 @@ const Empresa = () => {
       },
     },
     {
-      name: "Detalles",
+      name: "Editar",
       button: true,
       cell: (e) => (
         <button
           onClick={() => handleDetalles(e)}
           className="table__tablebutton"
         >
-          <i className="far fa-folder-open"></i>
+          <i class="fas fa-pencil-alt"></i>{" "}
         </button>
       ),
     },
@@ -156,4 +156,4 @@ const Empresa = () => {
   );
 };
 
-export default Empresa;
+export default Liquidacion;

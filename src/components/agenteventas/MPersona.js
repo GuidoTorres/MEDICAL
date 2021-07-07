@@ -22,8 +22,8 @@ const MPersona = ({ openModal, setOpenModal }) => {
       <div className="container">
         <div className="row">
           <div className="col-12 mventas__persona">
-            <p>Información de paciente</p>
-            <div>
+            <p><strong>Tipo de paciente</strong></p>
+            <div className="mt-2">
               <div>
                 <label>Tipo de documento</label>
                 <input type="text" />
@@ -37,8 +37,8 @@ const MPersona = ({ openModal, setOpenModal }) => {
                 <input type="text" />
               </div>
             </div>
-            <p>Datos de descuento</p>
-            <div>
+            <p><strong>Datos de descuento</strong></p>
+            <div className="mt-2">
               <div>
                 <label>Prueba solicitada</label>
                 <input type="text" />

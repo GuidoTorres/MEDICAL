@@ -103,7 +103,7 @@ const Particulares = () => {
       },
     },
     {
-      name: 'Editar',
+      name: 'Liquidar',
       button: true,
       cell: (e) => (
         <button

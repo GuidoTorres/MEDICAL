@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
-import Swal from 'sweetalert2';
+import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
 
-import { registro } from '../../data/ACRegistro';
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
-import MRegistrarEmpresa from './MRegistrarEmpresa';
+import { registro } from "../../data/ACRegistro";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import { paginacionOpciones } from "../../helpers/tablaOpciones";
+import MRegistrarEmpresa from "./MRegistrarEmpresa";
 
 const Registro = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [corporations, setCorporations] = useState([]);
 
-
   const getCorporations = () => {
-    fetchGETPOSTPUTDELETE('company')
+    fetchGETPOSTPUTDELETE("company")
       .then((info) => info.json())
       .then((datos) => setCorporations(datos.data));
   };
@@ -28,57 +27,67 @@ const Registro = () => {
 
   const columnas = [
     {
-      name: 'Item',
-      selector: 'id',
+      name: "Item",
+      selector: "id",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Razón social',
-      selector: row => row.corporation.business_name ? row.corporation.business_name : "",
+      name: "Razón social",
+      selector: (row) =>
+        row.corporation.business_name ? row.corporation.business_name : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'RUC',
-      selector: row => row.corporation.ruc ? row.corporation.ruc : "",
+      name: "RUC",
+      selector: (row) => (row.corporation.ruc ? row.corporation.ruc : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Responsable',
-      selector: row => row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].name : "",
+      name: "Responsable",
+      selector: (row) =>
+        row.corporation && row.corporation.contacts[0]
+          ? row.corporation.contacts[0].name
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Telefono',
-      selector: row => row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].phone : "",
+      name: "Telefono",
+      selector: (row) =>
+        row.corporation && row.corporation.contacts[0]
+          ? row.corporation.contacts[0].phone
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Correo',
-      selector: row => row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].email : "",
+      name: "Correo",
+      selector: (row) =>
+        row.corporation && row.corporation.contacts[0]
+          ? row.corporation.contacts[0].email
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     // {
@@ -91,7 +100,7 @@ const Registro = () => {
     //   },
     // },
     {
-      name: 'Editar',
+      name: "Editar",
       button: true,
       cell: (e) => (
         <button onClick={() => handleEditar(e)} className="table__tablebutton">
@@ -100,7 +109,7 @@ const Registro = () => {
       ),
     },
     {
-      name: 'Eliminar',
+      name: "Eliminar",
       button: true,
       cell: (e) => (
         <button
@@ -115,27 +124,29 @@ const Registro = () => {
   //
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = corporations.length>0 && corporations.filter((data) => {
-        return (
-          data.corporation.business_name
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.corporation.ruc.toString().includes(busqueda) ||
-          data.corporation.contacts[0].name
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.corporation.contacts[0].phone.toString().includes(busqueda) ||
-          data.corporation.contacts[0].email
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda)
-        );
-      });
+      const search =
+        corporations.length > 0 &&
+        corporations.filter((data) => {
+          return (
+            data.corporation.business_name
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .toLocaleLowerCase()
+              .includes(busqueda) ||
+            data.corporation.ruc.toString().includes(busqueda) ||
+            data.corporation.contacts[0].name
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .toLocaleLowerCase()
+              .includes(busqueda) ||
+            data.corporation.contacts[0].phone.toString().includes(busqueda) ||
+            data.corporation.contacts[0].email
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .toLocaleLowerCase()
+              .includes(busqueda)
+          );
+        });
       setListRegistro(search);
     };
     filtrarElemento();
@@ -146,16 +157,16 @@ const Registro = () => {
   };
   const handleEliminar = (e) => {
     Swal.fire({
-      title: '¿Desea eliminar?',
+      title: "¿Desea eliminar?",
       text: `${e.razon}`,
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Eliminar',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire('Eliminado!', 'Se ha eliminado correctamente.', 'success');
+        Swal.fire("Eliminado!", "Se ha eliminado correctamente.", "success");
       }
     });
   };
@@ -181,11 +192,11 @@ const Registro = () => {
             </div>
             <div>
               <label>
-                Agregar empresa{' '}
+                Agregar empresa{" "}
                 <i
                   className="fas fa-plus-circle"
                   onClick={handleAddRegistro}
-                ></i>{' '}
+                ></i>{" "}
               </label>
             </div>
           </div>
@@ -197,7 +208,14 @@ const Registro = () => {
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
             fixedHeaderScrollHeight="500px"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            noDataComponent={
+              <div className="spinner">
+                <div className="spinner-border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                <i className="fas fa-inbox table__icono"></i>
+              </div>
+            }
           />
         </div>
       </div>

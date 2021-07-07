@@ -183,7 +183,7 @@ const CargarResultado = () => {
 
           <DataTable
             columns={columnas}
-            // data={listRegistro}
+            data={getDateAttention}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader

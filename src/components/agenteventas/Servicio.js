@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Persona from './Persona';
 import Empresa from './Empresa';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 
 const Servicio = () => {
+  const [getServicio, setGetServicio] = useState([]);
+
+
+
+  const getServices = () => {
+    fetchGETPOSTPUTDELETE('services')
+      .then((info) => info.json())
+      // .then((data) => console.log(data.data));
+      .then((datos) => setGetServicio(datos.data));
+  };
+  useEffect(()=>{
+    getServices()
+    
+
+  }, [])
+
+  console.log(getServicio);
+  
   return (
     <div className="container">
       <div className="row">
@@ -17,18 +36,14 @@ const Servicio = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Mark</td>
-                  <td>16</td>
+
+                {getServicio.length > 0 && getServicio[0].services.map((servicio, i ) => (
+
+                  <tr key={i}>
+                  <td>{servicio.name}</td>
+                  {/* <td>{servicio.last_price.id}</td> */}
                 </tr>
-                <tr>
-                  <td>Jacob</td>
-                  <td>14</td>
-                </tr>
-                <tr>
-                  <td>Thornton</td>
-                  <td>27</td>
-                </tr>
+                ))}
               </tbody>
             </table>
           </div>
