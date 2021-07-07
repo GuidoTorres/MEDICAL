@@ -20,124 +20,183 @@ const MRegistroEmpresa = ({
   const closeModal = () => {
     setOpenModal(false);
     setEditar(false);
-    setDataSelected(null);
   };
 
   const postCorporation = () => {
     const formData = new FormData();
 
-    formData.set("ruc", empresa && empresa.ruc);
-    formData.set("business_name", empresa && empresa.business_name);
-    formData.set("commercial_name", empresa && empresa.commercial_name);
+    formData.set("ruc", empresa.ruc ? empresa.ruc : "");
+    formData.set(
+      "business_name",
+      empresa.business_name ? empresa.business_name : ""
+    );
+    formData.set(
+      "commercial_name",
+      empresa.commercial_name ? empresa.commercial_name : ""
+    );
     formData.set("logo", "AAAAAAA");
 
-    formData.set("address", empresa && empresa.address.address);
-    formData.set("reference", empresa && empresa.address.reference);
+    formData.set(
+      "address",
+      empresa.address && empresa.address.address ? empresa.address.address : ""
+    );
+    formData.set(
+      "reference",
+      empresa.ruc && empresa.address.reference ? empresa.address.reference : ""
+    );
 
-
-    formData.set("contacts[0][name]", empresa && empresa.contacts.name);
-    formData.set("contacts[0][phone]", empresa && empresa.contacts.phone);
-    formData.set("contacts[0][email]", empresa && empresa.contacts.email);
+    formData.set(
+      "contacts[0][name]",
+      empresa.contacts && empresa.contacts.name ? empresa.contacts.name : ""
+    );
+    formData.set(
+      "contacts[0][phone]",
+      empresa.contacts && empresa.contacts.phone ? empresa.contacts.phone : ""
+    );
+    formData.set(
+      "contacts[0][email]",
+      empresa.contacts && empresa.contacts.email ? empresa.contacts.email : ""
+    );
     formData.set("contacts[0][contact_type]", 1);
 
-    formData.set("before", empresa && empresa.billing.before);
-    formData.set("credit", empresa && empresa.billing.credit);
+    formData.set(
+      "contacts[1][name]",
+      empresa.contacts && empresa.contacts.name1 ? empresa.contacts.name1 : ""
+    );
+    formData.set(
+      "contacts[1][phone]",
+      empresa.contacts && empresa.contacts.phone1 ? empresa.contacts.phone1 : ""
+    );
+    formData.set(
+      "contacts[1][email]",
+      empresa.contacts && empresa.contacts.email1 ? empresa.contacts.email1 : ""
+    );
+    formData.set("contacts[1][contact_type]", 2);
+
+    formData.set(
+      "before",
+      empresa.billing && empresa.billing.before ? empresa.billing.before : ""
+    );
+    formData.set(
+      "credit",
+      empresa.billing && empresa.billing.credit ? empresa.billing.credit : ""
+    );
 
     formData.set(
       "services[0][service_id]",
-      empresa && empresa.services.service_id
+      empresa.services && empresa.services.service_id
+        ? empresa.services.service_id
+        : ""
     );
 
     fetchGETPOSTPUTDELETE("company", formData, "POST").then((resp) => {
-      if (resp) {
+      console.log(resp);
+      if (resp.status === 200) {
         closeModal();
         getCorporations();
       }
     });
   };
 
+  console.log(empresa);
   console.log(dataSelected);
 
   const putCorporation = () => {
-    
     const formData = new FormData();
 
-    formData.set("ruc", empresa && empresa.ruc);
-    formData.set("business_name", empresa && empresa.business_name);
-    formData.set("commercial_name", empresa && empresa.commercial_name);
+    formData.set("ruc", empresa.ruc || "");
+    formData.set("business_name", empresa.business_name || "");
+    formData.set("commercial_name", empresa.commercial_name || "");
     formData.set("logo", "AAAAAAA");
 
-    formData.set("address", empresa && empresa.address);
-    formData.set("reference", empresa && empresa.reference);
+    formData.set("address", empresa.address.address || "");
+    formData.set("reference", empresa.address.reference || "");
 
-
-    formData.set("contacts[0][name]", empresa && empresa.contacts[0].name);
-    formData.set("contacts[0][phone]", empresa && empresa.contacts[0].phone);
-    formData.set("contacts[0][email]", empresa && empresa.contacts[0].email);
+    formData.set("contacts[0][name]", empresa.contacts.name || "");
+    formData.set("contacts[0][phone]", empresa.contacts.phone || "");
+    formData.set("contacts[0][email]", empresa.contacts.email || "");
     formData.set("contacts[0][contact_type]", 1);
 
-    formData.set("contacts[1][name]", empresa && empresa.contacts[1].name);
-    formData.set("contacts[1][phone]", empresa && empresa.contacts[1].phone);
-    formData.set("contacts[1][email]", empresa && empresa.contacts[1].email);
-    formData.set("contacts[1][contact_type]", 1);
+    formData.set("contacts[1][name]", empresa.contacts.name1 || "");
+    formData.set("contacts[1][phone]", empresa.contacts.phone1 || "");
+    formData.set("contacts[1][email]", empresa.contacts.email1 || "");
+    formData.set("contacts[1][contact_type]", 2);
 
-    formData.set("before", empresa && empresa.before);
-    formData.set("credit", empresa && empresa.credit);
+    formData.set("before", empresa.billing ? empresa.billing.before : "");
+    formData.set("credit", empresa.billing ? empresa.billing.credit : "");
 
-    formData.set(
-      "services[service_id]",
-      1
-    );
-    fetchGETPOSTPUTDELETE(
-      `company/${dataSelected.id}`,
-      formData,
-      "PUT"
-    ).then((resp) => {
-      if (resp) {
-        closeModal();
-        getCorporations();
-      }
-    }).catch(err => console.log(err))
+    formData.set("services[0][service_id]", empresa.services.service_id || "");
+
+    fetchGETPOSTPUTDELETE(`company/${dataSelected.id}`, formData, "PUT")
+      .then((resp) => {
+        if (resp) {
+          closeModal();
+          getCorporations();
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
-  useEffect(()=>{
-
-    if(dataSelected){
+  useEffect(() => {
+    if (dataSelected) {
       setEmpresa({
-    ruc: dataSelected && dataSelected.corporation ? dataSelected.corporation.ruc : "",
-    business_name: dataSelected && dataSelected.corporation ? dataSelected.corporation.business_name : "",
-    commercial_name: dataSelected && dataSelected.corporation ? dataSelected.corporation.commercial_name : "",
-    logo: "logo img",
-    address: dataSelected && dataSelected.corporation && dataSelected.corporation.address ? dataSelected.corporation.address.address : "",
-    reference: dataSelected && dataSelected.corporation && dataSelected.corporation.address ? dataSelected.corporation.address.reference : "",
-    contacts:[
-        {
-            name:"name21",
-            phone:"9534648781",
-            email:"emailemail1",
-            contact_type:1
-        },
-        {
-            name:"name42",
-            phone:9534648782,
-            email:"emailemail2",
-            contact_type:2
-        }
-    ],
-    before: dataSelected && dataSelected.billing ? dataSelected.billing.before : "",
-    credit: dataSelected && dataSelected.billing ? dataSelected.billing.credit : "",
-    services:[
-        {
-            service_id:2
-        }
-    ]
-      })
-    } else{
-      setEmpresa(null)
+        ruc:
+          dataSelected && dataSelected.corporation
+            ? dataSelected.corporation.ruc
+            : "",
+        business_name:
+          dataSelected && dataSelected.corporation
+            ? dataSelected.corporation.business_name
+            : "",
+        commercial_name:
+          dataSelected && dataSelected.corporation
+            ? dataSelected.corporation.commercial_name
+            : "",
+        logo: "logo img",
+        address:
+          dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.address
+            ? dataSelected.corporation.address.address
+            : "",
+        reference:
+          dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.address
+            ? dataSelected.corporation.address.reference
+            : "",
+        contacts: [
+          {
+            name: "name21",
+            phone: "9534648781",
+            email: "emailemail1",
+            contact_type: 1,
+          },
+          {
+            name: "name42",
+            phone: 9534648782,
+            email: "emailemail2",
+            contact_type: 2,
+          },
+        ],
+        before:
+          dataSelected && dataSelected.billing
+            ? dataSelected.billing.before
+            : "",
+        credit:
+          dataSelected && dataSelected.billing
+            ? dataSelected.billing.credit
+            : "",
+        services: [
+          {
+            service_id: 2,
+          },
+        ],
+      });
+    } else {
+      setEmpresa({});
     }
-
-  },[dataSelected])
-
+  }, [dataSelected]);
 
   return (
     // <div className="">
@@ -150,12 +209,12 @@ const MRegistroEmpresa = ({
       preventScroll={true}
       overlayClassName="modal-fondo"
       ariaHideApp={false}
-    > 
-    {editar ?
-      <h3 className="title__modal">Editar Empresa</h3>
-      :
-      <h3 className="title__modal">Registar Empresa</h3>
-    }
+    >
+      {editar ? (
+        <h3 className="title__modal">Editar Empresa</h3>
+      ) : (
+        <h3 className="title__modal">Registar Empresa</h3>
+      )}
       <div className="container">
         <div className="row mt-3">
           <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 mregistro__empresa">
@@ -210,11 +269,14 @@ const MRegistroEmpresa = ({
                 <input
                   type="text"
                   name="address"
-                  // defaultValue={
-                  //   dataSelected && dataSelected.corporation.address
-                  //     ? dataSelected.corporation.address.address
-                  //     : ''
-                  // }
+                  defaultValue={
+                    dataSelected &&
+                    dataSelected.corporation &&
+                    dataSelected.corporation.address &&
+                    dataSelected.corporation.address.address
+                      ? dataSelected.corporation.address.address
+                      : ""
+                  }
                   onChange={(e) =>
                     setEmpresa({
                       ...empresa,
@@ -228,11 +290,14 @@ const MRegistroEmpresa = ({
                 <input
                   type="text"
                   name="reference"
-                  // defaultValue={
-                  //   dataSelected && dataSelected.corporation.address
-                  //     ? dataSelected.corporation.address.reference
-                  //     : ''
-                  // }
+                  defaultValue={
+                    dataSelected &&
+                    dataSelected.corporation &&
+                    dataSelected.corporation.address &&
+                    dataSelected.corporation.address.reference
+                      ? dataSelected.corporation.address.reference
+                      : ""
+                  }
                   onChange={(e) =>
                     setEmpresa({
                       ...empresa,
@@ -249,6 +314,13 @@ const MRegistroEmpresa = ({
                 <select
                   aria-label="Default select example"
                   name="corporation_type_id"
+                  defaultValue={
+                    dataSelected &&
+                    dataSelected.corporation &&
+                    dataSelected.corporation.corporation_type_id
+                      ? dataSelected.corporation.corporation_type_id
+                      : ""
+                  }
                   onChange={(e) =>
                     setEmpresa({
                       ...empresa,
@@ -274,13 +346,13 @@ const MRegistroEmpresa = ({
                   <input
                     type="text"
                     name="contactsname"
-                    defaultValue={
-                      dataSelected &&
-                      dataSelected.contacts &&
-                      dataSelected.contacts[0]
-                        ? dataSelected.contacts[0].name
-                        : ""
-                    }
+                    // defaultValue={
+                    //   dataSelected &&
+                    //   dataSelected.corporation.contacts &&
+                    //   dataSelected.corporation.contacts
+                    //     ? dataSelected.corporation.contacts[0].name
+                    //     : ""
+                    // }
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
@@ -294,13 +366,13 @@ const MRegistroEmpresa = ({
                   <input
                     type="text"
                     name="contactsphone"
-                    defaultValue={
-                      dataSelected &&
-                      dataSelected.contacts &&
-                      dataSelected.contacts[0]
-                        ? dataSelected.contacts[0].phone
-                        : ""
-                    }
+                    // defaultValue={
+                    //   dataSelected &&
+                    //   dataSelected.corporation.contacts &&
+                    //   dataSelected.corporation.contacts[0].phone
+                    //     ? dataSelected.corporation.contacts[0].phone
+                    //     : ""
+                    // }
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
@@ -317,13 +389,13 @@ const MRegistroEmpresa = ({
                   <input
                     type="text"
                     name="contactsemail"
-                    defaultValue={
-                      dataSelected &&
-                      dataSelected.contacts &&
-                      dataSelected.contacts[0]
-                        ? dataSelected.contacts[0].email
-                        : ""
-                    }
+                    // defaultValue={
+                    //   dataSelected &&
+                    //   dataSelected.corporation.contacts &&
+                    //   dataSelected.corporation.contacts[0].email
+                    //     ? dataSelected.corporation.contacts[0].email
+                    //     : ""
+                    // }
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
@@ -344,39 +416,41 @@ const MRegistroEmpresa = ({
                   <label>Responsable:</label>
                   <input
                     type="text"
-                    defaultValue={
-                      dataSelected &&
-                      dataSelected.contacts &&
-                      dataSelected.contacts[0]
-                        ? dataSelected.contacts[1].name
-                        : ""
-                    }
-
-                    // onChange={(e) =>
-                    //   setEmpresa({
-                    //     ...empresa,
-                    //     contacts: { ...empresa.contacts, name: e.target.value },
-                    //   })
+                    // defaultValue={
+                    //   dataSelected &&
+                    //   dataSelected.corporation.contacts &&
+                    //   dataSelected.corporation.contacts[1].name
+                    //     ? dataSelected.corporation.contacts[1].name
+                    //     : ""
                     // }
+                    onChange={(e) =>
+                      setEmpresa({
+                        ...empresa,
+                        contacts: {
+                          ...empresa.contacts,
+                          name1: e.target.value,
+                        },
+                      })
+                    }
                   />
                 </div>
                 <div>
                   <label>Teléfono:</label>
                   <input
                     type="text"
-                    defaultValue={
-                      dataSelected &&
-                      dataSelected.contacts &&
-                      dataSelected.contacts[0]
-                        ? dataSelected.contacts[1].phone
-                        : ""
-                    }
+                    // defaultValue={
+                    //   dataSelected &&
+                    //   dataSelected.corporation.contacts &&
+                    //   dataSelected.corporation.contacts[1].phone
+                    //     ? dataSelected.corporation.contacts[1].phone
+                    //     : ""
+                    // }
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
                         contacts: {
                           ...empresa.contacts,
-                          phone: e.target.value,
+                          phone1: e.target.value,
                         },
                       })
                     }
@@ -386,19 +460,19 @@ const MRegistroEmpresa = ({
                   <label>Correo:</label>
                   <input
                     type="text"
-                    defaultValue={
-                      dataSelected &&
-                      dataSelected.contacts &&
-                      dataSelected.contacts[0]
-                        ? dataSelected.contacts[1].email
-                        : ""
-                    }
+                    // defaultValue={
+                    //   dataSelected &&
+                    //   dataSelected.corporation.contacts &&
+                    //   dataSelected.corporation.contacts[1].email
+                    //     ? dataSelected.corporation.contacts[1].email
+                    //     : ""
+                    // }
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
                         contacts: {
                           ...empresa.contacts,
-                          email: e.target.value,
+                          email1: e.target.value,
                         },
                       })
                     }

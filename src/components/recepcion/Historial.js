@@ -251,18 +251,12 @@ const Historial = () => {
               fixedHeader
               fixedHeaderScrollHeight="450px"
               noDataComponent={
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                  </div>
-                  <i className="fas fa-inbox table__icono"></i>
-                </div>
+                <div className="spinner">
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+              <i className="fas fa-inbox table__icono"></i>
+            </div>
               }
             />
           </div>

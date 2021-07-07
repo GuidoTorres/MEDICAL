@@ -21,108 +21,68 @@ const Estadisticas = () => {
   };
   return (
     <div className="container">
-      <h2 className="mt-3">Estadísticas</h2>
+      {/* <h2 className="mt-3">Estadísticas</h2> */}
 
       <label htmlFor="">Seleccionar el intervalo de tiempo</label>
 
       <div className="row mt-2">
         <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 recepcion__estadistica barra">
-          <div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="flexCheckDefault"
-              />
-              <label class="form-check-label" for="flexCheckDefault">
-                Dia
-              </label>
-            </div>
-            <div>
-              <div className="containerDia">
+            <div className="adminestadistica__fecha">
+              <label>Día</label>
+              <div className="adminestadistica__subfecha">
                 <div>
-                  <label>Inicio: </label>
+                  <label>Inicio:</label>
                   <input type="number" />
                 </div>
                 <div>
-                  <label>Fin: </label>
+                  <label>Fin:</label>
                   <input type="number" />
                 </div>
               </div>
             </div>
-          </div>
+            <div className="adminestadistica__fecha">
+              <label>Mes</label>
+              <div className="adminestadistica__subfecha">
+                <div>
+                  <label>Inicio:</label>
+                  <select
+                    className="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Seleccionar</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Fin:</label>
+                  <select
+                    className="form-select"
+                    aria-label="Default select example"
+                  >
+                    <option selected>Seleccionar</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="adminestadistica__fecha">
+              <label>Año</label>
+              <div className="adminestadistica__subfecha">
+                <div>
+                  <label>Inicio:</label>
+                  <input type="number" />
+                </div>
+                <div>
+                  <label>Fin:</label>
+                  <input type="number" />
+                </div>
+              </div>
+            </div>
 
-          <div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="flexCheckDefault"
-              />
-              <label class="form-check-label" for="flexCheckDefault">
-                Mes
-              </label>
-            </div>
-            {/*  */}
-            <div>
-              <div>
-                <div className="containerDia">
-                  <div>
-                    <label>Inicio: </label>
-                    <select
-                      class="form-select "
-                      aria-label="Default select example"
-                    >
-                      <option selected>Seleccionar</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label>Fin: </label>
-                    <select
-                      class="form-select "
-                      aria-label="Default select example"
-                    >
-                      <option selected>Seleccionar</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/*  */}
-          </div>
-          <div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="flexCheckDefault"
-              />
-              <label class="form-check-label" for="flexCheckDefault">
-                Año
-              </label>
-            </div>
-            <div>
-              <div className="containerDia">
-                <div>
-                  <label>Inicio: </label>
-                  <input type="number" />
-                </div>
-                <div>
-                  <label>Fin: </label>
-                  <input type="number" />
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 barra">

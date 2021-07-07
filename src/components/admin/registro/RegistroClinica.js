@@ -21,7 +21,7 @@ const RegistroClinica = () => {
     fetchGETPOSTPUTDELETE('clinics')
       .then((data) => data.json())
       .then((datos) => {
-        setMetGetClinic(datos);
+        setMetGetClinic(datos.data);
       });
   };
 
@@ -29,7 +29,7 @@ const RegistroClinica = () => {
     getClinica();
   }, []);
 
-  // console.log(metGetClinic);
+  console.log(metGetClinic);
   const columnas = [
     {
       name: 'Item',
@@ -42,7 +42,7 @@ const RegistroClinica = () => {
     },
     {
       name: 'Razón social',
-      selector: 'business_name',
+      selector: row => row.corporation.business_name ? row.corporation.business_name : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -51,7 +51,7 @@ const RegistroClinica = () => {
     },
     {
       name: 'RUC',
-      selector: 'ruc',
+      selector: row => row.corporation.ruc ? row.corporation.ruc : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -60,7 +60,7 @@ const RegistroClinica = () => {
     },
     {
       name: 'Responsable',
-      selector: 'responsible.name',
+      selector: row => row.corporation.contacts.name ? row.corporation.contact.name : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -69,7 +69,7 @@ const RegistroClinica = () => {
     },
     {
       name: 'Telefono',
-      selector: 'responsible.phone',
+      selector: row => row.corporation.contacts.phone ? row.corporation.contact.phone : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -78,7 +78,7 @@ const RegistroClinica = () => {
     },
     {
       name: 'Correo',
-      selector: 'responsible.email',
+      selector: row => row.corporation.contacts.email ? row.corporation.contact.email : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -87,7 +87,7 @@ const RegistroClinica = () => {
     },
     {
       name: 'Actividad',
-      selector: 'actividad',
+      // selector: 'actividad',
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -118,33 +118,35 @@ const RegistroClinica = () => {
   ];
   // console.log(metGetClinic);
   // console.log(events);
-  useEffect(() => {
-    const filtrarElemento = () => {
-      const search = metGetClinic.length > 0 && metGetClinic.filter((data) => {
-        return (
-          data.ruc.toString().includes(busqueda) ||
-          data.business_name
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.responsible.name
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.responsible.phone.toString().includes(busqueda) ||
-          data.responsible.email
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda)
-        );
-      });
-      setListRegistro(search);
-    };
-    filtrarElemento();
-  }, [busqueda, metGetClinic]);
+  // useEffect(() => {
+  //   const filtrarElemento = () => {
+  //     const search = metGetClinic.length > 0 && metGetClinic.filter((data) => {
+  //       return (
+  //         data.ruc.toString().includes(busqueda) ||
+  //         data.business_name
+  //           .normalize('NFD')
+  //           .replace(/[\u0300-\u036f]/g, '')
+  //           .toLocaleLowerCase()
+  //           .includes(busqueda) ||
+  //         data.responsible.name
+  //           .normalize('NFD')
+  //           .replace(/[\u0300-\u036f]/g, '')
+  //           .toLocaleLowerCase()
+  //           .includes(busqueda) ||
+  //         data.responsible.phone.toString().includes(busqueda) ||
+  //         data.responsible.email
+  //           .normalize('NFD')
+  //           .replace(/[\u0300-\u036f]/g, '')
+  //           .toLocaleLowerCase()
+  //           .includes(busqueda)
+  //       );
+  //     });
+  //     setListRegistro(search);
+  //   };
+  //   filtrarElemento();
+  // }, [busqueda, metGetClinic]);
+
+  // console.log(listRegistro);
 
   // console.log(listRegistro);
 
@@ -212,7 +214,13 @@ const RegistroClinica = () => {
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
             fixedHeaderScrollHeight="500px"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            noDataComponent={
+            <div className="spinner">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <i className="fas fa-inbox table__icono"></i>
+          </div>}
           />
         </div>
       </div>

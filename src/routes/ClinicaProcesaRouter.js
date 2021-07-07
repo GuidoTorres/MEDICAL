@@ -5,6 +5,7 @@ import Reservas from '../components/procesanmuestra/Reservas';
 import CargarResultado from '../components/procesanmuestra/CargarResultado';
 import Perfil from '../components/procesanmuestra/Perfil';
 import { useHistory } from 'react-router-dom';
+import Historial from '../components/procesanmuestra/Historial';
 
 const ClinicaProcesaRouter = () => {
   let history = useHistory();
@@ -41,7 +42,7 @@ const ClinicaProcesaRouter = () => {
 
       <Route exact path="/clinica/procesa/perfil" component={Perfil} />
 
-      <Route exact path="/clinica/procesa/historial" component={Reservas} />
+      <Route exact path="/clinica/procesa/historial" component={Historial} />
     </div>
   );
 };

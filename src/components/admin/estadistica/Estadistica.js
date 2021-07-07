@@ -124,7 +124,7 @@ const Estadistica = () => {
                     {servicios &&
                       servicios.map((data, i) =>
                         data.services.map((datos, i) => (
-                          <option value="1">{datos.name}</option>
+                          <option key={i} value="1">{datos.name}</option>
                         ))
                       )}
                   </select>

@@ -7,14 +7,14 @@ import Atencion from '../components/recepcion/Atencion';
 import GenerarAtencion from '../components/recepcion/GenerarAtencion';
 import Usuarios from '../components/recepcion/Usuarios';
 import Navbar from '../components/ui/Navbar';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 
 const RecepcionistaRouter = () => {
-  let history = useHistory();
+  // let history = useHistory();
 
-  useEffect(() => {
-    history.push('/recepcion/usuarios');
-  }, [history]);
+  // useEffect(() => {
+  //   history.push('/recepcion/usuarios');
+  // }, [history]);
 
   return (
     <div>

@@ -20,9 +20,8 @@ const MRegistroClinica = ({
 }) => {
   const [avatar, setAvatar] = useState(null);
   const [dataMapa, setDataMapa] = useState();
-  const [data, setData] = useState();
+  const [data, setData] = useState({});
   // const [editarCLinica, setEditarClinica] = useState(null)
-
 
   const closeModal = () => {
     setOpenModal(false);
@@ -31,108 +30,74 @@ const MRegistroClinica = ({
     // setCreateClinica(initialState);
   };
 
+  const handleChange = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  console.log(dataSelected);
+
   const postClinics = () => {
     const formData = new FormData();
 
-    formData.set("ruc", data.ruc  ? data.ruc : "");
-    formData.set("business_name", data.business_name ?  data.business_name : "");
-    formData.set("clinic_type",  data.clinic_type_id ? data.clinic_type_id : "");
-    formData.set("commercial_name", data.business_name ?  data.business_name : "");
-    formData.set("logo",  "logo");
+    // formData.set("corporation_id", 1);
+    formData.set("ruc", data.ruc ? data.ruc : "");
+    formData.set("business_name", data.business_name ? data.business_name : "");
+    formData.set("commercial_name", data.business_name ? data.business_name : "");
+    formData.set("logo", "logo");
+    formData.set("address", data.address ? data.address : "");
+    formData.set("reference", data.reference ? data.reference : "");
+    formData.set("clinic_type_id", data.clinic_type_id ? data.clinic_type_id : "");
+    // formData.set("map_latitude", dataMapa ? dataMapa.lat : "");
+    // formData.set("map_length]", dataMapa ? dataMapa.lng : "");
 
-    formData.set("address[id]",  1);
+    formData.set("contacts[0][name]", data.name ? data.name : "");
+    formData.set("contacts[0][phone]", data.phone ? data.phone : "");
+    formData.set("contacts[0][email]", data.email ? data.email : "");
+    formData.set("contact[0][contact_type]", 1);
 
-    formData.set("address[address]", data.address?  data.address.address : "");
-    formData.set("address[reference]",  data.address?  data.address.reference : "");
-    formData.set("address[district_id]", 14);
-    formData.set("address[map_latitude]", dataMapa ? dataMapa.lat : "");
-    formData.set("address[map_length]", dataMapa ? dataMapa.lng : "");
-
-    formData.set("responsible[name]", data.responsible ? data.responsible.name : "");
-    formData.set("responsible[phone]", data.responsible ? data.responsible.phone : "");
-    formData.set("responsible[email]", data.responsible ? data.responsible.email : "");
-    formData.set("responsible[contact_type]", 1);
-    formData.set("responsible[corporation_id]", 1);
-
-    formData.set("workday[corporation_id]", 1);
-    formData.set("workday[opening]", data.workday ? data.workday.opening : "");
-    formData.set("workday[closing]", data.workday ? data.workday.closing : "");
-    formData.set("workday[monday]", data.workday ? data.workday.monday : "");
-    formData.set("workday[tuesday]", data.workday ? data.workday.tuesday : "");
-    formData.set("workday[wednesday]", data.workday ? data.workday.wednesday : "");
-    formData.set("workday[thursday]", data.workday ? data.workday.thursday : "");
-    formData.set("workday[friday]", data.workday ? data.workday.friday : "");
-    formData.set("workday[saturday]", data.workday ? data.workday.saturday : "");
-    formData.set("workday[sunday]", data.workday ? data.workday.sunday : "");
-    fetchGETPOSTPUTDELETE("clinics", formData, "POST").then((resp) => {
-      console.log(resp)
-      if (resp.status === 200) {
-        closeModal();
-        getClinica();
+    // formData.set("work_days[0]", data.workday ? data.workday.monday : "");
+    // formData.set("work_days[1][tuesday]", data.workday ? data.workday.tuesday : "");
+    // formData.set("workday[wednesday]", data.workday ? data.workday.wednesday : "");
+    // formData.set("workday[thursday]", data.workday ? data.workday.thursday : "");
+    // formData.set("workday[friday]", data.workday ? data.workday.friday : "");
+    // formData.set("workday[saturday]", data.workday ? data.workday.saturday : "");
+    // formData.set("workday[sunday]", data.workday ? data.workday.sunday : "");
+    // formData.set("workday[opening]", data.workday ? data.workday.opening : "");
+    // formData.set("workday[closing]", data.workday ? data.workday.closing : "");
+    fetchGETPOSTPUTDELETE("clinics", formData, "POST").then(
+      (resp) => {
+        console.log(resp);
+        if (resp.status === 200) {
+          closeModal();
+          getClinica();
+        }
       }
-    });
+    );
   };
+  
 
   const putClinics = () => {
 
     const formData = new FormData();
-    formData.set("ruc", data && data.ruc);
-    formData.set("business_name", data && data.business_name);
-    formData.set("commercial_name", data && data.commercial_name);
 
-    formData.set("clinic_type", 2);
+    // formData.set("corporation_id", 1);
+    formData.set("ruc", data.ruc ? data.ruc : dataSelected.corporation.ruc);
+    formData.set("business_name", data.business_name ? data.business_name : dataSelected.corporation.business_name);
+    formData.set("commercial_name", data.business_name ? data.business_name : dataSelected.corporation.commercial_name);
+    formData.set("logo", "logo");
+    formData.set("address", data.address ? data.address : dataSelected.corporation.address.address);
+    formData.set("reference", data.reference ? data.reference : dataSelected.corporation.address.reference);
+    formData.set("clinic_type_id", data.clinic_type_id ? data.clinic_type_id : "");
+    // formData.set("map_latitude", dataMapa ? dataMapa.lat : "");
+    // formData.set("map_length]", dataMapa ? dataMapa.lng : "");
 
-    formData.set("address[address]", data && data.address.address);
-    formData.set("address[reference]", data && data.address.reference);
-    formData.set("address[district_id]", 14);
-    formData.set("address[map_latitude]", data && data.address.map_latitude);
-    formData.set("address[map_length]", data && data.address.map_length);
-
-    formData.set("responsible[name]", data && data.responsible.name);
-    formData.set("responsible[phone]", data && data.responsible.phone);
-    formData.set("responsible[email]",data && data.responsible.email);
-    formData.set("responsible[contact_type]", 1);
-
-        formData.set("workday", null);
-
-
-    // formData.set("workday[corporation_id]", 51);
-    // formData.set(
-    //   "workday[opening]",
-    //   data && data.workday.opening
-    // );
-    // formData.set(
-    //   "workday[closing]",
-    //   data && data.workday.closing
-    // );
-    // formData.set(
-    //   "workday[monday]",
-    //   data && data.workday.monday
-    // );
-    // formData.set(
-    //   "workday[tuesday]",
-    //   data && data.workday.tuesday
-    // );
-    // formData.set(
-    //   "workday[wednesday]",
-    //   data && data.workday.wednesday
-    // );
-    // formData.set(
-    //   "workday[thursday]",
-    //   data && data.workday.thursday
-    // );
-    // formData.set(
-    //   "workday[friday]",
-    //   data && data.workday.friday
-    // );
-    // formData.set(
-    //   "workday[saturday]",
-    //   data && data.workday.saturday
-    // );
-    // formData.set(
-    //   "workday[sunday]",
-    //   data && data.workday.sunday
-    // );
+    formData.set("contacts[0][name]", data.name ? data.name : "");
+    formData.set("contacts[0][phone]", data.phone ? data.phone : "");
+    formData.set("contacts[0][email]", data.email ? data.email : "");
+    formData.set("contact[0][contact_type]", 1);
 
     fetchGETPOSTPUTDELETE(`clinics/${dataSelected.id}`, formData, "PUT").then(
       (resp) => {
@@ -148,51 +113,68 @@ const MRegistroClinica = ({
   const handleAgregar = (e) => {
     e.preventDefault();
   };
-  useEffect(()=>{
-
-    if(dataSelected){
-
-      setData({
-    ...data,
-    clinic_type: 2,
-    ruc: dataSelected && dataSelected.ruc,
-    business_name: dataSelected ? dataSelected.business_name : "",
-    commercial_name: dataSelected ? dataSelected.commercial_name : "",
-    logo: "image",
-    address_id: 12,
-    address: {
-        address: dataSelected && dataSelected.address ? dataSelected.address.address : "",
-        reference: dataSelected && dataSelected.address ? dataSelected.address.reference : "",
-        map_latitude: dataSelected && dataSelected.address ? dataSelected.address.map_latitude : "",
-        map_length: dataSelected && dataSelected.address ? dataSelected.address.map_length : "",
-        district_id: 34
-    },
-    responsible: {
-        name: dataSelected && dataSelected.responsible ? dataSelected.responsible.name : "",
-        phone: dataSelected && dataSelected.responsible ? dataSelected.responsible.phone : "",
-        email: dataSelected && dataSelected.responsible ? dataSelected.responsible.email : "",
-        contact_type: 1,
-        corporation_id: 12,
-    },
-    workday: {
-        corporation_id: 12,
-        opening: "16:06:21",
-        closing: "09:24:23",
-        monday: 0,
-        tuesday: 1,
-        wednesday: 0,
-        thursday: 0,
-        friday: 1,
-        saturday: 0,
-        sunday: 1
-    }
-
-      })
-    }else{
-      setData(null)
-    }
-
-  },[dataSelected,data])
+  // useEffect(() => {
+  //   if (dataSelected) {
+  //     setData({
+  //       ...data,
+  //       clinic_type: 2,
+  //       ruc: dataSelected && dataSelected.ruc,
+  //       business_name: dataSelected ? dataSelected.business_name : "",
+  //       commercial_name: dataSelected ? dataSelected.commercial_name : "",
+  //       logo: "image",
+  //       address_id: 12,
+  //       address: {
+  //         address:
+  //           dataSelected && dataSelected.address
+  //             ? dataSelected.address.address
+  //             : "",
+  //         reference:
+  //           dataSelected && dataSelected.address
+  //             ? dataSelected.address.reference
+  //             : "",
+  //         map_latitude:
+  //           dataSelected && dataSelected.address
+  //             ? dataSelected.address.map_latitude
+  //             : "",
+  //         map_length:
+  //           dataSelected && dataSelected.address
+  //             ? dataSelected.address.map_length
+  //             : "",
+  //         district_id: 34,
+  //       },
+  //       responsible: {
+  //         name:
+  //           dataSelected && dataSelected.responsible
+  //             ? dataSelected.responsible.name
+  //             : "",
+  //         phone:
+  //           dataSelected && dataSelected.responsible
+  //             ? dataSelected.responsible.phone
+  //             : "",
+  //         email:
+  //           dataSelected && dataSelected.responsible
+  //             ? dataSelected.responsible.email
+  //             : "",
+  //         contact_type: 1,
+  //         corporation_id: 12,
+  //       },
+  //       workday: {
+  //         corporation_id: 12,
+  //         opening: "16:06:21",
+  //         closing: "09:24:23",
+  //         monday: 0,
+  //         tuesday: 1,
+  //         wednesday: 0,
+  //         thursday: 0,
+  //         friday: 1,
+  //         saturday: 0,
+  //         sunday: 1,
+  //       },
+  //     });
+  //   } else {
+  //     setData(null);
+  //   }
+  // }, [dataSelected, data]);
 
   return (
     <div>
@@ -216,8 +198,8 @@ const MRegistroClinica = ({
                   <input
                     type="text"
                     name="ruc"
-                    defaultValue={dataSelected ? dataSelected.ruc : ""}
-                    onChange={(e) => setData({ ...data, ruc: e.target.value })}
+                    defaultValue={dataSelected && dataSelected.corporation.ruc ? dataSelected.corporation.ruc : ""}
+                    onChange={(e) => handleChange(e)}
                   />
                 </div>
                 <div>
@@ -225,12 +207,9 @@ const MRegistroClinica = ({
                   <input
                     type="text"
                     name="business_name"
-                    defaultValue={
-                      dataSelected ? dataSelected.business_name : ""
-                    }
-                    onChange={(e) =>
-                      setData({ ...data, business_name: e.target.value })
-                    }
+                    defaultValue={dataSelected && dataSelected.corporation.business_name ? dataSelected.corporation.business_name : ""}
+
+                    onChange={(e) => handleChange(e)}
                   />
                 </div>
                 <div>
@@ -243,15 +222,7 @@ const MRegistroClinica = ({
                         ? dataSelected.responsible.name
                         : ""
                     }
-                    onChange={(e) =>
-                      setData({
-                        ...data,
-                        responsible: {
-                          ...data.responsible,
-                          name: e.target.value,
-                        },
-                      })
-                    }
+                    onChange={(e) => handleChange(e)}
                   />
                 </div>
                 <div>
@@ -264,15 +235,7 @@ const MRegistroClinica = ({
                         ? dataSelected.responsible.phone
                         : ""
                     }
-                    onChange={(e) =>
-                      setData({
-                        ...data,
-                        responsible: {
-                          ...data.responsible,
-                          phone: e.target.value,
-                        },
-                      })
-                    }
+                    onChange={(e) => handleChange(e)}
                   />
                 </div>
                 <div>
@@ -285,15 +248,7 @@ const MRegistroClinica = ({
                         ? dataSelected.responsible.email
                         : ""
                     }
-                    onChange={(e) =>
-                      setData({
-                        ...data,
-                        responsible: {
-                          ...data.responsible,
-                          email: e.target.value,
-                        },
-                      })
-                    }
+                    onChange={(e) => handleChange(e)}
                   />
                 </div>
                 <div>
@@ -306,12 +261,7 @@ const MRegistroClinica = ({
                         ? dataSelected.address.address
                         : ""
                     }
-                    onChange={(e) =>
-                      setData({
-                        ...data,
-                        address: { ...data.address, address: e.target.value },
-                      })
-                    }
+                    onChange={(e) => handleChange(e)}
                   />
                 </div>
                 <div>
@@ -324,12 +274,7 @@ const MRegistroClinica = ({
                         ? dataSelected.address.reference
                         : null
                     }
-                    onChange={(e) =>
-                      setData({
-                        ...data,
-                        address: { ...data.address, reference: e.target.value },
-                      })
-                    }
+                    onChange={(e) => handleChange(e)}
                   />
                 </div>
               </div>
@@ -340,7 +285,7 @@ const MRegistroClinica = ({
                     <input
                       type="checkbox"
                       className="form-check-input"
-                      name=""
+                      name="clinic_type_id"
                       // onChange={handleChange}
                       defaultChecked={
                         dataSelected && dataSelected.clinic_type_id === 1
@@ -348,10 +293,9 @@ const MRegistroClinica = ({
                           : false
                       }
                       onChange={(e) =>
-                        setData({
-                          ...data,
-                          clinic_type_id: e.target.checked === true ? 1 : "",
-                        })
+                        e.target.checked === true
+                          ? setData({ ...data, clinic_type_id: 1 })
+                          : ""
                       }
                     />
                     <label>Toma muestra</label>
@@ -360,7 +304,7 @@ const MRegistroClinica = ({
                     <input
                       type="checkbox"
                       className="form-check-input"
-                      name=""
+                      name="clinic_type_id"
                       // onChange={handleChange}
                       defaultChecked={
                         dataSelected && dataSelected.clinic_type_id === 2
@@ -368,10 +312,9 @@ const MRegistroClinica = ({
                           : false
                       }
                       onChange={(e) =>
-                        setData({
-                          ...data,
-                          clinic_type_id: e.target.checked === true ? 2 : "",
-                        })
+                        e.target.checked === true
+                          ? setData({ ...data, clinic_type_id: 2 })
+                          : ""
                       }
                     />
                     <label>Toma y analiza muestra</label>

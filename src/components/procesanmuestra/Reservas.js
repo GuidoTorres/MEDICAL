@@ -3,11 +3,26 @@ import DataTable from 'react-data-table-component';
 import Swal from 'sweetalert2';
 
 import { historial } from '../../data/PHistorial';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
 
 const Reservas = () => {
   const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
+
+  const [getDateAttention, setGetDateAttention] = useState([]);
+
+  const getAttention = () => {
+    fetchGETPOSTPUTDELETE("attention")
+      .then((data) => data.json())
+      .then((datos) => setGetDateAttention(datos.data));
+  };
+
+  useEffect(() => {
+    getAttention();
+  }, []);
+
+  console.log(getDateAttention);
 
   const columnas = [
     {
@@ -20,8 +35,24 @@ const Reservas = () => {
       },
     },
     {
-      name: 'DNI',
-      selector: 'dni',
+      name: 'Tipo de documento',
+      selector: (row) =>
+      row.person && row.person.document_type_id === 3
+        ? "Carné de extranjería"
+        : row.person && row.person.document_type_id === 2
+        ? "Pasaporte"
+        : row.person && row.person.document_type_id === 1
+        ? "DNI"
+        : "",
+      sortable: true,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
+      name: 'Nº documento',
+      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -30,7 +61,7 @@ const Reservas = () => {
     },
     {
       name: 'Nombre',
-      selector: 'nombre',
+      selector: (row) => (row.person && row.person.name ? row.person.name : ""),
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -39,7 +70,8 @@ const Reservas = () => {
     },
     {
       name: 'Apellido',
-      selector: 'apellido',
+      selector: (row) => (row.person && row.person.pat_lastname ? row.person.pat_lastname : ""),
+
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -48,7 +80,8 @@ const Reservas = () => {
     },
     {
       name: 'Tipo prueba',
-      selector: 'tipo',
+      selector: (row) => (row.service && row.service.name ? row.service.name : ""),
+
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -57,7 +90,7 @@ const Reservas = () => {
     },
     {
       name: 'Fecha solicitud',
-      selector: 'solicitud',
+      selector: (row) => (row.date_creation  ? row.date_creation : ""),
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -116,7 +149,7 @@ const Reservas = () => {
   const handleDetalles = (e) => {
     Swal.fire({
       title: '¿Atender paciente?',
-      text: `${e.name}`,
+      text: `${e.person.name}`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -124,7 +157,14 @@ const Reservas = () => {
       confirmButtonText: 'Atender',
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire('Atendido!', 'Se ha atendido al paciente.', 'success');
+          fetchGETPOSTPUTDELETE(`attention/attend/${e.id}`).then(
+            (data) => 
+
+            {if(data.status === 200){
+
+              Swal.fire("Éxito!", "Se genero la atención correctamente.", "success");
+            }}
+          );
       }
     });
   };
@@ -147,12 +187,18 @@ const Reservas = () => {
 
           <DataTable
             columns={columnas}
-            data={listRegistro}
+            data={getDateAttention}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
             fixedHeaderScrollHeight="500px"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            noDataComponent={
+            <div className="spinner">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <i className="fas fa-inbox table__icono"></i>
+          </div>}
           />
         </div>
       </div>

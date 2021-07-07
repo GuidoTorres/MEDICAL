@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import Modal from "react-modal";
-import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
+import { fetchGETPOSTPUTDELETE, fetchGETPOSTPUTDELETEJSON } from "../../../helpers/fetch";
 import { customStyles } from "../../../helpers/tablaOpciones";
 import { UploadAvatar } from "../../uploadAvatar/uploadAvatar";
 
@@ -54,7 +54,7 @@ const MTrabajador = ({
     formData.set("cellphone", editarTrabajador.cellphone || "");
     formData.set("photo", "avatar.file" || "");
     formData.set("role_id", editarTrabajador.role_id || "");
-    fetchGETPOSTPUTDELETE(`employees/${dataSelected.id}`, formData, "PUT").then(
+    fetchGETPOSTPUTDELETEJSON(`employees/${dataSelected.id}`, editarTrabajador, "PUT").then(
       (resp) => {
         console.log(resp);
         if (resp.status === 200) {
