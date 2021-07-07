@@ -42,8 +42,7 @@ const RegistroClinica = () => {
     },
     {
       name: 'Razón social',
-      selector: (row) =>
-        row.corporation.business_name ? row.corporation.business_name : '',
+      selector: row => row.corporation.business_name ? row.corporation.business_name : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -52,7 +51,7 @@ const RegistroClinica = () => {
     },
     {
       name: 'RUC',
-      selector: (row) => (row.corporation.ruc ? row.corporation.ruc : ''),
+      selector: row => row.corporation.ruc ? row.corporation.ruc : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -61,8 +60,7 @@ const RegistroClinica = () => {
     },
     {
       name: 'Responsable',
-      selector: (row) =>
-        row.corporation.contacts.name ? row.corporation.contact.name : '',
+      selector: row => row.corporation.contacts.name ? row.corporation.contact.name : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -71,8 +69,7 @@ const RegistroClinica = () => {
     },
     {
       name: 'Telefono',
-      selector: (row) =>
-        row.corporation.contacts.phone ? row.corporation.contact.phone : '',
+      selector: row => row.corporation.contacts.phone ? row.corporation.contact.phone : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -81,8 +78,7 @@ const RegistroClinica = () => {
     },
     {
       name: 'Correo',
-      selector: (row) =>
-        row.corporation.contacts.email ? row.corporation.contact.email : '',
+      selector: row => row.corporation.contacts.email ? row.corporation.contact.email : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -122,35 +118,33 @@ const RegistroClinica = () => {
   ];
   // console.log(metGetClinic);
   // console.log(events);
-  useEffect(() => {
-    const filtrarElemento = () => {
-      const search =
-        metGetClinic.length > 0 &&
-        metGetClinic.filter((data) => {
-          return (
-            data.corporation.ruc.toString().includes(busqueda) ||
-            data.corporation.business_name
-              .normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '')
-              .toLocaleLowerCase()
-              .includes(busqueda) ||
-            data.corporation.contacts.name
-              .normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '')
-              .toLocaleLowerCase()
-              .includes(busqueda) ||
-            data.corporation.contacts.phone.toString().includes(busqueda) ||
-            data.corporation.contacts.email
-              .normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '')
-              .toLocaleLowerCase()
-              .includes(busqueda)
-          );
-        });
-      setListRegistro(search);
-    };
-    filtrarElemento();
-  }, [busqueda, metGetClinic]);
+  // useEffect(() => {
+  //   const filtrarElemento = () => {
+  //     const search = metGetClinic.length > 0 && metGetClinic.filter((data) => {
+  //       return (
+  //         data.ruc.toString().includes(busqueda) ||
+  //         data.business_name
+  //           .normalize('NFD')
+  //           .replace(/[\u0300-\u036f]/g, '')
+  //           .toLocaleLowerCase()
+  //           .includes(busqueda) ||
+  //         data.responsible.name
+  //           .normalize('NFD')
+  //           .replace(/[\u0300-\u036f]/g, '')
+  //           .toLocaleLowerCase()
+  //           .includes(busqueda) ||
+  //         data.responsible.phone.toString().includes(busqueda) ||
+  //         data.responsible.email
+  //           .normalize('NFD')
+  //           .replace(/[\u0300-\u036f]/g, '')
+  //           .toLocaleLowerCase()
+  //           .includes(busqueda)
+  //       );
+  //     });
+  //     setListRegistro(search);
+  //   };
+  //   filtrarElemento();
+  // }, [busqueda, metGetClinic]);
 
   // console.log(listRegistro);
 

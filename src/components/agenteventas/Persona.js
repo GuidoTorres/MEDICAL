@@ -173,7 +173,7 @@ const Persona = () => {
             </div>
             <div>
               <label>
-                Agregar clinica{' '}
+                Agregar {' '}
                 <i
                   className="fas fa-plus-circle"
                   onClick={handleAddRegistro}

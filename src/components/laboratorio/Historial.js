@@ -1,79 +1,95 @@
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
-import { lasubir } from '../../data/LASubir';
+import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
+import { lasubir } from "../../data/LASubir";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
-import MSubirLaboratorio from './MSubirLaboratorio';
+import { paginacionOpciones } from "../../helpers/tablaOpciones";
+import MSubirLaboratorio from "./MSubirLaboratorio";
 
 const Historial = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [results, setResults] = useState({});
+
+  const getResults = () => {
+    fetchGETPOSTPUTDELETE("attention")
+      .then((data) => data.json())
+      .then((datos) => setResults(datos.data));
+  };
+
+  useEffect(() => {
+    getResults();
+  }, []);
+
+  console.log(results);
 
   const columnas = [
     {
-      name: 'Item',
-      selector: 'id',
+      name: "Item",
+      selector: "id",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Tipo de usuario',
-      selector: 'tipo',
+      name: "Tipo de usuario",
+      selector: (row) => (row.people_id === 1 ? "Particular" : "Empresa"),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'DNI',
-      selector: 'dni',
+      name: "Nº de documento",
+      selector: (row) => (row.person.dni ? row.person.dni : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Fecha',
-      selector: 'fecha',
+      name: "Fecha",
+      selector: (row) => (row.date_attention ? row.date_attention : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Nombre',
-      selector: 'nombre',
+      name: "Nombre",
+      selector: (row) => (row.person.name ? row.person.name : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Apellido',
-      selector: 'apellido',
+      name: "Apellido",
+      selector: (row) =>
+        row.person.pat_lastname ? row.person.pat_lastname : "",
+
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Acción',
+      name: "Acción",
       button: true,
       cell: (e) => (
         <button
           onClick={() => handleDetalles(e)}
           className="table__tablebutton"
         >
-          <i class="fas fa-angle-right"></i>
+          <i class="fas fa-file-pdf"></i>
         </button>
       ),
     },
@@ -84,24 +100,24 @@ const Historial = () => {
       const search = lasubir.filter((data) => {
         return (
           data.tipo
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.dni.toString().includes(busqueda) ||
           data.fecha
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.nombre
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.apellido
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda)
         );
@@ -129,14 +145,13 @@ const Historial = () => {
               <div>
                 <label>Categoría</label>
                 <select class="form-select" aria-label="Default select example">
-                  <option value="1">COVID</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option value="1">COVID - 19</option>
                 </select>
               </div>
               <div>
                 <label>Sub-categoría</label>
                 <select class="form-select" aria-label="Default select example">
+                  <option>Seleccione</option>
                   <option value="1">Antigeno</option>
                   <option value="2">Two</option>
                   <option value="3">Three</option>
@@ -156,18 +171,25 @@ const Historial = () => {
                 />
               </div>
               <div>
-                <button className="botones">Cargar resultado</button>
+                <button className="botones">Descargar</button>
               </div>
             </div>
 
             <DataTable
               columns={columnas}
-              data={listRegistro}
+              data={results}
               pagination
               paginationComponentOptions={paginacionOpciones}
               fixedHeader
               fixedHeaderScrollHeight="500px"
-              noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+              noDataComponent={
+                <div className="spinner">
+                  <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                  <i className="fas fa-inbox table__icono"></i>
+                </div>
+              }
             />
           </div>
         </div>
