@@ -58,7 +58,7 @@ const fetchGETPOSTPUTDELETEJSON = (endpoint, data, method) => {
     headers: {
       Authorization: `bearer ${token}`,
     },
-    body: data,
+    body: JSON.stringify(data),
   });
 };
 

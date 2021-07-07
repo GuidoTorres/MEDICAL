@@ -153,14 +153,14 @@ const Atencion = () => {
 
 
   const generarAtencion = (e) => {
-    setGenerateAttention({
-      date_creation: e.date_creation ? e.date_creation : "",
-      time_attention: getHora(),
-      people_id: e.people_id ? e.people_id : "",
-      service_id: e.service_id ? e.service_id : "",
-      clinic_id: e.clinic && e.clinic.id ? e.clinic_id : "",
-      codebar: "0213000011111",
-    });
+    // setGenerateAttention({
+    //   date_creation: e.date_creation ? e.date_creation : "",
+    //   time_attention: getHora(),
+    //   people_id: e.people_id ? e.people_id : "",
+    //   service_id: e.service_id ? e.service_id : "",
+    //   clinic_id: e.clinic && e.clinic.id ? e.clinic_id : "",
+    //   codebar: "0213000011111",
+    // });
     Swal.fire({
       title: "¿Desea Atender al paciente?",
       text: `${e.person && e.person.name ? e.person.name : "No hay datos"}`,
@@ -171,7 +171,7 @@ const Atencion = () => {
       confirmButtonText: "Atender",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetchGETPOSTPUTDELETEJSON("attention", generateAttention, "POST").then(
+        fetchGETPOSTPUTDELETEJSON(`attention/attend/${e.id}`).then(
           (data) => console.log(data)
         );
         // .then((datos) => setAttention(datos.data));
@@ -207,18 +207,12 @@ const Atencion = () => {
             fixedHeader
             fixedHeaderScrollHeight="500px"
             noDataComponent={
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <div class="spinner-border" role="status">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-                <i className="fas fa-inbox table__icono"></i>
+              <div className="spinner">
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
               </div>
+              <i className="fas fa-inbox table__icono"></i>
+            </div>
             }
           />
         </div>

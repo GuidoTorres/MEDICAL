@@ -10,13 +10,10 @@ import MRegistroEmpresa from './MRegistroEmpresa';
 const RegistroEmpresa = () => {
   const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
-  const [getRegistro, setGetRegistro] = useState([]);
   const [corporations, setCorporations] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
   const [editar, setEditar] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-
-
 
   const getCorporations = () => {
     fetchGETPOSTPUTDELETE('company')
@@ -114,28 +111,24 @@ const RegistroEmpresa = () => {
       ),
     },
   ];
+
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = getRegistro.filter((data) => {
+      const search = corporations.filter((data) => {
         return (
-          data.ruc.toString().includes(busqueda) ||
-          data.business_name
+          data.corporation.business_name
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda) ||
-          data.commercial_name
+          data.corporation.ruc.toString().includes(busqueda) ||
+          data.corporation.commercial_name
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda) ||
-          data.contacts.phone.toString().includes(busqueda) ||
-          data.contacts.email
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.actividad
+          data.corporation.contacts[0].phone.toString().includes(busqueda) ||
+          data.corporation.contacts[0].email
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
@@ -145,10 +138,8 @@ const RegistroEmpresa = () => {
       setListRegistro(search);
     };
     filtrarElemento();
-  }, [busqueda, getRegistro]);
-  //
+  }, [busqueda, corporations]);
 
-  console.log(corporations);
   const handleAddRegistro = () => {
     setOpenModal(true);
   };
@@ -158,7 +149,6 @@ const RegistroEmpresa = () => {
     setEditar(true);
   };
   const handleEliminar = (e) => {
-    // console.log(e.id);
     Swal.fire({
       title: '¿Desea eliminar?',
       text: `${e.corporation.business_name}`,
@@ -176,7 +166,6 @@ const RegistroEmpresa = () => {
             getCorporations();
           }
         );
-        // resp();
       }
     });
   };
@@ -210,12 +199,18 @@ const RegistroEmpresa = () => {
 
           <DataTable
             columns={columnas}
-            data={corporations}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
             fixedHeaderScrollHeight="500px"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            noDataComponent={
+            <div className="spinner">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <i className="fas fa-inbox table__icono"></i>
+          </div>}
           />
         </div>
       </div>
@@ -225,7 +220,7 @@ const RegistroEmpresa = () => {
           setOpenModal={setOpenModal}
           getCorporations={getCorporations}
           dataSelected={dataSelected}
-          setDataSelected= {setDataSelected}
+          setDataSelected={setDataSelected}
           editar={editar}
           setEditar={setEditar}
         />

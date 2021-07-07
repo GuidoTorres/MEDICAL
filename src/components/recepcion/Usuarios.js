@@ -15,7 +15,6 @@ const Usuarios = ({ history }) => {
   const handleAddRegistro = () => {
     setAddRegistro(true);
   };
-  console.log(listServicio);
   const [getDateAttention, setGetDateAttention] = useState([]);
 
   const getAttention = () => {
@@ -28,14 +27,7 @@ const Usuarios = ({ history }) => {
     getAttention();
   }, []);
 
-  // useEffect(() => {
-  //   const getListAtencion = () => {
-  //     getDateAttention.map((data) => {
-  //       return setPersonas(data);
-  //     });
-  //   };
-  //   getListAtencion();
-  // }, [getDateAttention]);
+
 
   console.log(getDateAttention);
 
@@ -82,7 +74,7 @@ const Usuarios = ({ history }) => {
     {
       name: "Telefono",
       selector: (row) =>
-        row.person && row.person.phone ? row.person.phone : "",
+        row.person && row.person.cellphone ? row.person.cellphone : "",
       sortable: true,
       style: {
         color: "#8f9196",
@@ -220,18 +212,12 @@ const Usuarios = ({ history }) => {
             fixedHeader
             fixedHeaderScrollHeight="500px"
             noDataComponent={
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <div class="spinner-border" role="status">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
-                <i className="fas fa-inbox table__icono"></i>
+              <div className="spinner">
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
               </div>
+              <i className="fas fa-inbox table__icono"></i>
+            </div>
             }
           />
         </div>

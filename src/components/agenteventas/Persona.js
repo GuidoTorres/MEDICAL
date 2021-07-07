@@ -61,9 +61,12 @@ const Persona = () => {
       name: 'Descuento para usuario (%)',
       selector: 'descuento',
       sortable: true,
+      grow:2,
       style: {
         borderBotton: 'none',
         color: '#555555',
+        display:'flex',
+        marginLeft:"20px"
       },
     },
     {
