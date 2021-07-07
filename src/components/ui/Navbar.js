@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, NavLink} from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { startLogout } from '../../actions/auth';
 // import { useSelector } from 'react-redux';
 import logo from '../../assets/icons/Isotipo.png';
@@ -23,11 +23,11 @@ const Navbar = ({
   // const { isAuthenticated } = useSelector((state) => state.auth);
   // const history = useHistory();
   // console.log(history);
-  const dispatch = useDispatch();
-  const handleLogout = () => {
-    // history.replace('/');
-    dispatch(startLogout());
-  };
+  // const dispatch = useDispatch();
+  // const handleLogout = () => {
+  //   // history.replace('/');
+  //   dispatch(startLogout());
+  // };
   const mostrarSidebar = () => {
     const side = document.querySelector('.navBarUl').style;
     // const li = document.querySelector('.nav-item');
@@ -126,7 +126,7 @@ const Navbar = ({
               border: 'none',
               fontSize: '15px',
             }}
-            onClick={handleLogout}
+            // onClick={handleLogout}
           >
             Salir <i className="fas fa-sign-in-alt"></i>
           </button>

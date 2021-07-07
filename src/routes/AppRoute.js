@@ -19,11 +19,11 @@ import PrivateRoutes from './PrivateRoutes';
 import RecepcionistaRouter from './RecepcionistaRouter';
 
 const AppRoute = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(startCkecking());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(startCkecking());
+  // }, [dispatch]);
 
   return (
     <Router>
@@ -31,9 +31,9 @@ const AppRoute = () => {
         <Route exact path="/">
           <Login />
         </Route>
-        <Route exact path="/registrar">
+        {/* <Route exact path="/registrar">
           <Register />
-        </Route>
+        </Route> */}
 
         {/* RUTAS PRIVADAS */}
         <PrivateRoutes path="/admin" component={AdminRouter} isAuthenticated />
