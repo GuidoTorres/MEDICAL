@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import Swal from 'sweetalert2';
 import { empresa } from '../../data/AVEmpresa';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 
 // import { servicio } from '../../data/AVServicio';
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
@@ -10,6 +11,21 @@ const Empresa = () => {
   const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+
+  const [metGetClinic, setMetGetClinic] = useState([]);
+
+  const getClinica = () => {
+    fetchGETPOSTPUTDELETE('company_discount')
+      .then((data) => data.json())
+      .then((datos) => {
+        setMetGetClinic(datos.data);
+      });
+  };
+
+  useEffect(() => {
+    getClinica();
+  }, []);
+
 
   const columnas = [
     {
@@ -23,7 +39,7 @@ const Empresa = () => {
     },
     {
       name: 'Empresa',
-      selector: 'empresa',
+      selector: row => row.corporation && row.corporation.business_name ? row.corporation.business_name : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -32,7 +48,7 @@ const Empresa = () => {
     },
     {
       name: 'Tipo de prueba',
-      selector: 'tipo',
+      selector: row => row.services && row.services[0].name ? row.services[0].name : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -41,7 +57,7 @@ const Empresa = () => {
     },
     {
       name: 'Descuento',
-      selector: 'descuento',
+      selector: row => row.services && row.services[0].last_discount ? row.services[0].last_discount.percent : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -50,7 +66,7 @@ const Empresa = () => {
     },
     {
       name: 'Total',
-      selector: 'total',
+      selector: row => row.services && row.services[0].last_discount ? row.services[0].last_discount.amount : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -138,7 +154,7 @@ const Empresa = () => {
 
           <DataTable
             columns={columnas}
-            data={listRegistro}
+            data={metGetClinic}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader

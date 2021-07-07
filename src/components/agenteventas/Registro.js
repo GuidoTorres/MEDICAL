@@ -197,7 +197,13 @@ const Registro = () => {
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
             fixedHeaderScrollHeight="500px"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            noDataComponent={
+            <div className="spinner">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <i className="fas fa-inbox table__icono"></i>
+          </div>}
           />
         </div>
       </div>

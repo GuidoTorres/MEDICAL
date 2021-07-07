@@ -45,11 +45,17 @@ const MRegistroClinica = ({
     // formData.set("corporation_id", 1);
     formData.set("ruc", data.ruc ? data.ruc : "");
     formData.set("business_name", data.business_name ? data.business_name : "");
-    formData.set("commercial_name", data.business_name ? data.business_name : "");
+    formData.set(
+      "commercial_name",
+      data.business_name ? data.business_name : ""
+    );
     formData.set("logo", "logo");
     formData.set("address", data.address ? data.address : "");
     formData.set("reference", data.reference ? data.reference : "");
-    formData.set("clinic_type_id", data.clinic_type_id ? data.clinic_type_id : "");
+    formData.set(
+      "clinic_type_id",
+      data.clinic_type_id ? data.clinic_type_id : ""
+    );
     // formData.set("map_latitude", dataMapa ? dataMapa.lat : "");
     // formData.set("map_length]", dataMapa ? dataMapa.lng : "");
 
@@ -67,30 +73,47 @@ const MRegistroClinica = ({
     // formData.set("workday[sunday]", data.workday ? data.workday.sunday : "");
     // formData.set("workday[opening]", data.workday ? data.workday.opening : "");
     // formData.set("workday[closing]", data.workday ? data.workday.closing : "");
-    fetchGETPOSTPUTDELETE("clinics", formData, "POST").then(
-      (resp) => {
-        console.log(resp);
-        if (resp.status === 200) {
-          closeModal();
-          getClinica();
-        }
+    fetchGETPOSTPUTDELETE("clinics", formData, "POST").then((resp) => {
+      console.log(resp);
+      if (resp.status === 200) {
+        closeModal();
+        getClinica();
       }
-    );
+    });
   };
-  
 
   const putClinics = () => {
-
     const formData = new FormData();
 
     // formData.set("corporation_id", 1);
     formData.set("ruc", data.ruc ? data.ruc : dataSelected.corporation.ruc);
-    formData.set("business_name", data.business_name ? data.business_name : dataSelected.corporation.business_name);
-    formData.set("commercial_name", data.business_name ? data.business_name : dataSelected.corporation.commercial_name);
+    formData.set(
+      "business_name",
+      data.business_name
+        ? data.business_name
+        : dataSelected.corporation.business_name
+    );
+    formData.set(
+      "commercial_name",
+      data.business_name
+        ? data.business_name
+        : dataSelected.corporation.commercial_name
+    );
     formData.set("logo", "logo");
-    formData.set("address", data.address ? data.address : dataSelected.corporation.address.address);
-    formData.set("reference", data.reference ? data.reference : dataSelected.corporation.address.reference);
-    formData.set("clinic_type_id", data.clinic_type_id ? data.clinic_type_id : "");
+    formData.set(
+      "address",
+      data.address ? data.address : dataSelected.corporation.address.address
+    );
+    formData.set(
+      "reference",
+      data.reference
+        ? data.reference
+        : dataSelected.corporation.address.reference
+    );
+    formData.set(
+      "clinic_type_id",
+      data.clinic_type_id ? data.clinic_type_id : ""
+    );
     // formData.set("map_latitude", dataMapa ? dataMapa.lat : "");
     // formData.set("map_length]", dataMapa ? dataMapa.lng : "");
 
@@ -198,7 +221,11 @@ const MRegistroClinica = ({
                   <input
                     type="text"
                     name="ruc"
-                    defaultValue={dataSelected && dataSelected.corporation.ruc ? dataSelected.corporation.ruc : ""}
+                    defaultValue={
+                      dataSelected && dataSelected.corporation.ruc
+                        ? dataSelected.corporation.ruc
+                        : ""
+                    }
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
@@ -207,8 +234,11 @@ const MRegistroClinica = ({
                   <input
                     type="text"
                     name="business_name"
-                    defaultValue={dataSelected && dataSelected.corporation.business_name ? dataSelected.corporation.business_name : ""}
-
+                    defaultValue={
+                      dataSelected && dataSelected.corporation.business_name
+                        ? dataSelected.corporation.business_name
+                        : ""
+                    }
                     onChange={(e) => handleChange(e)}
                   />
                 </div>

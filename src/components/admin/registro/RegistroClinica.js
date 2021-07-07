@@ -13,9 +13,9 @@ const RegistroClinica = () => {
   const [openModal, setOpenModal] = useState(false);
   const [editar, setEditar] = useState(false);
   const [dataSelected, setDataSelected] = useState();
-  const [metGetClinic, setMetGetClinic] = useState([]);
   // const [getRegistro, setGetRegistro] = useState();
   const [listRegistro, setListRegistro] = useState([]);
+  const [metGetClinic, setMetGetClinic] = useState([]);
 
   const getClinica = () => {
     fetchGETPOSTPUTDELETE('clinics')
@@ -128,19 +128,19 @@ const RegistroClinica = () => {
         metGetClinic.length > 0 &&
         metGetClinic.filter((data) => {
           return (
-            data.ruc.toString().includes(busqueda) ||
-            data.business_name
+            data.corporation.ruc.toString().includes(busqueda) ||
+            data.corporation.business_name
               .normalize('NFD')
               .replace(/[\u0300-\u036f]/g, '')
               .toLocaleLowerCase()
               .includes(busqueda) ||
-            data.responsible.name
+            data.corporation.contacts.name
               .normalize('NFD')
               .replace(/[\u0300-\u036f]/g, '')
               .toLocaleLowerCase()
               .includes(busqueda) ||
-            data.responsible.phone.toString().includes(busqueda) ||
-            data.responsible.email
+            data.corporation.contacts.phone.toString().includes(busqueda) ||
+            data.corporation.contacts.email
               .normalize('NFD')
               .replace(/[\u0300-\u036f]/g, '')
               .toLocaleLowerCase()
