@@ -148,6 +148,8 @@ const RegistroClinica = () => {
 
   // console.log(listRegistro);
 
+  // console.log(listRegistro);
+
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
