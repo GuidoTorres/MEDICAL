@@ -29,7 +29,7 @@ const Trabajador = () => {
     },
     {
       name: "Tipo",
-      selector: "role.name",
+      selector: (row) => (row.role && row.role.name ? row.role.name : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -38,7 +38,10 @@ const Trabajador = () => {
     },
     {
       name: "Nombre",
-      selector: "person.name",
+      selector: (row) =>
+        row.person && row.person.name && row.person.pat_lastname
+          ? row.person.name + " " + row.person.pat_lastname
+          : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -104,7 +107,7 @@ const Trabajador = () => {
   const handleEditar = (e) => {
     setOpenModal(true);
     setDataSelected(e);
-    setEditar(true)
+    setEditar(true);
   };
   const handleEliminar = (e) => {
     Swal.fire({
@@ -167,7 +170,14 @@ const Trabajador = () => {
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
             fixedHeaderScrollHeight="500px"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            noDataComponent={
+              <div className="spinner">
+                <div className="spinner-border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                <i className="fas fa-inbox table__icono"></i>
+              </div>
+            }
           />
         </div>
       </div>

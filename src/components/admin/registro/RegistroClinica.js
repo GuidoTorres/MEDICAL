@@ -21,7 +21,7 @@ const RegistroClinica = () => {
     fetchGETPOSTPUTDELETE('clinics')
       .then((data) => data.json())
       .then((datos) => {
-        setMetGetClinic(datos);
+        setMetGetClinic(datos.data);
       });
   };
 
@@ -42,7 +42,8 @@ const RegistroClinica = () => {
     },
     {
       name: 'Razón social',
-      selector: 'business_name',
+      selector: (row) =>
+        row.corporation.business_name ? row.corporation.business_name : '',
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -51,7 +52,7 @@ const RegistroClinica = () => {
     },
     {
       name: 'RUC',
-      selector: 'ruc',
+      selector: (row) => (row.corporation.ruc ? row.corporation.ruc : ''),
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -60,7 +61,8 @@ const RegistroClinica = () => {
     },
     {
       name: 'Responsable',
-      selector: 'responsible.name',
+      selector: (row) =>
+        row.corporation.contacts.name ? row.corporation.contact.name : '',
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -69,7 +71,8 @@ const RegistroClinica = () => {
     },
     {
       name: 'Telefono',
-      selector: 'responsible.phone',
+      selector: (row) =>
+        row.corporation.contacts.phone ? row.corporation.contact.phone : '',
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -78,7 +81,8 @@ const RegistroClinica = () => {
     },
     {
       name: 'Correo',
-      selector: 'responsible.email',
+      selector: (row) =>
+        row.corporation.contacts.email ? row.corporation.contact.email : '',
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -87,7 +91,7 @@ const RegistroClinica = () => {
     },
     {
       name: 'Actividad',
-      selector: 'actividad',
+      // selector: 'actividad',
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -214,7 +218,14 @@ const RegistroClinica = () => {
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
             fixedHeaderScrollHeight="500px"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            noDataComponent={
+              <div className="spinner">
+                <div className="spinner-border" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                <i className="fas fa-inbox table__icono"></i>
+              </div>
+            }
           />
         </div>
       </div>

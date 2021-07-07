@@ -2,11 +2,26 @@ import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 
 import { historial } from '../../data/PHistorial';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
 
 const Historial = () => {
   const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
+
+  const [getDateAttention, setGetDateAttention] = useState([]);
+
+  const getAttention = () => {
+    fetchGETPOSTPUTDELETE("attention")
+      .then((data) => data.json())
+      .then((datos) => setGetDateAttention(datos.data));
+  };
+
+  useEffect(() => {
+    getAttention();
+  }, []);
+
+  console.log(getDateAttention);
 
   const columnas = [
     {
@@ -19,8 +34,24 @@ const Historial = () => {
       },
     },
     {
-      name: 'DNI',
-      selector: 'dni',
+      name: 'Tipo de documento',
+      selector: (row) =>
+      row.person && row.person.document_type_id === 3
+        ? "Carné de extranjería"
+        : row.person && row.person.document_type_id === 2
+        ? "Pasaporte"
+        : row.person && row.person.document_type_id === 1
+        ? "DNI"
+        : "",
+      sortable: true,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
+      name: 'Nº documento',
+      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -29,7 +60,7 @@ const Historial = () => {
     },
     {
       name: 'Nombre',
-      selector: 'nombre',
+      selector: (row) => (row.person && row.person.name ? row.person.name : ""),
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -38,7 +69,8 @@ const Historial = () => {
     },
     {
       name: 'Apellido',
-      selector: 'apellido',
+      selector: (row) => (row.person && row.person.pat_lastname ? row.person.pat_lastname : ""),
+
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -47,16 +79,8 @@ const Historial = () => {
     },
     {
       name: 'Tipo prueba',
-      selector: 'tipo',
-      sortable: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
-    },
-    {
-      name: 'Fecha solicitud',
-      selector: 'solicitud',
+      selector: (row) => (row.service && row.service.name ? row.service.name : ""),
+
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -65,7 +89,25 @@ const Historial = () => {
     },
     {
       name: 'Fecha entrega',
-      selector: 'entrega',
+      selector: (row) => (row.date_creation  ? row.date_creation : ""),
+      sortable: true,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
+      name: 'Fecha solicitud',
+      selector: (row) => (row.date_creation  ? row.date_creation : ""),
+      sortable: true,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
+      name: 'Fecha solicitud',
+      selector: (row) => (row.date_creation  ? row.date_creation : ""),
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -143,12 +185,18 @@ const Historial = () => {
 
           <DataTable
             columns={columnas}
-            data={listRegistro}
+            data={getDateAttention}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
             fixedHeaderScrollHeight="500px"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            noDataComponent={
+            <div className="spinner">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <i className="fas fa-inbox table__icono"></i>
+          </div>}
           />
         </div>
       </div>

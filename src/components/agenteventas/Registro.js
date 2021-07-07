@@ -3,6 +3,7 @@ import DataTable from 'react-data-table-component';
 import Swal from 'sweetalert2';
 
 import { registro } from '../../data/ACRegistro';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
 import MRegistrarEmpresa from './MRegistrarEmpresa';
 
@@ -10,6 +11,20 @@ const Registro = () => {
   const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [corporations, setCorporations] = useState([]);
+
+
+  const getCorporations = () => {
+    fetchGETPOSTPUTDELETE('company')
+      .then((info) => info.json())
+      .then((datos) => setCorporations(datos.data));
+  };
+
+  useEffect(() => {
+    getCorporations();
+  }, []);
+
+  console.log(corporations);
 
   const columnas = [
     {
@@ -23,7 +38,7 @@ const Registro = () => {
     },
     {
       name: 'Razón social',
-      selector: 'razon',
+      selector: row => row.corporation.business_name ? row.corporation.business_name : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -32,7 +47,7 @@ const Registro = () => {
     },
     {
       name: 'RUC',
-      selector: 'ruc',
+      selector: row => row.corporation.ruc ? row.corporation.ruc : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -41,7 +56,7 @@ const Registro = () => {
     },
     {
       name: 'Responsable',
-      selector: 'responsable',
+      selector: row => row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].name : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -49,8 +64,8 @@ const Registro = () => {
       },
     },
     {
-      name: 'Teléfono',
-      selector: 'telefono',
+      name: 'Telefono',
+      selector: row => row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].phone : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -59,13 +74,22 @@ const Registro = () => {
     },
     {
       name: 'Correo',
-      selector: 'correo',
+      selector: row => row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].email : "",
       sortable: true,
       style: {
         borderBotton: 'none',
         color: '#555555',
       },
     },
+    // {
+    //   name: 'Actividad',
+    //   selector: 'actividad',
+    //   sortable: true,
+    //   style: {
+    //     borderBotton: 'none',
+    //     color: '#555555',
+    //   },
+    // },
     {
       name: 'Editar',
       button: true,
@@ -91,21 +115,21 @@ const Registro = () => {
   //
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = registro.filter((data) => {
+      const search = corporations.length>0 && corporations.filter((data) => {
         return (
-          data.razon
+          data.corporation.business_name
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda) ||
-          data.ruc.toString().includes(busqueda) ||
-          data.responsable
+          data.corporation.ruc.toString().includes(busqueda) ||
+          data.corporation.contacts[0].name
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda) ||
-          data.telefono.toString().includes(busqueda) ||
-          data.correo
+          data.corporation.contacts[0].phone.toString().includes(busqueda) ||
+          data.corporation.contacts[0].email
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
@@ -157,7 +181,7 @@ const Registro = () => {
             </div>
             <div>
               <label>
-                Agregar clinica{' '}
+                Agregar empresa{' '}
                 <i
                   className="fas fa-plus-circle"
                   onClick={handleAddRegistro}
@@ -168,7 +192,7 @@ const Registro = () => {
 
           <DataTable
             columns={columnas}
-            data={listRegistro}
+            data={corporations}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader

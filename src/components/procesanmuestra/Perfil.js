@@ -29,11 +29,11 @@ const Perfil = () => {
             <div>
               <h5>Mi calificación</h5>
               <div className="calificacion">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half"></i>
+                <i className="fas fa-star"></i>
+                <i className="fas fa-star"></i>
+                <i className="fas fa-star"></i>
+                <i className="fas fa-star"></i>
+                <i className="fas fa-star-half"></i>
               </div>
             </div>
           </div>

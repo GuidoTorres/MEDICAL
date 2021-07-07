@@ -22,6 +22,21 @@ const CargarResultado = () => {
 
   console.log(result);
 
+  const [getDateAttention, setGetDateAttention] = useState([]);
+
+  const getAttention = () => {
+
+    fetchGETPOSTPUTDELETE("attention")
+      .then((data) => data.json())
+      .then((datos) => setGetDateAttention(datos.data));
+  };
+
+  useEffect(() => {
+    getAttention();
+  }, []);
+
+  console.log(getDateAttention);
+
   const columnas = [
     {
       name: 'Item',
@@ -33,8 +48,24 @@ const CargarResultado = () => {
       },
     },
     {
-      name: 'DNI',
-      selector: 'dni',
+      name: 'Tipo de documento',
+      selector: (row) =>
+      row.person && row.person.document_type_id === 3
+        ? "Carné de extranjería"
+        : row.person && row.person.document_type_id === 2
+        ? "Pasaporte"
+        : row.person && row.person.document_type_id === 1
+        ? "DNI"
+        : "",
+      sortable: true,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
+      name: 'Nº documento',
+      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -43,7 +74,7 @@ const CargarResultado = () => {
     },
     {
       name: 'Nombre',
-      selector: 'nombre',
+      selector: (row) => (row.person && row.person.name ? row.person.name : ""),
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -52,7 +83,8 @@ const CargarResultado = () => {
     },
     {
       name: 'Apellido',
-      selector: 'apellido',
+      selector: (row) => (row.person && row.person.pat_lastname ? row.person.pat_lastname : ""),
+
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -61,7 +93,8 @@ const CargarResultado = () => {
     },
     {
       name: 'Tipo prueba',
-      selector: 'tipo',
+      selector: (row) => (row.service && row.service.name ? row.service.name : ""),
+
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -70,7 +103,7 @@ const CargarResultado = () => {
     },
     {
       name: 'Fecha solicitud',
-      selector: 'solicitud',
+      selector: (row) => (row.date_creation  ? row.date_creation : ""),
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -149,12 +182,22 @@ const CargarResultado = () => {
 
           <DataTable
             columns={columnas}
+<<<<<<< HEAD
             // data={listRegistro}
+=======
+            data={getDateAttention}
+>>>>>>> e8b842c98328b8bd7273d4702227be122aeb5b0d
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
             fixedHeaderScrollHeight="500px"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            noDataComponent={
+            <div className="spinner">
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <i className="fas fa-inbox table__icono"></i>
+          </div>}
           />
         </div>
       </div>
