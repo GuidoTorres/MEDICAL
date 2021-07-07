@@ -29,7 +29,7 @@ const RegistroClinica = () => {
     getClinica();
   }, []);
 
-  console.log(metGetClinic);
+  // console.log(metGetClinic);
   const columnas = [
     {
       name: 'Item',
@@ -116,7 +116,7 @@ const RegistroClinica = () => {
       ),
     },
   ];
-  // console.log(metGetClinic);
+  console.log(metGetClinic);
   // console.log(events);
   // useEffect(() => {
   //   const filtrarElemento = () => {
@@ -160,9 +160,10 @@ const RegistroClinica = () => {
     setEditar(true);
   };
   const handleEliminar = (e) => {
+    // console.log(e.corporation.business_name);
     Swal.fire({
       title: '¿Desea eliminar?',
-      text: `${e.business_name}`,
+      text: `${e.corporation.business_name}`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -171,18 +172,20 @@ const RegistroClinica = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire('Eliminado!', 'Se ha eliminado correctamente.', 'success');
-        fetchGETPOSTPUTDELETE(`clinics/${e.id}`, {}, 'DELETE')
-          .then((result) => result.json())
-          .then((data) => {
-            if (data === 'Has been deleted') console.log(data);
-            getClinica();
-          });
+        fetchGETPOSTPUTDELETE(`clinics/${e.id}`, {}, 'DELETE').then((result) =>
+          result.json()
+        );
+        // .then((data) => {
+        //   if (data === 'Has been deleted') console.log(data);
+        //   getClinica();
+        // });
       }
     });
   };
   return (
     <div className="container">
       <div className="row">
+        <h3>Registro - Clinica</h3>
         <div className="table-responsive">
           <div className="adminregistro__option">
             <div>
@@ -207,7 +210,7 @@ const RegistroClinica = () => {
 
           <DataTable
             columns={columnas}
-            data={metGetClinic}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
