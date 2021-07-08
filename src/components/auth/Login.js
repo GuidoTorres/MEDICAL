@@ -55,8 +55,9 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
+
     dispatch(startLogin(username, password));
-    history.push("admin/registro")
+    // history.push("admin/registro")
     // history.replace(`${rol}`);
     // if (validationFormulario()) {
     // dispatch(authLogin(email, password));
