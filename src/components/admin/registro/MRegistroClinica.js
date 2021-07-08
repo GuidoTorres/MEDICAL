@@ -101,7 +101,7 @@ const MRegistroClinica = ({
         ? data.business_name
         : dataSelected.corporation.commercial_name
     );
-    formData.set("logo", "logo");
+    formData.set("logo", avatar ? avatar.file : "");
     formData.set(
       "address",
       data.address ? data.address : dataSelected.corporation.address.address

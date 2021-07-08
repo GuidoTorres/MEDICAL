@@ -5,7 +5,6 @@ import { paginacionOpciones } from "../../helpers/tablaOpciones";
 import MSubirLaboratorio from "./MSubirLaboratorio";
 import {
   fetchGETPOSTPUTDELETE,
-  fetchGETPOSTPUTDELETEJSON,
 } from "../../helpers/fetch";
 
 const SubirLaboratorio = () => {
@@ -16,16 +15,16 @@ const SubirLaboratorio = () => {
   const [dataSelected, setDataSelected] = useState(null);
 
   const getAtencion = () => {
-    fetchGETPOSTPUTDELETE("attention")
+    fetchGETPOSTPUTDELETE("result")
       .then((data) => data.json())
       .then((datos) => setAttention(datos.data));
   };
+
 
   useEffect(() => {
     getAtencion();
   }, []);
 
-  console.log(attention);
 
   const columnas = [
     {
