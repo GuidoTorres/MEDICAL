@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
+import {  fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 
 import { customStyles } from "../../helpers/tablaOpciones";
 
 const MSubirLaboratorio = ({ openModal, setOpenModal, dataSelected }) => {
+  const [result, setResult] = useState({
+
+    id: dataSelected.id
+  })
   const closeModal = () => {
     setOpenModal(false);
+  };
+  console.log(result);
+
+  const postResults = () => {
+
+    fetchGETPOSTPUTDELETEJSON(`result`, result, "POST")
+      .then((data) => console.log(data))
   };
 
   console.log(dataSelected);
@@ -64,17 +76,18 @@ const MSubirLaboratorio = ({ openModal, setOpenModal, dataSelected }) => {
                 <select
                   className="form-select"
                   aria-label="Default select example"
+                  onChange={e => setResult({...result, result: e.target.value})}
                 >
                   <option>Seleccione</option>
-                  <option value="1">Detectado</option>
-                  <option value="2">No Detectado</option>
+                  <option value="0">Detectado</option>
+                  <option value="1">No Detectado</option>
                 </select>
               </div>
             </div>
             <div className="list-botones">
               <button className="botones">Cancelar</button>
               <button className="botones">Visualizar</button>
-              <button className="botones">Enviar</button>
+              <button className="botones" onClick={postResults}>Enviar</button>
             </div>
           </div>
         </div>

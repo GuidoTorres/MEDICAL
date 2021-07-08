@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
-import Swal from 'sweetalert2';
+import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
 
-import { historial } from '../../data/PHistorial';
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
-import MReserva from './MReserva';
+import { historial } from "../../data/PHistorial";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import { paginacionOpciones } from "../../helpers/tablaOpciones";
+import MReserva from "./MReserva";
 
 const Reservas = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
 
   const [getDateAttention, setGetDateAttention] = useState([]);
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("attention")
+    fetchGETPOSTPUTDELETE("result")
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos.data));
   };
@@ -28,80 +28,82 @@ const Reservas = () => {
 
   const columnas = [
     {
-      name: 'Item',
-      selector: 'id',
+      name: "Item",
+      selector: "id",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Tipo de documento',
+      name: "Tipo de documento",
       selector: (row) =>
-      row.person && row.person.document_type_id === 3
-        ? "Carné de extranjería"
-        : row.person && row.person.document_type_id === 2
-        ? "Pasaporte"
-        : row.person && row.person.document_type_id === 1
-        ? "DNI"
-        : "",
+        row.person && row.person.document_type_id === 3
+          ? "Carné de extranjería"
+          : row.person && row.person.document_type_id === 2
+          ? "Pasaporte"
+          : row.person && row.person.document_type_id === 1
+          ? "DNI"
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Nº documento',
+      name: "Nº documento",
       selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Nombre',
+      name: "Nombre",
       selector: (row) => (row.person && row.person.name ? row.person.name : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Apellido',
-      selector: (row) => (row.person && row.person.pat_lastname ? row.person.pat_lastname : ""),
+      name: "Apellido",
+      selector: (row) =>
+        row.person && row.person.pat_lastname ? row.person.pat_lastname : "",
 
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Tipo prueba',
-      selector: (row) => (row.service && row.service.name ? row.service.name : ""),
+      name: "Tipo prueba",
+      selector: (row) =>
+        row.service && row.service.name ? row.service.name : "",
 
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Fecha solicitud',
-      selector: (row) => (row.date_creation  ? row.date_creation : ""),
+      name: "Fecha solicitud",
+      selector: (row) => (row.date_creation ? row.date_creation : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
 
     {
-      name: 'Código Barras',
+      name: "Código Barras",
       button: true,
       cell: (e) => (
         <button onClick={() => handleBarCode(e)} className="table__tablebutton">
@@ -110,7 +112,7 @@ const Reservas = () => {
       ),
     },
     {
-      name: 'Atender',
+      name: "Atender",
       button: true,
       cell: (e) => (
         <button
@@ -160,16 +162,26 @@ const Reservas = () => {
   };
   const handleDetalles = (e) => {
     Swal.fire({
-      title: '¿Atender paciente?',
-      text: `${e.name}`,
-      icon: 'warning',
+      title: "¿Atender paciente?",
+      text: `${e.person.name + " " + e.person.pat_lastname}`,
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Atender',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Atender",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire('Atendido!', 'Se ha atendido al paciente.', 'success');
+        fetchGETPOSTPUTDELETE(`attention/attend/${e.id}`).then((data) => {
+          if (data.status === 200) {
+            Swal.fire(
+              "Éxito!",
+              "Se genero la atención correctamente.",
+              "success"
+            );
+
+            getAttention();
+          }
+        });
       }
     });
   };
@@ -200,15 +212,12 @@ const Reservas = () => {
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
             fixedHeaderScrollHeight="500px"
-            noDataComponent={             
-            
-            
-            <div className="spinner">
-              <div className="spinner-border" role="status">
-                <span className="visually-hidden">Loading...</span>
+            noDataComponent={
+              <div className="spinner">
+                <i className="fas fa-inbox table__icono"></i>
+                <p style={{ color: "grey" }}>No hay datos</p>
               </div>
-              <i className="fas fa-inbox table__icono"></i>
-            </div>}
+            }
           />
         </div>
       </div>

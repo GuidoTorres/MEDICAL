@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import DataTable from 'react-data-table-component';
-import Swal from 'sweetalert2';
+import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
 
-import { paginacionOpciones } from '../../../helpers/tablaOpciones';
-import { fetchGETPOSTPUTDELETE } from '../../../helpers/fetch';
+import { paginacionOpciones } from "../../../helpers/tablaOpciones";
+import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
 
-import MRegistroClinica from './MRegistroClinica';
+import MRegistroClinica from "./MRegistroClinica";
 
 const RegistroClinica = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [editar, setEditar] = useState(false);
   const [dataSelected, setDataSelected] = useState();
@@ -18,7 +18,7 @@ const RegistroClinica = () => {
   const [metGetClinic, setMetGetClinic] = useState([]);
 
   const getClinica = () => {
-    fetchGETPOSTPUTDELETE('clinics')
+    fetchGETPOSTPUTDELETE("clinics")
       .then((data) => data.json())
       .then((datos) => {
         setMetGetClinic(datos.data);
@@ -32,70 +32,74 @@ const RegistroClinica = () => {
   // console.log(metGetClinic);
   const columnas = [
     {
-      name: 'Item',
-      selector: 'id',
+      name: "Item",
+      selector: "id",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Razón social',
-      selector: row => row.corporation.business_name ? row.corporation.business_name : "",
+      name: "Razón social",
+      selector: (row) =>
+        row.corporation.business_name ? row.corporation.business_name : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'RUC',
-      selector: row => row.corporation.ruc ? row.corporation.ruc : "",
+      name: "RUC",
+      selector: (row) => (row.corporation.ruc ? row.corporation.ruc : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Responsable',
-      selector: row => row.corporation.contacts.name ? row.corporation.contact.name : "",
+      name: "Responsable",
+      selector: (row) =>
+        row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].name : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Telefono',
-      selector: row => row.corporation.contacts.phone ? row.corporation.contact.phone : "",
+      name: "Telefono",
+      selector: (row) =>
+      row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].phone : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Correo',
-      selector: row => row.corporation.contacts.email ? row.corporation.contact.email : "",
+      name: "Correo",
+      selector: (row) =>
+      row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].email : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Actividad',
-      // selector: 'actividad',
+      name: "Actividad",
+      selector: row=> row.clinic_type_id === 1? "Toman muestra" : "Procesan muestra ",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Editar',
+      name: "Editar",
       button: true,
       cell: (e) => (
         <button onClick={() => handleEditar(e)} className="table__tablebutton">
@@ -104,7 +108,7 @@ const RegistroClinica = () => {
       ),
     },
     {
-      name: 'Eliminar',
+      name: "Eliminar",
       button: true,
       cell: (e) => (
         <button
@@ -162,17 +166,17 @@ const RegistroClinica = () => {
   const handleEliminar = (e) => {
     // console.log(e.corporation.business_name);
     Swal.fire({
-      title: '¿Desea eliminar?',
+      title: "¿Desea eliminar?",
       text: `${e.corporation.business_name}`,
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Eliminar',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire('Eliminado!', 'Se ha eliminado correctamente.', 'success');
-        fetchGETPOSTPUTDELETE(`clinics/${e.id}`, {}, 'DELETE').then((result) =>
+        Swal.fire("Eliminado!", "Se ha eliminado correctamente.", "success");
+        fetchGETPOSTPUTDELETE(`clinics/${e.id}`, {}, "DELETE").then((result) =>
           result.json()
         );
         // .then((data) => {
@@ -185,7 +189,7 @@ const RegistroClinica = () => {
   return (
     <div className="container">
       <div className="row">
-        <h3>Registro - Clinica</h3>
+        {/* <h3>Registro - Clinica</h3> */}
         <div className="table-responsive">
           <div className="adminregistro__option">
             <div>
@@ -199,28 +203,26 @@ const RegistroClinica = () => {
             </div>
             <div>
               <label>
-                Agregar clinica{' '}
+                Agregar clinica{" "}
                 <i
                   className="fas fa-plus-circle"
                   onClick={handleAddRegistro}
-                ></i>{' '}
+                ></i>{" "}
               </label>
             </div>
           </div>
 
           <DataTable
             columns={columnas}
-            data={listRegistro}
+            data={metGetClinic}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
             fixedHeaderScrollHeight="500px"
             noDataComponent={
               <div className="spinner">
-                <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
                 <i className="fas fa-inbox table__icono"></i>
+                <p style={{ color: "grey" }}>No hay datos</p>
               </div>
             }
           />

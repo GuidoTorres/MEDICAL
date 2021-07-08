@@ -24,11 +24,13 @@ const Atencion = () => {
   };
 
   const getHora = () => {
-    var d = new Date()
-    var h = d.getHours()
-    var m = d.getMinutes()
+    var d = new Date();
+    var h = d.getHours();
+    var m = d.getMinutes();
     var s = d.getSeconds();
-    return `${h >9 ? h : '0' + h}${":"}${m >9 ? m : '0' + m}${":"}${s >9 ? s : '0' + s}`;
+    return `${h > 9 ? h : "0" + h}${":"}${m > 9 ? m : "0" + m}${":"}${
+      s > 9 ? s : "0" + s
+    }`;
   };
 
   useEffect(() => {
@@ -151,7 +153,6 @@ const Atencion = () => {
     setOpenModalBar(true);
   };
 
-
   const generarAtencion = (e) => {
     // setGenerateAttention({
     //   date_creation: e.date_creation ? e.date_creation : "",
@@ -171,8 +172,8 @@ const Atencion = () => {
       confirmButtonText: "Atender",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetchGETPOSTPUTDELETEJSON(`attention/attend/${e.id}`).then(
-          (data) => console.log(data)
+        fetchGETPOSTPUTDELETEJSON(`attention/attend/${e.id}`).then((data) =>
+          console.log(data)
         );
         // .then((datos) => setAttention(datos.data));
         // Swal.fire("Éxito!", "Se genero la atención correctamente.", "success");
@@ -208,11 +209,9 @@ const Atencion = () => {
             fixedHeaderScrollHeight="500px"
             noDataComponent={
               <div className="spinner">
-              <div className="spinner-border" role="status">
-                <span className="visually-hidden">Loading...</span>
+                <i className="fas fa-inbox table__icono"></i>
+                <p style={{ color: "grey" }}>No hay datos</p>
               </div>
-              <i className="fas fa-inbox table__icono"></i>
-            </div>
             }
           />
         </div>

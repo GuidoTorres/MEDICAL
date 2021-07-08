@@ -15,12 +15,25 @@ const MRegistroEmpresa = ({
 }) => {
   const [avatar, setAvatar] = useState(null);
   const [empresa, setEmpresa] = useState({});
+  const [types, setTypes] = useState([]);
+
   // const [empresaEditar, setEditarEmpresa] = useState(null)
 
   const closeModal = () => {
     setOpenModal(false);
     setEditar(false);
   };
+
+  const getCorporationTypes = () => {
+    fetchGETPOSTPUTDELETE("corporation_types")
+      .then((data) => data.json())
+      .then((datos) => {
+        setTypes(datos.types);
+      });
+  };
+  useEffect(() => {
+    getCorporationTypes();
+  }, []);
 
   const postCorporation = () => {
     const formData = new FormData();
@@ -34,7 +47,7 @@ const MRegistroEmpresa = ({
       "commercial_name",
       empresa.commercial_name ? empresa.commercial_name : ""
     );
-    formData.set("logo", "AAAAAAA");
+    formData.set("logo", avatar ? avatar.file : "logo");
 
     formData.set(
       "address",
@@ -107,7 +120,7 @@ const MRegistroEmpresa = ({
     formData.set("ruc", empresa.ruc || "");
     formData.set("business_name", empresa.business_name || "");
     formData.set("commercial_name", empresa.commercial_name || "");
-    formData.set("logo", "AAAAAAA");
+    formData.set("logo", avatar ? avatar.file : "");
 
     formData.set("address", empresa.address.address || "");
     formData.set("reference", empresa.address.reference || "");
@@ -329,12 +342,12 @@ const MRegistroEmpresa = ({
                   }
                 >
                   <option value="Agroindustria">Seleccione</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                  <option value="4">One</option>
-                  <option value="5">Two</option>
-                  <option value="6">Three</option>
+                  {types.length > 0 &&
+                    types.map((rubro, i) => (
+                      <option key={i} value={i + 1}>
+                        {rubro.name}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>

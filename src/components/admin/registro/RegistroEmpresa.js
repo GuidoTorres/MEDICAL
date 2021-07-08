@@ -81,15 +81,15 @@ const RegistroEmpresa = () => {
         color: '#555555',
       },
     },
-    {
-      name: 'Actividad',
-      // selector: 'corporation_type_id',
-      sortable: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
-    },
+    // {
+    //   name: 'Actividad',
+    //   // selector: 'corporation_type_id',
+    //   sortable: true,
+    //   style: {
+    //     borderBotton: 'none',
+    //     color: '#555555',
+    //   },
+    // },
     {
       name: 'Editar',
       button: true,

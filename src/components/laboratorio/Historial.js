@@ -13,7 +13,7 @@ const Historial = () => {
   const [results, setResults] = useState({});
 
   const getResults = () => {
-    fetchGETPOSTPUTDELETE("attention")
+    fetchGETPOSTPUTDELETE("result_historial")
       .then((data) => data.json())
       .then((datos) => setResults(datos.data));
   };
@@ -54,7 +54,7 @@ const Historial = () => {
     },
     {
       name: "Fecha",
-      selector: (row) => (row.date_attention ? row.date_attention : ""),
+      selector: (row) => (row.result.date ? row.result.date : ""),
       sortable: true,
       style: {
         borderBotton: "none",

@@ -4,18 +4,12 @@ import DataTable from "react-data-table-component";
 import CodigoBarrasHistorial from "./Modales/CodigoBarrasHistorial";
 import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 
-
 const Historial = () => {
-
   const [busqueda, setBusqueda] = useState("");
   const [addRegistro, setAddRegistro] = useState(false);
   const [codigoHistorial, setCodigoHistorial] = useState(false);
   const [attention, setAttention] = useState({});
   const [dataBarCode, setDataBarCode] = useState({});
-
-
-
-
 
   // const mostrarDeclaracionJurada = () => {
   //   const declaracion = document.querySelector(".containerPDF").style;
@@ -252,11 +246,9 @@ const Historial = () => {
               fixedHeaderScrollHeight="450px"
               noDataComponent={
                 <div className="spinner">
-              <div className="spinner-border" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
-              <i className="fas fa-inbox table__icono"></i>
-            </div>
+                  <i className="fas fa-inbox table__icono"></i>
+                  <p style={{ color: "grey" }}>No hay datos</p>
+                </div>
               }
             />
           </div>

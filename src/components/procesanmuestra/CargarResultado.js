@@ -1,17 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
+import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
 
 // import { historial } from '../../data/PHistorial';
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import { paginacionOpciones } from "../../helpers/tablaOpciones";
 
 const CargarResultado = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   // const [listResult, setListResult] = useState([]);
   const [result, setResult] = useState([]);
 
   const getResult = () => {
-    fetchGETPOSTPUTDELETE('result')
+    fetchGETPOSTPUTDELETE("result")
+      .then((info) => info.json())
+      .then((datos) => setResult(datos.data));
+  };
+
+  const postResult = () => {
+    fetchGETPOSTPUTDELETE("result")
       .then((info) => info.json())
       .then((datos) => setResult(datos.data));
   };
@@ -25,7 +31,7 @@ const CargarResultado = () => {
   const [getDateAttention, setGetDateAttention] = useState([]);
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE('attention')
+    fetchGETPOSTPUTDELETE("attention")
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos.data));
   };
@@ -38,81 +44,81 @@ const CargarResultado = () => {
 
   const columnas = [
     {
-      name: 'Item',
-      selector: 'id',
+      name: "Item",
+      selector: "id",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Tipo de documento',
+      name: "Tipo de documento",
       selector: (row) =>
         row.person && row.person.document_type_id === 3
-          ? 'Carné de extranjería'
+          ? "Carné de extranjería"
           : row.person && row.person.document_type_id === 2
-          ? 'Pasaporte'
+          ? "Pasaporte"
           : row.person && row.person.document_type_id === 1
-          ? 'DNI'
-          : '',
+          ? "DNI"
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Nº documento',
-      selector: (row) => (row.person && row.person.dni ? row.person.dni : ''),
+      name: "Nº documento",
+      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Nombre',
-      selector: (row) => (row.person && row.person.name ? row.person.name : ''),
+      name: "Nombre",
+      selector: (row) => (row.person && row.person.name ? row.person.name : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Apellido',
+      name: "Apellido",
       selector: (row) =>
-        row.person && row.person.pat_lastname ? row.person.pat_lastname : '',
+        row.person && row.person.pat_lastname ? row.person.pat_lastname : "",
 
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Tipo prueba',
+      name: "Tipo prueba",
       selector: (row) =>
-        row.service && row.service.name ? row.service.name : '',
+        row.service && row.service.name ? row.service.name : "",
 
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Fecha solicitud',
-      selector: (row) => (row.date_creation ? row.date_creation : ''),
+      name: "Fecha solicitud",
+      selector: (row) => (row.date_creation ? row.date_creation : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Cargar Resultados',
+      name: "Cargar Resultados",
       button: true,
       cell: (e) => (
         <button
@@ -162,7 +168,7 @@ const CargarResultado = () => {
     setBusqueda(([e.target.name] = e.target.value));
   };
   const handleDetalles = () => {
-    console.log('detalles');
+    console.log("detalles");
   };
   //
   return (
@@ -190,10 +196,8 @@ const CargarResultado = () => {
             fixedHeaderScrollHeight="500px"
             noDataComponent={
               <div className="spinner">
-                <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
                 <i className="fas fa-inbox table__icono"></i>
+                <p style={{ color: "grey" }}>No hay datos</p>
               </div>
             }
           />

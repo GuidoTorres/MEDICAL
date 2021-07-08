@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import DataTable from "react-data-table-component";
 import { fempresa } from "../../data/FEmpresa";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 
 import { paginacionOpciones } from "../../helpers/tablaOpciones";
 import MEmpresa from "./MEmpresa";
@@ -11,6 +12,19 @@ const Empresa = () => {
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [datos, setDatos] = useState({});
+  const [corporations, setCorporations] = useState([]);
+
+  const getCorporations = () => {
+    fetchGETPOSTPUTDELETE('company')
+      .then((info) => info.json())
+      .then((info) => setCorporations(info.data));
+  };
+
+  useEffect(() => {
+    getCorporations();
+  }, []);
+
+  console.log(corporations);
 
   const columnas = [
     {
@@ -24,7 +38,7 @@ const Empresa = () => {
     },
     {
       name: "Razón social",
-      selector: "razon",
+      selector: row=> row.corporation.business_name ? row.corporation.business_name : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -33,7 +47,7 @@ const Empresa = () => {
     },
     {
       name: "RUC",
-      selector: "ruc",
+      selector: row=> row.corporation.ruc ? row.corporation.ruc : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -42,7 +56,7 @@ const Empresa = () => {
     },
     {
       name: "Responsable",
-      selector: "responsable",
+      selector: row=> row.corporation.contacts[0].name ? row.corporation.contacts[0].name : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -51,7 +65,7 @@ const Empresa = () => {
     },
     {
       name: "Telefono",
-      selector: "telefono",
+      selector: row=> row.corporation.contacts[0].phone ? row.corporation.contacts[0].phone : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -60,7 +74,7 @@ const Empresa = () => {
     },
     {
       name: "Correo",
-      selector: "correo",
+      selector: row=> row.corporation.contacts[0].email ? row.corporation.contacts[0].email : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -136,7 +150,7 @@ const Empresa = () => {
 
           <DataTable
             columns={columnas}
-            data={listRegistro}
+            data={corporations}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader

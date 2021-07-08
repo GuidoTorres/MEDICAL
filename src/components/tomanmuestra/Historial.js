@@ -2,16 +2,31 @@ import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 
 import { historial } from '../../data/PHistorial';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
 
 const Historial = () => {
   const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
 
+  const [dataHistorial, setDataHistorial] = useState([]);
+
+  const getHistorial = () => {
+       fetchGETPOSTPUTDELETE("result_historial")
+      .then((data) => data.json())
+      .then((datos) => setDataHistorial(datos.data));
+  };
+
+  useEffect(() => {
+    getHistorial();
+  }, []);
+
+  console.log(dataHistorial);
+
   const columnas = [
     {
       name: 'Item',
-      selector: 'id',
+      selector: row => row.id ? row.id : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -20,7 +35,7 @@ const Historial = () => {
     },
     {
       name: 'DNI',
-      selector: 'dni',
+      selector: row=> row.person && row.person.dni ? row.person.dni :"",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -29,7 +44,7 @@ const Historial = () => {
     },
     {
       name: 'Nombre',
-      selector: 'nombre',
+      selector: row=> row.person && row.person.name ? row.person.name :"",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -38,7 +53,7 @@ const Historial = () => {
     },
     {
       name: 'Apellido',
-      selector: 'apellido',
+      selector: row=> row.person && row.person.pat_lastname ? row.person.pat_lastname :"",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -47,7 +62,7 @@ const Historial = () => {
     },
     {
       name: 'Tipo prueba',
-      selector: 'tipo',
+      selector: row=> row.service && row.service.name ? row.service.name :"",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -56,7 +71,7 @@ const Historial = () => {
     },
     {
       name: 'Fecha solicitud',
-      selector: 'solicitud',
+      selector: row => row.date_creation ? row.date_creation : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -65,7 +80,7 @@ const Historial = () => {
     },
     {
       name: 'Fecha entrega',
-      selector: 'entrega',
+      selector: row=> row.result && row.result.date ? row.result.date :"",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -129,7 +144,7 @@ const Historial = () => {
 
           <DataTable
             columns={columnas}
-            data={listRegistro}
+            data={dataHistorial}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader

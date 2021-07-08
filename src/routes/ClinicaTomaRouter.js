@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Navbar from '../components/ui/Navbar';
 import { Route, Switch } from 'react-router';
 import Reservas from '../components/tomanmuestra/Reservas';
 import Historial from '../components/tomanmuestra/Historial';
 import Perfil from '../components/tomanmuestra/Perfil';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 
 const ClinicaTomaRouter = () => {
-  let history = useHistory();
+  // let history = useHistory();
 
-  useEffect(() => {
-    history.push('/clinica/toma/reservas');
-  }, [history]);
+  // useEffect(() => {
+  //   history.push('/clinica/toma/reservas');
+  // }, [history]);
 
   return (
     <div>
