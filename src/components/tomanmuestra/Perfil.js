@@ -1,6 +1,23 @@
-import React from 'react';
-import logo from '../../assets/icons/Isotipo.png';
+import React, { useEffect, useState } from "react";
+import logo from "../../assets/icons/Isotipo.png";
+import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 const Perfil = () => {
+  const [profile, setProfile] = useState({})
+
+  const authMe = () => {
+    fetchGETPOSTPUTDELETEJSON("auth/me", {}, "POST")
+      .then((data) => data.json())
+      .then((datos) => {
+        setProfile(datos);
+      });
+  };
+
+  useEffect(() => {
+    authMe();
+  }, []);
+
+  console.log(profile);
+
   return (
     <div className="container">
       <div className="row">
@@ -8,23 +25,23 @@ const Perfil = () => {
           <div className="barra procesa__perfil">
             <div>
               <label>Razón social: </label>
-              <input type="text" disabled placeholder="Jorje" />
+              <input type="text" disabled placeholder={profile.business_name} />
             </div>
             <div>
               <label>RUC: </label>
-              <input type="text" disabled placeholder="987654321" />
+              <input type="text" disabled placeholder={profile.ruc} />
             </div>
             <div>
               <label>Dirección: </label>
-              <input type="text" disabled placeholder="Mz A lt 15 Callao" />
+              <input type="text" disabled placeholder={profile.direction} />
             </div>
-            <div>
+            {/* <div>
               <label>Ubicación: </label>
               <input type="text" disabled placeholder="Callao" />
-            </div>
+            </div> */}
             <div>
               <label>Referencia: </label>
-              <input type="text" disabled placeholder="La perla" />
+              <input type="text" disabled placeholder={profile.reference} />
             </div>
             <div>
               <h5>Mi calificación</h5>
