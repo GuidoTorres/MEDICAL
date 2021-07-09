@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import jsPDF from "jspdf";
-import image from "../../assets/pdf Imagen/sintomas.png";
-import consentimiento from "../../assets/pdf Imagen/consentimiento.png";
-import ficha1 from "../../assets/pdf Imagen/FichaCovid1.png";
-import ficha2 from "../../assets/pdf Imagen/FichaCovid2.png";
+// import jsPDF from "jspdf";
+// import image from "../../assets/pdf Imagen/sintomas.png";
+// import consentimiento from "../../assets/pdf Imagen/consentimiento.png";
+// import ficha1 from "../../assets/pdf Imagen/FichaCovid1.png";
+// import ficha2 from "../../assets/pdf Imagen/FichaCovid2.png";
 import DeclaracionJurada from "./FormatosPDF/DeclaracionJurada";
 import ConsentimientoInformado from "./FormatosPDF/ConsentimientoInformado";
 import FichaCovid19 from "./FormatosPDF/FichaCovid19";
+import { useLocation } from "react-router-dom";
 
 const GenerarAtencion = () => {
+  const location = useLocation();
   const [data, setData] = useState({
     nombre: "Hector Torres Durand",
     dni: "72798529",
@@ -16,6 +18,8 @@ const GenerarAtencion = () => {
     tecnica: "Tecnica nr 1000",
     edad: 100,
   });
+
+  console.log(location);
 
   const [condicion, setCondicion] = useState({});
 

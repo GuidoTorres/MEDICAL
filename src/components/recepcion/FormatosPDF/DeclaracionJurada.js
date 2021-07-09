@@ -8,10 +8,11 @@ const DeclaracionJurada = ({
 }) => {
   return (
     <>
-      <div className="sintomas">
-        <label htmlFor="">Sintomas</label>
-        <div>
-          <label htmlFor="">Sin sintomas</label>
+      <div className="sintomas mx-5 mb-2" style={{width: '40%',}}>
+        <label htmlFor=""><strong>Síntomas</strong></label>
+        
+        <div className="mt-2 ">
+          <label htmlFor="">Sin síntomas</label>
           <div className="form-check">
             <input
               className="sintoma form-check-input"
@@ -617,9 +618,9 @@ const DeclaracionJurada = ({
       </div>
 
       <div className="condicionContainer">
-        <label htmlFor="">Condición de riesgo</label>
+      <label htmlFor=""><strong>Condición de riesgo</strong></label>
 
-        <div>
+        <div className="mt-2">
           <label htmlFor="">Ninguna condición de riesgo</label>
           <div className="form-check">
             <input

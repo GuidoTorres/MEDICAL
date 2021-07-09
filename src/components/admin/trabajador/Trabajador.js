@@ -112,8 +112,8 @@ const Trabajador = () => {
   const handleEliminar = (e) => {
     Swal.fire({
       title: "¿Desea eliminar?",
-      text: `${e.role.name}`,
-      icon: "warning",
+      text: `${e.person.name}`,
+      icon: "info",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
@@ -123,10 +123,27 @@ const Trabajador = () => {
         Swal.fire("Eliminado!", "Se ha eliminado correctamente.", "success");
         fetchGETPOSTPUTDELETE(`employees/${e.id}`, {}, "DELETE").then(
           (result) => {
-            console.log(result);
-            if (result.status === 204) {
+            console.log(result)
+            if (result.status === 201) {
+              Swal.fire(
+                "Eliminado!",
+                "Se ha eliminado correctamente.",
+                "success"
+              ).then((resp) => {
+                if (resp.isConfirmed) {
+                  getEmployee();
+                }
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "!Ups¡",
+                text: "Algo salió mal.",
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Cerrar",
+              });
             }
-            getEmployee();
           }
         );
       }
@@ -172,10 +189,8 @@ const Trabajador = () => {
             fixedHeaderScrollHeight="500px"
             noDataComponent={
               <div className="spinner">
-                <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
                 <i className="fas fa-inbox table__icono"></i>
+                <p style={{ color: "lightgrey" }}>No hay datos</p>
               </div>
             }
           />

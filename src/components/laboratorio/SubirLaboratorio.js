@@ -47,7 +47,7 @@ const SubirLaboratorio = () => {
     },
     {
       name: "Nro de documento",
-      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
+      selector: (row) => (row.dni? row.person.dni : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -149,9 +149,12 @@ const SubirLaboratorio = () => {
                 <label>Sub-Categoría</label>
                 <select class="form-select" aria-label="Default select example">
                   <option>Seleccione</option>
-                  <option value="1">Antigeno</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option value="1">Antígeno</option>
+                  <option value="2">Electroquimioluminiscencia</option>
+                  <option value="3">Inmunocromatografia</option>
+                  <option value="3">RT-PCR</option>
+
+
                 </select>
               </div>
             </div>

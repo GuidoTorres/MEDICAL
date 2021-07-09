@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
+import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
 
-import { historial } from '../../data/PHistorial';
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import { historial } from "../../data/PHistorial";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import { paginacionOpciones } from "../../helpers/tablaOpciones";
 
 const Historial = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
 
   const [dataHistorial, setDataHistorial] = useState([]);
 
+  // usar settlements para mostar historial, andre corregir historial atenciones
+
   const getHistorial = () => {
-       fetchGETPOSTPUTDELETE("result_historial")
+    fetchGETPOSTPUTDELETE("attention_historial")
       .then((data) => data.json())
       .then((datos) => setDataHistorial(datos.data));
   };
@@ -25,66 +27,68 @@ const Historial = () => {
 
   const columnas = [
     {
-      name: 'Item',
-      selector: row => row.id ? row.id : "",
+      name: "Item",
+      selector: (row) => (row.id ? row.id : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'DNI',
-      selector: row=> row.person && row.person.dni ? row.person.dni :"",
+      name: "DNI",
+      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Nombre',
-      selector: row=> row.person && row.person.name ? row.person.name :"",
+      name: "Nombre",
+      selector: (row) => (row.person && row.person.name ? row.person.name : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Apellido',
-      selector: row=> row.person && row.person.pat_lastname ? row.person.pat_lastname :"",
+      name: "Apellido",
+      selector: (row) =>
+        row.person && row.person.pat_lastname ? row.person.pat_lastname : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Tipo prueba',
-      selector: row=> row.service && row.service.name ? row.service.name :"",
+      name: "Tipo prueba",
+      selector: (row) =>
+        row.service && row.service.name ? row.service.name : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Fecha solicitud',
-      selector: row => row.date_creation ? row.date_creation : "",
+      name: "Fecha solicitud",
+      selector: (row) => (row.date_creation ? row.date_creation : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Fecha entrega',
-      selector: row=> row.result && row.result.date ? row.result.date :"",
+      name: "Fecha entrega",
+      selector: (row) => (row.result && row.result.date ? row.result.date : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
   ];
@@ -95,23 +99,23 @@ const Historial = () => {
         return (
           data.dni.toString().includes(busqueda) ||
           data.nombre
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.apellido
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.tipo
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.solicitud
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda)
         );
@@ -150,12 +154,11 @@ const Historial = () => {
             fixedHeader
             fixedHeaderScrollHeight="500px"
             noDataComponent={
-            <div className="spinner">
-            <div className="spinner-border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-            <i className="fas fa-inbox table__icono"></i>
-          </div>}
+              <div className="spinner">
+                <i className="fas fa-inbox table__icono"></i>
+                <p style={{ color: "lightgrey" }}>No hay datos</p>
+              </div>
+            }
           />
         </div>
       </div>

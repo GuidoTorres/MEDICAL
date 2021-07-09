@@ -85,7 +85,7 @@ const MSubirLaboratorio = ({ openModal, setOpenModal, dataSelected }) => {
               </div>
             </div>
             <div className="list-botones">
-              <button className="botones">Cancelar</button>
+              <button className="botones" onClick={closeModal}>Cancelar</button>
               <button className="botones">Visualizar</button>
               <button className="botones" onClick={postResults}>Enviar</button>
             </div>

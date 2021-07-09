@@ -194,6 +194,12 @@ input[type='checkbox'] {
   max-width: 25%;
 }
 
+// TODO MODAL ADMIN EDITAR SERVICIO
+.modal__EditarServicio {
+  max-height: 38%;
+  max-width: 27%;
+}
+
 // TODO MODAL ADMIN TRABAJADOR
 .modal__trabajador {
   max-height: 55%;
@@ -204,6 +210,11 @@ input[type='checkbox'] {
 .modal__barcode {
   max-height: 30%;
   max-width: 30%;
+}
+
+.modal__tomanBarcode {
+  max-height: 40%;
+  max-width: 20%;
 }
 
 // TODO MODAL ORGANIZADOR PACIENTE
@@ -274,7 +285,7 @@ input[type='checkbox'] {
 
 // TODO MODAL LABORATORIO SUBIRLABORATORIO
 .mlaboratorio_subir {
-  max-height: 38%;
+  max-height: 42%;
   max-width: 40%;
 }
 
@@ -303,7 +314,7 @@ input[type='checkbox'] {
 
 // TODOS MODAL HISTORIAL PRECIO
 .modal__hprecio {
-  max-height: 25%;
+  max-height: 28%;
   max-width: 30%;
 }
 

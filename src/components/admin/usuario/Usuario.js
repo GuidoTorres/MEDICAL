@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import DataTable from 'react-data-table-component';
-import Swal from 'sweetalert2';
-import { usuario } from '../../../data/ACUsuario';
-import { fetchGETPOSTPUTDELETE } from '../../../helpers/fetch';
-import { paginacionOpciones } from '../../../helpers/tablaOpciones';
-import MUsuario from './MUsuario';
+import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
+import { usuario } from "../../../data/ACUsuario";
+import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
+import { paginacionOpciones } from "../../../helpers/tablaOpciones";
+import MUsuario from "./MUsuario";
 
 const Usuario = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [getUsuario, setGetUsuario] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [dataSelected, setDataSelected] = useState({});
 
   // //TODO LISTAR
   const resp = () => {
-    fetchGETPOSTPUTDELETE('users')
+    fetchGETPOSTPUTDELETE("users")
       .then((data) => data.json())
       .then((datos) => setGetUsuario(datos));
   };
@@ -24,83 +25,84 @@ const Usuario = () => {
     resp();
   }, []);
 
+  console.log(getUsuario);
+
   // console.log(getUsuario);
   const columnas = [
     {
-      name: 'Item',
-      selector: 'id',
+      name: "Item",
+      selector: "id",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Tipo documento',
-      selector: 'documento',
+      name: "Tipo documento",
+      selector: (row) => row.document_type || "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Nº Documento',
-      selector: 'numero',
+      name: "Nº Documento",
+      selector: (row) => row.dni || "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Tipo usuario',
-      selector: 'usuario',
+      name: "Tipo usuario",
+      selector: (row) => row.user_type || "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Empresa',
-      selector: 'empresa',
+      name: "Empresa",
+      selector: (row) => row.company || "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Telefono',
-      selector: 'telefono',
+      name: "Telefono",
+      selector: (row) => row.phone || "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Correo',
-      selector: 'correo',
+      name: "Correo",
+      selector: (row) => row.email || "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Generar actividad',
-      selector: 'atencion',
-      sortable: true,
-      right: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
+      name: "Generar atención",
+      button: true,
+      cell: (e) => (
+        <button className="table__tablebutton">
+          <i class="fas fa-stethoscope"></i>
+        </button>
+      ),
     },
     {
-      name: 'Editar',
+      name: "Editar",
       button: true,
       cell: (e) => (
         <button onClick={() => handleEditar(e)} className="table__tablebutton">
@@ -109,7 +111,7 @@ const Usuario = () => {
       ),
     },
     {
-      name: 'Eliminar',
+      name: "Eliminar",
       button: true,
       cell: (e) => (
         <button
@@ -127,30 +129,30 @@ const Usuario = () => {
       const search = usuario.filter((data) => {
         return (
           data.documento
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.numero.toString().includes(busqueda) ||
           data.usuario
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.empresa
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.telefono.toString().includes(busqueda) ||
           data.correo
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.atencion
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda)
         );
@@ -160,21 +162,44 @@ const Usuario = () => {
     filtrarElemento();
   }, [busqueda]);
 
-  const handleEditar = () => {
+  const handleEditar = (e) => {
     setOpenModal(true);
+    setDataSelected(e);
   };
   const handleEliminar = (e) => {
+    console.log(e);
     Swal.fire({
-      title: '¿Desea eliminar?',
-      text: `${e.razon}`,
-      icon: 'warning',
+      title: "¿Desea eliminar?",
+      text: `${e.dni}`,
+      icon: "info",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Eliminar',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire('Eliminado!', 'Se ha eliminado correctamente.', 'success');
+        fetchGETPOSTPUTDELETE(`users/${e.id}`, {}, "DELETE").then((result) => {
+          if (result.status === 204) {
+            Swal.fire(
+              "Eliminado!",
+              "Se ha eliminado correctamente.",
+              "success"
+            ).then((response) => {
+              if (response.isConfirmed) {
+                resp();
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "!Ups¡",
+              text: "Algo salió mal.",
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Cerrar",
+            });
+          }
+        });
       }
     });
   };
@@ -204,12 +229,21 @@ const Usuario = () => {
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
             fixedHeaderScrollHeight="500px"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            noDataComponent={
+              <div className="spinner">
+                <i className="fas fa-inbox table__icono"></i>
+                <p style={{ color: "lightgrey" }}>No hay datos</p>
+              </div>
+            }
           />
         </div>
       </div>
       {openModal && (
-        <MUsuario openModal={openModal} setOpenModal={setOpenModal} />
+        <MUsuario
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          dataSelected={dataSelected}
+        />
       )}
     </div>
   );

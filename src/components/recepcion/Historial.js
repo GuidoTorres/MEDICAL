@@ -42,7 +42,7 @@ const Historial = () => {
   // };
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("attention")
+    fetchGETPOSTPUTDELETE("attention_historial")
       .then((data) => data.json())
       .then((datos) => setAttention(datos.data));
   };

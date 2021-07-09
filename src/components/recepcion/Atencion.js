@@ -17,8 +17,11 @@ const Atencion = () => {
   const [attention, setAttention] = useState({});
   const [generateAttention, setGenerateAttention] = useState({});
 
+  //clinic care es el optimo
+  // por ahora usar clinics get
+
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("attention")
+    fetchGETPOSTPUTDELETE("attention_clinic")
       .then((data) => data.json())
       .then((datos) => setAttention(datos.data));
   };
@@ -37,6 +40,7 @@ const Atencion = () => {
     getAttention();
   }, []);
 
+  console.log(attention);
   const columnas = [
     {
       name: "Item",
@@ -154,14 +158,14 @@ const Atencion = () => {
   };
 
   const generarAtencion = (e) => {
-    // setGenerateAttention({
-    //   date_creation: e.date_creation ? e.date_creation : "",
-    //   time_attention: getHora(),
-    //   people_id: e.people_id ? e.people_id : "",
-    //   service_id: e.service_id ? e.service_id : "",
-    //   clinic_id: e.clinic && e.clinic.id ? e.clinic_id : "",
-    //   codebar: "0213000011111",
-    // });
+    setGenerateAttention({
+      date_creation: e.date_creation || "",
+      time_attention: getHora(),
+      people_id: e.people_id || "",
+      service_id: e.service_id || "",
+      clinic_id: e.clinic_id || "",
+      codebar: "0213000011111",
+    });
     Swal.fire({
       title: "¿Desea Atender al paciente?",
       text: `${e.person && e.person.name ? e.person.name : "No hay datos"}`,

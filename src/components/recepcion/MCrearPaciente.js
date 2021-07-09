@@ -1,18 +1,35 @@
-import React from 'react';
-import { useState } from 'react';
-import Modal from 'react-modal';
-import { customStyles } from '../../helpers/tablaOpciones';
-import { UploadAvatar } from '../uploadAvatar/uploadAvatar';
-import WebCamScreenshot from '../webcam/WebCamScreenshot';
+import React from "react";
+import { useState } from "react";
+import Modal from "react-modal";
+import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
+import { customStyles } from "../../helpers/tablaOpciones";
+import { UploadAvatar } from "../uploadAvatar/uploadAvatar";
+import WebCamScreenshot from "../webcam/WebCamScreenshot";
 
 const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
   const [avatar, setAvatar] = useState(null);
   const [imagenes, setImagenes] = useState(false);
+  const [paciente, setPaciente] = useState({});
   const closeModal = () => {
     setAddRegistro(false);
   };
   const handleCambio = () => {
     setImagenes(true);
+  };
+
+  const handleChange = (e) => {
+    setPaciente({
+      ...paciente,
+      [e.target.name]: e.target.value,
+      address: 1,
+      district_id: 1,
+    });
+  };
+
+  const crearPaciente = () => {
+    fetchGETPOSTPUTDELETEJSON("patient", paciente, "POST").then((data) =>
+      console.log(data)
+    );
   };
   return (
     <Modal
@@ -25,7 +42,7 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
       preventScroll={true}
       ariaHideApp={false}
     >
-      <h3 className="title__modal">Registro de nuevo usuario</h3>
+      <h3 className="title__modal">Registro de nuevo paciente</h3>
       <div className="container">
         <div className="row">
           <div className="col-md-6 mreceptcion__crearusuario">
@@ -33,44 +50,71 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
               <p>Datos generales</p>
               <div>
                 <label htmlFor="">Tipo de documento:</label>
-                <select>
+                <select
+                  name="document_type_id"
+                  onChange={(e) => handleChange(e)}
+                >
                   <option selected>Seleccione</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option value="1">Dni</option>
+                  <option value="2">Pasaporte</option>
+                  <option value="3">Carne de extranjeria</option>
                 </select>
               </div>
               <div>
                 <label htmlFor="">Número de documento:</label>
-                <input type="text" placeholder="" />
+                <input
+                  type="text"
+                  placeholder=""
+                  name="dni"
+                  onChange={(e) => handleChange(e)}
+                />
               </div>
               <div>
                 <label htmlFor="">Apellido paterno:</label>
-                <input type="text" placeholder="" />
+                <input
+                  type="text"
+                  placeholder=""
+                  name="mom_lastname"
+                  onChange={(e) => handleChange(e)}
+                />
               </div>
               <div>
                 <label htmlFor="">Apellido materno:</label>
-                <input type="text" placeholder="" />
+                <input
+                  type="text"
+                  placeholder=""
+                  name="pat_lastname"
+                  onChange={(e) => handleChange(e)}
+                />
               </div>
               <div>
                 <label htmlFor="">Nombre:</label>
-                <input type="text" placeholder="" />
+                <input
+                  type="text"
+                  placeholder=""
+                  name="name"
+                  onChange={(e) => handleChange(e)}
+                />
               </div>
             </div>
             <div>
               <p>Datos de nacimiento:</p>
               <div>
                 <label htmlFor="">Sexo:</label>
-                <select>
+                <select name="gender_id" onChange={(e) => handleChange(e)}>
                   <option selected>Seleccione</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option value="1">Masculino</option>
+                  <option value="2">Femenino</option>
                 </select>
               </div>
               <div>
                 <label htmlFor="">Fecha de nacimiento:</label>
-                <input type="text" placeholder="" />
+                <input
+                  type="date"
+                  placeholder=""
+                  name="birthday"
+                  onChange={(e) => handleChange(e)}
+                />
               </div>
               <div>
                 <label htmlFor="">Edad:</label>
@@ -78,7 +122,12 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
               </div>
               <div>
                 <label htmlFor="">Religión:</label>
-                <input type="text" placeholder="" />
+                <input
+                  type="text"
+                  placeholder=""
+                  name="religion_id"
+                  onChange={(e) => handleChange(e)}
+                />
               </div>
               <div>
                 <label htmlFor="">País: </label>
@@ -91,7 +140,7 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
               </div>
               <div>
                 <label htmlFor="">Departmento:</label>
-                <select>
+                <select name="departent" onChange={(e) => handleChange(e)}>
                   <option value="">Seleccione</option>
                   <option value="1">One</option>
                   <option value="2">Two</option>
@@ -169,7 +218,10 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
               <p>Otros datos</p>
               <div>
                 <label htmlFor="">Estado civil:</label>
-                <select>
+                <select
+                  name="civil_status_id"
+                  onChange={(e) => handleChange(e)}
+                >
                   <option selected>Seleccione</option>
                   <option value="1">One</option>
                   <option value="2">Two</option>
@@ -179,7 +231,7 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
 
               <div>
                 <label htmlFor="">Grado de instrucción:</label>
-                <select>
+                <select name="grade_id" onChange={(e) => handleChange(e)}>
                   <option value="">Seleccione</option>
                   <option value="1">One</option>
                   <option value="2">Two</option>
@@ -189,27 +241,52 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
 
               <div>
                 <label htmlFor="">Teléfono celular:</label>
-                <input type="text" placeholder="" />
+                <input
+                  type="text"
+                  placeholder=""
+                  name="cellphone"
+                  onChange={(e) => handleChange(e)}
+                />
               </div>
 
               <div>
                 <label htmlFor="">Teléfono fijo:</label>
-                <input type="text" placeholder="" />
+                <input
+                  type="text"
+                  placeholder=""
+                  name="phone"
+                  onChange={(e) => handleChange(e)}
+                />
               </div>
 
               <div>
                 <label htmlFor="">Correo:</label>
-                <input type="text" placeholder="" />
+                <input
+                  type="text"
+                  placeholder=""
+                  name="email"
+                  onChange={(e) => handleChange(e)}
+                />
               </div>
 
               <div>
                 <label htmlFor="">Teléfono de emergencia:</label>
-                <input type="text" placeholder="" />
+                <input
+                  type="text"
+                  placeholder=""
+                  name="emergency_phone"
+                  onChange={(e) => handleChange(e)}
+                />
               </div>
 
               <div>
                 <label htmlFor="">Contacto de emergencia:</label>
-                <input type="text" placeholder="" />
+                <input
+                  type="text"
+                  placeholder=""
+                  name="contact_emergency"
+                  onChange={(e) => handleChange(e)}
+                />
               </div>
             </div>
             <div>
@@ -246,6 +323,16 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
                   <WebCamScreenshot />
                 )}
               </div>
+            </div>
+
+            <div className="list-botones">
+              <button className="botones" onClick={closeModal}>
+                Cancelar
+              </button>
+
+              <button className="botones" onClick={crearPaciente}>
+                Agregar
+              </button>
             </div>
           </div>
         </div>

@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import DataTable from 'react-data-table-component';
-import Swal from 'sweetalert2';
+import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
 
 // import { servicio } from '../../../data/AServicio';
-import { fetchGETPOSTPUTDELETE } from '../../../helpers/fetch';
-import { paginacionOpciones } from '../../../helpers/tablaOpciones';
-import MDescargar from './MDescargar';
-import MServicio from './MServicio';
-import MSubCategoria from './MSubCategoria';
+import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
+import { paginacionOpciones } from "../../../helpers/tablaOpciones";
+import MDescargar from "./MDescargar";
+import MServicio from "./MServicio";
+import MSubCategoria from "./MSubCategoria";
 
 const Servicio = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   // const [listRegistro, setListRegistro] = useState([]);
   const [getServicio, setGetServicio] = useState([]);
   const [openModal, setOpenModal] = useState(false);
@@ -34,7 +34,7 @@ const Servicio = () => {
   // }, []);
 
   const getServices = () => {
-    fetchGETPOSTPUTDELETE('services')
+    fetchGETPOSTPUTDELETE("services")
       .then((info) => info.json())
       // .then((data) => console.log(data.data));
       .then((datos) => setGetServicio(datos.data));
@@ -46,25 +46,25 @@ const Servicio = () => {
 
   const columnas = [
     {
-      name: 'Item',
-      selector: 'id',
+      name: "Item",
+      selector: "id",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Categoria',
-      selector: 'name',
+      name: "Categoria",
+      selector: "name",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Sub-categoria',
+      name: "Sub-categoria",
       button: true,
       cell: (e) => (
         <button
@@ -76,7 +76,7 @@ const Servicio = () => {
       ),
     },
     {
-      name: 'Historial',
+      name: "Historial",
       button: true,
       cell: (e) => (
         <button
@@ -88,7 +88,7 @@ const Servicio = () => {
       ),
     },
     {
-      name: 'Editar',
+      name: "Agregar",
       button: true,
       cell: (e) => (
         <button onClick={() => handleEditar(e)} className="table__tablebutton">
@@ -97,7 +97,7 @@ const Servicio = () => {
       ),
     },
     {
-      name: 'Eliminar',
+      name: "Eliminar",
       button: true,
       cell: (e) => (
         <button
@@ -134,21 +134,21 @@ const Servicio = () => {
   //
 
   const handleEditar = () => {
-    // setOpenModal(true);
+    setOpenModal(true);
   };
   const handleEliminar = (e) => {
     Swal.fire({
-      title: '¿Desea eliminar?',
+      title: "¿Desea eliminar?",
       text: `${e.name}`,
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Eliminar',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire('Eliminado!', 'Se ha eliminado correctamente.', 'success');
-        fetchGETPOSTPUTDELETE(`services/${e.id}`, {}, 'DELETE').then((result) =>
+        Swal.fire("Eliminado!", "Se ha eliminado correctamente.", "success");
+        fetchGETPOSTPUTDELETE(`services/${e.id}`, {}, "DELETE").then((result) =>
           result.json()
         );
       }
@@ -191,12 +191,11 @@ const Servicio = () => {
             fixedHeader
             fixedHeaderScrollHeight="500px"
             noDataComponent={
-            <div className="spinner">
-            <div className="spinner-border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-            <i className="fas fa-inbox table__icono"></i>
-          </div>}
+              <div className="spinner">
+                <i className="fas fa-inbox table__icono"></i>
+                <p style={{ color: "lightgrey" }}>No hay datos</p>
+              </div>
+            }
           />
         </div>
       </div>
@@ -211,7 +210,7 @@ const Servicio = () => {
         />
       )}
       {openHModal && (
-        <MDescargar setOpenHModal={setOpenHModal} openHModal={openHModal} />
+        <MDescargar setOpenHModal={setOpenHModal} openHModal={openHModal} getServices={getServices} />
       )}
     </div>
   );

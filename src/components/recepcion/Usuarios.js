@@ -18,9 +18,9 @@ const Usuarios = ({ history }) => {
   const [getDateAttention, setGetDateAttention] = useState([]);
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("attention")
+    fetchGETPOSTPUTDELETE("users")
       .then((data) => data.json())
-      .then((datos) => setGetDateAttention(datos.data));
+      .then((datos) => setGetDateAttention(datos));
   };
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const Usuarios = ({ history }) => {
     },
     {
       name: "Nombres y apellidos",
-      selector: (row) => (row.person && row.person.name ? row.person.name : ""),
+      selector: (row) => row.name || "",
       sortable: true,
       grow: 2,
       style: {
@@ -52,7 +52,7 @@ const Usuarios = ({ history }) => {
     },
     {
       name: "DNI",
-      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
+      selector: (row) => row.dni || "",
       sortable: true,
       style: {
         color: "#8f9196",
@@ -71,8 +71,7 @@ const Usuarios = ({ history }) => {
     },
     {
       name: "Telefono",
-      selector: (row) =>
-        row.person && row.person.cellphone ? row.person.cellphone : "",
+      selector: (row) => row.phone || "",
       sortable: true,
       style: {
         color: "#8f9196",
@@ -81,8 +80,7 @@ const Usuarios = ({ history }) => {
     },
     {
       name: "Correo",
-      selector: (row) =>
-        row.person && row.person.email ? row.person.email : "",
+      selector: (row) => row.email || "",
       sortable: true,
       style: {
         color: "#8f9196",
@@ -95,7 +93,7 @@ const Usuarios = ({ history }) => {
       cell: (e) => (
         <button
           className="table__tablebutton editar"
-          onClick={() => history.push("/recepcion/generar/atencion")}
+          onClick={(e) => history.push("/recepcion/generar/atencion")}
         >
           <i class="fas fa-stethoscope"></i>
         </button>
