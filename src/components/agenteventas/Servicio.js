@@ -14,8 +14,18 @@ const Servicio = () => {
       // .then((data) => console.log(data.data));
       .then((datos) => setGetServicio(datos.data));
   };
+
+  // const getParticularDiscount = () => {
+  //   fetchGETPOSTPUTDELETE('particular_discount')
+  //     .then((info) => info.json())
+  //     // .then((data) => console.log(data.data));
+  //     .then((datos) => setGetServicio(datos.data));
+  // };
+
+
   useEffect(()=>{
     getServices()
+    // getParticularDiscount()
     
 
   }, [])

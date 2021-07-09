@@ -23,7 +23,7 @@ const SubirLaboratorio = () => {
     getAtencion();
   }, []);
 
-  console.log(tipoPrueba);
+  console.log(attention);
   const columnas = [
     {
       name: "Item",
@@ -185,16 +185,14 @@ const SubirLaboratorio = () => {
               fixedHeaderScrollHeight="500px"
               noDataComponent={
                 <div className="spinner">
-                  <div className="spinner-border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                  </div>
-                  <i className="fas fa-inbox table__icono"></i>
-                </div>
+                <i className="fas fa-inbox table__icono"></i>
+                <p style={{ color: "lightgrey" }}>No hay datos</p>
+              </div>
               }
             />
           </div>
         </div>
-        {openModal && tipoPrueba > 0 &&(
+        {openModal && (
           <MSubirLaboratorio
             openModal={openModal}
             setOpenModal={setOpenModal}
