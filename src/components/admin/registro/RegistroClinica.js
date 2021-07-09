@@ -43,7 +43,7 @@ const RegistroClinica = () => {
     {
       name: "Razón social",
       selector: (row) =>
-        row.corporation.business_name ? row.corporation.business_name : "",
+      row.corporation &&  row.corporation.business_name ? row.corporation.business_name : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -52,7 +52,7 @@ const RegistroClinica = () => {
     },
     {
       name: "RUC",
-      selector: (row) => (row.corporation.ruc ? row.corporation.ruc : ""),
+      selector: (row) => (row.corporation && row.corporation.ruc ? row.corporation.ruc : ""),
       sortable: true,
       style: {
         borderBotton: "none",
