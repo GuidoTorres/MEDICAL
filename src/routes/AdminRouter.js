@@ -12,12 +12,6 @@ import Trabajador from '../components/admin/trabajador/Trabajador';
 // import { useHistory } from 'react-router-dom';
 
 const AdminRouter = ({ ...rest }) => {
-  // let history = useHistory();
-
-  // useEffect(() => {
-  //   history.push('/admin/registro');
-  // }, [history]);
-
   return (
     <div>
       <Navbar
