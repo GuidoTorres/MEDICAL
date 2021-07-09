@@ -6,7 +6,7 @@ import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 const Servicio = () => {
   const [getServicio, setGetServicio] = useState([]);
 
-
+  //modal de particular particualar discount create para la tabla igual
 
   const getServices = () => {
     fetchGETPOSTPUTDELETE('services')

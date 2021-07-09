@@ -11,8 +11,13 @@ const Historial = () => {
 
   const [getDateAttention, setGetDateAttention] = useState([]);
 
+  //usar historial results
+
+
+  
+
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("result")
+    fetchGETPOSTPUTDELETE("attention_historial")
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos.data));
   };

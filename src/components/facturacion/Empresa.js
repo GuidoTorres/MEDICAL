@@ -14,6 +14,8 @@ const Empresa = () => {
   const [datos, setDatos] = useState({});
   const [corporations, setCorporations] = useState([]);
 
+  // facuturacion empresa modal usar company discount
+
   const getCorporations = () => {
     fetchGETPOSTPUTDELETE('company')
       .then((info) => info.json())

@@ -12,6 +12,10 @@ const Reservas = () => {
 
   const [getDateAttention, setGetDateAttention] = useState([]);
 
+  //clinic care , attention por ahora
+  //patient care para la tencion
+  // en historial
+
   const getAttention = () => {
     fetchGETPOSTPUTDELETE("result")
       .then((data) => data.json())
@@ -160,6 +164,7 @@ const Reservas = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         fetchGETPOSTPUTDELETE(`attention/attend/${e.id}`).then((data) => {
+          console.log(data);
           if (data.status === 200) {
             Swal.fire(
               "Éxito!",
@@ -167,7 +172,7 @@ const Reservas = () => {
               "success"
             );
 
-            getAttention()
+            getAttention();
           }
         });
       }

@@ -172,6 +172,7 @@ const Reservas = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         fetchGETPOSTPUTDELETE(`attention/attend/${e.id}`).then((data) => {
+          console.log(data);
           if (data.status === 200) {
             Swal.fire(
               "Éxito!",
@@ -215,7 +216,7 @@ const Reservas = () => {
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: "grey" }}>No hay datos</p>
+                <p style={{ color: "lightgrey" }}>No hay datos</p>
               </div>
             }
           />

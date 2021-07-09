@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 import Modal from "react-modal";
-import { fetchGETPOSTPUTDELETE, fetchGETPOSTPUTDELETEJSON } from "../../../helpers/fetch";
+import {
+  fetchGETPOSTPUTDELETE,
+  fetchGETPOSTPUTDELETEJSON,
+} from "../../../helpers/fetch";
 import { customStyles } from "../../../helpers/tablaOpciones";
 import { UploadAvatar } from "../../uploadAvatar/uploadAvatar";
 
@@ -32,15 +36,35 @@ const MTrabajador = ({
     formData.set("mom_lastname", trabajador.mom_lastname || "");
     formData.set("email", trabajador.email || "");
     formData.set("cellphone", trabajador.cellphone || "");
-    formData.set("photo",  "imagen");
+    formData.set("photo", "imagen");
     formData.set("role_id", trabajador.role_id || "");
 
     fetchGETPOSTPUTDELETE("employees", formData, "POST").then((resp) => {
-      if (resp) {
+      if (resp.status === 201) {
         closeModal();
-        getEmployee();
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se ha creado el trabajador correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getEmployee();
+          }
+        });
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
       }
-      console.log(resp);
     });
   };
 
@@ -54,19 +78,20 @@ const MTrabajador = ({
     formData.set("cellphone", editarTrabajador.cellphone || "");
     formData.set("photo", "avatar.file" || "");
     formData.set("role_id", editarTrabajador.role_id || "");
-    fetchGETPOSTPUTDELETEJSON(`employees/${dataSelected.id}`, editarTrabajador, "PUT").then(
-      (resp) => {
-        console.log(resp);
-        if (resp.status === 200) {
-          closeModal();
-          getEmployee();
-        }
+    fetchGETPOSTPUTDELETEJSON(
+      `employees/${dataSelected.id}`,
+      editarTrabajador,
+      "PUT"
+    ).then((resp) => {
+      console.log(resp);
+      if (resp.status === 200) {
+        closeModal();
+        getEmployee();
       }
-    );
+    });
   };
 
   const handleOnChange = (e) => {
-
     if (editar === true) {
       setEditarTrabajador({
         ...editarTrabajador,
@@ -83,17 +108,27 @@ const MTrabajador = ({
   const handleSubmit = (e) => {
     e.preventDefault();
   };
-  
+
   useEffect(() => {
     if (dataSelected) {
       setEditarTrabajador({
-
         dni: dataSelected && dataSelected.person ? dataSelected.person.dni : "",
-        name: dataSelected && dataSelected.person ? dataSelected.person.name : "",
-        pat_lastname: dataSelected && dataSelected.person ? dataSelected.person.pat_lastname : "",
-        mom_lastname:dataSelected && dataSelected.person ? dataSelected.person.mom_lastname: "",
-        email:dataSelected && dataSelected.person ? dataSelected.person.email : "",
-        cellphone:dataSelected && dataSelected.person ? dataSelected.person.cellphone: "",
+        name:
+          dataSelected && dataSelected.person ? dataSelected.person.name : "",
+        pat_lastname:
+          dataSelected && dataSelected.person
+            ? dataSelected.person.pat_lastname
+            : "",
+        mom_lastname:
+          dataSelected && dataSelected.person
+            ? dataSelected.person.mom_lastname
+            : "",
+        email:
+          dataSelected && dataSelected.person ? dataSelected.person.email : "",
+        cellphone:
+          dataSelected && dataSelected.person
+            ? dataSelected.person.cellphone
+            : "",
         role_id: dataSelected && dataSelected.role ? dataSelected.role.id : "",
       });
     }

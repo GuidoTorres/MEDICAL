@@ -62,7 +62,9 @@ const RegistroClinica = () => {
     {
       name: "Responsable",
       selector: (row) =>
-        row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].name : "",
+        row.corporation && row.corporation.contacts[0]
+          ? row.corporation.contacts[0].name
+          : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -72,7 +74,9 @@ const RegistroClinica = () => {
     {
       name: "Telefono",
       selector: (row) =>
-      row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].phone : "",
+        row.corporation && row.corporation.contacts[0]
+          ? row.corporation.contacts[0].phone
+          : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -82,7 +86,9 @@ const RegistroClinica = () => {
     {
       name: "Correo",
       selector: (row) =>
-      row.corporation && row.corporation.contacts[0] ? row.corporation.contacts[0].email : "",
+        row.corporation && row.corporation.contacts[0]
+          ? row.corporation.contacts[0].email
+          : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -91,7 +97,8 @@ const RegistroClinica = () => {
     },
     {
       name: "Actividad",
-      selector: row=> row.clinic_type_id === 1? "Toman muestra" : "Procesan muestra ",
+      selector: (row) =>
+        row.clinic_type_id === 1 ? "Toman muestra" : "Procesan muestra ",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -168,21 +175,37 @@ const RegistroClinica = () => {
     Swal.fire({
       title: "¿Desea eliminar?",
       text: `${e.corporation.business_name}`,
-      icon: "warning",
+      icon: "info",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Eliminado!", "Se ha eliminado correctamente.", "success");
-        fetchGETPOSTPUTDELETE(`clinics/${e.id}`, {}, "DELETE").then((result) =>
-          result.json()
+        fetchGETPOSTPUTDELETE(`clinics/${e.id}`, {}, "DELETE").then(
+          (result) => {
+            if (result.status === 204) {
+              Swal.fire(
+                "Eliminado!",
+                "Se ha eliminado correctamente.",
+                "success"
+              ).then((resp) => {
+                if (resp.isConfirmed) {
+                  getClinica();
+                }
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "!Ups¡",
+                text: "Algo salió mal.",
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Cerrar",
+              });
+            }
+          }
         );
-        // .then((data) => {
-        //   if (data === 'Has been deleted') console.log(data);
-        //   getClinica();
-        // });
       }
     });
   };
@@ -222,7 +245,7 @@ const RegistroClinica = () => {
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: "grey" }}>No hay datos</p>
+                <p style={{ color: "lightgrey" }}>No hay datos</p>
               </div>
             }
           />

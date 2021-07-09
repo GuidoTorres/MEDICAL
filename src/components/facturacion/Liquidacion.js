@@ -79,6 +79,18 @@ const Liquidacion = () => {
         </button>
       ),
     },
+    {
+      name: "Cargar Información",
+      button: true,
+      cell: (e) => (
+        <button
+          onClick={() => handleDetalles(e)}
+          className="table__tablebutton"
+        >
+          <i class="fas fa-pencil-alt"></i>{" "}
+        </button>
+      ),
+    },
   ];
 
   useEffect(() => {

@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
 import { customStyles } from "../../../helpers/tablaOpciones";
 import { UploadAvatar } from "../../uploadAvatar/uploadAvatar";
+import Swal from "sweetalert2";
 
 const MRegistroEmpresa = ({
   openModal,
@@ -22,6 +23,7 @@ const MRegistroEmpresa = ({
   const closeModal = () => {
     setOpenModal(false);
     setEditar(false);
+    setDataSelected(null);
   };
 
   const getCorporationTypes = () => {
@@ -38,75 +40,55 @@ const MRegistroEmpresa = ({
   const postCorporation = () => {
     const formData = new FormData();
 
-    formData.set("ruc", empresa.ruc ? empresa.ruc : "");
-    formData.set(
-      "business_name",
-      empresa.business_name ? empresa.business_name : ""
-    );
-    formData.set(
-      "commercial_name",
-      empresa.commercial_name ? empresa.commercial_name : ""
-    );
+    formData.set("ruc", empresa.ruc || "");
+    formData.set("business_name", empresa.business_name || "");
+    formData.set("commercial_name", empresa.commercial_name || "");
     formData.set("logo", avatar ? avatar.file : "logo");
 
-    formData.set(
-      "address",
-      empresa.address && empresa.address.address ? empresa.address.address : ""
-    );
-    formData.set(
-      "reference",
-      empresa.ruc && empresa.address.reference ? empresa.address.reference : ""
-    );
+    formData.set("address", empresa.address.address || "");
+    formData.set("reference", empresa.address.reference || "");
 
-    formData.set(
-      "contacts[0][name]",
-      empresa.contacts && empresa.contacts.name ? empresa.contacts.name : ""
-    );
-    formData.set(
-      "contacts[0][phone]",
-      empresa.contacts && empresa.contacts.phone ? empresa.contacts.phone : ""
-    );
-    formData.set(
-      "contacts[0][email]",
-      empresa.contacts && empresa.contacts.email ? empresa.contacts.email : ""
-    );
+    formData.set("contacts[0][name]", empresa.contacts.name || "");
+    formData.set("contacts[0][phone]", empresa.contacts.phone || "");
+    formData.set("contacts[0][email]", empresa.contacts.email || "");
     formData.set("contacts[0][contact_type]", 1);
 
-    formData.set(
-      "contacts[1][name]",
-      empresa.contacts && empresa.contacts.name1 ? empresa.contacts.name1 : ""
-    );
-    formData.set(
-      "contacts[1][phone]",
-      empresa.contacts && empresa.contacts.phone1 ? empresa.contacts.phone1 : ""
-    );
-    formData.set(
-      "contacts[1][email]",
-      empresa.contacts && empresa.contacts.email1 ? empresa.contacts.email1 : ""
-    );
+    formData.set("contacts[1][name]", empresa.contacts.name1 || "");
+    formData.set("contacts[1][phone]", empresa.contacts.phone1 || "");
+    formData.set("contacts[1][email]", empresa.contacts.email1 || "");
     formData.set("contacts[1][contact_type]", 2);
 
-    formData.set(
-      "before",
-      empresa.billing && empresa.billing.before ? empresa.billing.before : ""
-    );
-    formData.set(
-      "credit",
-      empresa.billing && empresa.billing.credit ? empresa.billing.credit : ""
-    );
+    formData.set("before", empresa.billing.before || "");
+    formData.set("credit", empresa.billing.credit || "");
 
-    formData.set(
-      "services[0][service_id]",
-      empresa.services && empresa.services.service_id
-        ? empresa.services.service_id
-        : ""
-    );
+    formData.set("services[0][service_id]", empresa.services.service_id || "");
 
     fetchGETPOSTPUTDELETE("company", formData, "POST").then((resp) => {
       console.log(resp);
       if (resp.status === 200) {
         closeModal();
-        getCorporations();
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se ha creado la empresa correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getCorporations();
+          }
+        });
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
       }
     });
   };
@@ -139,15 +121,39 @@ const MRegistroEmpresa = ({
     formData.set("credit", empresa.billing ? empresa.billing.credit : "");
 
     formData.set("services[0][service_id]", empresa.services.service_id || "");
+    formData.set("services[0][state]", 0);
 
-    fetchGETPOSTPUTDELETE(`company/${dataSelected.id}`, formData, "PUT")
-      .then((resp) => {
-        if (resp) {
-          closeModal();
-          getCorporations();
-        }
-      })
-      .catch((err) => console.log(err));
+    fetchGETPOSTPUTDELETE(
+      `company/update/${dataSelected.id}`,
+      formData,
+      "POST"
+    ).then((resp) => {
+      if (resp.status === 200) {
+        closeModal();
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se ha editado la empresa correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getCorporations();
+          }
+        });
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
+      }
+    });
   };
 
   useEffect(() => {
