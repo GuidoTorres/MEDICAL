@@ -40,8 +40,8 @@ const Servicio = () => {
                 {getServicio.length > 0 && getServicio[0].services.map((servicio, i ) => (
 
                   <tr key={i}>
-                  <td>{servicio.name}</td>
-                  {/* <td>{servicio.last_price.id}</td> */}
+                  <td>{servicio.name ? servicio.name : ""}</td>
+                  <td>{servicio.last_price && servicio.last_price.amount ? servicio.last_price.amount : ""}</td>
                 </tr>
                 ))}
               </tbody>
