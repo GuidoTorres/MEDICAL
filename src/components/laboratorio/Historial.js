@@ -86,7 +86,7 @@ const Historial = () => {
       button: true,
       cell: (e) => (
         <button
-          onClick={() => handleDetalles(e)}
+          // onClick={() => handleDetalles(e)}
           className="table__tablebutton"
         >
           <i class="fas fa-file-pdf"></i>

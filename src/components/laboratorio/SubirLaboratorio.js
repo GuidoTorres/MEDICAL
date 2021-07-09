@@ -3,9 +3,7 @@ import DataTable from "react-data-table-component";
 import { lasubir } from "../../data/LASubir";
 import { paginacionOpciones } from "../../helpers/tablaOpciones";
 import MSubirLaboratorio from "./MSubirLaboratorio";
-import {
-  fetchGETPOSTPUTDELETE,
-} from "../../helpers/fetch";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 
 const SubirLaboratorio = () => {
   const [busqueda, setBusqueda] = useState("");
@@ -13,6 +11,7 @@ const SubirLaboratorio = () => {
   const [openModal, setOpenModal] = useState(false);
   const [attention, setAttention] = useState({});
   const [dataSelected, setDataSelected] = useState(null);
+  const [tipoPrueba, setTipoPrueba] = useState(null);
 
   const getAtencion = () => {
     fetchGETPOSTPUTDELETE("result")
@@ -20,12 +19,11 @@ const SubirLaboratorio = () => {
       .then((datos) => setAttention(datos.data));
   };
 
-
   useEffect(() => {
     getAtencion();
   }, []);
 
-
+  console.log(tipoPrueba);
   const columnas = [
     {
       name: "Item",
@@ -47,7 +45,7 @@ const SubirLaboratorio = () => {
     },
     {
       name: "Nro de documento",
-      selector: (row) => (row.dni? row.person.dni : ""),
+      selector: (row) => (row.dni ? row.person.dni : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -147,14 +145,17 @@ const SubirLaboratorio = () => {
               </div>
               <div>
                 <label>Sub-Categoría</label>
-                <select class="form-select" aria-label="Default select example">
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  onChange={(e) => setTipoPrueba(e.target.value)}
+                >
                   <option>Seleccione</option>
+
                   <option value="1">Antígeno</option>
                   <option value="2">Electroquimioluminiscencia</option>
                   <option value="3">Inmunocromatografia</option>
-                  <option value="3">RT-PCR</option>
-
-
+                  <option value="4">RT-PCR</option>
                 </select>
               </div>
             </div>
@@ -193,11 +194,12 @@ const SubirLaboratorio = () => {
             />
           </div>
         </div>
-        {openModal && (
+        {openModal && tipoPrueba > 0 &&(
           <MSubirLaboratorio
             openModal={openModal}
             setOpenModal={setOpenModal}
             dataSelected={dataSelected}
+            tipoPrueba= {tipoPrueba}
           />
         )}
       </div>
