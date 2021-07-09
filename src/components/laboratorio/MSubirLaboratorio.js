@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
+import { fetchGETPOSTPUTDELETEJSON, fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 
 import { customStyles } from "../../helpers/tablaOpciones";
 
@@ -19,7 +19,13 @@ const MSubirLaboratorio = ({
   console.log(result);
 
   const postResults = () => {
-    fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) =>
+
+    const formData = new FormData()
+
+    formData.set("id", 8)
+    formData.set("result", "0")
+      
+      fetchGETPOSTPUTDELETE(`result`, formData, "POST").then((data) =>
       console.log(data)
     );
   };

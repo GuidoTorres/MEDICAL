@@ -20,7 +20,7 @@ const Usuarios = ({ history }) => {
   const getAttention = () => {
     fetchGETPOSTPUTDELETE("users")
       .then((data) => data.json())
-      .then((datos) => setGetDateAttention(datos));
+      .then((datos) => setGetDateAttention(datos.data));
   };
 
   useEffect(() => {
