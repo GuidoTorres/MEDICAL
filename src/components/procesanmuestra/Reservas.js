@@ -17,7 +17,7 @@ const Reservas = () => {
   // en historial
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("result")
+    fetchGETPOSTPUTDELETE("patient_care")
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos.data));
   };

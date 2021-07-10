@@ -20,7 +20,7 @@ const Trabajador = () => {
   const columnas = [
     {
       name: "Item",
-      selector: "id",
+      selector: "user_id",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -29,7 +29,7 @@ const Trabajador = () => {
     },
     {
       name: "Tipo",
-      selector: (row) => (row.role && row.role.name ? row.role.name : ""),
+      selector: (row) => (row.type ? row.type : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -39,8 +39,8 @@ const Trabajador = () => {
     {
       name: "Nombre",
       selector: (row) =>
-        row.person && row.person.name && row.person.pat_lastname
-          ? row.person.name + " " + row.person.pat_lastname
+        row.name
+          ? row.name
           : "",
       sortable: true,
       style: {
@@ -112,7 +112,7 @@ const Trabajador = () => {
   const handleEliminar = (e) => {
     Swal.fire({
       title: "¿Desea eliminar?",
-      text: `${e.person.name}`,
+      text: `${e.name ? e.name : ""}`,
       icon: "info",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -121,7 +121,7 @@ const Trabajador = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire("Eliminado!", "Se ha eliminado correctamente.", "success");
-        fetchGETPOSTPUTDELETE(`employees/${e.id}`, {}, "DELETE").then(
+        fetchGETPOSTPUTDELETE(`employees/${e.user_id}`, {}, "DELETE").then(
           (result) => {
             console.log(result)
             if (result.status === 201) {
