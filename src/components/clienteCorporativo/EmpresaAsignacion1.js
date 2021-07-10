@@ -194,7 +194,7 @@ const EmpresaAsignacion = () => {
   return (
     <>
       <div className="container mt-3">
-        <label>Asignacion de pruebas</label>
+        {/* <label>Asignacion de pruebas</label> */}
         <div className="asignacion1">
           <div>
             <input
@@ -208,6 +208,7 @@ const EmpresaAsignacion = () => {
           </div>
           <div
             // onClick={(e) => history.push('/admin/registroempresa')}
+            style={{display:'flex', alignItems:'center'}}
             >
             <input
               type="file"
@@ -215,12 +216,9 @@ const EmpresaAsignacion = () => {
               id="file"
               onChange={importExcel}/>
 
-            <button
-              type="button"
-              class="btn btn-primary"
-              onClick={triggerClick}>
-              Cargar
-            </button>
+            <p className="pagregar" onClick={triggerClick} style={{cursor:'pointer', marginRight:'5px'}}>Cargar trabajadores</p>
+            <i class="fas fa-upload" onClick={triggerClick} style={{cursor:'pointer'}}></i>
+
           </div>
         </div>
         <div className="row mt-4">
@@ -244,7 +242,7 @@ const EmpresaAsignacion = () => {
         <div className="mt-5">
           <button
             type="button"
-            class="btn btn-primary"
+            className="botones btn btn-primary"
             onClick={(e) => history.push("/empresa/asignacion2")}
           >
             Siguiente

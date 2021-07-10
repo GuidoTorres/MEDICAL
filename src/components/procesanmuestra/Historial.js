@@ -17,7 +17,7 @@ const Historial = () => {
   
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("attention_historial")
+    fetchGETPOSTPUTDELETE("result")
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos.data));
   };

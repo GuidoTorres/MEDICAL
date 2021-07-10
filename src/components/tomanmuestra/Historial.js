@@ -14,7 +14,7 @@ const Historial = () => {
   // usar settlements para mostar historial, andre corregir historial atenciones
 
   const getHistorial = () => {
-    fetchGETPOSTPUTDELETE("attention_historial")
+    fetchGETPOSTPUTDELETE("result")
       .then((data) => data.json())
       .then((datos) => setDataHistorial(datos.data));
   };
@@ -84,7 +84,7 @@ const Historial = () => {
     },
     {
       name: "Fecha entrega",
-      selector: (row) => (row.result && row.result.date ? row.result.date : ""),
+      selector: (row) => (row.date_creation ? row.date_creation : ""),
       sortable: true,
       style: {
         borderBotton: "none",

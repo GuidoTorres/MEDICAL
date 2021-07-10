@@ -72,7 +72,7 @@ const Liquidacion = () => {
       button: true,
       cell: (e) => (
         <button
-          onClick={() => handleDetalles(e)}
+          // onClick={() => handleDetalles(e)}
           className="table__tablebutton"
         >
           <i class="fas fa-pencil-alt"></i>{" "}
@@ -84,10 +84,10 @@ const Liquidacion = () => {
       button: true,
       cell: (e) => (
         <button
-          onClick={() => handleDetalles(e)}
+          // onClick={() => handleDetalles(e)}
           className="table__tablebutton"
         >
-          <i class="fas fa-pencil-alt"></i>{" "}
+          <i class="fas fa-folder-open"></i>
         </button>
       ),
     },

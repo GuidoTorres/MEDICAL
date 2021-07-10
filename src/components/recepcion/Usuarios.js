@@ -6,19 +6,26 @@ import { paginacionOpciones } from "../../helpers/tablaOpciones";
 import { rusuario } from "../../data/RUsuario";
 import MCrearPaciente from "./MCrearPaciente";
 import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import MGenerarAtencion from "./Modales/MGenerarAtencion";
 
 const Usuarios = ({ history }) => {
   const [busqueda, setBusqueda] = useState("");
   const [listServicio, setListServicio] = useState([]);
   const [addRegistro, setAddRegistro] = useState(false);
+  const [generarAtencion, setGenerarAtencion] = useState(false);
+  const [getDateAttention, setGetDateAttention] = useState([]);
+  const [dataSelected, setDataSelected] = useState({});
 
   const handleAddRegistro = () => {
     setAddRegistro(true);
   };
-  const [getDateAttention, setGetDateAttention] = useState([]);
+  const generateAttention = (e) => {
+    setGenerarAtencion(true);
+    setDataSelected(e);
+  };
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("users")
+    fetchGETPOSTPUTDELETE("attention")
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos.data));
   };
@@ -42,7 +49,7 @@ const Usuarios = ({ history }) => {
     },
     {
       name: "Nombres y apellidos",
-      selector: (row) => row.name || "",
+      selector: (row) => row.person.name || "",
       sortable: true,
       grow: 2,
       style: {
@@ -52,7 +59,7 @@ const Usuarios = ({ history }) => {
     },
     {
       name: "DNI",
-      selector: (row) => row.dni || "",
+      selector: (row) => row.person.dni || "",
       sortable: true,
       style: {
         color: "#8f9196",
@@ -71,7 +78,7 @@ const Usuarios = ({ history }) => {
     },
     {
       name: "Telefono",
-      selector: (row) => row.phone || "",
+      selector: (row) => row.person.cellphone || "",
       sortable: true,
       style: {
         color: "#8f9196",
@@ -80,7 +87,7 @@ const Usuarios = ({ history }) => {
     },
     {
       name: "Correo",
-      selector: (row) => row.email || "",
+      selector: (row) => row.person.email || "",
       sortable: true,
       style: {
         color: "#8f9196",
@@ -93,7 +100,7 @@ const Usuarios = ({ history }) => {
       cell: (e) => (
         <button
           className="table__tablebutton editar"
-          onClick={(e) => history.push("/recepcion/generar/atencion")}
+          onClick={() => generateAttention(e)}
         >
           <i class="fas fa-stethoscope"></i>
         </button>
@@ -220,6 +227,14 @@ const Usuarios = ({ history }) => {
         <MCrearPaciente
           addRegistro={addRegistro}
           setAddRegistro={setAddRegistro}
+        />
+      )}
+
+      {generarAtencion && (
+        <MGenerarAtencion
+        generarAtencion={generarAtencion}
+          setGenerarAtencion={setGenerarAtencion}
+          dataSelected={dataSelected}
         />
       )}
     </div>

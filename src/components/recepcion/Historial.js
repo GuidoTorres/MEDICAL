@@ -3,6 +3,9 @@ import { ToastContainer } from "react-toastify";
 import DataTable from "react-data-table-component";
 import CodigoBarrasHistorial from "./Modales/CodigoBarrasHistorial";
 import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import { generarDeclaracionJurada } from "../../helpers/GenerarPdfs/DeclaracionJurada";
+import { generarConsentimientoInformado } from "../../helpers/GenerarPdfs/ConsentimientoInformado";
+import { generarFichaCovid } from "../../helpers/GenerarPdfs/FichaCovid";
 
 const Historial = () => {
   const [busqueda, setBusqueda] = useState("");
@@ -11,38 +14,9 @@ const Historial = () => {
   const [attention, setAttention] = useState({});
   const [dataBarCode, setDataBarCode] = useState({});
 
-  // const mostrarDeclaracionJurada = () => {
-  //   const declaracion = document.querySelector(".containerPDF").style;
-  //   const consentimiento = document.querySelector(".containerPDF1").style;
-  //   const ficha = document.querySelector(".containerPDF2").style;
-
-  //   consentimiento.display = "none";
-  //   ficha.display = "none";
-  //   declaracion.display = "flex";
-  // };
-
-  // const mostrarConsentimiento = () => {
-  //   const declaracion = document.querySelector(".containerPDF").style;
-  //   const consentimiento = document.querySelector(".containerPDF1").style;
-  //   const ficha = document.querySelector(".containerPDF2").style;
-
-  //   declaracion.display = "none";
-  //   ficha.display = "none";
-  //   consentimiento.display = "block";
-  // };
-
-  // const mostrarFichaCovid = () => {
-  //   const declaracion = document.querySelector(".containerPDF").style;
-  //   const consentimiento = document.querySelector(".containerPDF1").style;
-  //   const ficha = document.querySelector(".containerPDF2").style;
-
-  //   declaracion.display = "none";
-  //   consentimiento.display = "none";
-  //   ficha.display = "block";
-  // };
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("attention_historial")
+    fetchGETPOSTPUTDELETE("attention")
       .then((data) => data.json())
       .then((datos) => setAttention(datos.data));
   };
@@ -130,7 +104,7 @@ const Historial = () => {
           <i
             class="far fa-file-pdf"
             onClick={() => {
-              // generarDeclaracionJurada();
+              generarDeclaracionJurada();
             }}
           ></i>{" "}
         </button>
@@ -144,7 +118,8 @@ const Historial = () => {
           <i
             class="far fa-file-pdf"
             onClick={() => {
-              // generarConsentimientoInformado();
+              
+              generarConsentimientoInformado();
             }}
           ></i>{" "}
         </button>
@@ -158,6 +133,7 @@ const Historial = () => {
           <i
             class="far fa-file-pdf"
             onClick={() => {
+              generarFichaCovid()
               // generarFichaCovid();
             }}
           ></i>{" "}

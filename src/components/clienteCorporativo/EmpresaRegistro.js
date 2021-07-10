@@ -210,7 +210,7 @@ const EmpresaRegistro = () => {
     <>
     
     <div className="registro container " id="target">
-      <h3 className="tituloRegTrabajadores mt-3">Registro de trabajadores</h3>
+      {/* <h3 className="tituloRegTrabajadores mt-3">Registro de trabajadores</h3> */}
       <div className="containerRegistro">
       <div className="">
             <div>
@@ -232,7 +232,7 @@ const EmpresaRegistro = () => {
           <p className="pagregar" onClick={triggerClick} style={{cursor:'pointer'}}>Cargar trabajadores</p>
           <i class="fas fa-upload" onClick={triggerClick} style={{cursor:'pointer'}}></i>
           
-          <p className="pagregar" onClick={()=> openModal()}>Editar</p>
+          <p className="pagregar" >Editar</p>
           <i class="fas fa-pencil-alt" onClick={()=> openModal()}></i>
 
           <p className="pagregar">Eliminar</p>

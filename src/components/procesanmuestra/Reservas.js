@@ -40,6 +40,7 @@ const Reservas = () => {
     },
     {
       name: "Tipo de documento",
+      selector: "tdocumento",
       selector: (row) =>
         row.person && row.person.document_type_id === 3
           ? "Carné de extranjería"
@@ -56,6 +57,7 @@ const Reservas = () => {
     },
     {
       name: "Nº documento",
+      selector: "dni",
       selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
       sortable: true,
       style: {
@@ -65,6 +67,7 @@ const Reservas = () => {
     },
     {
       name: "Nombre",
+      selector:'nombre',
       selector: (row) => (row.person && row.person.name ? row.person.name : ""),
       sortable: true,
       style: {
@@ -74,6 +77,8 @@ const Reservas = () => {
     },
     {
       name: "Apellido",
+      // selector:'apellido',
+
       selector: (row) =>
         row.person && row.person.pat_lastname ? row.person.pat_lastname : "",
 
@@ -85,6 +90,8 @@ const Reservas = () => {
     },
     {
       name: "Tipo prueba",
+      // selector:'tipo',
+
       selector: (row) =>
         row.service && row.service.name ? row.service.name : "",
 
@@ -96,6 +103,8 @@ const Reservas = () => {
     },
     {
       name: "Fecha solicitud",
+      // selector:'solicitud',
+
       selector: (row) => (row.date_creation ? row.date_creation : ""),
       sortable: true,
       style: {
@@ -108,7 +117,7 @@ const Reservas = () => {
       button: true,
       cell: (e) => (
         <button
-          onClick={() => handleDetalles(e)}
+          // onClick={() => handleDetalles(e)}
           className="table__tablebutton"
         >
           <i className="fas fa-angle-right"></i>

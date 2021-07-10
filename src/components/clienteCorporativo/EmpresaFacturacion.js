@@ -211,7 +211,7 @@ const EmpresaFacturacion = () => {
     <div className="facturacion container ">
     {/* <button type="button" class="btn btn-primary" onClick={generarPdf}>GenerarPDF</button> */}
 
-      <h3 className="tituloFacturacion mt-3">Facturación</h3>
+      {/* <h3 className="tituloFacturacion mt-3">Facturación</h3> */}
       <div>
         <div>
             <input

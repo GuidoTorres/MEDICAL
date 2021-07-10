@@ -1,6 +1,14 @@
 import React from "react";
 
-const FichaCovid19 = ({ ficha, setFicha, data }) => {
+const FichaCovid19 = ({ ficha, setFicha}) => {
+
+  const data ={
+    nombre: "Hector Torres Durand",
+    dni: "72798529",
+    tipo: "Prueba Molecular",
+    tecnica: "Tecnica nr 1000",
+    edad: 100,
+  };
   return (
     <div className="fichaCovid">
       <label className="titulo1 mt-2" htmlFor="">
@@ -53,7 +61,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => {
                 setFicha({ ...ficha, minsa: e.target.checked });
@@ -67,7 +74,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => {
                 setFicha({ ...ficha, essalud: e.target.checked });
@@ -81,7 +87,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => {
                 setFicha({ ...ficha, privado: e.target.checked });
@@ -101,7 +106,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => {
                 setFicha({ ...ficha, confirmado: e.target.checked });
@@ -115,7 +119,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => {
                 setFicha({ ...ficha, probable: e.target.checked });
@@ -129,7 +132,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => {
                 setFicha({ ...ficha, sospechoso: e.target.checked });
@@ -149,7 +151,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => {
                 setFicha({ ...ficha, detectadoSi: e.target.checked });
@@ -163,7 +164,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => {
                 setFicha({ ...ficha, detectadoNo: e.target.checked });
@@ -177,7 +177,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => {
                 setFicha({ ...ficha, detectadoDes: e.target.checked });
@@ -267,7 +266,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="masculino form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => {
                 setFicha({ ...ficha, masculino: e.target.checked });
@@ -286,7 +284,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="femenino form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => {
                 setFicha({ ...ficha, femenino: e.target.checked });
@@ -434,8 +431,7 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
               <input
                 class="form-check-input"
                 type="checkbox"
-                value=""
-                id="flexCheckDefault"
+                  id="flexCheckDefault"
                 onChange={(e) =>
                   setFicha({
                     ...ficha,
@@ -452,8 +448,7 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
               <input
                 class="form-check-input"
                 type="checkbox"
-                value=""
-                id="flexCheckDefault"
+                  id="flexCheckDefault"
                 onChange={(e) =>
                   setFicha({
                     ...ficha,
@@ -474,7 +469,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, hospitalizadoSi: e.target.checked })
@@ -489,7 +483,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, hospitalizadoNo: e.target.checked })
@@ -504,7 +497,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({
@@ -543,7 +535,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, aislamientoSi: e.target.checked })
@@ -558,7 +549,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, aislamientoNo: e.target.checked })
@@ -579,7 +569,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, ventilacionSi: e.target.checked })
@@ -594,7 +583,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, ventilacionNo: e.target.checked })
@@ -608,7 +596,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, ventilacionDesc: e.target.checked })
@@ -627,7 +614,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, recuperado: e.target.checked })
@@ -642,7 +628,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, recuperadoNo: e.target.checked })
@@ -656,7 +641,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, fallecido: e.target.checked })
@@ -671,7 +655,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, evolucionDesc: e.target.checked })
@@ -703,7 +686,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, sintoma1: e.target.checked })
@@ -717,7 +699,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, sintoma2: e.target.checked })
@@ -732,7 +713,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, sintoma3: e.target.checked })
@@ -747,7 +727,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, sintoma4: e.target.checked })
@@ -761,7 +740,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, sintoma5: e.target.checked })
@@ -775,7 +753,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, sintoma6: e.target.checked })
@@ -789,7 +766,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, sintoma7: e.target.checked })
@@ -803,7 +779,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, sintoma8: e.target.checked })
@@ -817,7 +792,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, sintoma9: e.target.checked })
@@ -831,7 +805,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, sintoma10: e.target.checked })
@@ -845,7 +818,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
             />
             <label class="form-check-label" for="flexCheckDefault">
@@ -858,7 +830,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
             />
             <label class="form-check-label" for="flexCheckDefault">
@@ -869,7 +840,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
             />
             <label class="form-check-label" for="flexCheckDefault">
@@ -880,7 +850,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
             />
             <label class="form-check-label" for="flexCheckDefault">
@@ -891,7 +860,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
             />
             <label class="form-check-label" for="flexCheckDefault">
@@ -906,7 +874,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => setFicha({ ...ficha, signo1: e.target.checked })}
             />
@@ -918,7 +885,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => setFicha({ ...ficha, signo2: e.target.checked })}
             />
@@ -931,7 +897,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => setFicha({ ...ficha, signo3: e.target.checked })}
             />
@@ -944,7 +909,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => setFicha({ ...ficha, signo4: e.target.checked })}
             />
@@ -956,7 +920,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => setFicha({ ...ficha, signo5: e.target.checked })}
             />
@@ -968,7 +931,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => setFicha({ ...ficha, signo6: e.target.checked })}
             />
@@ -980,7 +942,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => setFicha({ ...ficha, signo7: e.target.checked })}
             />
@@ -992,7 +953,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) => setFicha({ ...ficha, signo8: e.target.checked })}
             />
@@ -1008,7 +968,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, condicion1: e.target.checked })
@@ -1022,7 +981,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, condicion2: e.target.checked })
@@ -1037,7 +995,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, condicion3: e.target.checked })
@@ -1052,7 +1009,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, condicion4: e.target.checked })
@@ -1066,7 +1022,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, condicion5: e.target.checked })
@@ -1080,7 +1035,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, condicion6: e.target.checked })
@@ -1094,7 +1048,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, condicion7: e.target.checked })
@@ -1108,7 +1061,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, condicion8: e.target.checked })
@@ -1123,7 +1075,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, condicion9: e.target.checked })
@@ -1138,7 +1089,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, condicion10: e.target.checked })
@@ -1153,7 +1103,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, condicion11: e.target.checked })
@@ -1178,7 +1127,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, ocupacion1: e.target.checked })
@@ -1192,7 +1140,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, ocupacion2: e.target.checked })
@@ -1207,7 +1154,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, ocupacion3: e.target.checked })
@@ -1222,7 +1168,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, ocupacion4: e.target.checked })
@@ -1237,7 +1182,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, ocupacion5: e.target.checked })
@@ -1258,7 +1202,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, viajeSi: e.target.checked })
@@ -1273,7 +1216,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, viajeNo: e.target.checked })
@@ -1288,7 +1230,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, viajeDesc: e.target.checked })
@@ -1339,7 +1280,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, infoViajeSi: e.target.checked })
@@ -1353,7 +1293,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, infoViajeNo: e.target.checked })
@@ -1367,7 +1306,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, infoViajeDesc: e.target.checked })
@@ -1403,7 +1341,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, entorno1: e.target.checked })
@@ -1417,7 +1354,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, entorno2: e.target.checked })
@@ -1431,7 +1367,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, entorno3: e.target.checked })
@@ -1445,7 +1380,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, entorno4: e.target.checked })
@@ -1459,7 +1393,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, entorno5: e.target.checked })
@@ -1481,7 +1414,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, confirmadoSi: e.target.checked })
@@ -1495,7 +1427,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, confirmadoNo: e.target.checked })
@@ -1509,7 +1440,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, confirmadoDesc: e.target.checked })
@@ -1554,7 +1484,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, confirmado1: e.target.checked })
@@ -1569,7 +1498,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, confirmado2: e.target.checked })
@@ -1584,7 +1512,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, confirmado3: e.target.checked })
@@ -1599,7 +1526,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, confirmado4: e.target.checked })
@@ -1614,7 +1540,6 @@ const FichaCovid19 = ({ ficha, setFicha, data }) => {
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, confirmado5: e.target.checked })
