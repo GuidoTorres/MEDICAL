@@ -135,7 +135,7 @@ const Solicitud = () => {
   return (
     <div className="container">
       <div className="row">
-        <h3>Horarios disponibles</h3>
+        {/* <h3>Horarios disponibles</h3> */}
 
         <div className="table-responsive">
           <div className="adminregistro__option">

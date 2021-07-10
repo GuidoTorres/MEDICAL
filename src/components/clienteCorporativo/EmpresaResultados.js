@@ -237,7 +237,7 @@ const EmpresaResultados = () => {
   return (
     <>
     <div className=" container ">
-      <h3 className="tituloResultados mt-3">Resultados</h3>
+      {/* <h3 className="tituloResultados mt-3">Resultados</h3> */}
 
       <div className="empresaResultado">
         <div >
@@ -258,7 +258,7 @@ const EmpresaResultados = () => {
         <label class="form-check-label" for="flexSwitchCheckDefault">Enviar resultados automáticamente </label>
         <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"/>
         </div>
-          <button type="button" class="btn btn-primary">Enviar</button>
+          <button type="button" className="botones btn btn-primary">Enviar</button>
 
         </div>
       </div>

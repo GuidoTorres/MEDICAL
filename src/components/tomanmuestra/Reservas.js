@@ -15,7 +15,7 @@ const Reservas = () => {
   const [getDateAttention, setGetDateAttention] = useState([]);
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("attention_clinic")
+    fetchGETPOSTPUTDELETE("result")
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos.data));
   };

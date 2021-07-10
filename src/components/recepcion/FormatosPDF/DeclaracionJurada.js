@@ -8,7 +8,7 @@ const DeclaracionJurada = ({
 }) => {
   return (
     <>
-      <div className="sintomas mx-5 mb-2" style={{width: '40%',}}>
+      <div className="sintomas  mb-2" style={{width: '40%',}}>
         <label htmlFor=""><strong>Síntomas</strong></label>
         
         <div className="mt-2 ">
