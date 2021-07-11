@@ -71,6 +71,19 @@ const MServicio = ({ openModal, setOpenModal, getServices }) => {
         <div className="row mt-3">
           <div className="col-12 mregistro__servicios">
             <div className="">
+            <div>
+                <label> Categoria:</label>
+                <select
+                  className="form-select"
+                  aria-label="Default select example"
+                  style={{ width: "50%" }}
+                  name="service_category_id"
+                  onChange={(e) => handleChange(e)}
+                >
+                  <option selected>Seleccione</option>
+                  <option value="1">Covid 19</option>
+                </select>
+              </div>
               <div>
                 <label> Nombre:</label>
                 <input
@@ -87,19 +100,7 @@ const MServicio = ({ openModal, setOpenModal, getServices }) => {
                   onChange={(e) => handleChange(e)}
                 />
               </div>
-              <div>
-                <label> Categoria:</label>
-                <select
-                  className="form-select"
-                  aria-label="Default select example"
-                  style={{ width: "50%" }}
-                  name="service_category_id"
-                  onChange={(e) => handleChange(e)}
-                >
-                  <option selected>Seleccione</option>
-                  <option value="1">Covid 19</option>
-                </select>
-              </div>
+ 
               <div>
                 <label> Monto:</label>
                 <input

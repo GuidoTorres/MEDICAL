@@ -15,28 +15,17 @@ const Servicio = () => {
   // const [listRegistro, setListRegistro] = useState([]);
   const [getServicio, setGetServicio] = useState([]);
   const [openModal, setOpenModal] = useState(false);
-
+  const [dataSelected, setDataSelected] = useState({})
   const [openSubModal, setopenSubModal] = useState(false);
   const [subCategoria, setSubCategoria] = useState([]);
 
   const [openHModal, setOpenHModal] = useState(false);
   // const [servicios, setServicios] = useState({});
 
-  //TODO LISTAR
-  // const resp = () => {
-  //   fetchGETPOSTPUTDELETE('services')
-  //     .then((data) => data.json())
-  //     .then((datos) => setGetServicio(datos.services));
-  // };
-
-  // useEffect(() => {
-  //   resp();
-  // }, []);
 
   const getServices = () => {
     fetchGETPOSTPUTDELETE("services")
       .then((info) => info.json())
-      // .then((data) => console.log(data.data));
       .then((datos) => setGetServicio(datos.data));
   };
 
@@ -88,7 +77,7 @@ const Servicio = () => {
       ),
     },
     {
-      name: "Agregar",
+      name: "Editar",
       button: true,
       cell: (e) => (
         <button onClick={() => handleEditar(e)} className="table__tablebutton">
@@ -162,7 +151,14 @@ const Servicio = () => {
 
   const handleHistorial = () => {
     setOpenHModal(true);
+    setDataSelected()
   };
+
+  const handleAddService = () =>{
+
+    
+
+  }
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -180,6 +176,15 @@ const Servicio = () => {
                 value={busqueda}
                 onChange={handleSearch}
               />
+            </div>
+            <div>
+              <label>
+                Agregar servicio{" "}
+                <i
+                  className="fas fa-plus-circle"
+                  // onClick={handleAddRegistro}
+                ></i>{" "}
+              </label>
             </div>
           </div>
 

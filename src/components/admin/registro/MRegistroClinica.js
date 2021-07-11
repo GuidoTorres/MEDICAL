@@ -239,7 +239,7 @@ const MRegistroClinica = ({
                   <input
                     type="text"
                     name="ruc"
-                    defaultValue={
+                    value={
                       dataSelected && dataSelected.corporation.ruc
                         ? dataSelected.corporation.ruc
                         : ""
