@@ -14,7 +14,6 @@ const Historial = () => {
   const [attention, setAttention] = useState({});
   const [dataBarCode, setDataBarCode] = useState({});
 
-
   const getAttention = () => {
     fetchGETPOSTPUTDELETE("attention")
       .then((data) => data.json())
@@ -62,7 +61,7 @@ const Historial = () => {
     },
     {
       name: "Nº de documento",
-      selector: (row) => (row.person && row.person.name ? row.person.name : ""),
+      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
       sortable: true,
       style: {
         color: "#8f9196",
@@ -118,7 +117,6 @@ const Historial = () => {
           <i
             class="far fa-file-pdf"
             onClick={() => {
-              
               generarConsentimientoInformado();
             }}
           ></i>{" "}
@@ -133,7 +131,7 @@ const Historial = () => {
           <i
             class="far fa-file-pdf"
             onClick={() => {
-              generarFichaCovid()
+              generarFichaCovid();
               // generarFichaCovid();
             }}
           ></i>{" "}

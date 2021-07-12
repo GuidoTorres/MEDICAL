@@ -6,7 +6,7 @@ import { customStyles } from "../../../helpers/tablaOpciones";
 
 const MDescargar = ({ setOpenHModal, openHModal, dataSelected }) => {
   const [descargar, setDescargar] = useState();
-  const [historial, setHistorial] = useState();
+  // const [historial, setHistorial] = useState();
   const closeModal = () => {
     setOpenHModal(false);
   };
@@ -23,11 +23,12 @@ const MDescargar = ({ setOpenHModal, openHModal, dataSelected }) => {
   const getDateHistorial = () => {
     fetchGETPOSTPUTDELETEJSON(`services/export/${5}`, descargar, "POST").then(
       (res) => {
-        setHistorial(res);
+        // setHistorial(res);
+        console.log(res);
       }
     );
   };
-  console.log(historial);
+  // console.log(historial);
   return (
     <Modal
       isOpen={openHModal}
@@ -44,7 +45,7 @@ const MDescargar = ({ setOpenHModal, openHModal, dataSelected }) => {
         <div className="row mt-3">
           <div className="col-12 mregistro__servicios">
             <div className="">
-            <div>
+              <div>
                 <label> Sub-Categoria:</label>
                 <select
                   className="form-select"
@@ -57,7 +58,7 @@ const MDescargar = ({ setOpenHModal, openHModal, dataSelected }) => {
 
                   {dataSelected &&
                     dataSelected.services.map((data, i) => (
-                      <option value={i+1}>{data.name}</option>
+                      <option value={i + 1}>{data.name}</option>
                     ))}
                 </select>
               </div>
