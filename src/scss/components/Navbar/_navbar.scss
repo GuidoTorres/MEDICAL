@@ -50,6 +50,8 @@
     align-items: center;
     z-index: 2;
     display: none;
+    flex-direction: column;
+    justify-content: space-between;
 
     .logoSide {
       background-color: white;
@@ -66,10 +68,10 @@
     .navUl {
       display: flex;
       flex-direction: column;
-      margin-top: 12vh;
+      // margin-top: 12vh;
       font-size: 15px;
       text-align: center;
-      margin-top: 100px;
+      // margin-top: 100px;
 
       li {
         color: white;
@@ -88,7 +90,8 @@
     .btnCerrar {
       color: white;
       cursor: pointer;
-      margin-top: 100px;
+      // margin-top: 100px;
+      margin: 25px 0;
 
       i {
         font-size: 25px;

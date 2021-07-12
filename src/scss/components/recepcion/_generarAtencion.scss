@@ -67,11 +67,7 @@
 
 @media screen and (min-width: 450px) {
   .generarAtencion {
-
-
-
     .container2 {
-
       .containerBotones {
         width: 100%;
         display: flex;
@@ -84,7 +80,6 @@
           margin-right: 10px;
         }
       }
-
     }
     .botones2 {
       display: flex;
@@ -95,7 +90,21 @@
         margin-right: 20px;
       }
     }
+  }
+}
 
+//CONTENEDOR DE CAMARA
+.content__camera {
+  flex-direction: column;
+  align-items: initial !important;
+  justify-content: center;
+
+  video {
+    padding: 10px 0 0;
+    width: 100%;
+  }
+  button {
+    margin: 10px 0;
   }
 }
 
@@ -149,7 +158,6 @@
         .containerPDF {
           width: 100%;
           flex-direction: row;
-
         }
         .containerPDF1 {
           width: 100%;
