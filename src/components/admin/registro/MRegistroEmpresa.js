@@ -570,8 +570,8 @@ const MRegistroEmpresa = ({
                   </select>
                 </div>
                 <div>
-                  <label>Plan de atención</label>
-                  <select
+                  <label style={{ width: "50%" }}>Plan de atención</label>
+                  {/* <select
                     aria-label="Default select example"
                     onChange={(e) =>
                       setEmpresa({
@@ -588,7 +588,25 @@ const MRegistroEmpresa = ({
                     <option value="2">Electroquimioluminiscencia</option>
                     <option value="3">RT-PCR</option>
                     <option value="3">Inmunocromatografia</option>
-                  </select>
+                  </select> */}
+                  <div className="mselect">
+                    <div className="mselect__item">
+                      <input type="checkbox" className="w-auto" />
+                      <label>Antígeno</label>
+                    </div>
+                    <div className="mselect__item">
+                      <input type="checkbox" className="w-auto" />
+                      <label>Electroquimioluminiscencia</label>
+                    </div>
+                    <div className="mselect__item">
+                      <input type="checkbox" className="w-auto" />
+                      <label>RT-PCR</label>
+                    </div>
+                    <div className="mselect__item">
+                      <input type="checkbox" className="w-auto" />
+                      <label>Inmunocromatografia</label>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="list-botones">
