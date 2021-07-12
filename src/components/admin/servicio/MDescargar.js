@@ -1,7 +1,7 @@
-import React from 'react';
-import Modal from 'react-modal';
+import React from "react";
+import Modal from "react-modal";
 
-import { customStyles } from '../../../helpers/tablaOpciones';
+import { customStyles } from "../../../helpers/tablaOpciones";
 
 const MDescargar = ({ setOpenHModal, openHModal }) => {
   const closeModal = () => {
@@ -33,7 +33,9 @@ const MDescargar = ({ setOpenHModal, openHModal }) => {
               </div>
             </div>
             <div className="list-botones">
-              <button className="botones ">Cancelar</button>
+              <button className="botones " onClick={closeModal}>
+                Cancelar
+              </button>
               <button className="botones ">Descargar</button>
             </div>
           </div>

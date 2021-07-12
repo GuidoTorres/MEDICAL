@@ -40,7 +40,7 @@ const MRegistroClinica = ({
     });
   };
 
-  console.log(data);
+  // console.log(dataSelected);
 
   const postClinics = () => {
     const formData = new FormData();
@@ -133,9 +133,18 @@ const MRegistroClinica = ({
     // formData.set("map_latitude", dataMapa ? dataMapa.lat : "");
     // formData.set("map_length]", dataMapa ? dataMapa.lng : "");
 
-    formData.set("contacts[0][name]", data.name ? data.name : "");
-    formData.set("contacts[0][phone]", data.phone ? data.phone : "");
-    formData.set("contacts[0][email]", data.email ? data.email : "");
+    formData.set(
+      "contacts[0][name]",
+      data.name ? data.name : dataSelected.corporation.contacts[0].name
+    );
+    formData.set(
+      "contacts[0][phone]",
+      data.phone ? data.phone : dataSelected.corporation.contacts[0].phone
+    );
+    formData.set(
+      "contacts[0][email]",
+      data.email ? data.email : dataSelected.corporation.contacts[0].email
+    );
     formData.set("contacts[0][contact_type]", 1);
 
     fetchGETPOSTPUTDELETE(
@@ -143,7 +152,7 @@ const MRegistroClinica = ({
       formData,
       "POST"
     ).then((resp) => {
-      console.log(resp);
+      // console.log(resp);
       if (resp.status === 200) {
         closeModal();
         getClinica();
@@ -266,8 +275,8 @@ const MRegistroClinica = ({
                     type="text"
                     name="name"
                     defaultValue={
-                      dataSelected && dataSelected.responsible
-                        ? dataSelected.responsible.name
+                      dataSelected && dataSelected.corporation.contacts
+                        ? dataSelected.corporation.contacts[0].name
                         : ""
                     }
                     onChange={(e) => handleChange(e)}
@@ -279,8 +288,8 @@ const MRegistroClinica = ({
                     type="text"
                     name="phone"
                     defaultValue={
-                      dataSelected && dataSelected.responsible
-                        ? dataSelected.responsible.phone
+                      dataSelected && dataSelected.corporation.contacts
+                        ? dataSelected.corporation.contacts[0].phone
                         : ""
                     }
                     onChange={(e) => handleChange(e)}
@@ -292,8 +301,8 @@ const MRegistroClinica = ({
                     type="text"
                     name="email"
                     defaultValue={
-                      dataSelected && dataSelected.responsible
-                        ? dataSelected.responsible.email
+                      dataSelected && dataSelected.corporation.contacts
+                        ? dataSelected.corporation.contacts[0].email
                         : ""
                     }
                     onChange={(e) => handleChange(e)}
@@ -305,8 +314,8 @@ const MRegistroClinica = ({
                     type="text"
                     name="address"
                     defaultValue={
-                      dataSelected && dataSelected.address
-                        ? dataSelected.address.address
+                      dataSelected && dataSelected.corporation.address
+                        ? dataSelected.corporation.address.address
                         : ""
                     }
                     onChange={(e) => handleChange(e)}
@@ -318,8 +327,8 @@ const MRegistroClinica = ({
                     type="text"
                     name="reference"
                     defaultValue={
-                      dataSelected && dataSelected.address
-                        ? dataSelected.address.reference
+                      dataSelected && dataSelected.corporation.address
+                        ? dataSelected.corporation.address.reference
                         : null
                     }
                     onChange={(e) => handleChange(e)}
