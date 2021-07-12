@@ -24,40 +24,52 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
 
   const updateService = () => {
     const data = {
-
-      name: crearServicio.name || dataSelected.services[crearServicio.id-1].name || "",
-      abbreviation: crearServicio.abbreviation || dataSelected.services[crearServicio.id -1].abbreviation || "",
-      service_category_id: crearServicio.service_category_id || dataSelected.services[crearServicio.id -1].service_category_id || "",
-      amount: crearServicio.amount || dataSelected.services[crearServicio.id -1].last_price.amount || ""
-
-    }
-    fetchGETPOSTPUTDELETEJSON(`services/${crearServicio.id}`, data, "PUT").then((resp) => {
-      if (resp.status === 200) {
-        closeModal();
-        Swal.fire({
-          icon: "success",
-          title: "Éxito",
-          text: "Se ha creado el servicio correctamente.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getServices();
-          }
-        });
-      } else {
-        closeModal();
-        Swal.fire({
-          icon: "error",
-          title: "!Ups¡",
-          text: "Algo salió mal.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Cerrar",
-        });
+      name:
+        crearServicio.name ||
+        dataSelected.services[crearServicio.id - 1].name ||
+        "",
+      abbreviation:
+        crearServicio.abbreviation ||
+        dataSelected.services[crearServicio.id - 1].abbreviation ||
+        "",
+      service_category_id:
+        crearServicio.service_category_id ||
+        dataSelected.services[crearServicio.id - 1].service_category_id ||
+        "",
+      amount:
+        crearServicio.amount ||
+        dataSelected.services[crearServicio.id - 1].last_price.amount ||
+        "",
+    };
+    fetchGETPOSTPUTDELETEJSON(`services/${crearServicio.id}`, data, "PUT").then(
+      (resp) => {
+        if (resp.status === 200) {
+          closeModal();
+          Swal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Se ha creado el servicio correctamente.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Aceptar",
+          }).then((resp) => {
+            if (resp.isConfirmed) {
+              getServices();
+            }
+          });
+        } else {
+          closeModal();
+          Swal.fire({
+            icon: "error",
+            title: "!Ups¡",
+            text: "Algo salió mal.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cerrar",
+          });
+        }
       }
-    });
+    );
   };
 
   return (
@@ -102,7 +114,7 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
 
                   {dataSelected &&
                     dataSelected.services.map((data, i) => (
-                      <option value={i+1}>{data.name}</option>
+                      <option value={i + 1}>{data.name}</option>
                     ))}
                 </select>
               </div>
@@ -111,7 +123,11 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                 <input
                   type="text"
                   name="name"
-                  defaultValue={crearServicio.id ? dataSelected.services[crearServicio.id-1].name : ""}
+                  defaultValue={
+                    crearServicio.id
+                      ? dataSelected.services[crearServicio.id - 1].name
+                      : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -120,7 +136,11 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                 <input
                   type="text"
                   name="abbreviation"
-                  defaultValue={crearServicio.id ? dataSelected.services[crearServicio.id-1].abbreviation : ""}
+                  defaultValue={
+                    crearServicio.id
+                      ? dataSelected.services[crearServicio.id - 1].abbreviation
+                      : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -130,8 +150,16 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                 <input
                   type="text"
                   name="amount"
-                  defaultValue={crearServicio.id ? dataSelected.services[crearServicio.id-1].last_price.amount : ""}
-
+                  defaultValue={
+                    crearServicio.id
+                      ? dataSelected.services &&
+                        dataSelected.services[crearServicio.id - 1] &&
+                        dataSelected.services[crearServicio.id - 1]
+                          .last_price &&
+                        dataSelected.services[crearServicio.id - 1].last_price
+                          .amount
+                      : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 />
               </div>

@@ -36,7 +36,7 @@ const MTrabajador = ({
     formData.set("mom_lastname", trabajador.mom_lastname || "");
     formData.set("email", trabajador.email || "");
     formData.set("cellphone", trabajador.cellphone || "");
-    formData.set("photo", "imagen");
+    formData.set("photo", avatar.file || "");
     formData.set("role_id", trabajador.role_id || "");
 
     fetchGETPOSTPUTDELETE("employees", formData, "POST").then((resp) => {
@@ -76,7 +76,7 @@ const MTrabajador = ({
     formData.set("mom_lastname", editarTrabajador.mom_lastname || "");
     formData.set("email", editarTrabajador.email || "");
     formData.set("cellphone", editarTrabajador.cellphone || "");
-    formData.set("photo", "avatar.file" || "");
+    formData.set("photo", avatar.file || "");
     formData.set("role_id", editarTrabajador.role_id || "");
     fetchGETPOSTPUTDELETEJSON(
       `employees/${dataSelected.user_id}`,
@@ -158,8 +158,8 @@ const MTrabajador = ({
                   type="text"
                   name="dni"
                   defaultValue={
-                    dataSelected && dataSelected.person
-                      ? dataSelected.person.dni
+                    dataSelected && dataSelected.dni
+                      ? dataSelected.dni
                       : ""
                   }
                   onChange={handleOnChange}
