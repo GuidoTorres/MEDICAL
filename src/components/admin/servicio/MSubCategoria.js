@@ -37,6 +37,7 @@ const MSubCategoria = ({ setOpenSubModal, openSubModal, subCategoria }) => {
                       <tr key={data.id}>
                         <th scope="row">{data.id}</th>
                         <td className="text-center">{data.name}</td>
+                        <td className="text-center">{data.services && data.services.last_price ? data.services.last_price : ""}</td>
                       </tr>
                     );
                   })}

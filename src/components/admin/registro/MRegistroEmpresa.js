@@ -18,8 +18,6 @@ const MRegistroEmpresa = ({
   const [empresa, setEmpresa] = useState({});
   const [types, setTypes] = useState([]);
 
-  // const [empresaEditar, setEditarEmpresa] = useState(null)
-
   const closeModal = () => {
     setOpenModal(false);
     setEditar(false);
@@ -95,30 +93,65 @@ const MRegistroEmpresa = ({
 
   console.log(empresa);
   console.log(dataSelected);
-
   const putCorporation = () => {
     const formData = new FormData();
 
     formData.set("ruc", empresa.ruc || "");
-    formData.set("business_name", empresa.business_name || "");
-    formData.set("commercial_name", empresa.commercial_name || "");
-    formData.set("logo", avatar ? avatar.file : "");
+    formData.set(
+      "business_name",
+      empresa.business_name || dataSelected.corporation.ruc
+    );
+    formData.set(
+      "commercial_name",
+      empresa.commercial_name || dataSelected.corporation.commercial_name
+    );
+    formData.set("logo", avatar ? avatar.file : dataSelected.corporation.logo);
 
-    formData.set("address", empresa.address.address || "");
-    formData.set("reference", empresa.address.reference || "");
+    formData.set(
+      "address",
+      empresa.address.address || dataSelected.corporation.address.address
+    );
+    formData.set(
+      "reference",
+      empresa.address.reference || dataSelected.corporation.address.reference
+    );
 
-    formData.set("contacts[0][name]", empresa.contacts.name || "");
-    formData.set("contacts[0][phone]", empresa.contacts.phone || "");
-    formData.set("contacts[0][email]", empresa.contacts.email || "");
+    formData.set(
+      "contacts[0][name]",
+      empresa.contacts.name || dataSelected.corporation.contacts[0].name
+    );
+    formData.set(
+      "contacts[0][phone]",
+      empresa.contacts.phone || dataSelected.corporation.contacts[0].phone
+    );
+    formData.set(
+      "contacts[0][email]",
+      empresa.contacts.email || dataSelected.corporation.contacts[0].email
+    );
     formData.set("contacts[0][contact_type]", 1);
 
-    formData.set("contacts[1][name]", empresa.contacts.name1 || "");
-    formData.set("contacts[1][phone]", empresa.contacts.phone1 || "");
-    formData.set("contacts[1][email]", empresa.contacts.email1 || "");
+    formData.set(
+      "contacts[1][name]",
+      empresa.contacts.name1 || dataSelected.corporation.contacts[1].name
+    );
+    formData.set(
+      "contacts[1][phone]",
+      empresa.contacts.phone1 || dataSelected.corporation.contacts[1].phone
+    );
+    formData.set(
+      "contacts[1][email]",
+      empresa.contacts.email1 || dataSelected.corporation.contacts[1].email
+    );
     formData.set("contacts[1][contact_type]", 2);
 
-    formData.set("before", empresa.billing ? empresa.billing.before : "");
-    formData.set("credit", empresa.billing ? empresa.billing.credit : "");
+    formData.set(
+      "before",
+      empresa.billing ? empresa.billing.before : dataSelected.billing.before
+    );
+    formData.set(
+      "credit",
+      empresa.billing ? empresa.billing.credit : dataSelected.billing.credit
+    );
 
     formData.set("services[0][service_id]", empresa.services.service_id || "");
     formData.set("services[0][state]", 0);
@@ -156,69 +189,7 @@ const MRegistroEmpresa = ({
     });
   };
 
-  useEffect(() => {
-    if (dataSelected) {
-      setEmpresa({
-        ruc:
-          dataSelected && dataSelected.corporation
-            ? dataSelected.corporation.ruc
-            : "",
-        business_name:
-          dataSelected && dataSelected.corporation
-            ? dataSelected.corporation.business_name
-            : "",
-        commercial_name:
-          dataSelected && dataSelected.corporation
-            ? dataSelected.corporation.commercial_name
-            : "",
-        logo: "logo img",
-        address:
-          dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.address
-            ? dataSelected.corporation.address.address
-            : "",
-        reference:
-          dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.address
-            ? dataSelected.corporation.address.reference
-            : "",
-        contacts: [
-          {
-            name: "name21",
-            phone: "9534648781",
-            email: "emailemail1",
-            contact_type: 1,
-          },
-          {
-            name: "name42",
-            phone: 9534648782,
-            email: "emailemail2",
-            contact_type: 2,
-          },
-        ],
-        before:
-          dataSelected && dataSelected.billing
-            ? dataSelected.billing.before
-            : "",
-        credit:
-          dataSelected && dataSelected.billing
-            ? dataSelected.billing.credit
-            : "",
-        services: [
-          {
-            service_id: 2,
-          },
-        ],
-      });
-    } else {
-      setEmpresa({});
-    }
-  }, [dataSelected]);
-
   return (
-    // <div className="">
     <Modal
       isOpen={openModal}
       onRequestClose={closeModal}
@@ -573,6 +544,7 @@ const MRegistroEmpresa = ({
                   <label style={{ width: "50%" }}>Plan de atención</label>
                   {/* <select
                     aria-label="Default select example"
+                    multiple = "multiple option"
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,

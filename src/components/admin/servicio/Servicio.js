@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 // import { servicio } from '../../../data/AServicio';
 import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
 import { paginacionOpciones } from "../../../helpers/tablaOpciones";
+import MCrearServicio from "./MCrearServicio";
 import MDescargar from "./MDescargar";
 import MServicio from "./MServicio";
 import MSubCategoria from "./MSubCategoria";
@@ -15,34 +16,24 @@ const Servicio = () => {
   // const [listRegistro, setListRegistro] = useState([]);
   const [getServicio, setGetServicio] = useState([]);
   const [openModal, setOpenModal] = useState(false);
-
+  const [dataSelected, setDataSelected] = useState({})
   const [openSubModal, setopenSubModal] = useState(false);
   const [subCategoria, setSubCategoria] = useState([]);
-
   const [openHModal, setOpenHModal] = useState(false);
+  const [openServicio, setOpenServicio] = useState(false)
   // const [servicios, setServicios] = useState({});
 
-  //TODO LISTAR
-  // const resp = () => {
-  //   fetchGETPOSTPUTDELETE('services')
-  //     .then((data) => data.json())
-  //     .then((datos) => setGetServicio(datos.services));
-  // };
-
-  // useEffect(() => {
-  //   resp();
-  // }, []);
 
   const getServices = () => {
     fetchGETPOSTPUTDELETE("services")
       .then((info) => info.json())
-      // .then((data) => console.log(data.data));
       .then((datos) => setGetServicio(datos.data));
   };
 
   useEffect(() => {
     getServices();
   }, []);
+
 
   const columnas = [
     {
@@ -88,7 +79,7 @@ const Servicio = () => {
       ),
     },
     {
-      name: "Agregar",
+      name: "Editar",
       button: true,
       cell: (e) => (
         <button onClick={() => handleEditar(e)} className="table__tablebutton">
@@ -133,15 +124,27 @@ const Servicio = () => {
   // }, [busqueda]);
   //
 
-  const handleEditar = () => {
+  const handleEditar = (e) => {
     setOpenModal(true);
+    setDataSelected(e)
   };
+
   const handleEliminar = (e) => {
+    console.log(e)
     Swal.fire({
       title: "¿Desea eliminar?",
       text: `${e.name}`,
       icon: "warning",
       showCancelButton: true,
+      input: 'select',
+      inputOptions: {
+        '0': "Seleccione",
+        '1': e.services[1].name,
+        '2': e.services[2].name,
+        '3': e.services[3].name,
+        '4': e.services[4].name,
+        '5': e.services[5].name,
+      },
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Eliminar",
@@ -154,7 +157,7 @@ const Servicio = () => {
       }
     });
   };
-
+  
   const handleSubcategoria = (e) => {
     setopenSubModal(true);
     setSubCategoria(e);
@@ -162,7 +165,14 @@ const Servicio = () => {
 
   const handleHistorial = () => {
     setOpenHModal(true);
+    setDataSelected()
   };
+
+  const handleAddService = () =>{
+
+    setOpenServicio(true)
+
+  }
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -180,6 +190,15 @@ const Servicio = () => {
                 value={busqueda}
                 onChange={handleSearch}
               />
+            </div>
+            <div>
+              <label>
+                Agregar servicio{" "}
+                <i
+                  className="fas fa-plus-circle"
+                  onClick={handleAddService}
+                ></i>{" "}
+              </label>
             </div>
           </div>
 
@@ -200,7 +219,10 @@ const Servicio = () => {
         </div>
       </div>
       {openModal && (
-        <MServicio openModal={openModal} setOpenModal={setOpenModal} />
+        <MServicio openModal={openModal} setOpenModal={setOpenModal} dataSelected={dataSelected} getServices={getServices} />
+      )}
+      {openServicio && (
+        <MCrearServicio openServicio={openServicio} setOpenServicio={setOpenServicio} getServices={getServices} />
       )}
       {openSubModal && (
         <MSubCategoria
@@ -210,7 +232,7 @@ const Servicio = () => {
         />
       )}
       {openHModal && (
-        <MDescargar setOpenHModal={setOpenHModal} openHModal={openHModal} getServices={getServices} />
+        <MDescargar setOpenHModal={setOpenHModal} openHModal={openHModal} dataSelected={dataSelected} getServices={getServices} />
       )}
     </div>
   );

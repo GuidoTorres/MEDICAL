@@ -7,9 +7,6 @@ import { customStyles } from "../../../helpers/tablaOpciones";
 import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
 import MapaGoogle from "../../Mapa/MapaGoogle";
 
-// import MapaGoogle from '../../../Mapa/MapaGoogle';
-// import mapa from '../../../assets/mapa/mapa.jpg';
-
 const MRegistroClinica = ({
   openModal,
   setOpenModal,
@@ -19,18 +16,14 @@ const MRegistroClinica = ({
   editar,
   setEditar,
 }) => {
-  // const [clinica, setClinica] = useState([]);
-
   const [avatar, setAvatar] = useState(null);
   const [dataMapa, setDataMapa] = useState();
   const [data, setData] = useState({});
-  // const [editarCLinica, setEditarClinica] = useState(null)
 
   const closeModal = () => {
     setOpenModal(false);
     setEditar(false);
     setDataSelected(null);
-    // setCreateClinica(initialState);
   };
 
   const handleChange = (e) => {
@@ -52,23 +45,42 @@ const MRegistroClinica = ({
     formData.set("address", data.address || "");
     formData.set("reference", data.reference || "");
     formData.set("clinic_type_id", data.clinic_type_id || "");
-    // formData.set("map_latitude", dataMapa ? dataMapa.lat : "");
-    // formData.set("map_length]", dataMapa ? dataMapa.lng : "");
+    formData.set("map_latitude", dataMapa ? dataMapa.lat : "");
+    formData.set("map_length", dataMapa ? dataMapa.lng : "");
 
     formData.set("contacts[0][name]", data.name || "");
     formData.set("contacts[0][phone]", data.phone || "");
     formData.set("contacts[0][email]", data.email || "");
     formData.set("contacts[0][contact_type]", 1);
 
-    // formData.set("work_days[0]", data.workday ? data.workday.monday : "");
-    // formData.set("work_days[1][tuesday]", data.workday ? data.workday.tuesday : "");
-    // formData.set("workday[wednesday]", data.workday ? data.workday.wednesday : "");
-    // formData.set("workday[thursday]", data.workday ? data.workday.thursday : "");
-    // formData.set("workday[friday]", data.workday ? data.workday.friday : "");
-    // formData.set("workday[saturday]", data.workday ? data.workday.saturday : "");
-    // formData.set("workday[sunday]", data.workday ? data.workday.sunday : "");
-    // formData.set("workday[opening]", data.workday ? data.workday.opening : "");
-    // formData.set("workday[closing]", data.workday ? data.workday.closing : "");
+    formData.set("work_days[0][day_id]", data.workday.monday || "");
+    formData.set("work_days[0][opening]", data.workday.opening || "");
+    formData.set("work_days[0][closing]", data.workday.closing || "");
+
+    formData.set("work_days[1][day_id]", data.workday.tuesday || "");
+    formData.set("work_days[1][opening]", data.workday.opening || "");
+    formData.set("work_days[1][closing]", data.workday.closing || "");
+
+    formData.set("work_days[2][day_id]", data.workday.wednesday || "");
+    formData.set("work_days[2][opening]", data.workday.opening || "");
+    formData.set("work_days[2][closing]", data.workday.closing || "");
+
+    formData.set("work_days[3][day_id]", data.workday.thursday || "");
+    formData.set("work_days[3][opening]", data.workday.opening || "");
+    formData.set("work_days[3][closing]", data.workday.closing || "");
+
+    formData.set("work_days[4][day_id]", data.workday.friday || "");
+    formData.set("work_days[4][opening]", data.workday.opening || "");
+    formData.set("work_days[4][closing]", data.workday.closing || "");
+
+    formData.set("work_days[5][day_id]", data.workday.saturday || "");
+    formData.set("work_days[5][opening]", data.workday.opening || "");
+    formData.set("work_days[5][closing]", data.workday.closing || "");
+
+    formData.set("work_days[6][day_id]", data.workday.sunday || "");
+    formData.set("work_days[6][opening]", data.workday.opening || "");
+    formData.set("work_days[6][closing]", data.workday.closing || "");
+
     fetchGETPOSTPUTDELETE("clinics", formData, "POST").then((resp) => {
       if (resp.status === 200) {
         closeModal();
@@ -130,8 +142,8 @@ const MRegistroClinica = ({
       "clinic_type_id",
       data.clinic_type_id ? data.clinic_type_id : dataSelected.clinic_type_id
     );
-    // formData.set("map_latitude", dataMapa ? dataMapa.lat : "");
-    // formData.set("map_length]", dataMapa ? dataMapa.lng : "");
+    formData.set("map_latitude", dataMapa ? dataMapa.lat : "");
+    formData.set("map_length]", dataMapa ? dataMapa.lng : "");
 
     formData.set(
       "contacts[0][name]",
@@ -146,6 +158,34 @@ const MRegistroClinica = ({
       data.email ? data.email : dataSelected.corporation.contacts[0].email
     );
     formData.set("contacts[0][contact_type]", 1);
+
+    formData.set("work_days[0][day_id]", data.workday.monday || "");
+    formData.set("work_days[0][opening]", data.workday.opening || "");
+    formData.set("work_days[0][closing]", data.workday.closing || "");
+
+    formData.set("work_days[1][day_id]", data.workday.tuesday || "");
+    formData.set("work_days[1][opening]", data.workday.opening || "");
+    formData.set("work_days[1][closing]", data.workday.closing || "");
+
+    formData.set("work_days[2][day_id]", data.workday.wednesday || "");
+    formData.set("work_days[2][opening]", data.workday.opening || "");
+    formData.set("work_days[2][closing]", data.workday.closing || "");
+
+    formData.set("work_days[3][day_id]", data.workday.thursday || "");
+    formData.set("work_days[3][opening]", data.workday.opening || "");
+    formData.set("work_days[3][closing]", data.workday.closing || "");
+
+    formData.set("work_days[4][day_id]", data.workday.friday || "");
+    formData.set("work_days[4][opening]", data.workday.opening || "");
+    formData.set("work_days[4][closing]", data.workday.closing || "");
+
+    formData.set("work_days[5][day_id]", data.workday.saturday || "");
+    formData.set("work_days[5][opening]", data.workday.opening || "");
+    formData.set("work_days[5][closing]", data.workday.closing || "");
+
+    formData.set("work_days[6][day_id]", data.workday.sunday || "");
+    formData.set("work_days[6][opening]", data.workday.opening || "");
+    formData.set("work_days[6][closing]", data.workday.closing || "");
 
     fetchGETPOSTPUTDELETE(
       `clinics/update/${dataSelected.id}`,
@@ -163,68 +203,6 @@ const MRegistroClinica = ({
   const handleAgregar = (e) => {
     e.preventDefault();
   };
-  // useEffect(() => {
-  //   if (dataSelected) {
-  //     setData({
-  //       ...data,
-  //       clinic_type: 2,
-  //       ruc: dataSelected && dataSelected.ruc,
-  //       business_name: dataSelected ? dataSelected.business_name : "",
-  //       commercial_name: dataSelected ? dataSelected.commercial_name : "",
-  //       logo: "image",
-  //       address_id: 12,
-  //       address: {
-  //         address:
-  //           dataSelected && dataSelected.address
-  //             ? dataSelected.address.address
-  //             : "",
-  //         reference:
-  //           dataSelected && dataSelected.address
-  //             ? dataSelected.address.reference
-  //             : "",
-  //         map_latitude:
-  //           dataSelected && dataSelected.address
-  //             ? dataSelected.address.map_latitude
-  //             : "",
-  //         map_length:
-  //           dataSelected && dataSelected.address
-  //             ? dataSelected.address.map_length
-  //             : "",
-  //         district_id: 34,
-  //       },
-  //       responsible: {
-  //         name:
-  //           dataSelected && dataSelected.responsible
-  //             ? dataSelected.responsible.name
-  //             : "",
-  //         phone:
-  //           dataSelected && dataSelected.responsible
-  //             ? dataSelected.responsible.phone
-  //             : "",
-  //         email:
-  //           dataSelected && dataSelected.responsible
-  //             ? dataSelected.responsible.email
-  //             : "",
-  //         contact_type: 1,
-  //         corporation_id: 12,
-  //       },
-  //       workday: {
-  //         corporation_id: 12,
-  //         opening: "16:06:21",
-  //         closing: "09:24:23",
-  //         monday: 0,
-  //         tuesday: 1,
-  //         wednesday: 0,
-  //         thursday: 0,
-  //         friday: 1,
-  //         saturday: 0,
-  //         sunday: 1,
-  //       },
-  //     });
-  //   } else {
-  //     setData(null);
-  //   }
-  // }, [dataSelected, data]);
 
   return (
     <div>
@@ -460,7 +438,7 @@ const MRegistroClinica = ({
                           ...data,
                           workday: {
                             ...data.workday,
-                            tuesday: e.target.checked === true ? 1 : 0,
+                            tuesday: e.target.checked === true ? 2 : 0,
                           },
                         })
                       }
@@ -483,7 +461,7 @@ const MRegistroClinica = ({
                           ...data,
                           workday: {
                             ...data.workday,
-                            wednesday: e.target.checked === true ? 1 : 0,
+                            wednesday: e.target.checked === true ? 3 : 0,
                           },
                         })
                       }
@@ -507,7 +485,7 @@ const MRegistroClinica = ({
                           ...data,
                           workday: {
                             ...data.workday,
-                            thursday: e.target.checked === true ? 1 : 0,
+                            thursday: e.target.checked === true ? 4 : 0,
                           },
                         })
                       }
@@ -531,7 +509,7 @@ const MRegistroClinica = ({
                           ...data,
                           workday: {
                             ...data.workday,
-                            friday: e.target.checked === true ? 1 : 0,
+                            friday: e.target.checked === true ? 5 : 0,
                           },
                         })
                       }
@@ -555,7 +533,7 @@ const MRegistroClinica = ({
                           ...data,
                           workday: {
                             ...data.workday,
-                            saturday: e.target.checked === true ? 1 : 0,
+                            saturday: e.target.checked === true ? 6 : 0,
                           },
                         })
                       }
@@ -579,7 +557,7 @@ const MRegistroClinica = ({
                           ...data,
                           workday: {
                             ...data.workday,
-                            sunday: e.target.checked === true ? 1 : 0,
+                            sunday: e.target.checked === true ? 7 : 0,
                           },
                         })
                       }
