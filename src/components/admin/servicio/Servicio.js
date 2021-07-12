@@ -128,12 +128,23 @@ const Servicio = () => {
     setOpenModal(true);
     setDataSelected(e)
   };
+
   const handleEliminar = (e) => {
+    console.log(e)
     Swal.fire({
       title: "¿Desea eliminar?",
       text: `${e.name}`,
       icon: "warning",
       showCancelButton: true,
+      input: 'select',
+      inputOptions: {
+        '0': "Seleccione",
+        '1': e.services[1].name,
+        '2': e.services[2].name,
+        '3': e.services[3].name,
+        '4': e.services[4].name,
+        '5': e.services[5].name,
+      },
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Eliminar",
@@ -146,7 +157,7 @@ const Servicio = () => {
       }
     });
   };
-
+  
   const handleSubcategoria = (e) => {
     setopenSubModal(true);
     setSubCategoria(e);

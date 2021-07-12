@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useCallback } from 'react';
-import { useRef } from 'react';
-import Webcam from 'react-webcam';
+import React, { useState } from "react";
+import { useCallback } from "react";
+import { useRef } from "react";
+import Webcam from "react-webcam";
 
 const WebCamScreenshot = () => {
   const webcamRef = useRef(null);
@@ -13,10 +13,10 @@ const WebCamScreenshot = () => {
   return (
     <div className="container">
       <div className="row">
-        <div className="col-12 bg-success">
+        <div className="col-12 bg-success content__camera">
           <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
-          <button onClick={capture} className="botones mt-4">
-            Capture photo
+          <button onClick={capture} className="botones">
+            Capturar foto
           </button>
         </div>
         <div className="col-12 bg-warning">

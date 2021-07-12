@@ -44,93 +44,97 @@ const Estadisticas = () => {
       <label htmlFor="">Seleccionar el intervalo de tiempo</label>
 
       <div className="row mt-2">
-        <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 recepcion__estadistica barra">
-          <div className="adminestadistica__fecha">
-            <label>Fecha</label>
-            <div className="adminestadistica__subfecha">
-              <div>
-                <label>Inicio:</label>
-                <input
-                  type="date"
-                  name="fecha_inicio"
-                  onChange={(e) => handleChange(e)}
-                />
-              </div>
-              <div>
-                <label>Fin:</label>
-                <input
-                  type="date"
-                  name="fecha_fin"
-                  onChange={(e) => handleChange(e)}
-                />
+        <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 recepcion__estadistica">
+          <div className="barra">
+            <div className="adminestadistica__fecha">
+              <label>Fecha</label>
+              <div className="adminestadistica__subfecha">
+                <div>
+                  <label>Inicio:</label>
+                  <input
+                    type="date"
+                    name="fecha_inicio"
+                    onChange={(e) => handleChange(e)}
+                  />
+                </div>
+                <div>
+                  <label>Fin:</label>
+                  <input
+                    type="date"
+                    name="fecha_fin"
+                    onChange={(e) => handleChange(e)}
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          <button
-            className="botones mt-5 "
-            style={{
-              width: "200px",
-              borderRadius: "8px",
-              marginBottom: "30px",
-              marginLeft: "120px",
-            }}
-            onClick={() => getEstadisticas()}
-          >
-            Obtener estadísticas
-          </button>
+            <button
+              className="botones mt-5 "
+              style={{
+                width: "200px",
+                borderRadius: "8px",
+                marginBottom: "30px",
+                marginLeft: "120px",
+              }}
+              onClick={() => getEstadisticas()}
+            >
+              Obtener estadísticas
+            </button>
+          </div>
         </div>
 
-        <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 barra">
-          <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link active"
-                id="home-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#home"
-                type="button"
-                role="tab"
-                aria-controls="home"
-                aria-selected="true"
+        <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+          <div className="barra">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="home-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#home"
+                  type="button"
+                  role="tab"
+                  aria-controls="home"
+                  aria-selected="true"
+                >
+                  Totales
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="profile-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#profile"
+                  type="button"
+                  role="tab"
+                  aria-controls="profile"
+                  aria-selected="false"
+                >
+                  Tipo de prueba
+                </button>
+              </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+              <div
+                class="tab-pane fade show active"
+                id="home"
+                role="tabpanel"
+                aria-labelledby="home-tab"
               >
-                Totales
-              </button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button
-                class="nav-link"
-                id="profile-tab"
-                data-bs-toggle="tab"
-                data-bs-target="#profile"
-                type="button"
-                role="tab"
-                aria-controls="profile"
-                aria-selected="false"
+                <Bar className="bar mt-5" data={data} />
+              </div>
+              <div
+                class="tab-pane fade"
+                id="profile"
+                role="tabpanel"
+                aria-labelledby="profile-tab"
               >
-                Tipo de prueba
-              </button>
-            </li>
-          </ul>
-          <div class="tab-content" id="myTabContent">
-            <div
-              class="tab-pane fade show active"
-              id="home"
-              role="tabpanel"
-              aria-labelledby="home-tab"
-            >
-              <Bar className="bar mt-5" data={data} />
-            </div>
-            <div
-              class="tab-pane fade"
-              id="profile"
-              role="tabpanel"
-              aria-labelledby="profile-tab"
-            >
-              <Doughnut
-                data={data}
-                style={{ width: "50%", height: "40%", marginLeft: "100px" }}
-              ></Doughnut>
+                <Doughnut
+                  data={data}
+                  style={{ width: "50%", height: "40%", marginLeft: "100px" }}
+                ></Doughnut>
+              </div>
             </div>
           </div>
         </div>

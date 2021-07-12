@@ -65,7 +65,7 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
       isOpen={openModal}
       onRequestClose={closeModal}
       style={customStyles}
-      className="modal modal__EditarServicio"
+      className="modal modal__EServicio"
       overlayClassName="modal-fondo"
       closeTimeoutMS={200}
       preventScroll={true}
