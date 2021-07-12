@@ -79,7 +79,7 @@ const MTrabajador = ({
     formData.set("photo", "avatar.file" || "");
     formData.set("role_id", editarTrabajador.role_id || "");
     fetchGETPOSTPUTDELETEJSON(
-      `employees/${dataSelected.id}`,
+      `employees/${dataSelected.user_id}`,
       editarTrabajador,
       "PUT"
     ).then((resp) => {

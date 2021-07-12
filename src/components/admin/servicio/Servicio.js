@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 // import { servicio } from '../../../data/AServicio';
 import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
 import { paginacionOpciones } from "../../../helpers/tablaOpciones";
+import MCrearServicio from "./MCrearServicio";
 import MDescargar from "./MDescargar";
 import MServicio from "./MServicio";
 import MSubCategoria from "./MSubCategoria";
@@ -18,8 +19,8 @@ const Servicio = () => {
   const [dataSelected, setDataSelected] = useState({})
   const [openSubModal, setopenSubModal] = useState(false);
   const [subCategoria, setSubCategoria] = useState([]);
-
   const [openHModal, setOpenHModal] = useState(false);
+  const [openServicio, setOpenServicio] = useState(false)
   // const [servicios, setServicios] = useState({});
 
 
@@ -32,6 +33,7 @@ const Servicio = () => {
   useEffect(() => {
     getServices();
   }, []);
+
 
   const columnas = [
     {
@@ -122,8 +124,9 @@ const Servicio = () => {
   // }, [busqueda]);
   //
 
-  const handleEditar = () => {
+  const handleEditar = (e) => {
     setOpenModal(true);
+    setDataSelected(e)
   };
   const handleEliminar = (e) => {
     Swal.fire({
@@ -156,7 +159,7 @@ const Servicio = () => {
 
   const handleAddService = () =>{
 
-    
+    setOpenServicio(true)
 
   }
 
@@ -182,7 +185,7 @@ const Servicio = () => {
                 Agregar servicio{" "}
                 <i
                   className="fas fa-plus-circle"
-                  // onClick={handleAddRegistro}
+                  onClick={handleAddService}
                 ></i>{" "}
               </label>
             </div>
@@ -205,7 +208,10 @@ const Servicio = () => {
         </div>
       </div>
       {openModal && (
-        <MServicio openModal={openModal} setOpenModal={setOpenModal} />
+        <MServicio openModal={openModal} setOpenModal={setOpenModal} dataSelected={dataSelected} getServices={getServices} />
+      )}
+      {openServicio && (
+        <MCrearServicio openServicio={openServicio} setOpenServicio={setOpenServicio} getServices={getServices} />
       )}
       {openSubModal && (
         <MSubCategoria
@@ -215,7 +221,7 @@ const Servicio = () => {
         />
       )}
       {openHModal && (
-        <MDescargar setOpenHModal={setOpenHModal} openHModal={openHModal} getServices={getServices} />
+        <MDescargar setOpenHModal={setOpenHModal} openHModal={openHModal} dataSelected={dataSelected} getServices={getServices} />
       )}
     </div>
   );

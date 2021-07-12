@@ -18,14 +18,16 @@ const MDescargar = ({ setOpenHModal, openHModal, dataSelected }) => {
       [e.target.name]: e.target.value,
     });
   };
+  console.log(descargar);
 
   const getDateHistorial = () => {
-    fetchGETPOSTPUTDELETEJSON(`services/export/${1}`, descargar, "POST").then(
+    fetchGETPOSTPUTDELETEJSON(`services/export/${5}`, descargar, "POST").then(
       (res) => {
         setHistorial(res);
       }
     );
   };
+  console.log(historial);
   return (
     <Modal
       isOpen={openHModal}
@@ -42,6 +44,23 @@ const MDescargar = ({ setOpenHModal, openHModal, dataSelected }) => {
         <div className="row mt-3">
           <div className="col-12 mregistro__servicios">
             <div className="">
+            <div>
+                <label> Sub-Categoria:</label>
+                <select
+                  className="form-select"
+                  aria-label="Default select example"
+                  style={{ width: "50%" }}
+                  name="id"
+                  onChange={(e) => downloadHistorial(e)}
+                >
+                  <option selected>Seleccione</option>
+
+                  {dataSelected &&
+                    dataSelected.services.map((data, i) => (
+                      <option value={i+1}>{data.name}</option>
+                    ))}
+                </select>
+              </div>
               <div>
                 <label>Fecha inicio:</label>
                 <input
