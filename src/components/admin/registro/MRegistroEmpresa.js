@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
-import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
+import { fetchGETPOSTPUTDELETE, fetchRUC } from "../../../helpers/fetch";
 import { customStyles } from "../../../helpers/tablaOpciones";
 import { UploadAvatar } from "../../uploadAvatar/uploadAvatar";
 import Swal from "sweetalert2";
@@ -17,6 +17,8 @@ const MRegistroEmpresa = ({
   const [avatar, setAvatar] = useState(null);
   const [empresa, setEmpresa] = useState({});
   const [types, setTypes] = useState([]);
+  const [ruc, setRuc] = useState({});
+
 
   const closeModal = () => {
     setOpenModal(false);
@@ -31,9 +33,26 @@ const MRegistroEmpresa = ({
         setTypes(datos.types);
       });
   };
+
+  const getRuc = () => {
+    
+    fetchRUC(empresa.ruc, "GET")
+      .then((res) => res.json())
+      .then((res) => setRuc(res));
+  };
+
+
   useEffect(() => {
     getCorporationTypes();
-  }, []);
+
+    if(empresa && empresa.ruc && empresa.ruc.length === 11){
+
+      getRuc()
+    }
+
+  }, [empresa.ruc]);
+
+  console.log(ruc);
 
   const postCorporation = () => {
     const formData = new FormData();
@@ -194,9 +213,12 @@ const MRegistroEmpresa = ({
                   type="text"
                   name="business_name"
                   defaultValue={
+                    editar ?
                     dataSelected && dataSelected.corporation
                       ? dataSelected.corporation.business_name
                       : ""
+
+                      : ruc.razonSocial
                   }
                   onChange={(e) =>
                     setEmpresa({ ...empresa, business_name: e.target.value })
@@ -224,12 +246,15 @@ const MRegistroEmpresa = ({
                   type="text"
                   name="address"
                   defaultValue={
+                    editar ?
                     dataSelected &&
                     dataSelected.corporation &&
                     dataSelected.corporation.address &&
                     dataSelected.corporation.address.address
                       ? dataSelected.corporation.address.address
                       : ""
+
+                      : ruc.direccion 
                   }
                   onChange={(e) =>
                     setEmpresa({

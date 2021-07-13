@@ -3,11 +3,13 @@ import Swal from "sweetalert2";
 
 import Modal from "react-modal";
 import {
+  fetchDNI,
   fetchGETPOSTPUTDELETE,
   fetchGETPOSTPUTDELETEJSON,
 } from "../../../helpers/fetch";
 import { customStyles } from "../../../helpers/tablaOpciones";
 import { UploadAvatar } from "../../uploadAvatar/uploadAvatar";
+import MRegistroEmpresa from "../registro/MRegistroEmpresa";
 
 const MTrabajador = ({
   openModal,
@@ -21,12 +23,27 @@ const MTrabajador = ({
   const [avatar, setAvatar] = useState(null);
   const [trabajador, setTrabajador] = useState({});
   const [editarTrabajador, setEditarTrabajador] = useState(null);
+  const [dni, setDni] = useState({});
 
   const closeModal = () => {
     setOpenModal(false);
     setEditar(false);
     setDataSelected({});
   };
+
+  const getDni = () => {
+    fetchDNI(trabajador.dni, "GET")
+      .then((res) => res.json())
+      .then((res) => setDni(res));
+  };
+
+  useEffect(() => {
+    if (trabajador && trabajador.dni && trabajador.dni.length === 8) {
+      getDni();
+    }
+  }, [trabajador.dni]);
+  console.log(trabajador);
+  console.log(dni);
 
   const postEmployee = () => {
     const formData = new FormData();
@@ -72,10 +89,19 @@ const MTrabajador = ({
     const formData = new FormData();
     formData.set("dni", editarTrabajador.dni || dataSelected.dni);
     formData.set("name", editarTrabajador.name || dataSelected.name);
-    formData.set("pat_lastname", editarTrabajador.pat_lastname || dataSelected.pat_lastname);
-    formData.set("mom_lastname", editarTrabajador.mom_lastname || dataSelected.mom_lastname);
+    formData.set(
+      "pat_lastname",
+      editarTrabajador.pat_lastname || dataSelected.pat_lastname
+    );
+    formData.set(
+      "mom_lastname",
+      editarTrabajador.mom_lastname || dataSelected.mom_lastname
+    );
     formData.set("email", editarTrabajador.email || dataSelected.email);
-    formData.set("cellphone", editarTrabajador.cellphone || dataSelected.cellphone);
+    formData.set(
+      "cellphone",
+      editarTrabajador.cellphone || dataSelected.cellphone
+    );
     formData.set("photo", avatar.file || "");
     formData.set("role_id", editarTrabajador.role_id || dataSelected.role_id);
     fetchGETPOSTPUTDELETEJSON(
@@ -152,7 +178,8 @@ const MTrabajador = ({
                   name="dni"
                   disabled={editar ? true : false}
                   defaultValue={
-                    dataSelected && dataSelected.dni ? dataSelected.dni : ""
+                    dataSelected && dataSelected.dni ? dataSelected.dni : "" 
+                    
                   }
                   onChange={handleOnChange}
                 />
@@ -163,7 +190,11 @@ const MTrabajador = ({
                   type="text"
                   name="name"
                   defaultValue={
-                    dataSelected && dataSelected.name ? dataSelected.name : ""
+                    editar ?
+
+                    dataSelected && dataSelected.name ? dataSelected.name : "" :
+
+                    dni.nombres
                   }
                   onChange={handleOnChange}
                 />
@@ -174,9 +205,12 @@ const MTrabajador = ({
                   type="text"
                   name="pat_lastname"
                   defaultValue={
+
+                    editar ? 
                     dataSelected && dataSelected.pat_lastname
                       ? dataSelected.pat_lastname
-                      : ""
+                      : "" :
+                      dni.apellidoPaterno
                   }
                   onChange={handleOnChange}
                 />
@@ -187,9 +221,11 @@ const MTrabajador = ({
                   type="text"
                   name="mom_lastname"
                   defaultValue={
+                    editar ? 
                     dataSelected && dataSelected.mom_lastname
                       ? dataSelected.mom_lastname
                       : ""
+                      : dni.apellidoMaterno
                   }
                   onChange={handleOnChange}
                 />

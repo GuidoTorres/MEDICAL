@@ -40,7 +40,6 @@ const Reservas = () => {
     },
     {
       name: "Tipo de documento",
-      selector: "tdocumento",
       selector: (row) =>
         row.person && row.person.document_type_id === 3
           ? "Carné de extranjería"
@@ -57,7 +56,6 @@ const Reservas = () => {
     },
     {
       name: "Nº documento",
-      selector: "dni",
       selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
       sortable: true,
       style: {
@@ -67,7 +65,6 @@ const Reservas = () => {
     },
     {
       name: "Nombre",
-      selector:'nombre',
       selector: (row) => (row.person && row.person.name ? row.person.name : ""),
       sortable: true,
       style: {

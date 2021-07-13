@@ -122,7 +122,6 @@ const Trabajador = () => {
       if (result.isConfirmed) {
         fetchGETPOSTPUTDELETE(`employees/${e.user_id}`, {}, "DELETE").then(
           (result) => {
-            console.log(result)
             if (result.status === 204) {
               Swal.fire({
                 icon: "success",
