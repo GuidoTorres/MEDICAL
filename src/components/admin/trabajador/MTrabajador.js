@@ -25,7 +25,7 @@ const MTrabajador = ({
   const closeModal = () => {
     setOpenModal(false);
     setEditar(false);
-    setDataSelected(null);
+    setDataSelected({});
   };
 
   const postEmployee = () => {
@@ -58,7 +58,7 @@ const MTrabajador = ({
         closeModal();
         Swal.fire({
           icon: "error",
-          title: "!Ups¡",
+          title: "Ups¡",
           text: "Algo salió mal.",
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
@@ -70,23 +70,43 @@ const MTrabajador = ({
 
   const putEmployee = () => {
     const formData = new FormData();
-    formData.set("dni", editarTrabajador.dni || "");
-    formData.set("name", editarTrabajador.name || "");
-    formData.set("pat_lastname", editarTrabajador.pat_lastname || "");
-    formData.set("mom_lastname", editarTrabajador.mom_lastname || "");
-    formData.set("email", editarTrabajador.email || "");
-    formData.set("cellphone", editarTrabajador.cellphone || "");
+    formData.set("dni", editarTrabajador.dni || dataSelected.dni);
+    formData.set("name", editarTrabajador.name || dataSelected.name);
+    formData.set("pat_lastname", editarTrabajador.pat_lastname || dataSelected.pat_lastname);
+    formData.set("mom_lastname", editarTrabajador.mom_lastname || dataSelected.mom_lastname);
+    formData.set("email", editarTrabajador.email || dataSelected.email);
+    formData.set("cellphone", editarTrabajador.cellphone || dataSelected.cellphone);
     formData.set("photo", avatar.file || "");
-    formData.set("role_id", editarTrabajador.role_id || "");
+    formData.set("role_id", editarTrabajador.role_id || dataSelected.role_id);
     fetchGETPOSTPUTDELETEJSON(
       `employees/${dataSelected.user_id}`,
       editarTrabajador,
       "PUT"
     ).then((resp) => {
-      console.log(resp);
       if (resp.status === 200) {
         closeModal();
-        getEmployee();
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se ha actualizo el trabajador correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getEmployee();
+          }
+        });
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
       }
     });
   };
@@ -109,33 +129,6 @@ const MTrabajador = ({
     e.preventDefault();
   };
 
-  useEffect(() => {
-    if (dataSelected) {
-      setEditarTrabajador({
-        dni: dataSelected && dataSelected.person ? dataSelected.person.dni : "",
-        name:
-          dataSelected && dataSelected.person ? dataSelected.person.name : "",
-        pat_lastname:
-          dataSelected && dataSelected.person
-            ? dataSelected.person.pat_lastname
-            : "",
-        mom_lastname:
-          dataSelected && dataSelected.person
-            ? dataSelected.person.mom_lastname
-            : "",
-        email:
-          dataSelected && dataSelected.person ? dataSelected.person.email : "",
-        cellphone:
-          dataSelected && dataSelected.person
-            ? dataSelected.person.cellphone
-            : "",
-        role_id: dataSelected && dataSelected.role ? dataSelected.role.id : "",
-      });
-    }
-  }, [dataSelected]);
-
-  console.log(editarTrabajador);
-
   return (
     <Modal
       isOpen={openModal}
@@ -157,10 +150,9 @@ const MTrabajador = ({
                 <input
                   type="text"
                   name="dni"
+                  disabled={editar ? true : false}
                   defaultValue={
-                    dataSelected && dataSelected.dni
-                      ? dataSelected.dni
-                      : ""
+                    dataSelected && dataSelected.dni ? dataSelected.dni : ""
                   }
                   onChange={handleOnChange}
                 />
@@ -171,9 +163,7 @@ const MTrabajador = ({
                   type="text"
                   name="name"
                   defaultValue={
-                    dataSelected && dataSelected.person
-                      ? dataSelected.person.name
-                      : ""
+                    dataSelected && dataSelected.name ? dataSelected.name : ""
                   }
                   onChange={handleOnChange}
                 />
@@ -184,9 +174,9 @@ const MTrabajador = ({
                   type="text"
                   name="pat_lastname"
                   defaultValue={
-                    dataSelected &&
-                    dataSelected.person &&
-                    dataSelected.person.pat_lastname
+                    dataSelected && dataSelected.pat_lastname
+                      ? dataSelected.pat_lastname
+                      : ""
                   }
                   onChange={handleOnChange}
                 />
@@ -197,9 +187,9 @@ const MTrabajador = ({
                   type="text"
                   name="mom_lastname"
                   defaultValue={
-                    dataSelected &&
-                    dataSelected.person &&
-                    dataSelected.person.mom_lastname
+                    dataSelected && dataSelected.mom_lastname
+                      ? dataSelected.mom_lastname
+                      : ""
                   }
                   onChange={handleOnChange}
                 />
@@ -210,9 +200,7 @@ const MTrabajador = ({
                   type="text"
                   name="email"
                   defaultValue={
-                    dataSelected &&
-                    dataSelected.person &&
-                    dataSelected.person.email
+                    dataSelected && dataSelected.email ? dataSelected.email : ""
                   }
                   onChange={handleOnChange}
                 />
@@ -223,9 +211,9 @@ const MTrabajador = ({
                   type="text"
                   name="cellphone"
                   defaultValue={
-                    dataSelected &&
-                    dataSelected.person &&
-                    dataSelected.person.cellphone
+                    dataSelected && dataSelected.cellphone
+                      ? dataSelected.cellphone
+                      : ""
                   }
                   onChange={handleOnChange}
                 />
@@ -236,17 +224,59 @@ const MTrabajador = ({
                   className="form-select"
                   aria-label="Default select example"
                   name="role_id"
-                  defaultValue={
-                    dataSelected && dataSelected.person && dataSelected.role.id
-                  }
                   onChange={handleOnChange}
                 >
                   <option value="">Seleccionar</option>
-                  <option value="1">Laboratorio</option>
-                  <option value="2">Organizador</option>
-                  <option value="3">Recepcionista</option>
-                  <option value="4">Transportista</option>
-                  <option value="5">Facturacion</option>
+                  <option
+                    value="4"
+                    selected={
+                      dataSelected && dataSelected.type === "Coordinador"
+                        ? true
+                        : false
+                    }
+                  >
+                    Coordinador
+                  </option>
+                  <option
+                    value="5"
+                    selected={
+                      dataSelected && dataSelected.type === "Repartidor"
+                        ? true
+                        : false
+                    }
+                  >
+                    Transportista
+                  </option>
+                  <option
+                    value="8"
+                    selected={
+                      dataSelected && dataSelected.type === "Laboratorio"
+                        ? true
+                        : false
+                    }
+                  >
+                    Laboratorista
+                  </option>
+                  <option
+                    value="9"
+                    selected={
+                      dataSelected && dataSelected.type === "Recepción"
+                        ? true
+                        : false
+                    }
+                  >
+                    Recepcionista
+                  </option>
+                  <option
+                    value="10"
+                    selected={
+                      dataSelected && dataSelected.type === "Facturación"
+                        ? true
+                        : false
+                    }
+                  >
+                    Facturador
+                  </option>
                 </select>
               </div>
             </div>
@@ -263,7 +293,12 @@ const MTrabajador = ({
                 Imagen <span>(.jpg, .jpeg, .jpg)</span>
               </p>
               <div>
-                <UploadAvatar avatar={avatar} setAvatar={setAvatar} />
+                <UploadAvatar
+                  avatar={avatar}
+                  setAvatar={setAvatar}
+                  dataSelected={dataSelected}
+                  editar={editar}
+                />
               </div>
             </div>
 

@@ -120,16 +120,18 @@ const Trabajador = () => {
       confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Eliminado!", "Se ha eliminado correctamente.", "success");
         fetchGETPOSTPUTDELETE(`employees/${e.user_id}`, {}, "DELETE").then(
           (result) => {
             console.log(result)
-            if (result.status === 201) {
-              Swal.fire(
-                "Eliminado!",
-                "Se ha eliminado correctamente.",
-                "success"
-              ).then((resp) => {
+            if (result.status === 204) {
+              Swal.fire({
+                icon: "success",
+                title: "Éxito",
+                text: "Se elimino el trabajador correctamente.",
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Aceptar",
+              }).then((resp) => {
                 if (resp.isConfirmed) {
                   getEmployee();
                 }

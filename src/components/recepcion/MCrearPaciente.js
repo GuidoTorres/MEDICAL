@@ -25,7 +25,7 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
       district_id: 1,
     });
   };
-
+  console.log(paciente);
   const crearPaciente = () => {
     fetchGETPOSTPUTDELETEJSON("patient", paciente, "POST").then((data) =>
       console.log(data)
@@ -140,7 +140,7 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
               </div>
               <div>
                 <label htmlFor="">Departmento:</label>
-                <select name="departent" onChange={(e) => handleChange(e)}>
+                <select name="department" onChange={(e) => handleChange(e)}>
                   <option value="">Seleccione</option>
                   <option value="1">One</option>
                   <option value="2">Two</option>

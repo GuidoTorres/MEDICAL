@@ -21,7 +21,7 @@ const Atencion = () => {
   // por ahora usar clinics get
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("attention_clinic")
+    fetchGETPOSTPUTDELETE("clinic_care")
       .then((data) => data.json())
       .then((datos) => setAttention(datos.data));
   };

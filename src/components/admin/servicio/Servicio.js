@@ -4,7 +4,7 @@ import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 
 // import { servicio } from '../../../data/AServicio';
-import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
+import { fetchGETPOSTPUTDELETE, fetchGETPOSTPUTDELETEJSON } from "../../../helpers/fetch";
 import { paginacionOpciones } from "../../../helpers/tablaOpciones";
 import MCrearServicio from "./MCrearServicio";
 import MDescargar from "./MDescargar";
@@ -130,12 +130,7 @@ const Servicio = () => {
   const handleEliminar = (e) => {
     console.log(e);
 
-    const inputOptionsValue = e.services.map((data, i) => ({
-      id :i +1,
-      name: data.name
-    }));
-
-    // console.log(inputOptions);
+    const inputOptions = e.services.map(data => data.name);
 
     Swal.fire({
       title: "¿Desea eliminar?",
@@ -143,30 +138,18 @@ const Servicio = () => {
       icon: "warning",
       showCancelButton: true,
       input: "select",
-      defaultValue:inputOptionsValue.id,
-      // inputOptionsValue: inputOptionsValue.id,
-      inputOptions:
-
-
-      e.services.map((data, i) => ({
-
-        name: data.name
-
-        
-      }))
-      ,
+      inputOptions,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Eliminar",
+      cancelButtonText: "Cancelar",
     }).then((result) => {
-      console.log(result);
       if (result.isConfirmed) {
-
-        console.log(result);
-        // Swal.fire("Eliminado!", "Se ha eliminado correctamente.", "success");
-        // fetchGETPOSTPUTDELETE(`services/${inputOptions.id}`, {}, "DELETE").then((result) =>
-        //   result.json()
-        // );
+        // console.log(result.value );
+        Swal.fire("Eliminado!", "Se ha eliminado correctamente.", "success");
+        fetchGETPOSTPUTDELETEJSON(`services/${(parseInt(result.value) + 1).toString()}`, {}, "DELETE").then((result) =>
+          result.json()
+        );
       }
     });
   };
