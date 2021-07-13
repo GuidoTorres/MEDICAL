@@ -131,8 +131,8 @@ const Servicio = () => {
     console.log(e);
 
     const inputOptionsValue = e.services.map((data, i) => ({
-      id :i +1,
-      name: data.name
+      id: i + 1,
+      name: data.name,
     }));
 
     // console.log(inputOptions);
@@ -143,25 +143,17 @@ const Servicio = () => {
       icon: "warning",
       showCancelButton: true,
       input: "select",
-      defaultValue:inputOptionsValue.id,
+      defaultValue: inputOptionsValue.id,
       // inputOptionsValue: inputOptionsValue.id,
-      inputOptions:
-
-
-      e.services.map((data, i) => ({
-
-        name: data.name
-
-        
-      }))
-      ,
+      inputOptions: e.services.map((data, i) => ({
+        name: data.name,
+      })),
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Eliminar",
     }).then((result) => {
       console.log(result);
       if (result.isConfirmed) {
-
         console.log(result);
         // Swal.fire("Eliminado!", "Se ha eliminado correctamente.", "success");
         // fetchGETPOSTPUTDELETE(`services/${inputOptions.id}`, {}, "DELETE").then((result) =>
@@ -257,6 +249,7 @@ const Servicio = () => {
           openHModal={openHModal}
           dataSelected={dataSelected}
           getServices={getServices}
+          subCategoria={subCategoria}
         />
       )}
     </div>
