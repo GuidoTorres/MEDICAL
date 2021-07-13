@@ -4,7 +4,10 @@ import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 
 // import { servicio } from '../../../data/AServicio';
-import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
+import {
+  fetchGETPOSTPUTDELETE,
+  fetchGETPOSTPUTDELETEJSON,
+} from "../../../helpers/fetch";
 import { paginacionOpciones } from "../../../helpers/tablaOpciones";
 import MCrearServicio from "./MCrearServicio";
 import MDescargar from "./MDescargar";
@@ -53,7 +56,7 @@ const Servicio = () => {
       },
     },
     {
-      name: "Sub-categoria",
+      name: "Sub-categorias",
       button: true,
       cell: (e) => (
         <button
@@ -129,13 +132,11 @@ const Servicio = () => {
 
   const handleEliminar = (e) => {
     console.log(e);
+    const inputOptions = [];
 
-    const inputOptionsValue = e.services.map((data, i) => ({
-      id: i + 1,
-      name: data.name,
-    }));
-
-    // console.log(inputOptions);
+    e.services.forEach(function (value) {
+      inputOptions[value.id] = value.name;
+    });
 
     Swal.fire({
       title: "¿Desea eliminar?",
@@ -143,22 +144,42 @@ const Servicio = () => {
       icon: "warning",
       showCancelButton: true,
       input: "select",
-      defaultValue: inputOptionsValue.id,
-      // inputOptionsValue: inputOptionsValue.id,
-      inputOptions: e.services.map((data, i) => ({
-        name: data.name,
-      })),
+      inputOptions,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Eliminar",
+      cancelButtonText: "Cancelar",
     }).then((result) => {
-      console.log(result);
       if (result.isConfirmed) {
-        console.log(result);
-        // Swal.fire("Eliminado!", "Se ha eliminado correctamente.", "success");
-        // fetchGETPOSTPUTDELETE(`services/${inputOptions.id}`, {}, "DELETE").then((result) =>
-        //   result.json()
-        // );
+        fetchGETPOSTPUTDELETEJSON(
+          `services/${result.value}`,
+          {},
+          "DELETE"
+        ).then((result) => {
+          if (result.status === 204) {
+            Swal.fire({
+              icon: "success",
+              title: "Éxito",
+              text: "Se elimino el trabajador correctamente.",
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Aceptar",
+            }).then((resp) => {
+              if (resp.isConfirmed) {
+                getServices();
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "!Ups¡",
+              text: "Algo salió mal.",
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Cerrar",
+            });
+          }
+        });
       }
     });
   };
@@ -168,9 +189,9 @@ const Servicio = () => {
     setSubCategoria(e);
   };
 
-  const handleHistorial = () => {
+  const handleHistorial = (e) => {
     setOpenHModal(true);
-    setDataSelected();
+    setDataSelected(e);
   };
 
   const handleAddService = () => {

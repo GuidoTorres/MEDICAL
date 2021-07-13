@@ -12,6 +12,8 @@ const Registro = () => {
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [corporations, setCorporations] = useState([]);
+  const [dataSelected, setDataSelected] = useState({});
+  const [editar, setEditar] = useState(false)
 
   const getCorporations = () => {
     fetchGETPOSTPUTDELETE("company")
@@ -152,8 +154,10 @@ const Registro = () => {
     filtrarElemento();
   }, [busqueda]);
 
-  const handleEditar = () => {
+  const handleEditar = (e) => {
     setOpenModal(true);
+    setDataSelected(e);
+    setEditar(true)
   };
   const handleEliminar = (e) => {
     Swal.fire({
@@ -218,7 +222,7 @@ const Registro = () => {
         </div>
       </div>
       {openModal && (
-        <MRegistrarEmpresa openModal={openModal} setOpenModal={setOpenModal} />
+        <MRegistrarEmpresa openModal={openModal} setOpenModal={setOpenModal} dataSelected={dataSelected} editar={editar} getCorporations={getCorporations} />
       )}
     </div>
   );

@@ -20,57 +20,62 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
       [e.target.name]: e.target.value,
     });
   };
-  console.log(crearServicio);
+
 
   const updateService = () => {
     const data = {
       name:
         crearServicio.name ||
-        dataSelected.services[crearServicio.id - 1].name ||
+        dataSelected.services[crearServicio.subCategoria].name ||
         "",
       abbreviation:
         crearServicio.abbreviation ||
-        dataSelected.services[crearServicio.id - 1].abbreviation ||
+        dataSelected.services[crearServicio.subCategoria].abbreviation ||
         "",
       service_category_id:
         crearServicio.service_category_id ||
-        dataSelected.services[crearServicio.id - 1].service_category_id ||
+        dataSelected.services[crearServicio.subCategoria].service_category_id ||
         "",
       amount:
         crearServicio.amount ||
-        dataSelected.services[crearServicio.id - 1].last_price.amount ||
+        dataSelected.services[crearServicio.subCategoria].last_price.amount ||
         "",
     };
-    fetchGETPOSTPUTDELETEJSON(`services/${crearServicio.id}`, data, "PUT").then(
-      (resp) => {
-        if (resp.status === 200) {
-          closeModal();
-          Swal.fire({
-            icon: "success",
-            title: "Éxito",
-            text: "Se ha creado el servicio correctamente.",
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Aceptar",
-          }).then((resp) => {
-            if (resp.isConfirmed) {
-              getServices();
-            }
-          });
-        } else {
-          closeModal();
-          Swal.fire({
-            icon: "error",
-            title: "!Ups¡",
-            text: "Algo salió mal.",
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Cerrar",
-          });
-        }
+    fetchGETPOSTPUTDELETEJSON(
+      `services/${dataSelected.services[crearServicio.subCategoria].id}`,
+      data,
+      "PUT"
+    ).then((resp) => {
+      if (resp.status === 200) {
+        closeModal();
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se ha editado el servicio correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getServices();
+          }
+        });
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
       }
-    );
+    });
   };
+
+  // console.log(crearServicio);
+  // console.log(crearServicio);
 
   return (
     <Modal
@@ -107,14 +112,16 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                   className="form-select"
                   aria-label="Default select example"
                   style={{ width: "50%" }}
-                  name="id"
+                  name="subCategoria"
                   onChange={(e) => handleChange(e)}
                 >
-                  <option selected>Seleccione</option>
+                  <option>Seleccione</option>
 
                   {dataSelected &&
                     dataSelected.services.map((data, i) => (
-                      <option value={i + 1}>{data.name}</option>
+                      <option key={data.id} value={i}>
+                        {data.name}
+                      </option>
                     ))}
                 </select>
               </div>
@@ -124,8 +131,11 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                   type="text"
                   name="name"
                   defaultValue={
-                    crearServicio.id
-                      ? dataSelected.services[crearServicio.id - 1].name
+                    crearServicio.subCategoria &&
+                    dataSelected.services &&
+                    dataSelected.services[crearServicio.subCategoria] &&
+                    dataSelected.services[crearServicio.subCategoria].name
+                      ? dataSelected.services[crearServicio.subCategoria].name
                       : ""
                   }
                   onChange={(e) => handleChange(e)}
@@ -137,8 +147,13 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                   type="text"
                   name="abbreviation"
                   defaultValue={
-                    crearServicio.id
-                      ? dataSelected.services[crearServicio.id - 1].abbreviation
+                    crearServicio.subCategoria &&
+                    dataSelected.services &&
+                    dataSelected.services[crearServicio.subCategoria] &&
+                    dataSelected.services[crearServicio.subCategoria]
+                      .abbreviation
+                      ? dataSelected.services[crearServicio.subCategoria]
+                          .abbreviation
                       : ""
                   }
                   onChange={(e) => handleChange(e)}
@@ -151,19 +166,19 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                   type="text"
                   name="amount"
                   defaultValue={
-                    crearServicio.id
-                      ? dataSelected.services &&
-                        dataSelected.services[crearServicio.id - 1] &&
-                        dataSelected.services[crearServicio.id - 1]
-                          .last_price &&
-                        dataSelected.services[crearServicio.id - 1].last_price
-                          .amount
+                    crearServicio.subCategoria &&
+                    dataSelected.services &&
+                    dataSelected.services[crearServicio.subCategoria] &&
+                    dataSelected.services[crearServicio.subCategoria].last_price &&
+                    dataSelected.services[crearServicio.subCategoria].last_price.amount
+                      ? dataSelected.services[crearServicio.subCategoria].last_price.amount
                       : ""
                   }
                   onChange={(e) => handleChange(e)}
                 />
               </div>
             </div>
+
             <div className="list-botones">
               <button className="botones " onClick={closeModal}>
                 Cancelar
