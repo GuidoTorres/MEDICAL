@@ -1,23 +1,26 @@
-import React from 'react';
-import Modal from 'react-modal';
+import React from "react";
+import Modal from "react-modal";
 // import { customStyles } from "../../../helpers/ModalStyles";
-import { useBarcode } from 'react-barcodes';
-import { customStyles } from '../../../helpers/tablaOpciones';
-
+import { useBarcode } from "react-barcodes";
+import { customStyles } from "../../../helpers/tablaOpciones";
 
 function BarCode({ textobarcode }) {
   const { inputRef } = useBarcode({
-    value: textobarcode === '' ? 'vacio' : textobarcode,
+    value: textobarcode === "" ? "vacio" : textobarcode,
     options: {
-      background: '#ffffff',
-      height: '70px',
-      width: '2px',
+      background: "#ffffff",
+      height: "70px",
+      width: "2px",
     },
   });
   return <canvas id="bar" ref={inputRef} />;
 }
 
-const CodigoBarrasHistorial = ({codigoHistorial, setCodigoHistorial, dataBarCode}) => {
+const CodigoBarrasHistorial = ({
+  codigoHistorial,
+  setCodigoHistorial,
+  dataBarCode,
+}) => {
   console.log(dataBarCode);
   // const { dni} = dataBarCode;
   const closeModal = () => {
@@ -25,20 +28,19 @@ const CodigoBarrasHistorial = ({codigoHistorial, setCodigoHistorial, dataBarCode
   };
 
   const descargar = () => {
-
-    const data = document.querySelector("#bar")
-      const pngUrl = data
-        .toDataURL('image/png')
-        .replace('image/png', 'image/octet-stream');
-      let downloadLink = document.createElement('a');
-      downloadLink.href = pngUrl;
-      downloadLink.download = 'mybarcode.png';
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
-  }
-    return (
-      <Modal
+    const data = document.querySelector("#bar");
+    const pngUrl = data
+      .toDataURL("image/png")
+      .replace("image/png", "image/octet-stream");
+    let downloadLink = document.createElement("a");
+    downloadLink.href = pngUrl;
+    downloadLink.download = "mybarcode.png";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  };
+  return (
+    <Modal
       isOpen={codigoHistorial}
       onRequestClose={closeModal}
       style={customStyles}
@@ -53,7 +55,66 @@ const CodigoBarrasHistorial = ({codigoHistorial, setCodigoHistorial, dataBarCode
       <h3 className="title__modal">Código de barras</h3>
       <div className="container">
         <div className="row">
-          <BarCode textobarcode={"prueba"} id="bar" />
+          <span
+            style={{
+              textTransform: "uppercase",
+              fontSize: "18px",
+              fontWeight: "bold",
+              color: "black",
+              textAlign: "center",
+            }}
+          >
+            {dataBarCode.person !== undefined
+              ? dataBarCode.person.pat_lastname
+              : ""}{" "}
+            {dataBarCode.person !== undefined
+              ? dataBarCode.person.mom_lastname
+              : ""}
+            {" , "}
+            {dataBarCode.person !== undefined ? dataBarCode.person.name : ""}
+          </span>
+
+          <div style={{ display: "flex", justifyContent: "space-around" }}>
+            <span>
+              {"DNI:"}
+              {dataBarCode.person !== undefined ? dataBarCode.person.dni : ""}
+            </span>
+            <span>
+              {"Sexo:"}
+              {"M"}
+            </span>
+            <span>
+              {"Edad:"}
+              {"28"}
+            </span>
+          </div>
+          {"\n"}
+
+          <BarCode textobarcode={dataBarCode.codebar || ""} id="bar" />
+          <span
+            style={{
+              textTransform: "uppercase",
+              fontSize: "12px",
+              fontWeight: "bold",
+              color: "black",
+              textAlign: "center",
+            }}
+          >
+            {dataBarCode.service !== undefined ? dataBarCode.service.name : ""}
+          </span>
+          <div style={{ display: "flex", justifyContent: "space-around" }}>
+            <span>
+              {dataBarCode.service !== undefined
+                ? dataBarCode.date_attention
+                : ""}
+            </span>
+            <span>
+              {dataBarCode.service !== undefined
+                ? dataBarCode.time_attention
+                : ""}
+            </span>
+          </div>
+
           <div className="d-flex justify-content-between mt-5">
             <button
               type="button"
@@ -68,11 +129,9 @@ const CodigoBarrasHistorial = ({codigoHistorial, setCodigoHistorial, dataBarCode
             </button>
           </div>
         </div>
-
-
       </div>
     </Modal>
-    )
-}
+  );
+};
 
-export default CodigoBarrasHistorial
+export default CodigoBarrasHistorial;

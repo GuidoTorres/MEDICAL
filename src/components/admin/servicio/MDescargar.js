@@ -12,7 +12,7 @@ const ExcelColumn = ExportExcel.ExcelColumn;
 
 const MDescargar = ({ setOpenHModal, openHModal, dataSelected }) => {
   const [descargar, setDescargar] = useState();
-  const [historial, setHistorial] = useState([]);
+  const [historial, setHistorial] = useState({});
   const closeModal = () => {
     setOpenHModal(false);
   };
@@ -34,7 +34,7 @@ const MDescargar = ({ setOpenHModal, openHModal, dataSelected }) => {
       .then((res) => res.json())
       .then((res) => setHistorial(res));
   };
-  console.log(historial);
+  // console.log(historial);
   return (
     <Modal
       isOpen={openHModal}

@@ -116,25 +116,61 @@ const MRegistroEmpresa = ({
     const formData = new FormData();
 
     formData.set("ruc", empresa.ruc || "");
-    formData.set("business_name",empresa.business_name || dataSelected.corporation.ruc);
-    formData.set("commercial_name",empresa.commercial_name || dataSelected.corporation.commercial_name);
+    formData.set(
+      "business_name",
+      empresa.business_name || dataSelected.corporation.ruc
+    );
+    formData.set(
+      "commercial_name",
+      empresa.commercial_name || dataSelected.corporation.commercial_name
+    );
     formData.set("logo", avatar ? avatar.file : dataSelected.corporation.logo);
 
-    formData.set("address", empresa.address.address || dataSelected.corporation.address.address);
-    formData.set("reference", empresa.address.reference || dataSelected.corporation.address.reference);
+    formData.set(
+      "address",
+      empresa.address.address || dataSelected.corporation.address.address
+    );
+    formData.set(
+      "reference",
+      empresa.address.reference || dataSelected.corporation.address.reference
+    );
 
-    formData.set("contacts[0][name]", empresa.contacts.name || dataSelected.corporation.contacts[0].name);
-    formData.set("contacts[0][phone]", empresa.contacts.phone || dataSelected.corporation.contacts[0].phone);
-    formData.set("contacts[0][email]", empresa.contacts.email || dataSelected.corporation.contacts[0].email);
+    formData.set(
+      "contacts[0][name]",
+      empresa.contacts.name || dataSelected.corporation.contacts[0].name
+    );
+    formData.set(
+      "contacts[0][phone]",
+      empresa.contacts.phone || dataSelected.corporation.contacts[0].phone
+    );
+    formData.set(
+      "contacts[0][email]",
+      empresa.contacts.email || dataSelected.corporation.contacts[0].email
+    );
     formData.set("contacts[0][contact_type]", 1);
 
-    formData.set("contacts[1][name]", empresa.contacts.name1 || dataSelected.corporation.contacts[1].name);
-    formData.set("contacts[1][phone]", empresa.contacts.phone1 || dataSelected.corporation.contacts[1].phone);
-    formData.set("contacts[1][email]", empresa.contacts.email1 || dataSelected.corporation.contacts[1].email);
+    formData.set(
+      "contacts[1][name]",
+      empresa.contacts.name1 || dataSelected.corporation.contacts[1].name
+    );
+    formData.set(
+      "contacts[1][phone]",
+      empresa.contacts.phone1 || dataSelected.corporation.contacts[1].phone
+    );
+    formData.set(
+      "contacts[1][email]",
+      empresa.contacts.email1 || dataSelected.corporation.contacts[1].email
+    );
     formData.set("contacts[1][contact_type]", 2);
 
-    formData.set("before", empresa.billing ? empresa.billing.before : dataSelected.billing.before);
-    formData.set("credit", empresa.billing ? empresa.billing.credit : dataSelected.billing.credit);
+    formData.set(
+      "before",
+      empresa.billing ? empresa.billing.before : dataSelected.billing.before
+    );
+    formData.set(
+      "credit",
+      empresa.billing ? empresa.billing.credit : dataSelected.billing.credit
+    );
 
     formData.set("services[0][service_id]", empresa.services.service_id || "");
     formData.set("services[0][state]", 0);
@@ -529,34 +565,9 @@ const MRegistroEmpresa = ({
                     <option value="1">Covid 19</option>
                   </select>
                 </div>
-                <div >
-                  <label>Plan de atención</label>
-                  {/* <div class="form-check" >
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                  <label class="form-check-label" for="flexCheckDefault">
-                  Antígeno
-                  </label>
-                  </div>
-                  <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-                  <label class="form-check-label" for="flexCheckDefault">
-                  Electroquimioluminiscencia
-                  </label>
-                  </div>
-                  <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-                  <label class="form-check-label" for="flexCheckDefault">
-                  RT-PCR
-                  </label>
-                  </div>
-                  <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-                  <label class="form-check-label" for="flexCheckDefault">
-                  Inmunocromatografia
-                  </label>
-                  </div> */}
-
-                  <select
+                <div>
+                  <label style={{ width: "50%" }}>Plan de atención</label>
+                  {/* <select
                     aria-label="Default select example"
                     multiple = "multiple option"
                     onChange={(e) =>
@@ -574,7 +585,25 @@ const MRegistroEmpresa = ({
                     <option value="2">Electroquimioluminiscencia</option>
                     <option value="3">RT-PCR</option>
                     <option value="3">Inmunocromatografia</option>
-                  </select>
+                  </select> */}
+                  <div className="mselect">
+                    <div className="mselect__item">
+                      <input type="checkbox" className="w-auto" />
+                      <label>Antígeno</label>
+                    </div>
+                    <div className="mselect__item">
+                      <input type="checkbox" className="w-auto" />
+                      <label>Electroquimioluminiscencia</label>
+                    </div>
+                    <div className="mselect__item">
+                      <input type="checkbox" className="w-auto" />
+                      <label>RT-PCR</label>
+                    </div>
+                    <div className="mselect__item">
+                      <input type="checkbox" className="w-auto" />
+                      <label>Inmunocromatografia</label>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="list-botones">

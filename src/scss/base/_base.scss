@@ -221,10 +221,10 @@ input[type="checkbox"] {
 }
 
 // TODO MODAL TOMAN BARCODE
-.modal__barcode {
-  max-height: 30%;
-  max-width: 30%;
-}
+// .modal__barcode {
+//   max-height: 40%;
+//   max-width: 30%;
+// }
 
 // TODO MODAL GENERAR ATENCION RECEPCION Y ADMIN
 .modal__generarAtencion {
@@ -332,8 +332,8 @@ input[type="checkbox"] {
 
 // TODO MODAL BARCODE
 .modal__barcode {
-  max-height: 280px;
-  max-width: 280px;
+  max-height: 400px;
+  max-width: 320px;
 }
 
 // TODO MODAL SUBCATEGORIA
@@ -443,6 +443,19 @@ input[type="checkbox"] {
   position: fixed;
   right: 20px;
   width: 30px;
+}
+
+.mselect {
+  margin-top: 10px;
+  width: 50%;
+  flex-direction: column;
+  align-items: flex-end;
+
+  .mselect__item {
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 100%;
+  }
 }
 
 @media (max-width: 1024px) {
