@@ -10,7 +10,7 @@ const ExcelFile = ExportExcel.ExcelFile;
 const ExcelSheet = ExportExcel.ExcelSheet;
 const ExcelColumn = ExportExcel.ExcelColumn;
 
-const MDescargar = ({ setOpenHModal, openHModal, dataSelected }) => {
+const MDescargar = ({ setOpenHModal, openHModal, subCategoria }) => {
   const [descargar, setDescargar] = useState();
   const [historial, setHistorial] = useState({});
   const closeModal = () => {
@@ -60,7 +60,7 @@ const MDescargar = ({ setOpenHModal, openHModal, dataSelected }) => {
                   name="id"
                   onChange={(e) => downloadHistorial(e)}
                 >
-                  <option selected>Seleccione</option>
+                  <option value={-1}>Seleccione</option>
 
                   {dataSelected &&
                     dataSelected.services.map((data, i) => (

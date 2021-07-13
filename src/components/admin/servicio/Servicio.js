@@ -270,6 +270,7 @@ const Servicio = () => {
           openHModal={openHModal}
           dataSelected={dataSelected}
           getServices={getServices}
+          subCategoria={subCategoria}
         />
       )}
     </div>
