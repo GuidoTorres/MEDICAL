@@ -33,7 +33,7 @@ const LaboratoristaRouter = () => {
             path="/laboratorio/estadisticas"
             component={Estadistica}
           />
-          {/* <Redirect to="/laboratorio/subir" /> */}
+          <Redirect to="/laboratorio/subir" />
         </Switch>
       </div>
     </>

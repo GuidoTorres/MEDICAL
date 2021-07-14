@@ -19,7 +19,6 @@ const startLogin = (username, password) => {
         login({
           clinic_type: body.clinic_type,
           role: body.role,
-          clinic_type: body.clinic_type,
         })
       );
     } else {
@@ -41,7 +40,6 @@ const startCkecking = () => {
         login({
           clinic_type: body.clinic_type,
           role: body.role,
-          clinic_type: body.clinic_type,
         })
       );
     } else {

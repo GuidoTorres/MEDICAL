@@ -3,15 +3,15 @@ import { Redirect, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const PublicRoutes = ({ isAuthenticated, component: Component, ...rest }) => {
-  console.log(isAuthenticated);
+  // console.log(isAuthenticated);
   return (
     <Route
       {...rest}
       component={(props) => {
         return !isAuthenticated ? (
-          <Redirect to="/" />
-        ) : (
           <Component {...props} />
+        ) : (
+          <Redirect to="/" />
         );
       }}
     />

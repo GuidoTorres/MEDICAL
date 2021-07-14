@@ -38,7 +38,7 @@ const ClinicaProcesaRouter = () => {
             path="/clinica/procesa/historial"
             component={Historial}
           />
-          {/* <Redirect to="/clinica/procesa/reservas" /> */}
+          <Redirect to="/clinica/procesa/reservas" />
         </Switch>
       </div>
     </>

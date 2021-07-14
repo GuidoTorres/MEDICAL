@@ -11,7 +11,7 @@ import logo from '../../assets/login/logo.png';
 const Login = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { role, clinic_type } = useSelector((state) => state.auth);
+  const { role } = useSelector((state) => state.auth);
 
   const initialState = {
     username: '',
@@ -28,39 +28,71 @@ const Login = () => {
     });
   };
 
-  const validandoRutas = () => {
-    if (role.id === 1) {
-      history.replace('admin/registro');
-      return;
-    } else if (role.id === 2) {
-      history.replace('empresa/registro');
-      return;
-    } else if (role.id === 3) {
-      history.replace('clinica/toma/reservas');
-      return;
-    } else if (role.id === 4) {
-      history.replace('organizador/solicitud');
-      return;
-    } else if (role.id === 8) {
-      history.replace('laboratorio/subir');
-      return;
-    } else if (role.id === 9) {
-      history.replace('recepcion/usuarios');
-      return;
-    } else if (role.id === 10) {
-      history.replace('facturacion/empresas');
-      return;
-    } else if (role.id === 11) {
-      history.replace('clinica/procesa/reservas');
-    } else {
-      history.replace('/');
-    }
-  };
+  // const validandoRutas = () => {
+  //   if (role.id === undefined) {
+  //     history.replace('/');
+  //   }
+  //   if (role.id === 1 && role.id !== undefined) {
+  //     history.replace('admin/registro');
+  //     return;
+  //   } else if (role.id === 2 && role.id !== undefined) {
+  //     history.replace('empresa/registro');
+  //     return;
+  //   } else if (role.id === 3 && role.id !== undefined) {
+  //     history.replace('clinica/toma/reservas');
+  //     return;
+  //   } else if (role.id === 4 && role.id !== undefined) {
+  //     history.replace('organizador/solicitud');
+  //     return;
+  //   } else if (role.id === 8 && role.id !== undefined) {
+  //     history.replace('laboratorio/subir');
+  //     return;
+  //   } else if (role.id === 9 && role.id !== undefined) {
+  //     history.replace('recepcion/usuarios');
+  //     return;
+  //   } else if (role.id === 10 && role.id !== undefined) {
+  //     history.replace('facturacion/empresas');
+  //     return;
+  //   } else if (role.id === 11 && role.id !== undefined) {
+  //     history.replace('clinica/procesa/reservas');
+  //   } else {
+  //     history.replace('/');
+  //   }
+  // };
 
   const handleLogin = (e) => {
     e.preventDefault();
     dispatch(startLogin(username, password));
-    validandoRutas();
+    // validandoRutas();
+    if (role.id === undefined) {
+      history.replace('/');
+    }
+    if (role.id === 1 && role.id !== undefined) {
+      history.replace('admin/registro');
+      return;
+    } else if (role.id === 2 && role.id !== undefined) {
+      history.replace('empresa/registro');
+      return;
+    } else if (role.id === 3 && role.id !== undefined) {
+      history.replace('clinica/toma/reservas');
+      return;
+    } else if (role.id === 4 && role.id !== undefined) {
+      history.replace('organizador/solicitud');
+      return;
+    } else if (role.id === 8 && role.id !== undefined) {
+      history.replace('laboratorio/subir');
+      return;
+    } else if (role.id === 9 && role.id !== undefined) {
+      history.replace('recepcion/usuarios');
+      return;
+    } else if (role.id === 10 && role.id !== undefined) {
+      history.replace('facturacion/empresas');
+      return;
+    } else if (role.id === 11 && role.id !== undefined) {
+      history.replace('clinica/procesa/reservas');
+    } else {
+      history.replace('/');
+    }
   };
 
   return (
