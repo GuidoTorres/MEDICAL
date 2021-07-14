@@ -35,7 +35,7 @@ const Login = () => {
     } else if (role.id === 2) {
       history.replace('empresa/registro');
       return;
-    } else if (clinic_type.id === 3) {
+    } else if (role.id === 3) {
       history.replace('clinica/toma/reservas');
       return;
     } else if (role.id === 4) {
@@ -50,7 +50,7 @@ const Login = () => {
     } else if (role.id === 10) {
       history.replace('facturacion/empresas');
       return;
-    } else if (clinic_type.id === 11) {
+    } else if (role.id === 11) {
       history.replace('clinica/procesa/reservas');
     } else {
       history.replace('/');
