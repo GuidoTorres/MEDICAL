@@ -314,12 +314,32 @@ input[type="checkbox"] {
   height: 50%;
   width: 85%;
 }
+.mlaboratorio_subir-eclea {
+  height: 64%;
+  width: 75%;
+}
+.mlaboratorio_subir-rapida {
+  height: 71%;
+  width: 75%;
+}
 @media screen and (min-width: 700px) {
   .mlaboratorio_subir {
-    height: 50%;
+    height: 51%;
     width: 55%;
-    max-height: 307px;
+    max-height: 316px;
     max-width: 370px;
+  }
+  .mlaboratorio_subir-eclea {
+    height: 64%;
+    width: 55%;
+    max-height: 410px;
+    max-width: 400px;
+  }
+  .mlaboratorio_subir-rapida {
+    height: 71%;
+    width: 55%;
+    max-height: 448px;
+    max-width: 400px;
   }
 }
 // TODO MODAL RECEPCION USUARIO

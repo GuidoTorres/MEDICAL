@@ -3,15 +3,19 @@ import DataTable from "react-data-table-component";
 import { lasubir } from "../../data/LASubir";
 import { paginacionOpciones } from "../../helpers/tablaOpciones";
 import MSubirLaboratorio from "./MSubirLaboratorio";
+import MSubirEclea from "./MSubirEclea";
+import MSubirRapida from "./MSubirRapida";
 import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 
 const SubirLaboratorio = () => {
   const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [openModal2, setOpenModal2] = useState(false);
+  const [openModal3, setOpenModal3] = useState(false);
   const [attention, setAttention] = useState({});
   const [dataSelected, setDataSelected] = useState(null);
-  const [tipoPrueba, setTipoPrueba] = useState(null);
+  const [tipoPrueba, setTipoPrueba] = useState(-1);
 
   const getAtencion = () => {
     fetchGETPOSTPUTDELETE("result")
@@ -77,14 +81,17 @@ const SubirLaboratorio = () => {
     {
       name: "Acción",
       button: true,
-      cell: (e) => (
-        <button
-          onClick={() => handleDetalles(e)}
-          className="table__tablebutton"
-        >
-          <i class="fas fa-angle-right"></i>
-        </button>
-      ),
+      cell: (e) =>
+        tipoPrueba !== -1 ? (
+          <button
+            onClick={() => handleModal(tipoPrueba, e)}
+            className="table__tablebutton"
+          >
+            <i class="fas fa-angle-right"></i>
+          </button>
+        ) : (
+          ""
+        ),
     },
   ];
 
@@ -120,10 +127,21 @@ const SubirLaboratorio = () => {
     filtrarElemento();
   }, [busqueda]);
   //
-  const handleDetalles = (e) => {
-    // console.log(e);
-    setOpenModal(true);
+
+  const handleModal = (tipoPrueba, e) => {
     setDataSelected(e);
+
+    switch (tipoPrueba) {
+      case 1:
+        setOpenModal(true);
+        break;
+      case 2:
+        setOpenModal2(true);
+        break;
+      case 3:
+        setOpenModal3(true);
+        break;
+    }
   };
 
   const handleSearch = (e) => {
@@ -148,14 +166,13 @@ const SubirLaboratorio = () => {
                 <select
                   class="form-select"
                   aria-label="Default select example"
-                  onChange={(e) => setTipoPrueba(e.target.value)}
+                  onChange={(e) => setTipoPrueba(Number(e.target.value))}
                 >
-                  <option>Seleccione</option>
+                  <option value="-1">Seleccione</option>
 
                   <option value="1">Antígeno</option>
-                  <option value="2">Electroquimioluminiscencia</option>
-                  <option value="3">Inmunocromatografia</option>
-                  <option value="4">RT-PCR</option>
+                  <option value="2">Eclea</option>
+                  <option value="3">Rápida</option>
                 </select>
               </div>
             </div>
@@ -185,9 +202,9 @@ const SubirLaboratorio = () => {
               fixedHeaderScrollHeight="500px"
               noDataComponent={
                 <div className="spinner">
-                <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: "lightgrey" }}>No hay datos</p>
-              </div>
+                  <i className="fas fa-inbox table__icono"></i>
+                  <p style={{ color: "lightgrey" }}>No hay datos</p>
+                </div>
               }
             />
           </div>
@@ -197,7 +214,23 @@ const SubirLaboratorio = () => {
             openModal={openModal}
             setOpenModal={setOpenModal}
             dataSelected={dataSelected}
-            tipoPrueba= {tipoPrueba}
+            tipoPrueba={tipoPrueba}
+          />
+        )}
+        {openModal2 && (
+          <MSubirEclea
+            openModal={openModal2}
+            setOpenModal={setOpenModal2}
+            dataSelected={dataSelected}
+            tipoPrueba={tipoPrueba}
+          />
+        )}
+        {openModal3 && (
+          <MSubirRapida
+            openModal={openModal3}
+            setOpenModal={setOpenModal3}
+            dataSelected={dataSelected}
+            tipoPrueba={tipoPrueba}
           />
         )}
       </div>

@@ -45,9 +45,9 @@ const CodigoBarrasHistorial = ({
     const img = document.getElementById("bar");
     const ctx = canvas.getContext("2d");
 
-    let cw = (canvas.width = img.width + 100),
+    let cw = (canvas.width = img.width + (290 - img.width)),
       cx = cw / 2;
-    canvas.height = 250;
+    canvas.height = img.height + (280 - img.height);
     ctx.textAlign = "center";
 
     ctx.fillStyle = "#fff";
@@ -55,7 +55,7 @@ const CodigoBarrasHistorial = ({
     ctx.fill();
     ctx.fillStyle = "#000";
 
-    ctx.drawImage(img, 50, 45);
+    ctx.drawImage(img, (canvas.width - img.width) / 2, 50);
 
     let person__name =
       dataBarCode.person !== undefined
@@ -68,6 +68,12 @@ const CodigoBarrasHistorial = ({
     let attention__name =
       dataBarCode.service !== undefined ? dataBarCode.service.name : "";
     let attention__date = `${dataBarCode.date_attention} \t ${dataBarCode.time_attention}`;
+
+    let name1 = attention__name.substring(0, 34);
+    let name2 = attention__name.substring(34, 68);
+    let name3 = attention__name.substring(68, 102);
+    let name4 = attention__name.substring(102);
+    // console.log(attention__name.length);
 
     let tamanoTexto = 60;
 
@@ -82,9 +88,14 @@ const CodigoBarrasHistorial = ({
     }
 
     ctx.fillText(person__name.toUpperCase(), cx, 25);
-    ctx.fillText(person__info, cx, 45);
-    ctx.fillText(attention__name, cx, 175);
-    ctx.fillText(attention__date, cx, 195);
+    ctx.fillText(person__info, cx, 50);
+    // ctx.fillText(attention__name, cx, 175);
+    ctx.fillText(name1, cx, 175);
+    ctx.fillText(name2, cx, 195);
+    ctx.fillText(name3, cx, 215);
+    ctx.fillText(name4, cx, 235);
+
+    ctx.fillText(attention__date, cx, 255);
 
     // console.log(canvas.toDataURL());
   };
