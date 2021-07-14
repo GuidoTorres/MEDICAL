@@ -217,7 +217,7 @@ const RegistroClinica = () => {
   return (
     <div className="container">
       <div className="row">
-        {/* <h3>Registro - Clinica</h3> */}
+        <h3>Registro - Clinica</h3>
         <div className="table-responsive">
           <div className="adminregistro__option">
             <div>
