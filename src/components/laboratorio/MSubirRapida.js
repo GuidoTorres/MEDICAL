@@ -7,7 +7,7 @@ import {
 
 import { customStyles } from "../../helpers/tablaOpciones";
 
-const MSubirLaboratorio = ({
+const MSubirRapida = ({
   openModal,
   setOpenModal,
   dataSelected,
@@ -38,7 +38,7 @@ const MSubirLaboratorio = ({
       isOpen={openModal}
       onRequestClose={closeModal}
       style={customStyles}
-      className="modal mlaboratorio_subir"
+      className="modal mlaboratorio_subir-rapida"
       overlayClassName="modal-fondo"
       closeTimeoutMS={200}
       preventScroll={true}
@@ -78,24 +78,69 @@ const MSubirLaboratorio = ({
                     : "Sin Tipo"}
                 </label>
               </div>
+              <div>
+                <label>Empresa</label>
+                <label>
+                  {dataSelected.people_id === 1
+                    ? "Particular"
+                    : dataSelected.people_id === 0
+                    ? "Empresa"
+                    : "Sin Tipo"}
+                </label>
+              </div>
             </div>
             <p>
               <strong>Cargar Resultados</strong>{" "}
             </p>
             <div className="mt-2">
-              <div>
-                <label>El resultado de la prueba es:</label>
-                <select
-                  className="form-select"
-                  aria-label="Default select example"
-                  onChange={(e) =>
-                    setResult({ ...result, result: e.target.value })
-                  }
-                >
-                  <option>Seleccione</option>
-                  <option value="0">Detectado</option>
-                  <option value="1">No Detectado</option>
-                </select>
+              <div className="d-flex-column">
+                <label className="mb-3">El resultado de la prueba es:</label>
+                <label>
+                  <input
+                    type="radio"
+                    className="me-3"
+                    value="igm"
+                    name="resultado"
+                  />
+                  Resultado IgM
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    className="me-3"
+                    value="igg"
+                    name="resultado"
+                  />
+                  Resultado IgG
+                </label>
+
+                <label>
+                  <input
+                    type="radio"
+                    className="me-3"
+                    value="igm/igg"
+                    name="resultado"
+                  />
+                  Resultado IgM/IgG
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    className="me-3"
+                    value="noReactivo"
+                    name="resultado"
+                  />
+                  No Reactivo
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    className="me-3"
+                    value="invalido"
+                    name="resultado"
+                  />
+                  Inválido
+                </label>
               </div>
             </div>
             <div className="list-botones">
@@ -114,4 +159,4 @@ const MSubirLaboratorio = ({
   );
 };
 
-export default MSubirLaboratorio;
+export default MSubirRapida;
