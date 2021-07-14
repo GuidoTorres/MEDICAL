@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 import { startLogout } from '../../actions/auth';
 // import { useSelector } from 'react-redux';
 import logo from '../../assets/icons/Isotipo.png';
@@ -20,23 +20,16 @@ const Navbar = ({
   url6,
   ruta,
 }) => {
-  // const { isAuthenticated } = useSelector((state) => state.auth);
-  // const history = useHistory();
-  // console.log(history);
+  const history = useHistory();
   const dispatch = useDispatch();
-  // const handleLogout = () => {
-  //   // history.replace('/');
-  //   dispatch(startLogout());
-  // };
 
   const handleLogout = () => {
     dispatch(startLogout());
-    console.log('saliendo');
+    history.replace('/');
   };
 
   const mostrarSidebar = () => {
     const side = document.querySelector('.navBarUl').style;
-    // const li = document.querySelector('.nav-item');
 
     side.display === '' ? (side.display = 'flex') : (side.display = '');
   };

@@ -29,7 +29,7 @@ const FacturacionRouter = () => {
         <Route exact path="/facturacion/empresas" component={Empresa} />
         <Route exact path="/facturacion/costo" component={Particulares} />
         <Route exact path="/facturacion/liquidacion" component={Liquidacion} />
-        {/* <Redirect to="/facturacion/empresas" /> */}
+        <Redirect to="/facturacion/empresas" />
       </Switch>
     </div>
   );

@@ -43,7 +43,7 @@ const AdminRouter = ({ ...rest }) => {
             component={RegistroClinica}
           />
           <Route exact path="/admin/registro" component={Registro} />
-          {/* <Redirect to="/admin/registro" /> */}
+          <Redirect to="/admin/registro" />
         </Switch>
       </div>
     </>

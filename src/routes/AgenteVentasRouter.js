@@ -28,7 +28,7 @@ const AgenteVentasRouter = () => {
           <Route exact path="/ventas/registro" component={Registro} />
           <Route exact path="/ventas/registro/empresa" component={Empresa} />
           <Route exact path="/ventas/servicios" component={Servicio} />
-          {/* <Redirect to="/ventas/registro" /> */}
+          <Redirect to="/ventas/registro" />
         </Switch>
       </div>
     </>

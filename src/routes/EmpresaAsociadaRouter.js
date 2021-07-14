@@ -55,7 +55,7 @@ const EmpresaAsociadaRouter = () => {
             path="/empresa/resultados"
             component={EmpresaResultados}
           />
-          {/* <Redirect to="/empresa/registro" /> */}
+          <Redirect to="/empresa/registro" />
         </Switch>
       </div>
     </>

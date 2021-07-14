@@ -33,7 +33,7 @@ const OrganizadorRouter = () => {
           />
           <Route exact path="/organizador/perfil" component={Perfil} />
           <Route exact path="/organizador/calendario" component={Calendario} />
-          {/* <Redirect to="/organizador/solicitud" /> */}
+          <Redirect to="/organizador/solicitud" />
         </Switch>
       </div>
     </>

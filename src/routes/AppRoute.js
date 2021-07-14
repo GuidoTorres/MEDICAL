@@ -1,7 +1,12 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { BrowserRouter as Router, Switch, Redirect } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Redirect,
+  Route,
+} from 'react-router-dom';
 import { startCkecking } from '../actions/auth';
 import Login from '../components/auth/Login';
 // import Error404 from '../pages/Error404';
@@ -15,68 +20,78 @@ import LaboratoristaRouter from './LaboratoristaRouter';
 import OrganizadorRouter from './OrganizadorRouter';
 
 import PrivateRoutes from './PrivateRoutes';
-import PublicRoutes from './PublicRoutes';
+// import PublicRoutes from './PublicRoutes';
 import RecepcionistaRouter from './RecepcionistaRouter';
 
 const AppRoute = () => {
   const dispatch = useDispatch();
-  const { role } = useSelector((state) => state.auth);
-  console.log(role.id);
+
+  const { role, checking } = useSelector((state) => state.auth);
+
   useEffect(() => {
     dispatch(startCkecking());
   }, [dispatch]);
+
+  // if (checking) {
+  //   return <p>espere....</p>;
+  // }
 
   return (
     <Router>
       <div>
         <Switch>
-          <PublicRoutes exact path="/" component={Login} isAuthenticated />
+          <Route
+            exact
+            path="/"
+            component={Login}
+            // isAuthenticated={checking}
+          />
           {/* RUTAS PRIVADAS */}
           <PrivateRoutes
             path="/admin"
             component={AdminRouter}
-            isAuthenticated
+            isAuthenticated={checking}
           />
           <PrivateRoutes
             path="/empresa"
             component={EmpresaAsociadaRouter}
-            isAuthenticated
+            isAuthenticated={checking}
           />
           <PrivateRoutes
             path="/clinica/procesa"
             component={ClinicaProcesaRouter}
-            isAuthenticated
+            isAuthenticated={checking}
           />
           <PrivateRoutes
             path="/clinica/toma"
             component={ClinicaTomaRouter}
-            isAuthenticated
+            isAuthenticated={checking}
           />
           <PrivateRoutes
             path="/laboratorio"
             component={LaboratoristaRouter}
-            isAuthenticated
+            isAuthenticated={checking}
           />
           <PrivateRoutes
             path="/ventas"
             component={AgenteVentasRouter}
-            isAuthenticated
+            isAuthenticated={checking}
           />
           <PrivateRoutes
             path="/recepcion"
             component={RecepcionistaRouter}
-            isAuthenticated
+            isAuthenticated={checking}
           />
           <PrivateRoutes
             path="/organizador"
             component={OrganizadorRouter}
-            isAuthenticated
+            isAuthenticated={checking}
           />
 
           <PrivateRoutes
             path="/facturacion"
             component={FacturacionRouter}
-            isAuthenticated
+            isAuthenticated={checking}
           />
 
           {/* <Route component={Error404} /> */}

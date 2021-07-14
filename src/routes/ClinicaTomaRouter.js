@@ -29,7 +29,7 @@ const ClinicaTomaRouter = () => {
           <Route exact path="/clinica/toma/reservas" component={Reservas} />
           <Route exact path="/clinica/toma/historial" component={Historial} />
           <Route exact path="/clinica/toma/perfil" component={Perfil} />
-          {/* <Redirect to="/clinica/toma/reservas" /> */}
+          <Redirect to="/clinica/toma/reservas" />
         </Switch>
       </div>
     </>

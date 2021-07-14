@@ -35,7 +35,7 @@ const RecepcionistaRouter = () => {
             path="/recepcion/generar/atencion"
             component={GenerarAtencion}
           />
-          {/* <Redirect to="/recepcion/usuarios" /> */}
+          <Redirect to="/recepcion/usuarios" />
         </Switch>
       </div>
     </>
