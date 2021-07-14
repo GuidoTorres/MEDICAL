@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import Modal from "react-modal";
-import  {fetchGETPOSTPUTDELETEJSON}  from "../../../helpers/fetch";
+import React, { useState } from 'react';
+import Modal from 'react-modal';
+import { fetchGETPOSTPUTDELETEJSON } from '../../../helpers/fetch';
 
-import  {customStyles}  from "../../../helpers/tablaOpciones";
-import ExportExcel from "react-export-excel";
-
+import { customStyles } from '../../../helpers/tablaOpciones';
+import ExportExcel from 'react-export-excel';
 
 const ExcelFile = ExportExcel.ExcelFile;
 const ExcelSheet = ExportExcel.ExcelSheet;
@@ -29,7 +28,7 @@ const MDescargar = ({ setOpenHModal, openHModal, subCategoria }) => {
     fetchGETPOSTPUTDELETEJSON(
       `services/export/${descargar.id}`,
       descargar,
-      "POST"
+      'POST'
     )
       .then((res) => res.json())
       .then((res) => setHistorial(res));
@@ -56,16 +55,16 @@ const MDescargar = ({ setOpenHModal, openHModal, subCategoria }) => {
                 <select
                   className="form-select"
                   aria-label="Default select example"
-                  style={{ width: "50%" }}
+                  style={{ width: '50%' }}
                   name="id"
                   onChange={(e) => downloadHistorial(e)}
                 >
                   <option value={-1}>Seleccione</option>
 
-                  {dataSelected &&
+                  {/* {dataSelected &&
                     dataSelected.services.map((data, i) => (
                       <option value={data.id}>{data.name}</option>
-                    ))}
+                    ))} */}
                 </select>
               </div>
               <div>
@@ -95,7 +94,10 @@ const MDescargar = ({ setOpenHModal, openHModal, subCategoria }) => {
               <ExcelFile
                 filename="historial"
                 element={
-                  <button className="botones" onClick={()=>getDateHistorial()}>
+                  <button
+                    className="botones"
+                    onClick={() => getDateHistorial()}
+                  >
                     Descargar
                   </button>
                 }

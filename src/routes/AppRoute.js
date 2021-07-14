@@ -15,7 +15,7 @@ import LaboratoristaRouter from './LaboratoristaRouter';
 import OrganizadorRouter from './OrganizadorRouter';
 
 import PrivateRoutes from './PrivateRoutes';
-// import PublicRoutes from './PublicRoutes';
+import PublicRoutes from './PublicRoutes';
 import RecepcionistaRouter from './RecepcionistaRouter';
 
 const AppRoute = () => {
@@ -30,7 +30,7 @@ const AppRoute = () => {
     <Router>
       <div>
         <Switch>
-          {/* <PublicRoutes exact path="/" component={Login} isAuthenticated /> */}
+          <PublicRoutes exact path="/" component={Login} isAuthenticated />
           {/* RUTAS PRIVADAS */}
           <PrivateRoutes
             path="/admin"
@@ -80,7 +80,7 @@ const AppRoute = () => {
           />
 
           {/* <Route component={Error404} /> */}
-          <Redirect to="/login" />
+          <Redirect to="/" />
         </Switch>
       </div>
     </Router>
