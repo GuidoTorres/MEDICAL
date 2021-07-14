@@ -1,21 +1,14 @@
-import React, { useEffect } from 'react';
 import Navbar from '../components/ui/Navbar';
 import { Route } from 'react-router';
 import Reservas from '../components/procesanmuestra/Reservas';
 import CargarResultado from '../components/procesanmuestra/CargarResultado';
 import Perfil from '../components/procesanmuestra/Perfil';
-import { useHistory } from 'react-router-dom';
 import Historial from '../components/procesanmuestra/Historial';
+import { Redirect, Switch } from 'react-router-dom';
 
 const ClinicaProcesaRouter = () => {
-  let history = useHistory();
-
-  useEffect(() => {
-    history.push('/clinica/procesa/reservas');
-  }, [history]);
-
   return (
-    <div>
+    <>
       <Navbar
         titulo1={'Reservas '}
         url1={'/clinica/procesa/reservas'}
@@ -31,19 +24,24 @@ const ClinicaProcesaRouter = () => {
         url6={''}
         ruta={'/clinica/procesa/reservas'}
       />
-
-      <Route exact path="/clinica/procesa/reservas" component={Reservas} />
-
-      <Route
-        exact
-        path="/clinica/procesa/resultados"
-        component={CargarResultado}
-      />
-
-      <Route exact path="/clinica/procesa/perfil" component={Perfil} />
-
-      <Route exact path="/clinica/procesa/historial" component={Historial} />
-    </div>
+      <div>
+        <Switch>
+          <Route exact path="/clinica/procesa/reservas" component={Reservas} />
+          <Route
+            exact
+            path="/clinica/procesa/resultados"
+            component={CargarResultado}
+          />
+          <Route exact path="/clinica/procesa/perfil" component={Perfil} />
+          <Route
+            exact
+            path="/clinica/procesa/historial"
+            component={Historial}
+          />
+          {/* <Redirect to="/clinica/procesa/reservas" /> */}
+        </Switch>
+      </div>
+    </>
   );
 };
 

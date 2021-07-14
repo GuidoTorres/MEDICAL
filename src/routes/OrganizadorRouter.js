@@ -1,21 +1,13 @@
-import React, { useEffect } from 'react';
-import { Route } from 'react-router';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import Calendario from '../components/organizador/Calendario';
 import Perfil from '../components/organizador/Perfil';
 import Solicitud from '../components/organizador/Solicitud';
 import Transportista from '../components/organizador/Transportista';
 import Navbar from '../components/ui/Navbar';
-import { useHistory } from 'react-router-dom';
 
 const OrganizadorRouter = () => {
-  let history = useHistory();
-
-  useEffect(() => {
-    history.push('/organizador/solicitud');
-  }, [history]);
-
   return (
-    <div>
+    <>
       <Navbar
         titulo1={'Solicitudes'}
         url1={'/organizador/solicitud'}
@@ -31,16 +23,20 @@ const OrganizadorRouter = () => {
         url6={''}
         ruta={'/organizador/solicitud'}
       />
-
-      <Route exact path="/organizador/solicitud" component={Solicitud} />
-      <Route
-        exact
-        path="/organizador/transportista"
-        component={Transportista}
-      />
-      <Route exact path="/organizador/perfil" component={Perfil} />
-      <Route exact path="/organizador/calendario" component={Calendario} />
-    </div>
+      <div>
+        <Switch>
+          <Route exact path="/organizador/solicitud" component={Solicitud} />
+          <Route
+            exact
+            path="/organizador/transportista"
+            component={Transportista}
+          />
+          <Route exact path="/organizador/perfil" component={Perfil} />
+          <Route exact path="/organizador/calendario" component={Calendario} />
+          {/* <Redirect to="/organizador/solicitud" /> */}
+        </Switch>
+      </div>
+    </>
   );
 };
 

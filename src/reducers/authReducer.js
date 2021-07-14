@@ -1,9 +1,9 @@
 import { types } from '../types/types';
 
 const initialState = {
-  checking: true,
   isAuthenticated: false,
-  rol: null,
+  role: { id: 0, name: null },
+  clinic_type: { id: 0, detail: null },
 };
 
 const authReducer = (state = initialState, action) => {
@@ -11,19 +11,18 @@ const authReducer = (state = initialState, action) => {
     case types.authLogin:
       return {
         ...state,
-        isAuthenticated: true,
-        checking: false,
         ...action.payload,
+        isAuthenticated: true,
       };
-    // case types.authCheckingFinish:
-    //   return {
-    //     ...state,
-    //     checking: false,
-    //   };
-    // case types.authLogout:
-    //   return {
-    //     checking: false,
-    //   };
+    case types.authCheckingFinish:
+      return {
+        ...state,
+        isAuthenticated: true,
+      };
+    case types.authLogout:
+      return {
+        isAuthenticated: false,
+      };
     default:
       return state;
   }

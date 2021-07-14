@@ -4,70 +4,70 @@ import { types } from '../types/types';
 
 const startLogin = (username, password) => {
   return async (dispatch) => {
-    console.log(username, password);
-    // const resp = await fetchSinToken(
-    //   'auth/login',
-    //   { username, password },
-    //   'POST'
-    // );
-    // const body = await resp.json();
-    // console.log(body.role.name);
-    // if (body.access_token) {
-    //   localStorage.setItem('token', body.access_token);
-    //   localStorage.setItem('token-init-date', new Date().getTime());
+    const resp = await fetchSinToken(
+      'auth/login',
+      { username, password },
+      'POST'
+    );
+    const body = await resp.json();
 
-    //   dispatch(
-    //     login({
-    //       rol: body.role.name,
-    //     })
-    //   );
-    // } else {
-    //   Swal.fire('Error', body.error);
-    // }
+    if (body.access_token) {
+      localStorage.setItem('token', body.access_token);
+      localStorage.setItem('token-init-date', new Date().getTime());
+
+      dispatch(
+        login({
+          clinic_type: body.clinic_type,
+          role: body.role,
+          clinic_type: body.clinic_type,
+        })
+      );
+    } else {
+      Swal.fire('Error', body.error);
+    }
   };
 };
 
-// const startCkecking = () => {
-//   return async (dispatch) => {
-//     const token = localStorage.getItem('token') || '';
-//     // console.log(token);
-//     const resp = await fetchConToken('auth/refresh', { token }, 'POST');
-//     const body = await resp.json();
-//     // console.log(body);
-//     if (body.access_token) {
-//       localStorage.setItem('token', body.access_token);
-//       localStorage.setItem('token-init-date', new Date().getTime());
+const startCkecking = () => {
+  return async (dispatch) => {
+    const token = localStorage.getItem('token') || '';
+    const resp = await fetchConToken('auth/refresh', { token }, 'POST');
+    const body = await resp.json();
+    if (body.access_token) {
+      localStorage.setItem('token', body.access_token);
+      localStorage.setItem('token-init-date', new Date().getTime());
 
-//       dispatch(
-//         login({
-//           rol: body.role.name,
-//         })
-//       );
-//     } else {
-//       Swal.fire('Error', body.error);
-//       dispatch(checkingFinish());
-//     }
-//   };
-// };
+      dispatch(
+        login({
+          clinic_type: body.clinic_type,
+          role: body.role,
+          clinic_type: body.clinic_type,
+        })
+      );
+    } else {
+      dispatch(checkingFinish());
+    }
+  };
+};
 
-// const checkingFinish = () => ({
-//   type: types.authCheckingFinish,
-// });
+const checkingFinish = () => ({
+  type: types.authCheckingFinish,
+});
 
-// const login = (user) => {
-//   return {
-//     type: types.authLogin,
-//     payload: user,
-//   };
-// };
+const login = (user) => {
+  return {
+    type: types.authLogin,
+    payload: user,
+  };
+};
 
-// const startLogout = () => {
-//   return (dispatch) => {
-//     localStorage.clear();
-//     dispatch(logout());
-//   };
-// };
+const startLogout = () => {
+  return (dispatch) => {
+    localStorage.clear();
+    dispatch(logout());
+  };
+};
 
-// const logout = () => ({ type: types.authLogout });
+const logout = () => ({ type: types.authLogout });
 
-export { startLogin };
+export { startLogin, startLogout, startCkecking };

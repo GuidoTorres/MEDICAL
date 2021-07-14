@@ -1,20 +1,13 @@
-import React, { useEffect } from 'react';
 import { Route } from 'react-router';
+import { Redirect, Switch } from 'react-router-dom';
 import Empresa from '../components/agenteventas/Empresa';
 import Registro from '../components/agenteventas/Registro';
 import Servicio from '../components/agenteventas/Servicio';
 import Navbar from '../components/ui/Navbar';
-// import { useHistory } from 'react-router-dom';
 
 const AgenteVentasRouter = () => {
-  // let history = useHistory();
-
-  // useEffect(() => {
-  //   history.push('/ventas/registro');
-  // }, [history]);
-
   return (
-    <div>
+    <>
       <Navbar
         titulo1={'Registro '}
         url1={'/ventas/registro'}
@@ -30,24 +23,15 @@ const AgenteVentasRouter = () => {
         url6={''}
         ruta={'/ventas/registro'}
       />
-
-      <Route exact path="/ventas/registro" component={Registro} data={true} />
-      <Route
-        exact
-        path="/ventas/registro/empresa"
-        component={Empresa}
-        data={true}
-      />
-
-      <Route exact path="/ventas/servicios" component={Servicio} data={true} />
-
-      {/* <Route
-        exact
-        path="/ventas/servicios/editar"
-        component={ServiciosEditar}
-        data={true}
-      /> */}
-    </div>
+      <div>
+        <Switch>
+          <Route exact path="/ventas/registro" component={Registro} />
+          <Route exact path="/ventas/registro/empresa" component={Empresa} />
+          <Route exact path="/ventas/servicios" component={Servicio} />
+          {/* <Redirect to="/ventas/registro" /> */}
+        </Switch>
+      </div>
+    </>
   );
 };
 
