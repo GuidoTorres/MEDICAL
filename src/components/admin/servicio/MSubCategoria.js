@@ -19,7 +19,7 @@ const MSubCategoria = ({ setOpenSubModal, openSubModal, subCategoria }) => {
       preventScroll={true}
       ariaHideApp={false}
     >
-      <h3 className="title__modal">Sub Categoria</h3>
+      <h3 className="title__modal">Sub Categorias</h3>
       <div className="container">
         <div className="row mt-3">
           <div className="col-12 mregistro__servicios">

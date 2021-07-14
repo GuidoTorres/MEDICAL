@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import Swal from "sweetalert2";
 
 import { UploadAvatar } from "../../uploadAvatar/uploadAvatar";
 import { customStyles } from "../../../helpers/tablaOpciones";
-import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
+import { fetchGETPOSTPUTDELETE, fetchRUC } from "../../../helpers/fetch";
 import MapaGoogle from "../../Mapa/MapaGoogle";
 
 const MRegistroClinica = ({
@@ -19,6 +19,7 @@ const MRegistroClinica = ({
   const [avatar, setAvatar] = useState(null);
   const [dataMapa, setDataMapa] = useState();
   const [data, setData] = useState({});
+  const [ruc, setRuc] = useState({});
 
   const closeModal = () => {
     setOpenModal(false);
@@ -33,7 +34,21 @@ const MRegistroClinica = ({
     });
   };
 
+  const getRuc = () => {
+    fetchRUC(data.ruc, "GET")
+      .then((res) => res.json())
+      .then((res) => setRuc(res));
+  };
+
   // console.log(dataSelected);
+
+  useEffect(() => {
+    if (data && data.ruc && data.ruc.length === 11) {
+      getRuc();
+    }
+  }, [data.ruc]);
+
+  console.log(ruc);
 
   const postClinics = () => {
     const formData = new FormData();
@@ -240,9 +255,11 @@ const MRegistroClinica = ({
                     type="text"
                     name="business_name"
                     defaultValue={
-                      dataSelected && dataSelected.corporation.business_name
-                        ? dataSelected.corporation.business_name
-                        : ""
+                      editar === true
+                        ? dataSelected && dataSelected.corporation.business_name
+                          ? dataSelected.corporation.business_name
+                          : ""
+                        : ruc.razonSocial
                     }
                     onChange={(e) => handleChange(e)}
                   />
@@ -292,9 +309,11 @@ const MRegistroClinica = ({
                     type="text"
                     name="address"
                     defaultValue={
+                      editar ?
                       dataSelected && dataSelected.corporation.address
                         ? dataSelected.corporation.address.address
                         : ""
+                        : ruc.direccion
                     }
                     onChange={(e) => handleChange(e)}
                   />

@@ -19,7 +19,7 @@ const getFecha = () => {
   let newDate = new Date();
   let date = newDate.getDate();
   let month = newDate.toLocaleString("default", { month: "long" });
-  let year = newDate.getFullYear();
+  // let year = newDate.getFullYear();
 
   return `${date}${" de "}${month}${" "}`;
 };

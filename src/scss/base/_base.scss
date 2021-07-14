@@ -332,8 +332,8 @@ input[type="checkbox"] {
 
 // TODO MODAL BARCODE
 .modal__barcode {
-  max-height: 400px;
-  max-width: 320px;
+  height: auto;
+  max-width: 275px;
 }
 
 // TODO MODAL SUBCATEGORIA
@@ -353,7 +353,7 @@ input[type="checkbox"] {
 .modal__hprecio {
   height: initial;
   width: 75%;
-  max-height: 236px;
+  max-height: 280px;
   max-width: 350px;
 }
 
@@ -485,7 +485,7 @@ input[type="checkbox"] {
     height: 42%;
   }
   .modal__hprecio {
-    height: 36%;
+    height: 43%;
   }
   .modal__EditarServicio {
     height: 43%;
@@ -494,6 +494,10 @@ input[type="checkbox"] {
 @media screen and (min-width: 481px) {
   .modal__subcategoria {
     width: 50%;
+  }
+  .modal__barcode {
+    height: auto;
+    max-width: 400px;
   }
 }
 @media screen and (min-width: 769px) {

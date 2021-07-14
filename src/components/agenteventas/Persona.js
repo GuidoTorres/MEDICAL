@@ -3,6 +3,7 @@ import DataTable from 'react-data-table-component';
 import Swal from 'sweetalert2';
 
 import { servicio } from '../../data/AVServicio';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
 import MPersona from './MPersona';
 
@@ -10,6 +11,22 @@ const Persona = () => {
   const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+
+  const [particular, setParticular] = useState([]);
+
+  const getParticularDiscount = () => {
+    fetchGETPOSTPUTDELETE('particular_discount')
+      .then((data) => data.json())
+      .then((datos) => {
+        setParticular(datos.data);
+      });
+  };
+
+  useEffect(() => {
+    getParticularDiscount();
+  }, []);
+
+  console.log(particular);
 
   const columnas = [
     {
@@ -23,7 +40,7 @@ const Persona = () => {
     },
     {
       name: 'DNI',
-      selector: 'dni',
+      selector: row => row.user && row.user.person && row.user.person.dni ? row.user.person.dni: "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -32,7 +49,7 @@ const Persona = () => {
     },
     {
       name: 'Nombre',
-      selector: 'nombre',
+      selector: row => row.user && row.user.person && row.user.person.name ? row.user.person.name : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -41,7 +58,7 @@ const Persona = () => {
     },
     {
       name: 'Apellido',
-      selector: 'apellido',
+      selector: row => row.user && row.user.person && row.user.person.pat_lastname ? row.user.person.pat_lastname :"",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -50,7 +67,7 @@ const Persona = () => {
     },
     {
       name: 'Tipo de prueba',
-      selector: 'tipo',
+      selector: row => row.service && row.service.name ? row.service.name : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -59,9 +76,8 @@ const Persona = () => {
     },
     {
       name: 'Descuento para usuario (%)',
-      selector: 'descuento',
+      selector: row => row.percent ? row.percent + "%" : "",
       sortable: true,
-      grow:2,
       style: {
         borderBotton: 'none',
         color: '#555555',
@@ -71,7 +87,7 @@ const Persona = () => {
     },
     {
       name: 'Total',
-      selector: 'total',
+      selector: row => row.amount ? row.amount: "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -184,7 +200,7 @@ const Persona = () => {
 
           <DataTable
             columns={columnas}
-            data={listRegistro}
+            data={particular}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
