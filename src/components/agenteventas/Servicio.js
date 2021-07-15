@@ -8,6 +8,8 @@ const Servicio = () => {
 
   //modal de particular particualar discount create para la tabla igual
 
+  //usuario particular 
+
   const getServices = () => {
     fetchGETPOSTPUTDELETE('services')
       .then((info) => info.json())

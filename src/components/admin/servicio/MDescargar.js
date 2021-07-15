@@ -9,7 +9,7 @@ const ExcelFile = ExportExcel.ExcelFile;
 const ExcelSheet = ExportExcel.ExcelSheet;
 const ExcelColumn = ExportExcel.ExcelColumn;
 
-const MDescargar = ({ setOpenHModal, openHModal, subCategoria }) => {
+const MDescargar = ({ setOpenHModal, openHModal, subCategoria, dataSelected }) => {
   const [descargar, setDescargar] = useState();
   const [historial, setHistorial] = useState({});
   const closeModal = () => {

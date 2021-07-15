@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Modal from "react-modal";
-import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
+import {
+  fetchGETPOSTPUTDELETE,
+  fetchGETPOSTPUTDELETEJSON,
+} from "../../helpers/fetch";
 import { customStyles } from "../../helpers/tablaOpciones";
 import { UploadAvatar } from "../uploadAvatar/uploadAvatar";
 import WebCamScreenshot from "../webcam/WebCamScreenshot";
@@ -10,6 +13,7 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
   const [avatar, setAvatar] = useState(null);
   const [imagenes, setImagenes] = useState(false);
   const [paciente, setPaciente] = useState({});
+  const [religions, setReligions] = useState({});
   const closeModal = () => {
     setAddRegistro(false);
   };
@@ -25,9 +29,42 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
       district_id: 1,
     });
   };
+
+  const getReligions = () => {
+    fetchGETPOSTPUTDELETE("religions", null, "GET")
+      .then((res) => res.json())
+      .then((res) => setReligions(res.religions));
+  };
+  useEffect(() => {
+    getReligions();
+  }, []);
+  console.log(religions);
   console.log(paciente);
   const crearPaciente = () => {
-    fetchGETPOSTPUTDELETEJSON("patient", paciente, "POST").then((data) =>
+    const formData = new FormData();
+    formData.set("document_type_id", paciente.document_type_id || "");
+    formData.set("dni", paciente.dni || "");
+    formData.set("name", paciente.name || "");
+    formData.set("pat_lastname", paciente.pat_lastname || "");
+    formData.set("mom_lastname", paciente.mom_lastname || "");
+    formData.set("gender_id", paciente.gender_id || "");
+    formData.set("birthday", paciente.birthday || "");
+    formData.set("religion_id", paciente.religion_id || "");
+    formData.set("department_id", paciente.department_id || "");
+    formData.set("civil_status_id", 0);
+    formData.set("grade_id", paciente.grade_id || "");
+    formData.set("cellphone", paciente.cellphone || "");
+    formData.set("phone", paciente.phone || "");
+    formData.set("email", paciente.email || "");
+    formData.set("emergency_phone", paciente.emergy_phone || "");
+    formData.set("contact_emergency", paciente.contact_emergency || "");
+    formData.set("company_id", "");
+    formData.set("workstation", paciente.workstation || "");
+    formData.set("birthplace", "");
+    formData.set("address", paciente.address);
+    formData.set("district_id", paciente.district_id);
+
+    fetchGETPOSTPUTDELETE("patient", formData, "POST").then((data) =>
       console.log(data)
     );
   };
@@ -63,7 +100,7 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
               <div>
                 <label htmlFor="">Número de documento:</label>
                 <input
-                  type="text"
+                  type="number"
                   placeholder=""
                   name="dni"
                   onChange={(e) => handleChange(e)}
@@ -118,16 +155,19 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
               </div>
               <div>
                 <label htmlFor="">Edad:</label>
-                <input type="text" placeholder="" />
+                <input type="number" placeholder="" />
               </div>
               <div>
                 <label htmlFor="">Religión:</label>
-                <input
-                  type="text"
-                  placeholder=""
-                  name="religion_id"
-                  onChange={(e) => handleChange(e)}
-                />
+                <select name="religion_id"
+                  onChange={(e) => handleChange(e)}>
+                  {/* <option value="">Seleccione</option>
+                  {religions && religions.map((data, i)=>(
+
+                    <option key={i} value={i}>{data.name}</option>
+                  ))} */}
+                </select>
+
               </div>
               <div>
                 <label htmlFor="">País: </label>
