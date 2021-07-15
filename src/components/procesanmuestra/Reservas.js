@@ -17,7 +17,7 @@ const Reservas = () => {
   // en historial
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("patient_care")
+    fetchGETPOSTPUTDELETE("attention")
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos.data));
   };
@@ -114,7 +114,7 @@ const Reservas = () => {
       button: true,
       cell: (e) => (
         <button
-          // onClick={() => handleDetalles(e)}
+          onClick={() => handleDetalles(e)}
           className="table__tablebutton"
         >
           <i className="fas fa-angle-right"></i>

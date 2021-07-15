@@ -309,10 +309,10 @@ const MRegistroClinica = ({
                     type="text"
                     name="address"
                     defaultValue={
-                      editar ?
-                      dataSelected && dataSelected.corporation.address
-                        ? dataSelected.corporation.address.address
-                        : ""
+                      editar
+                        ? dataSelected && dataSelected.corporation.address
+                          ? dataSelected.corporation.address.address
+                          : ""
                         : ruc.direccion
                     }
                     onChange={(e) => handleChange(e)}
@@ -382,9 +382,13 @@ const MRegistroClinica = ({
                     type="time"
                     name="opening"
                     defaultValue={
-                      dataSelected && dataSelected.work_day
-                        ? dataSelected.work_day.opening
-                        : ""
+                      dataSelected &&
+                      dataSelected.corporation.work_day &&
+                      dataSelected.corporation.work_day[0] &&
+                      dataSelected.corporation.work_day[0].hours &&
+                      dataSelected.corporation.work_day[0].hours.opening
+                        ? dataSelected.corporation.work_day[0].hours.opening
+                        : false
                     }
                     onChange={(e) =>
                       setData({
@@ -400,9 +404,13 @@ const MRegistroClinica = ({
                     type="time"
                     name="closing"
                     defaultValue={
-                      dataSelected && dataSelected.work_day
-                        ? dataSelected.work_day.closing
-                        : ""
+                      dataSelected &&
+                      dataSelected.corporation.work_day &&
+                      dataSelected.corporation.work_day[0] &&
+                      dataSelected.corporation.work_day[0].hours &&
+                      dataSelected.corporation.work_day[0].hours.closing
+                        ? dataSelected.corporation.work_day[0].hours.closing
+                        : false
                     }
                     onChange={(e) =>
                       setData({
@@ -423,8 +431,8 @@ const MRegistroClinica = ({
                       name="monday"
                       defaultChecked={
                         dataSelected &&
-                        dataSelected.work_day &&
-                        dataSelected.work_day.monday === 1
+                        dataSelected.corporation.work_day &&
+                        dataSelected.corporation.work_day[0]
                           ? true
                           : false
                       }
@@ -447,8 +455,8 @@ const MRegistroClinica = ({
                       name="tuesday"
                       defaultChecked={
                         dataSelected &&
-                        dataSelected.work_day &&
-                        dataSelected.work_day.tuesday === 1
+                        dataSelected.corporation.work_day &&
+                        dataSelected.corporation.work_day[1]
                           ? true
                           : false
                       }
@@ -470,8 +478,8 @@ const MRegistroClinica = ({
                       className="form-check-input"
                       defaultChecked={
                         dataSelected &&
-                        dataSelected.work_day &&
-                        dataSelected.work_day.wednesday === 1
+                        dataSelected.corporation.work_day &&
+                        dataSelected.corporation.work_day[2]
                           ? true
                           : false
                       }
@@ -494,8 +502,8 @@ const MRegistroClinica = ({
                       name="thursday"
                       defaultChecked={
                         dataSelected &&
-                        dataSelected.work_day &&
-                        dataSelected.work_day.thursday === 1
+                        dataSelected.corporation.work_day &&
+                        dataSelected.corporation.work_day[3]
                           ? true
                           : false
                       }
@@ -518,8 +526,8 @@ const MRegistroClinica = ({
                       name="friday"
                       defaultChecked={
                         dataSelected &&
-                        dataSelected.work_day &&
-                        dataSelected.work_day.friday === 1
+                        dataSelected.corporation.work_day &&
+                        dataSelected.corporation.work_day[4]
                           ? true
                           : false
                       }
@@ -542,8 +550,8 @@ const MRegistroClinica = ({
                       name="saturday"
                       defaultChecked={
                         dataSelected &&
-                        dataSelected.work_day &&
-                        dataSelected.work_day.saturday === 1
+                        dataSelected.corporation.work_day &&
+                        dataSelected.corporation.work_day[5]
                           ? true
                           : false
                       }
@@ -566,8 +574,8 @@ const MRegistroClinica = ({
                       name="sunday"
                       defaultChecked={
                         dataSelected &&
-                        dataSelected.work_day &&
-                        dataSelected.work_day.sunday === 1
+                        dataSelected.corporation.work_day &&
+                        dataSelected.corporation.work_day[6]
                           ? true
                           : false
                       }
