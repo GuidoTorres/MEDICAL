@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 // import validator from 'validator';
-import { ToastContainer, toast } from 'react-toastify';
-import { authLogin, startLogin } from '../../actions/auth';
+// import { ToastContainer, toast } from 'react-toastify';
+import { startLogin } from '../../actions/auth';
 
 import login from '../../assets/login/login.png';
 import logo from '../../assets/login/logo.png';
@@ -11,11 +11,11 @@ import logo from '../../assets/login/logo.png';
 const Login = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { rol } = useSelector((state) => state.auth);
-  // console.log(rol);
+  const { role } = useSelector((state) => state.auth);
+
   const initialState = {
-    username: 'generaladmin',
-    password: 'password',
+    username: '',
+    password: '',
   };
   const [formValues, setFormValues] = useState(initialState);
 
@@ -28,49 +28,75 @@ const Login = () => {
     });
   };
 
-  // const validationFormulario = () => {
-  //   if (username.trim().length === 0 || password.trim().length === 0) {
-  //     toast.error('Los campos no deben estar vacios', {
-  //       position: toast.POSITION.TOP_RIGTH,
-  //     });
-  //     return false;
+  // const validandoRutas = () => {
+  //   if (role.id === undefined) {
+  //     history.replace('/');
   //   }
-
-  //   if (username === null) {
-  //     toast.error('caracteres', {
-  //       position: toast.POSITION.TOP_RIGTH,
-  //     });
-  //     return false;
+  //   if (role.id === 1 && role.id !== undefined) {
+  //     history.replace('admin/registro');
+  //     return;
+  //   } else if (role.id === 2 && role.id !== undefined) {
+  //     history.replace('empresa/registro');
+  //     return;
+  //   } else if (role.id === 3 && role.id !== undefined) {
+  //     history.replace('clinica/toma/reservas');
+  //     return;
+  //   } else if (role.id === 4 && role.id !== undefined) {
+  //     history.replace('organizador/solicitud');
+  //     return;
+  //   } else if (role.id === 8 && role.id !== undefined) {
+  //     history.replace('laboratorio/subir');
+  //     return;
+  //   } else if (role.id === 9 && role.id !== undefined) {
+  //     history.replace('recepcion/usuarios');
+  //     return;
+  //   } else if (role.id === 10 && role.id !== undefined) {
+  //     history.replace('facturacion/empresas');
+  //     return;
+  //   } else if (role.id === 11 && role.id !== undefined) {
+  //     history.replace('clinica/procesa/reservas');
+  //   } else {
+  //     history.replace('/');
   //   }
-
-  //   if (password.trim().length < 6) {
-  //     toast.error('La contraseña debe tener mas de 6 caracteres', {
-  //       position: toast.POSITION.TOP_RIGTH,
-  //     });
-  //     return false;
-  //   }
-
-  //   return true;
   // };
 
   const handleLogin = (e) => {
     e.preventDefault();
-
     dispatch(startLogin(username, password));
-    // history.push("admin/registro")
-    // history.replace(`${rol}`);
-    // if (validationFormulario()) {
-    // dispatch(authLogin(email, password));
-    // toast.success('Datos correctos', {
-    //   position: toast.POSITION.TOP_RIGTH,
-    // });
-    // history.push(`${role}`);
-    // }
+    // validandoRutas();
+    if (role.id === undefined) {
+      history.replace('/');
+    }
+    if (role.id === 1 && role.id !== undefined) {
+      history.replace('admin/registro');
+      return;
+    } else if (role.id === 2 && role.id !== undefined) {
+      history.replace('empresa/registro');
+      return;
+    } else if (role.id === 3 && role.id !== undefined) {
+      history.replace('clinica/toma/reservas');
+      return;
+    } else if (role.id === 4 && role.id !== undefined) {
+      history.replace('organizador/solicitud');
+      return;
+    } else if (role.id === 8 && role.id !== undefined) {
+      history.replace('laboratorio/subir');
+      return;
+    } else if (role.id === 9 && role.id !== undefined) {
+      history.replace('recepcion/usuarios');
+      return;
+    } else if (role.id === 10 && role.id !== undefined) {
+      history.replace('facturacion/empresas');
+      return;
+    } else if (role.id === 11 && role.id !== undefined) {
+      history.replace('clinica/procesa/reservas');
+    } else {
+      history.replace('/');
+    }
   };
 
   return (
     <div className="container-fluid">
-      <ToastContainer />
       <div className="row login">
         <div className=" col-4 col-sm-6 col-md-7  col-xl-7 login__img ">
           <img src={login} alt="" />
@@ -96,7 +122,6 @@ const Login = () => {
                 onChange={handleOnChangeLogin}
               />
             </div>
-            {/* <Link to="/registrar">Registarse</Link> */}
             <button type="submit" className="botones">
               Ingresar
             </button>

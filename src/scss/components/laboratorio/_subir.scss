@@ -27,7 +27,10 @@
     }
   }
 }
-
+.d-flex-column {
+  display: flex;
+  flex-direction: column;
+}
 @media (max-width: 1200px) {
   .laboratorio__resultados {
     div {

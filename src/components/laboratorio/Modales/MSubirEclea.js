@@ -4,12 +4,7 @@ import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 
 import { customStyles } from "../../helpers/tablaOpciones";
 
-const MSubirLaboratorio = ({
-  openModal,
-  setOpenModal,
-  dataSelected,
-  tipoPrueba,
-}) => {
+const MSubirEclea = ({ openModal, setOpenModal, dataSelected, tipoPrueba }) => {
   const [result, setResult] = useState({
     id: dataSelected.id,
   });
@@ -106,4 +101,4 @@ const MSubirLaboratorio = ({
   );
 };
 
-export default MSubirLaboratorio;
+export default MSubirEclea;

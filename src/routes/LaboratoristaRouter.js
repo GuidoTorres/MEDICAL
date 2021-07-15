@@ -1,20 +1,13 @@
-import React, { useEffect } from 'react';
 import Navbar from '../components/ui/Navbar';
 import { Route } from 'react-router';
 import SubirLaboratorio from '../components/laboratorio/SubirLaboratorio';
 import Historial from '../components/laboratorio/Historial';
 import Estadistica from '../components/laboratorio/Estadistica';
-import { useHistory } from 'react-router-dom';
+import { Redirect, Switch } from 'react-router-dom';
 
 const LaboratoristaRouter = () => {
-  let history = useHistory();
-
-  useEffect(() => {
-    history.push('/laboratorio/subir');
-  }, [history]);
-
   return (
-    <div>
+    <>
       <Navbar
         titulo1={'Subir resultados'}
         url1={'/laboratorio/subir'}
@@ -31,11 +24,19 @@ const LaboratoristaRouter = () => {
         ç
         ruta={'/laboratorio/subir'}
       />
-
-      <Route exact path="/laboratorio/subir" component={SubirLaboratorio} />
-      <Route exact path="/laboratorio/historial" component={Historial} />
-      <Route exact path="/laboratorio/estadisticas" component={Estadistica} />
-    </div>
+      <div>
+        <Switch>
+          <Route exact path="/laboratorio/subir" component={SubirLaboratorio} />
+          <Route exact path="/laboratorio/historial" component={Historial} />
+          <Route
+            exact
+            path="/laboratorio/estadisticas"
+            component={Estadistica}
+          />
+          <Redirect to="/laboratorio/subir" />
+        </Switch>
+      </div>
+    </>
   );
 };
 

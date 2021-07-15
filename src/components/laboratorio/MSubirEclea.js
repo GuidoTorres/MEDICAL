@@ -7,12 +7,7 @@ import {
 
 import { customStyles } from "../../helpers/tablaOpciones";
 
-const MSubirLaboratorio = ({
-  openModal,
-  setOpenModal,
-  dataSelected,
-  tipoPrueba,
-}) => {
+const MSubirEclea = ({ openModal, setOpenModal, dataSelected, tipoPrueba }) => {
   const [result, setResult] = useState({
     id: dataSelected.id,
   });
@@ -38,7 +33,7 @@ const MSubirLaboratorio = ({
       isOpen={openModal}
       onRequestClose={closeModal}
       style={customStyles}
-      className="modal mlaboratorio_subir"
+      className="modal mlaboratorio_subir-eclea"
       overlayClassName="modal-fondo"
       closeTimeoutMS={200}
       preventScroll={true}
@@ -47,7 +42,7 @@ const MSubirLaboratorio = ({
       <h3 className="title__modal mb-3">Cargar resultado</h3>
       <div className="container">
         <div className="row">
-          <div className="col-12 mlaboratorio_cargar ">
+          <div className="col-12 mlaboratorio_cargar">
             <p>
               <strong>Datos del paciente</strong>{" "}
             </p>
@@ -82,20 +77,17 @@ const MSubirLaboratorio = ({
             <p>
               <strong>Cargar Resultados</strong>{" "}
             </p>
-            <div className="mt-2">
-              <div>
-                <label>El resultado de la prueba es:</label>
-                <select
-                  className="form-select"
-                  aria-label="Default select example"
-                  onChange={(e) =>
-                    setResult({ ...result, result: e.target.value })
-                  }
-                >
-                  <option>Seleccione</option>
-                  <option value="0">Detectado</option>
-                  <option value="1">No Detectado</option>
-                </select>
+            <div className="mt-3">
+              <div className="d-flex-column">
+                <label className="mb-3">El resultado de la prueba es:</label>
+                <div>
+                  <label>Resultado IgM:</label>
+                  <input type="text" name="resultIgm" />
+                </div>
+                <div>
+                  <label>Resultado IgG:</label>
+                  <input type="text" name="resultIgg" />
+                </div>
               </div>
             </div>
             <div className="list-botones">
@@ -114,4 +106,4 @@ const MSubirLaboratorio = ({
   );
 };
 
-export default MSubirLaboratorio;
+export default MSubirEclea;

@@ -1,9 +1,9 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
-import { startLogout } from "../../actions/auth";
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { Link, NavLink, useHistory } from 'react-router-dom';
+import { startLogout } from '../../actions/auth';
 // import { useSelector } from 'react-redux';
-import logo from "../../assets/icons/Isotipo.png";
+import logo from '../../assets/icons/Isotipo.png';
 
 const Navbar = ({
   titulo1,
@@ -20,19 +20,18 @@ const Navbar = ({
   url6,
   ruta,
 }) => {
-  // const { isAuthenticated } = useSelector((state) => state.auth);
-  // const history = useHistory();
-  // console.log(history);
-  // const dispatch = useDispatch();
-  // const handleLogout = () => {
-  //   // history.replace('/');
-  //   dispatch(startLogout());
-  // };
-  const mostrarSidebar = () => {
-    const side = document.querySelector(".navBarUl").style;
-    // const li = document.querySelector('.nav-item');
+  const history = useHistory();
+  const dispatch = useDispatch();
 
-    side.display === "" ? (side.display = "flex") : (side.display = "");
+  const handleLogout = () => {
+    dispatch(startLogout());
+    history.replace('/');
+  };
+
+  const mostrarSidebar = () => {
+    const side = document.querySelector('.navBarUl').style;
+
+    side.display === '' ? (side.display = 'flex') : (side.display = '');
   };
   return (
     <nav className="navbar navbar-expand-md navbar-light mb-5">
@@ -57,7 +56,7 @@ const Navbar = ({
           >
             <i
               className="fas fa-bars"
-              style={{ color: "white" }}
+              style={{ color: 'white' }}
               onClick={(e) => mostrarSidebar()}
             ></i>
           </button>
@@ -69,7 +68,7 @@ const Navbar = ({
               className="navLink nav-link"
               aria-current="page"
               to={url1}
-              style={{ color: "white", fontSize: "15px" }}
+              style={{ color: 'white', fontSize: '15px' }}
             >
               {titulo1}
             </Link>
@@ -78,7 +77,7 @@ const Navbar = ({
             <NavLink
               className="navLink nav-link"
               to={url2}
-              style={{ color: "white", fontSize: "15px" }}
+              style={{ color: 'white', fontSize: '15px' }}
             >
               {titulo2}
             </NavLink>
@@ -87,7 +86,7 @@ const Navbar = ({
             <NavLink
               className="navLink nav-link"
               to={url3}
-              style={{ color: "white", fontSize: "15px" }}
+              style={{ color: 'white', fontSize: '15px' }}
             >
               {titulo3}
             </NavLink>
@@ -96,7 +95,7 @@ const Navbar = ({
             <NavLink
               className="navLink nav-link"
               to={url4}
-              style={{ color: "white", fontSize: "15px" }}
+              style={{ color: 'white', fontSize: '15px' }}
             >
               {titulo4}
             </NavLink>
@@ -105,7 +104,7 @@ const Navbar = ({
             <NavLink
               className="navLink nav-link"
               to={url5}
-              style={{ color: "white", fontSize: "15px" }}
+              style={{ color: 'white', fontSize: '15px' }}
             >
               {titulo5}
             </NavLink>
@@ -114,7 +113,7 @@ const Navbar = ({
             <NavLink
               className="navLink nav-link"
               to={url6}
-              style={{ color: "white", fontSize: "15px" }}
+              style={{ color: 'white', fontSize: '15px' }}
             >
               {titulo6}
             </NavLink>
@@ -122,11 +121,11 @@ const Navbar = ({
           <button
             className="text-white"
             style={{
-              background: "transparent",
-              border: "none",
-              fontSize: "15px",
+              background: 'transparent',
+              border: 'none',
+              fontSize: '15px',
             }}
-            // onClick={handleLogout}
+            onClick={handleLogout}
           >
             Salir <i className="fas fa-sign-in-alt"></i>
           </button>
@@ -172,6 +171,19 @@ const Navbar = ({
               <NavLink className="navLink nav-link" to={url6}>
                 {titulo6}
               </NavLink>
+            </li>
+            <li className="nav-item">
+              <button
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  fontSize: '15px',
+                  color: 'white',
+                }}
+                onClick={handleLogout}
+              >
+                Salir <i className="fas fa-sign-in-alt"></i>
+              </button>
             </li>
           </ul>
           <div className="btnCerrar" onClick={(e) => mostrarSidebar()}>
