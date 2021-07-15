@@ -8,7 +8,7 @@ import { Redirect, Switch } from 'react-router-dom';
 
 const FacturacionRouter = () => {
   return (
-    <div>
+    <>
       <Navbar
         titulo1={'Empresas'}
         url1={'/facturacion/empresas'}
@@ -25,13 +25,19 @@ const FacturacionRouter = () => {
         ç
         ruta={'/laboratorio/subir'}
       />
-      <Switch>
-        <Route exact path="/facturacion/empresas" component={Empresa} />
-        <Route exact path="/facturacion/costo" component={Particulares} />
-        <Route exact path="/facturacion/liquidacion" component={Liquidacion} />
-        <Redirect to="/facturacion/empresas" />
-      </Switch>
-    </div>
+      <div>
+        <Switch>
+          <Route exact path="/facturacion/empresas" component={Empresa} />
+          <Route exact path="/facturacion/costo" component={Particulares} />
+          <Route
+            exact
+            path="/facturacion/liquidacion"
+            component={Liquidacion}
+          />
+          <Redirect to="/facturacion/empresas" />
+        </Switch>
+      </div>
+    </>
   );
 };
 
