@@ -11,7 +11,7 @@ import EditarDatosTrabajador from './Modales/EditarDatosTrabajador'
 
 const EmpresaRegistro = () => {
   const [busqueda, setBusqueda] = useState('');
-  const [clinica, setClinica] = useState([]);
+  const [employees, setEmployees] = useState([]);
   const [header, setHeader]= useState()
   const [excel, setExcel] = useState();
   const [uploadExcel, setUploadExcel] = useState();
@@ -22,6 +22,18 @@ const EmpresaRegistro = () => {
   function openModal() {
     setIsOpen(true);
   }
+
+  const getEmployees = () =>{
+
+    fetchGETPOSTPUTDELETE("company_employees").then(res=> res.json()).then(res=> setEmployees(res))
+  }
+  useEffect(()=>{
+
+    getEmployees();
+
+  },[])
+
+  console.log(employees);
 
   const subirExcel = () =>{
     const formData = new FormData()
@@ -90,10 +102,6 @@ const EmpresaRegistro = () => {
         reader.readAsBinaryString(file)
   }
 
-  console.log(excel);
-  console.log(uploadExcel);
-    
-
   const columnas = [
     {
       name: 'Seleccionar',
@@ -113,7 +121,14 @@ const EmpresaRegistro = () => {
     },
     {
       name: 'Tipo de documento',
-      selector: 'documento',
+      selector: (row) =>
+      row.person && row.person.document_type_id === 3
+        ? "Carné de extranjería"
+        : row.person && row.person.document_type_id === 2
+        ? "Pasaporte"
+        : row.person && row.person.document_type_id === 1
+        ? "DNI"
+        : "",
       sortable: true,
       style: {
         color: '#8f9196',
@@ -122,7 +137,7 @@ const EmpresaRegistro = () => {
     },
     {
       name: 'Nº de documento',
-      selector: 'Dni',
+      selector: row => row.person && row.person.dni ? row.person.dni :"",
       sortable: true,
       style: {
         color: '#8f9196',
@@ -131,7 +146,7 @@ const EmpresaRegistro = () => {
     },
     {
       name: 'Nombres',
-      selector: 'nombre',
+      selector: row => row.person && row.person.name ? row.person.name :"",
       sortable: true,
       style: {
         color: '#8f9196',
@@ -140,7 +155,8 @@ const EmpresaRegistro = () => {
     },
     {
       name: 'Sexo',
-      selector: 'sexo',
+      selector: row => row.person && row.person.gender_id === 1 ? "Masculino" :"Femenino",
+
       sortable: true,
       style: {
         color: '#8f9196',
@@ -267,7 +283,7 @@ const EmpresaRegistro = () => {
             className="dataTable"
             id="table"
             columns={columnas}
-            data={excel}
+            data={employees}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader

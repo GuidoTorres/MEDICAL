@@ -17,6 +17,12 @@ h6 {
   font-size: 0.9em;
 }
 
+.titulo{
+
+  text-align: left;
+  color: $color-primary;
+}
+
 //SPINNER DE CARGA
 
 .spinner {
@@ -373,8 +379,8 @@ input[type="checkbox"] {
 .modal__hprecio {
   height: initial;
   width: 75%;
-  max-height: 280px;
-  max-width: 350px;
+  max-height: 320px;
+  max-width: 450px;
 }
 
 // TODO AVATAR

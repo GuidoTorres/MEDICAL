@@ -49,9 +49,9 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
     formData.set("mom_lastname", paciente.mom_lastname || "");
     formData.set("gender_id", paciente.gender_id || "");
     formData.set("birthday", paciente.birthday || "");
-    formData.set("religion_id", paciente.religion_id || "");
+    formData.set("religion_id", 1);
     formData.set("department_id", paciente.department_id || "");
-    formData.set("civil_status_id", 0);
+    formData.set("civil_status_id", paciente.civil_status_id || "");
     formData.set("grade_id", paciente.grade_id || "");
     formData.set("cellphone", paciente.cellphone || "");
     formData.set("phone", paciente.phone || "");
@@ -61,8 +61,18 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
     formData.set("company_id", "");
     formData.set("workstation", paciente.workstation || "");
     formData.set("birthplace", "");
-    formData.set("address", paciente.address);
-    formData.set("district_id", paciente.district_id);
+    formData.set("address", paciente.address || "");
+    formData.set("reference", paciente.reference || "");
+    formData.set("district_id", paciente.district_id || "");
+    formData.set("department_id", paciente.district_id || "");
+    formData.set("user_type_id", paciente.user_type_id || "");
+    // formData.set("country_id", paciente.country_id || "");
+    formData.set("grade_id", "");
+
+ 
+
+ 
+
 
     fetchGETPOSTPUTDELETE("patient", formData, "POST").then((data) =>
       console.log(data)
@@ -161,17 +171,17 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
                 <label htmlFor="">Religión:</label>
                 <select name="religion_id"
                   onChange={(e) => handleChange(e)}>
-                  {/* <option value="">Seleccione</option>
-                  {religions && religions.map((data, i)=>(
+                  <option value="">Seleccione</option>
+                  {religions.length>0 && religions.map((data, i)=>(
 
                     <option key={i} value={i}>{data.name}</option>
-                  ))} */}
+                  ))}
                 </select>
 
               </div>
               <div>
                 <label htmlFor="">País: </label>
-                <select>
+                <select name="country_id" onChange={(e) => handleChange(e)}>
                   <option value="">Seleccione</option>
                   <option value="1">One</option>
                   <option value="2">Two</option>
@@ -249,7 +259,7 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
               </div>
               <div>
                 <label htmlFor="">Dirección:</label>
-                <input type="text" placeholder="" />
+                <input type="text" placeholder="" name="reference" onChange={handleChange}/>
               </div>
             </div>
           </div>
@@ -342,11 +352,10 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
               {/*  */}
               <div>
                 <label htmlFor="">Tipo de usuario:</label>
-                <select>
+                <select name="user_type_id" onChange={(e)=> handleChange(e)}>
                   <option value="">Seleccione</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option value="1">Empresa</option>
+                  <option value="2">Particular</option>
                 </select>
               </div>
               <div>
@@ -359,7 +368,7 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
             <div>
               <div>
                 <p>Fotografía</p>
-                <i class="fas fa-camera" onClick={handleCambio}></i>
+                <i className="fas fa-camera" onClick={handleCambio}></i>
               </div>
               <div>
                 {!imagenes ? (

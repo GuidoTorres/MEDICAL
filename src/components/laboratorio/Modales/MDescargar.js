@@ -1,23 +1,9 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import { fetchGETPOSTPUTDELETEJSON } from "../../../helpers/fetch";
 import { customStyles } from "../../../helpers/tablaOpciones";
 import ExportarExcel from "../../../helpers/ExportarExcel";
-import * as FileSaver from "file-saver";
-import * as XLSX from "xlsx";
 
-const MDescargar = ({
-  setOpenHModal,
-  openHModal,
-  subCategoria,
-  dataSelected,
-}) => {
-  const [descargar, setDescargar] = useState();
-  const [historial, setHistorial] = useState({});
-  const closeModal = () => {
-    setOpenHModal(false);
-  };
-
+const MDescargar = ({ setOpenHModal, openHModal, dataSelected }) => {
   const downloadHistorial = (e) => {
     setDescargar({
       ...descargar,
@@ -26,17 +12,12 @@ const MDescargar = ({
     });
   };
 
-  const getDateHistorial = () => {
-    fetchGETPOSTPUTDELETEJSON(
-      `services/export/${descargar && descargar.id}`,
-      descargar,
-      "POST"
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        setHistorial(res);
-      });
+  const [descargar, setDescargar] = useState();
+  const [historial, setHistorial] = useState({});
+  const closeModal = () => {
+    setOpenHModal(false);
   };
+
   return (
     <Modal
       isOpen={openHModal}
@@ -93,7 +74,9 @@ const MDescargar = ({
               <button className="botones " onClick={closeModal}>
                 Cancelar
               </button>
-              <button className="botones " onClick={() => getDateHistorial()}>
+              <button className="botones " 
+            //   onClick={() => getDateHistorial()}
+              >
                 Generar historial
               </button>
               <ExportarExcel apiData={historial} fileName={"historial"} />

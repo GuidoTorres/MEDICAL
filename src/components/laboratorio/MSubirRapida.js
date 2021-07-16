@@ -22,17 +22,16 @@ const MSubirRapida = ({
   console.log(result);
 
   const postResults = () => {
-    const formData = new FormData();
+    
 
-    formData.set("id", 8);
-    formData.set("result", "0");
-
-    fetchGETPOSTPUTDELETE(`result`, formData, "POST").then((data) =>
+    fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) =>
       console.log(data)
     );
   };
 
-  console.log(dataSelected);
+
+
+  console.log(result);
   return (
     <Modal
       isOpen={openModal}
@@ -100,18 +99,21 @@ const MSubirRapida = ({
                     type="radio"
                     className="me-3"
                     value="igm"
-                    name="resultado"
+                    name="reactive"
+                    onChange={e => setResult({...result, reactive: e.target.checked ? 2 : ""})}
                   />
-                  Resultado IgM
+                  Reactivo IgM
                 </label>
                 <label>
                   <input
                     type="radio"
                     className="me-3"
                     value="igg"
-                    name="resultado"
+                    name="reactive"
+                    onChange={e => setResult({...result, reactive: e.target.checked ? 1 : ""})}
+
                   />
-                  Resultado IgG
+                  Reactivo IgG
                 </label>
 
                 <label>
@@ -119,16 +121,18 @@ const MSubirRapida = ({
                     type="radio"
                     className="me-3"
                     value="igm/igg"
-                    name="resultado"
+                    name="reactive"
+                    onChange={e => setResult({...result, reactive: e.target.checked ? 3 : ""})}
                   />
-                  Resultado IgM/IgG
+                  Reactivo IgM/IgG
                 </label>
                 <label>
                   <input
                     type="radio"
                     className="me-3"
                     value="noReactivo"
-                    name="resultado"
+                    name="reactive"
+                    onChange={e => setResult({...result, reactive: e.target.checked ? 4 : ""})}
                   />
                   No Reactivo
                 </label>
@@ -137,7 +141,8 @@ const MSubirRapida = ({
                     type="radio"
                     className="me-3"
                     value="invalido"
-                    name="resultado"
+                    name="reactive"
+                    onChange={e => setResult({...result, reactive: e.target.checked ? 5 : ""})}
                   />
                   Inválido
                 </label>

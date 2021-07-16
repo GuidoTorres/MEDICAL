@@ -4,12 +4,14 @@ import { lasubir } from "../../data/LASubir";
 import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 
 import { paginacionOpciones } from "../../helpers/tablaOpciones";
+import MDescargar from "./Modales/MDescargar";
 import MSubirLaboratorio from "./MSubirLaboratorio";
 
 const Historial = () => {
   const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [openDescarga, setOpenDescarga] = useState(false);
   const [results, setResults] = useState({});
 
   const getResults = () => {
@@ -82,7 +84,7 @@ const Historial = () => {
       },
     },
     {
-      name: "Acción",
+      name: "Visualización",
       button: true,
       cell: (e) => (
         <button
@@ -140,7 +142,7 @@ const Historial = () => {
       <div className="row">
         <div className="col-12">
           <div className="barra">
-            <p>Subir resultados</p>
+            <p>Historial</p>
             <div className="laboratorio__resultados">
               <div>
                 <label>Categoría</label>
@@ -171,7 +173,12 @@ const Historial = () => {
                 />
               </div>
               <div>
-                <button className="botones">Descargar</button>
+                <button
+                  className="botones"
+                  onClick={(e) => setOpenDescarga(true)}
+                >
+                  Descargar
+                </button>
               </div>
             </div>
 
@@ -184,9 +191,9 @@ const Historial = () => {
               fixedHeaderScrollHeight="500px"
               noDataComponent={
                 <div className="spinner">
-                <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: "lightgrey" }}>No hay datos</p>
-              </div>
+                  <i className="fas fa-inbox table__icono"></i>
+                  <p style={{ color: "lightgrey" }}>No hay datos</p>
+                </div>
               }
             />
           </div>
@@ -195,6 +202,12 @@ const Historial = () => {
           <MSubirLaboratorio
             openModal={openModal}
             setOpenModal={setOpenModal}
+          />
+        )}
+        {openModal && (
+          <MDescargar
+            openDescarga={openDescarga}
+            setOpenDescarga={setOpenDescarga}
           />
         )}
       </div>

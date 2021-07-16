@@ -47,7 +47,7 @@ const MRegistroEmpresa = ({
     }
   }, [empresa.ruc]);
 
-  console.log(ruc);
+  console.log(empresa);
 
   const postCorporation = () => {
     const formData = new FormData();
@@ -74,9 +74,13 @@ const MRegistroEmpresa = ({
     formData.set("credit", empresa.billing.credit || "");
 
     formData.set("services[0][service_id]", empresa.services.service_id1 || "");
+    formData.set("services[0][state]", 0);
     formData.set("services[1][service_id]", empresa.services.service_id2 || "");
+    formData.set("services[0][state]", 0);
     formData.set("services[2][service_id]", empresa.services.service_id3 || "");
+    formData.set("services[0][state]", 0);
     formData.set("services[3][service_id]", empresa.services.service_id4 || "");
+    formData.set("services[0][state]", 0);
 
     fetchGETPOSTPUTDELETE("company", formData, "POST").then((resp) => {
       console.log(resp);
@@ -113,51 +117,72 @@ const MRegistroEmpresa = ({
   const putCorporation = () => {
     const formData = new FormData();
 
-    formData.set("ruc", empresa.ruc || "");
+    formData.set("ruc", empresa.ruc ? empresa.ruc
+    : dataSelected.corporation.ruc);
     formData.set(
       "business_name",
-      empresa.business_name || dataSelected.corporation.ruc
+      empresa.business_name
+        ? empresa.business_name
+        : dataSelected.corporation.business_name
     );
     formData.set(
       "commercial_name",
-      empresa.commercial_name || dataSelected.corporation.commercial_name
+      empresa.commercial_name
+        ? empresa.commercial_name
+        : dataSelected.corporation.commercial_name
     );
     formData.set("logo", avatar ? avatar.file : dataSelected.corporation.logo);
 
     formData.set(
       "address",
-      empresa.address.address || dataSelected.corporation.address.address
+      empresa.address.address
+        ? empresa.address.address
+        : dataSelected.corporation.address.address || ""
     );
     formData.set(
       "reference",
-      empresa.address.reference || dataSelected.corporation.address.reference
+      empresa.address.reference
+        ? empresa.address.reference
+        : dataSelected.corporation.address.reference
     );
 
     formData.set(
       "contacts[0][name]",
-      empresa.contacts.name || dataSelected.corporation.contacts[0].name
+      empresa.contacts.name
+        ? empresa.contacts.name
+        : dataSelected.corporation.contacts[0].name
     );
     formData.set(
       "contacts[0][phone]",
-      empresa.contacts.phone || dataSelected.corporation.contacts[0].phone
+      empresa.contacts.phone
+        ? empresa.contacts.phone
+        : dataSelected.corporation.contacts[0].phone
     );
     formData.set(
       "contacts[0][email]",
-      empresa.contacts.email || dataSelected.corporation.contacts[0].email
+      empresa.contacts.email
+        ? empresa.contacts.email
+        : dataSelected.corporation.contacts[0].email
     );
     formData.set("contacts[0][contact_type]", 1);
 
     formData.set(
       "contacts[1][name]",
-      empresa.contacts.name1 || dataSelected.corporation.contacts[1].name
+      empresa.contacts.name1
+        ? empresa.contacts.name1
+        : dataSelected.corporation.contacts[1].name
     );
     formData.set(
       "contacts[1][phone]",
-      empresa.contacts.phone1 || dataSelected.corporation.contacts[1].phone
+      empresa.contacts.phone1
+        ? empresa.contacts.phone1
+        : dataSelected.corporation.contacts[1].phone
     );
     formData.set(
       "contacts[1][email]",
-      empresa.contacts.email1 || dataSelected.corporation.contacts[1].email
+      empresa.contacts.email1
+        ? empresa.contacts.email1
+        : dataSelected.corporation.contacts[1].email
     );
     formData.set("contacts[1][contact_type]", 2);
 
@@ -170,8 +195,17 @@ const MRegistroEmpresa = ({
       empresa.billing ? empresa.billing.credit : dataSelected.billing.credit
     );
 
-    formData.set("services[0][service_id]", empresa.services.service_id || "");
+    formData.set("services[0][service_id]", empresa.services.service_id1 || "");
     formData.set("services[0][state]", 0);
+
+    formData.set("services[1][service_id]", empresa.services.service_id2 || "");
+    formData.set("services[1][state]", 0);
+
+    formData.set("services[2][service_id]", empresa.services.service_id3 || "");
+    formData.set("services[1][state]", 0);
+
+    formData.set("services[3][service_id]", empresa.services.service_id4 || "");
+    formData.set("services[1][state]", 0);
 
     fetchGETPOSTPUTDELETE(
       `company/update/${dataSelected.id}`,
@@ -510,7 +544,12 @@ const MRegistroEmpresa = ({
                 Logo <span>(.jpg, .jpeg, .jpg)</span>
               </p>
               <div>
-                <UploadAvatar avatar={avatar} setAvatar={setAvatar} />
+                <UploadAvatar
+                  avatar={avatar}
+                  setAvatar={setAvatar}
+                  dataSelected={dataSelected}
+                  editar={editar}
+                />
               </div>
             </div>
             <div className="mregistro__facturacion">
@@ -563,6 +602,7 @@ const MRegistroEmpresa = ({
                   <label>Tipo de servicio</label>
                   <select
                     aria-label="Default select example"
+                    defaultValue={dataSelected && dataSelected.services[0].services_category_id }
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
@@ -579,30 +619,17 @@ const MRegistroEmpresa = ({
                 </div>
                 <div>
                   <label style={{ width: "50%" }}>Plan de atención</label>
-                  {/* <select
-                    aria-label="Default select example"
-                    multiple = "multiple option"
-                    onChange={(e) =>
-                      setEmpresa({
-                        ...empresa,
-                        services: {
-                          ...empresa.services,
-                          service_id: e.target.value,
-                        },
-                      })
-                    }
-                  >
-                    <option value="">Seleccione</option>
-                    <option value="1">Antígeno</option>
-                    <option value="2">Electroquimioluminiscencia</option>
-                    <option value="3">RT-PCR</option>
-                    <option value="3">Inmunocromatografia</option>
-                  </select> */}
                   <div className="mselect">
                     <div className="mselect__item">
                       <input
                         type="checkbox"
                         className="w-auto"
+                        defaultChecked={
+                          dataSelected &&
+                          dataSelected.services[0] 
+                            ? true
+                            : false
+                        }
                         onChange={(e) =>
                           setEmpresa({
                             ...empresa,
@@ -619,6 +646,12 @@ const MRegistroEmpresa = ({
                       <input
                         type="checkbox"
                         className="w-auto"
+                        defaultChecked={
+                          dataSelected &&
+                          dataSelected.services[1] 
+                            ? true
+                            : false
+                        }
                         onChange={(e) =>
                           setEmpresa({
                             ...empresa,
@@ -635,6 +668,12 @@ const MRegistroEmpresa = ({
                       <input
                         type="checkbox"
                         className="w-auto"
+                        defaultChecked={
+                          dataSelected &&
+                          dataSelected.services[2] 
+                            ? true
+                            : false
+                        }
                         onChange={(e) =>
                           setEmpresa({
                             ...empresa,
@@ -651,6 +690,12 @@ const MRegistroEmpresa = ({
                       <input
                         type="checkbox"
                         className="w-auto"
+                        defaultChecked={
+                          dataSelected &&
+                          dataSelected.services[3] 
+                            ? true
+                            : false
+                        }
                         onChange={(e) =>
                           setEmpresa({
                             ...empresa,
