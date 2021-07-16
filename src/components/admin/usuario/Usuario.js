@@ -209,6 +209,7 @@ const Usuario = () => {
   return (
     <div className="container">
       <div className="row">
+        <h3 className="titulo">Usuarios</h3>
         <div className="table-responsive">
           <div className="adminregistro__option">
             <div>

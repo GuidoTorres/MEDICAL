@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Bar } from 'react-chartjs-2';
-import { fetchGETPOSTPUTDELETE } from '../../../helpers/fetch';
+import React, { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
 
 const Estadistica = () => {
   const [departments, setDepartments] = useState([]);
   const [servicios, setServices] = useState([]);
   const data = {
-    labels: ['lunes', 'martes', 'miercoles', 'jueves'],
+    labels: ["lunes", "martes", "miercoles", "jueves"],
     datasets: [
       {
-        label: 'First dataset',
+        label: "First dataset",
         data: [33, 53, 85, 41],
         fill: true,
-        backgroundColor: 'rgba(75,192,192,0.2)',
-        borderColor: 'rgba(75,192,192,1)',
+        backgroundColor: "rgba(75,192,192,0.2)",
+        borderColor: "rgba(75,192,192,1)",
       },
     ],
 
@@ -24,7 +24,7 @@ const Estadistica = () => {
   };
 
   const getDeparments = () => {
-    fetchGETPOSTPUTDELETE('departments/14')
+    fetchGETPOSTPUTDELETE("departments/14")
       .then((data) => data.json())
       .then((datos) => {
         setDepartments(datos.departments);
@@ -32,7 +32,7 @@ const Estadistica = () => {
   };
 
   const getServices = () => {
-    fetchGETPOSTPUTDELETE('services')
+    fetchGETPOSTPUTDELETE("services")
       .then((data) => data.json())
       .then((datos) => {
         setServices(datos.data);
@@ -47,6 +47,7 @@ const Estadistica = () => {
   return (
     <div className="container">
       <div className="row">
+        <h3 className="titulo">Estadísticas</h3>
         <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
           <div className="barra">
             <div className="adminestadistica__tipo">
@@ -124,7 +125,9 @@ const Estadistica = () => {
                     {servicios &&
                       servicios.map((data, i) =>
                         data.services.map((datos, i) => (
-                          <option key={i} value="1">{datos.name}</option>
+                          <option key={i} value="1">
+                            {datos.name}
+                          </option>
                         ))
                       )}
                   </select>

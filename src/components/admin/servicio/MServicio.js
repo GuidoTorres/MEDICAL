@@ -67,7 +67,9 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
         dataSelected.services[crearServicio.subCategoria].last_price.amount
     );
     fetchGETPOSTPUTDELETE(
-      `services/${dataSelected.services[crearServicio.subCategoria].id}?_method=put`,
+      `services/${
+        dataSelected.services[crearServicio.subCategoria].id
+      }?_method=put`,
       formData,
       "POST"
     ).then((resp) => {
@@ -99,8 +101,7 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
     });
   };
 
-  // console.log(crearServicio);
-  // console.log(crearServicio);
+ console.log(crearServicio);
 
   return (
     <Modal
@@ -134,6 +135,7 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
               <div>
                 <label> Sub-Categoria:</label>
                 <select
+                  disabled={crearServicio.service_category_id === "1"? false : true}
                   className="form-select"
                   aria-label="Default select example"
                   style={{ width: "50%" }}

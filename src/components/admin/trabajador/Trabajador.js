@@ -155,6 +155,7 @@ const Trabajador = () => {
   return (
     <div className="container">
       <div className="row">
+      <h3 className ="titulo">Trabajadores</h3>
         <div className="table-responsive">
           <div className="adminregistro__option">
             <div>

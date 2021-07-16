@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
-import { fetchGETPOSTPUTDELETEJSON } from '../../../helpers/fetch';
+import React, { useState } from "react";
+import Modal from "react-modal";
+import { fetchGETPOSTPUTDELETEJSON } from "../../../helpers/fetch";
+import { customStyles } from "../../../helpers/tablaOpciones";
+import ExportarExcel from "../../../helpers/ExportarExcel";
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 
-import { customStyles } from '../../../helpers/tablaOpciones';
-import ExportExcel from 'react-export-excel';
-
-const ExcelFile = ExportExcel.ExcelFile;
-const ExcelSheet = ExportExcel.ExcelSheet;
-const ExcelColumn = ExportExcel.ExcelColumn;
-
-const MDescargar = ({ setOpenHModal, openHModal, subCategoria, dataSelected }) => {
+const MDescargar = ({
+  setOpenHModal,
+  openHModal,
+  subCategoria,
+  dataSelected,
+}) => {
   const [descargar, setDescargar] = useState();
   const [historial, setHistorial] = useState({});
   const closeModal = () => {
@@ -26,14 +28,15 @@ const MDescargar = ({ setOpenHModal, openHModal, subCategoria, dataSelected }) =
 
   const getDateHistorial = () => {
     fetchGETPOSTPUTDELETEJSON(
-      `services/export/${descargar.id}`,
+      `services/export/${descargar && descargar.id}`,
       descargar,
-      'POST'
+      "POST"
     )
       .then((res) => res.json())
-      .then((res) => setHistorial(res));
+      .then((res) => {
+        setHistorial(res);
+      });
   };
-  // console.log(historial);
   return (
     <Modal
       isOpen={openHModal}
@@ -55,16 +58,18 @@ const MDescargar = ({ setOpenHModal, openHModal, subCategoria, dataSelected }) =
                 <select
                   className="form-select"
                   aria-label="Default select example"
-                  style={{ width: '50%' }}
+                  style={{ width: "50%" }}
                   name="id"
                   onChange={(e) => downloadHistorial(e)}
                 >
                   <option value={-1}>Seleccione</option>
 
-                  {/* {dataSelected &&
+                  {dataSelected &&
                     dataSelected.services.map((data, i) => (
-                      <option value={data.id}>{data.name}</option>
-                    ))} */}
+                      <option key={i} value={data.id}>
+                        {data.name}
+                      </option>
+                    ))}
                 </select>
               </div>
               <div>
@@ -84,31 +89,14 @@ const MDescargar = ({ setOpenHModal, openHModal, subCategoria, dataSelected }) =
                 />
               </div>
             </div>
-            <div className="list-botones">
+            <div className="list-botones" style={{ display: "flex" }}>
               <button className="botones " onClick={closeModal}>
                 Cancelar
               </button>
-              {/* <button className="botones " onClick={getDateHistorial}>
-                Descargar
-              </button> */}
-              <ExcelFile
-                filename="historial"
-                element={
-                  <button
-                    className="botones"
-                    onClick={() => getDateHistorial()}
-                  >
-                    Descargar
-                  </button>
-                }
-              >
-                <ExcelSheet data={historial} name="Hoja1">
-                  <ExcelColumn label="Categoria" value="category"></ExcelColumn>
-                  <ExcelColumn label="Fecha" value="date"></ExcelColumn>
-                  <ExcelColumn label="Nombre" value="name"></ExcelColumn>
-                  <ExcelColumn label="Precio" value="price"></ExcelColumn>
-                </ExcelSheet>
-              </ExcelFile>
+              <button className="botones " onClick={() => getDateHistorial()}>
+                Generar historial
+              </button>
+              <ExportarExcel apiData={historial} fileName={"historial"} />
             </div>
           </div>
         </div>

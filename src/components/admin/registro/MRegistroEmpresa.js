@@ -73,10 +73,10 @@ const MRegistroEmpresa = ({
     formData.set("before", empresa.billing.before || "");
     formData.set("credit", empresa.billing.credit || "");
 
-    formData.set("services[0][service_id]", empresa.services.service_id1 || "");
-    formData.set("services[1][service_id]", empresa.services.service_id2 || "");
-    formData.set("services[2][service_id]", empresa.services.service_id3 || "");
-    formData.set("services[3][service_id]", empresa.services.service_id4 || "");
+    formData.set("services[0][service_id]", empresa.services.service_id1 || "")
+    formData.set("services[1][service_id]", empresa.services.service_id2 || "") 
+    formData.set("services[2][service_id]", empresa.services.service_id3 || "") 
+    formData.set("services[3][service_id]", empresa.services.service_id4 || "") 
 
     fetchGETPOSTPUTDELETE("company", formData, "POST").then((resp) => {
       console.log(resp);
@@ -579,25 +579,6 @@ const MRegistroEmpresa = ({
                 </div>
                 <div>
                   <label style={{ width: "50%" }}>Plan de atención</label>
-                  {/* <select
-                    aria-label="Default select example"
-                    multiple = "multiple option"
-                    onChange={(e) =>
-                      setEmpresa({
-                        ...empresa,
-                        services: {
-                          ...empresa.services,
-                          service_id: e.target.value,
-                        },
-                      })
-                    }
-                  >
-                    <option value="">Seleccione</option>
-                    <option value="1">Antígeno</option>
-                    <option value="2">Electroquimioluminiscencia</option>
-                    <option value="3">RT-PCR</option>
-                    <option value="3">Inmunocromatografia</option>
-                  </select> */}
                   <div className="mselect">
                     <div className="mselect__item">
                       <input
