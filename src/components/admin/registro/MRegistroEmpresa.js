@@ -602,7 +602,7 @@ const MRegistroEmpresa = ({
                   <label>Tipo de servicio</label>
                   <select
                     aria-label="Default select example"
-                    defaultValue={dataSelected && dataSelected.services[0].services_category_id }
+                    defaultValue={dataSelected && dataSelected.services && dataSelected.services[0] && dataSelected.services[0].services_category_id  }
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
