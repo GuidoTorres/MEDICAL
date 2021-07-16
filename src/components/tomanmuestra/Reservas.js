@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
-import Swal from "sweetalert2";
+import React, { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component';
+import Swal from 'sweetalert2';
 
-import { historial } from "../../data/PHistorial";
-import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
-import { paginacionOpciones } from "../../helpers/tablaOpciones";
-import MReserva from "./MReserva";
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
+import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import MReserva from './MReserva';
 
 const Reservas = () => {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
 
   const [getDateAttention, setGetDateAttention] = useState([]);
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("attention")
+    fetchGETPOSTPUTDELETE('attention_clinic')
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos.data));
   };
@@ -23,87 +22,85 @@ const Reservas = () => {
   useEffect(() => {
     getAttention();
   }, []);
-
-  console.log(getDateAttention);
-
+  console.log(getDateAttention[22]);
   const columnas = [
     {
-      name: "Item",
-      selector: "id",
+      name: 'Item',
+      selector: 'id',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Tipo de documento",
+      name: 'Tipo de documento',
       selector: (row) =>
         row.person && row.person.document_type_id === 3
-          ? "Carné de extranjería"
+          ? 'Carné de extranjería'
           : row.person && row.person.document_type_id === 2
-          ? "Pasaporte"
+          ? 'Pasaporte'
           : row.person && row.person.document_type_id === 1
-          ? "DNI"
-          : "",
+          ? 'DNI'
+          : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nº documento",
-      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
+      name: 'Nº documento',
+      selector: (row) => (row.person && row.person.dni ? row.person.dni : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nombre",
-      selector: (row) => (row.person && row.person.name ? row.person.name : ""),
+      name: 'Nombre',
+      selector: (row) => (row.person && row.person.name ? row.person.name : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Apellido",
+      name: 'Apellido',
       selector: (row) =>
-        row.person && row.person.pat_lastname ? row.person.pat_lastname : "",
+        row.person && row.person.pat_lastname ? row.person.pat_lastname : '',
 
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Tipo prueba",
+      name: 'Tipo prueba',
       selector: (row) =>
-        row.service && row.service.name ? row.service.name : "",
+        row.service && row.service.name ? row.service.name : '',
 
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Fecha solicitud",
-      selector: (row) => (row.date_creation ? row.date_creation : ""),
+      name: 'Fecha solicitud',
+      selector: (row) => (row.date_creation ? row.date_creation : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
 
     {
-      name: "Código Barras",
+      name: 'Código Barras',
       button: true,
       cell: (e) => (
         <button onClick={() => handleBarCode(e)} className="table__tablebutton">
@@ -112,7 +109,7 @@ const Reservas = () => {
       ),
     },
     {
-      name: "Atender",
+      name: 'Atender',
       button: true,
       cell: (e) => (
         <button
@@ -125,59 +122,51 @@ const Reservas = () => {
     },
   ];
   //
-  // useEffect(() => {
-  //   const filtrarElemento = () => {
-  //     const search = getDateAttention.length>0 && getDateAttention.filter((data) => {
-  //       return (
-  //         data.dni.toString().includes(busqueda) ||
-  //         data.nombre
-  //           .normalize('NFD')
-  //           .replace(/[\u0300-\u036f]/g, '')
-  //           .toLocaleLowerCase()
-  //           .includes(busqueda) ||
-  //         data.apellido
-  //           .normalize('NFD')
-  //           .replace(/[\u0300-\u036f]/g, '')
-  //           .toLocaleLowerCase()
-  //           .includes(busqueda) ||
-  //         data.tipo
-  //           .normalize('NFD')
-  //           .replace(/[\u0300-\u036f]/g, '')
-  //           .toLocaleLowerCase()
-  //           .includes(busqueda) ||
-  //         data.solicitud
-  //           .normalize('NFD')
-  //           .replace(/[\u0300-\u036f]/g, '')
-  //           .toLocaleLowerCase()
-  //           .includes(busqueda)
-  //       );
-  //     });
-  //     setListRegistro(search);
-  //   };
-  //   filtrarElemento();
-  // }, [busqueda]);
+  useEffect(() => {
+    const filtrarElemento = () => {
+      const search =
+        getDateAttention.length > 0 &&
+        getDateAttention.filter((data) => {
+          return (
+            data.person.dni.toString().includes(busqueda) ||
+            data.person.name
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .toLocaleLowerCase()
+              .includes(busqueda) ||
+            data.person.pat_lastname
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .toLocaleLowerCase()
+              .includes(busqueda)
+          );
+        });
+      setListRegistro(search);
+    };
+    filtrarElemento();
+  }, [busqueda, getDateAttention]);
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
   const handleDetalles = (e) => {
     Swal.fire({
-      title: "¿Atender paciente?",
-      text: `${e.person.name + " " + e.person.pat_lastname}`,
-      icon: "warning",
+      title: '¿Atender paciente?',
+      text: `${e.person.name + ' ' + e.person.pat_lastname}`,
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Atender",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Atender',
     }).then((result) => {
       if (result.isConfirmed) {
         fetchGETPOSTPUTDELETE(`attention/attend/${e.id}`).then((data) => {
           console.log(data);
           if (data.status === 200) {
             Swal.fire(
-              "Éxito!",
-              "Se genero la atención correctamente.",
-              "success"
+              'Éxito!',
+              'Se genero la atención correctamente.',
+              'success'
             );
 
             getAttention();
@@ -208,7 +197,7 @@ const Reservas = () => {
 
           <DataTable
             columns={columnas}
-            data={getDateAttention}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
@@ -216,7 +205,7 @@ const Reservas = () => {
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: "lightgrey" }}>No hay datos</p>
+                <p style={{ color: 'lightgrey' }}>No hay datos</p>
               </div>
             }
           />

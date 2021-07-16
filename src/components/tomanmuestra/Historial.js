@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
+import React, { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component';
 
-import { historial } from "../../data/PHistorial";
-import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
-import { paginacionOpciones } from "../../helpers/tablaOpciones";
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
+import { paginacionOpciones } from '../../helpers/tablaOpciones';
 
 const Historial = () => {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
-
   const [dataHistorial, setDataHistorial] = useState([]);
 
-  // usar settlements para mostar historial, andre corregir historial atenciones
-
   const getHistorial = () => {
-    fetchGETPOSTPUTDELETE("attention")
+    fetchGETPOSTPUTDELETE('attention_historial')
       .then((data) => data.json())
       .then((datos) => setDataHistorial(datos.data));
   };
@@ -27,95 +23,85 @@ const Historial = () => {
 
   const columnas = [
     {
-      name: "Item",
-      selector: (row) => (row.id ? row.id : ""),
+      name: 'Item',
+      selector: (row) => (row.id ? row.id : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "DNI",
-      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
+      name: 'DNI',
+      selector: (row) => (row.person && row.person.dni ? row.person.dni : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nombre",
-      selector: (row) => (row.person && row.person.name ? row.person.name : ""),
+      name: 'Nombre',
+      selector: (row) => (row.person && row.person.name ? row.person.name : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Apellido",
+      name: 'Apellido',
       selector: (row) =>
-        row.person && row.person.pat_lastname ? row.person.pat_lastname : "",
+        row.person && row.person.pat_lastname ? row.person.pat_lastname : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Tipo prueba",
+      name: 'Tipo prueba',
       selector: (row) =>
-        row.service && row.service.name ? row.service.name : "",
+        row.service && row.service.name ? row.service.name : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Fecha solicitud",
-      selector: (row) => (row.date_creation ? row.date_creation : ""),
+      name: 'Fecha solicitud',
+      selector: (row) => (row.date_creation ? row.date_creation : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Fecha entrega",
-      selector: (row) => (row.date_creation ? row.date_creation : ""),
+      name: 'Fecha entrega',
+      selector: (row) => (row.date_creation ? row.date_creation : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
   ];
   //
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = historial.filter((data) => {
+      const search = dataHistorial.filter((data) => {
         return (
-          data.dni.toString().includes(busqueda) ||
-          data.nombre
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+          data.person.dni.toString().includes(busqueda) ||
+          data.person.name
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda) ||
-          data.apellido
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.tipo
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.solicitud
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+          data.person.pat_lastname
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda)
         );
@@ -123,8 +109,8 @@ const Historial = () => {
       setListRegistro(search);
     };
     filtrarElemento();
-  }, [busqueda]);
-
+  }, [busqueda, dataHistorial]);
+  console.log(listRegistro);
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
@@ -148,7 +134,7 @@ const Historial = () => {
 
           <DataTable
             columns={columnas}
-            data={dataHistorial}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
@@ -156,7 +142,7 @@ const Historial = () => {
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: "lightgrey" }}>No hay datos</p>
+                <p style={{ color: 'lightgrey' }}>No hay datos</p>
               </div>
             }
           />

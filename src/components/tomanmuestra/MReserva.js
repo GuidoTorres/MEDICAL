@@ -4,8 +4,6 @@ import Modal from 'react-modal';
 import { customStyles } from '../../helpers/tablaOpciones';
 import { useBarcode } from 'react-barcodes';
 
-import codigo from '../../assets/img/codigo.png';
-
 function BarCode({ textobarcode }) {
   const { inputRef } = useBarcode({
     value: textobarcode === '' ? 'vacio' : textobarcode,
@@ -19,27 +17,25 @@ function BarCode({ textobarcode }) {
 }
 
 const MReserva = ({ openModal, setOpenModal }) => {
-
   const closeModal = () => {
     setOpenModal(false);
   };
 
   const descargar = () => {
-
-    const data = document.querySelector("#bar")
-      const pngUrl = data
-        .toDataURL('image/png')
-        .replace('image/png', 'image/octet-stream');
-      let downloadLink = document.createElement('a');
-      downloadLink.href = pngUrl;
-      downloadLink.download = 'mybarcode.png';
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
-  }
+    const data = document.querySelector('#bar');
+    const pngUrl = data
+      .toDataURL('image/png')
+      .replace('image/png', 'image/octet-stream');
+    let downloadLink = document.createElement('a');
+    downloadLink.href = pngUrl;
+    downloadLink.download = 'mybarcode.png';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  };
   return (
     <Modal
-      isOpen={openModal} 
+      isOpen={openModal}
       onRequestClose={closeModal}
       style={customStyles}
       className="modal modal__tomanBarcode"
@@ -50,7 +46,7 @@ const MReserva = ({ openModal, setOpenModal }) => {
     >
       <h3 className="title__modal">Código de barra</h3>
       <div className="container">
-      <div className="row">
+        <div className="row">
           <BarCode textobarcode={`AAAA`} id="bar" />
           <div className="d-flex justify-content-between mt-5">
             <button
@@ -67,7 +63,6 @@ const MReserva = ({ openModal, setOpenModal }) => {
           </div>
         </div>
       </div>
-
     </Modal>
   );
 };
