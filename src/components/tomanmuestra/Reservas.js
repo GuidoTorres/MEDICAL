@@ -14,7 +14,7 @@ const Reservas = () => {
   const [getDateAttention, setGetDateAttention] = useState([]);
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE('attention')
+    fetchGETPOSTPUTDELETE('attention_clinic')
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos.data));
   };
@@ -22,7 +22,7 @@ const Reservas = () => {
   useEffect(() => {
     getAttention();
   }, []);
-
+  console.log(getDateAttention[22]);
   const columnas = [
     {
       name: 'Item',

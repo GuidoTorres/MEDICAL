@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
-import logo from "../../assets/icons/Isotipo.png";
-import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
+import React, { useEffect, useState } from 'react';
+import logo from '../../assets/icons/Isotipo.png';
+import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 const Perfil = () => {
-  const [profile, setProfile] = useState({})
+  const [profile, setProfile] = useState({});
 
   const authMe = () => {
-    fetchGETPOSTPUTDELETEJSON("auth/me", {}, "POST")
+    // fetchGETPOSTPUTDELETEJSON('clinics/22')
+
+    fetchGETPOSTPUTDELETEJSON('auth/me', {}, 'POST')
       .then((data) => data.json())
       .then((datos) => {
         setProfile(datos);
