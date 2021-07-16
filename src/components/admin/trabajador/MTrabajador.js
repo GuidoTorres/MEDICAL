@@ -47,10 +47,10 @@ const MTrabajador = ({
 
   const postEmployee = () => {
     const formData = new FormData();
-    formData.set("dni", trabajador.dni || "");
-    formData.set("name", trabajador.name || "");
-    formData.set("pat_lastname", trabajador.pat_lastname || "");
-    formData.set("mom_lastname", trabajador.mom_lastname || "");
+    formData.set("dni",  trabajador.dni || "");
+    formData.set("name", dni.nombres || trabajador.name || "");
+    formData.set("pat_lastname", dni.apellidoPaterno || trabajador.pat_lastname || "");
+    formData.set("mom_lastname", dni.apellidoMaterno || trabajador.mom_lastname || "");
     formData.set("email", trabajador.email || "");
     formData.set("cellphone", trabajador.cellphone || "");
     formData.set("photo", avatar.file || "");

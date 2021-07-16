@@ -17,7 +17,7 @@ const Empresa = () => {
   // facuturacion empresa modal usar company discount
 
   const getCorporations = () => {
-    fetchGETPOSTPUTDELETE('settlement')
+    fetchGETPOSTPUTDELETE('company_discount')
       .then((info) => info.json())
       .then((info) => setCorporations(info.data));
   };

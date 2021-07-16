@@ -36,6 +36,7 @@ const Servicio = () => {
     getServices();
   }, []);
 
+  console.log(getServicio);
   const columnas = [
     {
       name: "Item",
@@ -160,7 +161,7 @@ const Servicio = () => {
             Swal.fire({
               icon: "success",
               title: "Éxito",
-              text: "Se elimino el trabajador correctamente.",
+              text: "Se elimino la sub-categoria correctamente.",
               confirmButtonColor: "#3085d6",
               cancelButtonColor: "#d33",
               confirmButtonText: "Aceptar",

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Bar, Doughnut } from "react-chartjs-2";
 import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 
+// USAR ESTADISTCAS RECEPCION /recepcionista/estadisticas
+
+
 const Estadisticas = () => {
   const [fechas, setFechas] = useState({});
   const data = {

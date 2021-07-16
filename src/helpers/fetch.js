@@ -85,11 +85,24 @@ const fetchDNI = (documento, method) => {
   });
 };
 
+const postExcel = (endpoint, data, method) => {
+  const url = `${baseUrl}/${endpoint}`;
+  const token = localStorage.getItem("token") || "";
+  return fetch(url, {
+    method,
+    headers: {
+      Authorization: `bearer ${token}`,
+    },
+    body: data,
+  });
+};
+
 export {
   fetchSinToken,
   fetchConToken,
   fetchGETPOSTPUTDELETE,
   fetchGETPOSTPUTDELETEJSON,
   fetchRUC,
-  fetchDNI
+  fetchDNI,
+  postExcel
 };

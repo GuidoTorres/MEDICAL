@@ -4,6 +4,7 @@ import DataTable from 'react-data-table-component';
 // import image from '../../assets/logo/logo.png'
 import { ToastContainer } from 'react-toastify';
 import XLSX from 'xlsx'
+import { fetchGETPOSTPUTDELETE, postExcel } from '../../helpers/fetch';
 import EditarDatosTrabajador from './Modales/EditarDatosTrabajador'
 
 
@@ -13,12 +14,22 @@ const EmpresaRegistro = () => {
   const [clinica, setClinica] = useState([]);
   const [header, setHeader]= useState()
   const [excel, setExcel] = useState();
+  const [uploadExcel, setUploadExcel] = useState();
   const fileRef = useRef();
 
   const [modalIsOpen,setIsOpen] = useState(false);
 
   function openModal() {
     setIsOpen(true);
+  }
+
+  const subirExcel = () =>{
+    const formData = new FormData()
+
+    formData.set("file", uploadExcel)
+
+    fetchGETPOSTPUTDELETE("company_employees/import", formData, "POST").then(res => console.log(res))
+
   }
 
   const triggerClick= () =>{
@@ -54,7 +65,7 @@ const EmpresaRegistro = () => {
   const importExcel = (e)=>{
 
     const file = e.target.files[0]
-
+    setUploadExcel(file)
     const reader = new FileReader()
     reader.onload = (event) =>{
         //parse data
@@ -78,6 +89,9 @@ const EmpresaRegistro = () => {
     }
         reader.readAsBinaryString(file)
   }
+
+  console.log(excel);
+  console.log(uploadExcel);
     
 
   const columnas = [
@@ -108,7 +122,7 @@ const EmpresaRegistro = () => {
     },
     {
       name: 'Nº de documento',
-      selector: 'nro',
+      selector: 'Dni',
       sortable: true,
       style: {
         color: '#8f9196',
@@ -154,8 +168,13 @@ const EmpresaRegistro = () => {
     },
     {
       name: 'Cargo',
-      button: true,
-
+      selector: 'Cargo',
+      sortable: true,
+      
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
     },
 
   ];
@@ -258,6 +277,8 @@ const EmpresaRegistro = () => {
           }
           />
         </div>
+
+        <button type="button" class="botones btn btn-primary" onClick={subirExcel}>Subir archivo</button>
       </div>
     </div>
         
