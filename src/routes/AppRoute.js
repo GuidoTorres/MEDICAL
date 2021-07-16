@@ -1,14 +1,15 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { memo, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   BrowserRouter as Router,
   Switch,
   Redirect,
   Route,
-} from "react-router-dom";
-import { startCkecking } from "../actions/auth";
-import Login from "../components/auth/Login";
+  useHistory,
+} from 'react-router-dom';
+import { startCkecking } from '../actions/auth';
+import Login from '../components/auth/Login';
 // import Error404 from '../pages/Error404';
 import AdminRouter from "./AdminRouter";
 import AgenteVentasRouter from "./AgenteVentasRouter";
@@ -19,22 +20,18 @@ import FacturacionRouter from "./FacturacionRouter";
 import LaboratoristaRouter from "./LaboratoristaRouter";
 import OrganizadorRouter from "./OrganizadorRouter";
 
-import PrivateRoutes from "./PrivateRoutes";
-// import PublicRoutes from './PublicRoutes';
-import RecepcionistaRouter from "./RecepcionistaRouter";
+import PrivateRoutes from './PrivateRoutes';
+import PublicRoutes from './PublicRoutes';
+import RecepcionistaRouter from './RecepcionistaRouter';
 
 const AppRoute = () => {
   const dispatch = useDispatch();
 
-  const { role, checking } = useSelector((state) => state.auth);
+  const { checking } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(startCkecking());
   }, [dispatch]);
-
-  // if (checking) {
-  //   return <p>espere....</p>;
-  // }
 
   return (
     <Router>
@@ -44,10 +41,10 @@ const AppRoute = () => {
             exact
             path="/"
             component={Login}
-            // isAuthenticated={checking}
+            // isAuthenticated={!!checking}
           />
-          {/* RUTAS PRIVADAS */}
-          <Route
+
+          <PrivateRoutes
             path="/admin"
             component={AdminRouter}
             isAuthenticated={checking}
@@ -95,11 +92,11 @@ const AppRoute = () => {
           />
 
           {/* <Route component={Error404} /> */}
-          <Redirect to="/" />
+          {/* <Redirect to="/" /> */}
         </Switch>
       </div>
     </Router>
   );
 };
 
-export default AppRoute;
+export default memo(AppRoute);
