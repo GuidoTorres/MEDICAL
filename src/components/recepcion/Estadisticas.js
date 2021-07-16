@@ -7,12 +7,13 @@ import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 
 const Estadisticas = () => {
   const [fechas, setFechas] = useState({});
+  const [estadisticas, setEstadisticas] = useState({})
   const data = {
-    labels: ["lunes", "martes", "miercoles", "jueves"],
+    labels: estadisticas && estadisticas.labels ? estadisticas.labels : "",
     datasets: [
       {
         label: "First dataset",
-        data: [33, 53, 85, 41],
+        data: estadisticas && estadisticas.data ? estadisticas.data : "",
         fill: true,
         backgroundColor: "rgba(75,192,192,0.2)",
         borderColor: "rgba(75,192,192,1)",
@@ -37,9 +38,9 @@ const Estadisticas = () => {
       "receptionista/estadisticas",
       fechas,
       "POST"
-    ).then((resp) => console.log(resp));
+    ).then((resp) => resp.json()).then(res => setEstadisticas(res));
   };
-
+  console.log(estadisticas);
   return (
     <div className="container">
       {/* <h2 className="mt-3">Estadísticas</h2> */}

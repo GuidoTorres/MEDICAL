@@ -270,7 +270,11 @@ const MRegistroClinica = ({
                     type="text"
                     name="name"
                     defaultValue={
-                      dataSelected && dataSelected.corporation.contacts
+                      dataSelected &&
+                      dataSelected.corporation &&
+                      dataSelected.corporation.contacts &&
+                      dataSelected.corporation.contacts[0] &&
+                      dataSelected.corporation.contacts[0].name
                         ? dataSelected.corporation.contacts[0].name
                         : ""
                     }
@@ -283,7 +287,11 @@ const MRegistroClinica = ({
                     type="text"
                     name="phone"
                     defaultValue={
-                      dataSelected && dataSelected.corporation.contacts
+                      dataSelected &&
+                      dataSelected.corporation &&
+                      dataSelected.corporation.contacts &&
+                      dataSelected.corporation.contacts[0] &&
+                      dataSelected.corporation.contacts[0].phone
                         ? dataSelected.corporation.contacts[0].phone
                         : ""
                     }
@@ -296,7 +304,11 @@ const MRegistroClinica = ({
                     type="text"
                     name="email"
                     defaultValue={
-                      dataSelected && dataSelected.corporation.contacts
+                      dataSelected &&
+                      dataSelected.corporation &&
+                      dataSelected.corporation.contacts &&
+                      dataSelected.corporation.contacts[0] &&
+                      dataSelected.corporation.contacts[0].email
                         ? dataSelected.corporation.contacts[0].email
                         : ""
                     }
@@ -324,7 +336,10 @@ const MRegistroClinica = ({
                     type="text"
                     name="reference"
                     defaultValue={
-                      dataSelected && dataSelected.corporation.address
+                      dataSelected &&
+                      dataSelected.corporation &&
+                      dataSelected.corporation.address &&
+                      dataSelected.corporation.address.reference
                         ? dataSelected.corporation.address.reference
                         : null
                     }
@@ -431,6 +446,7 @@ const MRegistroClinica = ({
                       name="monday"
                       defaultChecked={
                         dataSelected &&
+                        dataSelected.corporation &&
                         dataSelected.corporation.work_day &&
                         dataSelected.corporation.work_day[0]
                           ? true
@@ -455,6 +471,7 @@ const MRegistroClinica = ({
                       name="tuesday"
                       defaultChecked={
                         dataSelected &&
+                        dataSelected.corporation &&
                         dataSelected.corporation.work_day &&
                         dataSelected.corporation.work_day[1]
                           ? true
@@ -478,6 +495,7 @@ const MRegistroClinica = ({
                       className="form-check-input"
                       defaultChecked={
                         dataSelected &&
+                        dataSelected.corporation &&
                         dataSelected.corporation.work_day &&
                         dataSelected.corporation.work_day[2]
                           ? true
@@ -502,6 +520,7 @@ const MRegistroClinica = ({
                       name="thursday"
                       defaultChecked={
                         dataSelected &&
+                        dataSelected.corporation &&
                         dataSelected.corporation.work_day &&
                         dataSelected.corporation.work_day[3]
                           ? true
@@ -526,6 +545,7 @@ const MRegistroClinica = ({
                       name="friday"
                       defaultChecked={
                         dataSelected &&
+                        dataSelected.corporation &&
                         dataSelected.corporation.work_day &&
                         dataSelected.corporation.work_day[4]
                           ? true
@@ -550,6 +570,7 @@ const MRegistroClinica = ({
                       name="saturday"
                       defaultChecked={
                         dataSelected &&
+                        dataSelected.corporation &&
                         dataSelected.corporation.work_day &&
                         dataSelected.corporation.work_day[5]
                           ? true
@@ -574,6 +595,7 @@ const MRegistroClinica = ({
                       name="sunday"
                       defaultChecked={
                         dataSelected &&
+                        dataSelected.corporation &&
                         dataSelected.corporation.work_day &&
                         dataSelected.corporation.work_day[6]
                           ? true
@@ -600,7 +622,12 @@ const MRegistroClinica = ({
                   Logo <span>(.jpg, .jpeg, .jpg)</span>
                 </p>
                 <div>
-                  <UploadAvatar avatar={avatar} setAvatar={setAvatar} />
+                  <UploadAvatar
+                    avatar={avatar}
+                    setAvatar={setAvatar}
+                    editar={editar}
+                    dataSelected={dataSelected}
+                  />
                 </div>
               </div>
               <div className="mregistro__ubicacion">

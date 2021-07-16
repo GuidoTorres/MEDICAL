@@ -44,7 +44,7 @@ const AppRoute = () => {
             // isAuthenticated={!!checking}
           />
 
-          <PrivateRoutes
+          <Route
             path="/admin"
             component={AdminRouter}
             isAuthenticated={checking}

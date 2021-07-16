@@ -216,7 +216,7 @@ const EmpresaAsignacion = () => {
               id="file"
               onChange={importExcel}/>
 
-            <p className="pagregar" onClick={triggerClick} style={{cursor:'pointer', marginRight:'5px'}}>Cargar trabajadores</p>
+            <p className="pagregar" onClick={triggerClick} style={{cursor:'pointer', marginRight:'5px'}}>Cargar</p>
             <i class="fas fa-upload" onClick={triggerClick} style={{cursor:'pointer'}}></i>
 
           </div>

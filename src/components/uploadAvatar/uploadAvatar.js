@@ -14,6 +14,7 @@ const UploadAvatar = ({ setAvatar, avatar, editar, dataSelected }) => {
     noKeyboard: true,
     onDrop,
   });
+  console.log(dataSelected);
   return (
     <div className="image__upload" {...getRootProps()}>
       <input {...getInputProps()} />
@@ -21,6 +22,14 @@ const UploadAvatar = ({ setAvatar, avatar, editar, dataSelected }) => {
         <img
           // className={avatar ? 'image__avatar' : 'image__carga'}
           src=""
+          alt=""
+        />
+      ) : editar && dataSelected.corporation.logo ? (
+        <img
+          className="image__avatar"
+          src={
+            dataSelected.corporation.logo ? dataSelected.corporation.logo : ""
+          }
           alt=""
         />
       ) : editar === true ? (

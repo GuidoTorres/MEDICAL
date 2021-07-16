@@ -65,7 +65,7 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
     formData.set("reference", paciente.reference || "");
     formData.set("district_id", paciente.district_id || "");
     formData.set("department_id", paciente.district_id || "");
-    formData.set("user_type_id", "");
+    formData.set("user_type_id", paciente.user_type_id || "");
     // formData.set("country_id", paciente.country_id || "");
     formData.set("grade_id", "");
 
@@ -172,7 +172,7 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
                 <select name="religion_id"
                   onChange={(e) => handleChange(e)}>
                   <option value="">Seleccione</option>
-                  {religions && religions.map((data, i)=>(
+                  {religions.length>0 && religions.map((data, i)=>(
 
                     <option key={i} value={i}>{data.name}</option>
                   ))}
@@ -352,7 +352,7 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
               {/*  */}
               <div>
                 <label htmlFor="">Tipo de usuario:</label>
-                <select>
+                <select name="user_type_id" onChange={(e)=> handleChange(e)}>
                   <option value="">Seleccione</option>
                   <option value="1">Empresa</option>
                   <option value="2">Particular</option>

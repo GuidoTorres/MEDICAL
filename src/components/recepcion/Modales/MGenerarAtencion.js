@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import DeclaracionJurada from "../FormatosPDF/DeclaracionJurada";
 import ConsentimientoInformado from "../FormatosPDF/ConsentimientoInformado";
 import FichaCovid19 from "../FormatosPDF/FichaCovid19";
+import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
 
 const MGenerarAtencion = ({
   generarAtencion,
@@ -14,14 +15,36 @@ const MGenerarAtencion = ({
   const closeModal = () => {
     setGenerarAtencion(false);
   };
-
+  const [datos, setDatos] = useState({});
   const [condicion, setCondicion] = useState({});
 
   const [declaracion, setDeclaracion] = useState({});
   const [ficha, setFicha] = useState({});
 
+  const crearAtencion = () => {
+    const formData = new FormData();
+    formData.set("date_attention", dataSelected.date_attention || "");
+    formData.set("time_attention", dataSelected.time_attention || "");
+    formData.set("people_id", dataSelected.people_id || "");
+    formData.set("service_id", dataSelected.service_id || "");
+    formData.set("clinic_id", dataSelected.clinic.id || "");
+    formData.set("codebar", "111111");
+    // formData.set("forms", "");
 
+    // formData.set("user_type_id ", 2)
 
+    fetchGETPOSTPUTDELETE("attention", formData, "POST").then((res) =>
+      console.log(res)
+    );
+  };
+  console.log(dataSelected);
+
+  const handleOnChange = (e) => {
+    setDatos({
+      ...datos,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const mostrarDeclaracionJurada = () => {
     const declaracion = document.querySelector(".containerPDF").style;
@@ -56,7 +79,6 @@ const MGenerarAtencion = ({
     ficha.visibility = "visible";
   };
 
-
   return (
     <Modal
       isOpen={generarAtencion}
@@ -88,14 +110,14 @@ const MGenerarAtencion = ({
           <div className="tipoServicio mt-3">
             <div>
               <label htmlFor="">Tipo de servicio:</label>
-              <select class="form-select" aria-label="Default select example">
+              <select class="form-select" aria-label="Default select example" name="service_id">
                 <option selected>Seleccione</option>
                 <option value="1">COVID19</option>
               </select>
             </div>
             <div>
               <label htmlFor="">Plan de atención:</label>
-              <select class="form-select" aria-label="Default select example">
+              <select class="form-select" aria-label="Default select example" name="service_id" onChange={handleOnChange}>
                 <option selected>Seleccione</option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
@@ -140,11 +162,11 @@ const MGenerarAtencion = ({
             </div>
 
             <div className="containerPDF1">
-              <ConsentimientoInformado  />
+              <ConsentimientoInformado />
             </div>
 
             <div className="containerPDF2">
-              <FichaCovid19 ficha={ficha} setFicha={setFicha}  />
+              <FichaCovid19 ficha={ficha} setFicha={setFicha} />
             </div>
           </div>
         </div>
@@ -156,7 +178,11 @@ const MGenerarAtencion = ({
           >
             Cancelar
           </button>
-          <button type="button" class="botones btn btn-primary">
+          <button
+            type="button"
+            class="botones btn btn-primary"
+            onClick={() => crearAtencion()}
+          >
             Finalizar
           </button>
         </div>
