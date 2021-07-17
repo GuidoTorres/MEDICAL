@@ -8,21 +8,17 @@ const Estadisticas = () => {
   const [fechas, setFechas] = useState({});
   const [estadisticas, setEstadisticas] = useState({});
   const data = {
-    labels: estadisticas && estadisticas.labels ? estadisticas.labels : "",
+    labels: [
+      estadisticas && estadisticas.labels && estadisticas.labels[0] ? "eclea": "",
+      estadisticas && estadisticas.labels && estadisticas.labels[1] ? "rapida": "",
+      estadisticas && estadisticas.labels && estadisticas.labels[2] ? "molecular": "",
+      estadisticas && estadisticas.labels && estadisticas.labels[3] ? "": "",
+    
+    ],
     datasets: [
       {
         label: "First dataset",
-        data: [
-          estadisticas && estadisticas.labels && estadisticas.labels[0]
-            ? "eclea"
-            : "",
-          estadisticas && estadisticas.labels && estadisticas.labels[1]
-            ? "eclea"
-            : "",
-            estadisticas && estadisticas.labels && estadisticas.labels[2]
-            ? "eclea"
-            : "",
-        ],
+        data: estadisticas.data,
         fill: true,
         backgroundColor: "rgba(75,192,192,0.2)",
         borderColor: "rgba(75,192,192,1)",

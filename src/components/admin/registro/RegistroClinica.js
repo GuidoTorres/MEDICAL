@@ -135,7 +135,7 @@ const RegistroClinica = () => {
   useEffect(() => {
     const filtrarElemento = () => {
       const search =
-        // metGetClinic.length > 0 &&
+        // metGetClinic.length !==undefined &&
         metGetClinic.filter((data) => {
           return (
             data.corporation.ruc.toString().includes(busqueda) ||

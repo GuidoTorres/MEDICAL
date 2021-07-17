@@ -95,10 +95,10 @@ const MGenerarAtencion = ({
       <h3 className="title__modal">Generar atencion</h3>
       <div className="generarAtencion">
         <div className="datosPaciente">
-          <label htmlFor="">Paciente: {dataSelected.person.name}</label>
-          <label htmlFor="">Tipo de paciente: {dataSelected.person.name}</label>
+          <label htmlFor="">Paciente: {dataSelected.name}</label>
+          <label htmlFor="">Tipo de paciente: {dataSelected.user_type}</label>
           <label htmlFor="">
-            Empresa: {dataSelected.clinic.corporation.business_name}
+            Empresa: {dataSelected.business_name}
           </label>
         </div>
 

@@ -15,7 +15,7 @@ const Historial = () => {
   const [dataBarCode, setDataBarCode] = useState({});
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("attention_historial")
+    fetchGETPOSTPUTDELETE("result")
       .then((data) => data.json())
       .then((datos) => setAttention(datos.data));
   };

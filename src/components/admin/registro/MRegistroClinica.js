@@ -48,7 +48,7 @@ const MRegistroClinica = ({
     }
   }, [data.ruc]);
 
-  console.log(ruc);
+  console.log(dataSelected);
 
   const postClinics = () => {
     const formData = new FormData();
@@ -125,82 +125,408 @@ const MRegistroClinica = ({
     });
   };
 
+
   const putClinics = () => {
     const formData = new FormData();
 
     // formData.set("corporation_id", 1);
-    formData.set("ruc", data.ruc ? data.ruc : dataSelected.corporation.ruc);
+    formData.set(
+      "ruc",
+      dataSelected && dataSelected.corporation.ruc
+        ? dataSelected.corporation.ruc
+        : ""
+    );
     formData.set(
       "business_name",
       data.business_name
         ? data.business_name
-        : dataSelected.corporation.business_name
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.business_name
+        ? dataSelected.corporation.business_name
+        : ""
     );
     formData.set(
       "commercial_name",
       data.business_name
         ? data.business_name
-        : dataSelected.corporation.commercial_name
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.commercial_name
+        ? dataSelected.corporation.commercial_name
+        : ""
     );
     formData.set("logo", avatar ? avatar.file : "");
     formData.set(
       "address",
-      data.address ? data.address : dataSelected.corporation.address.address
+      data.address
+        ? data.address
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.address &&
+          dataSelected.corporation.address.address
+        ? dataSelected.corporation.address.address
+        : ""
     );
     formData.set(
       "reference",
       data.reference
         ? data.reference
-        : dataSelected.corporation.address.reference
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.address &&
+          dataSelected.corporation.address.reference
+        ? dataSelected.corporation.address.reference
+        : ""
     );
     formData.set(
       "clinic_type_id",
-      data.clinic_type_id ? data.clinic_type_id : dataSelected.clinic_type_id
+      data.clinic_type_id
+        ? data.clinic_type_id
+        : dataSelected && dataSelected.clinic_type_id
+        ? dataSelected.clinic_type_id
+        : ""
     );
-    formData.set("map_latitude", dataMapa ? dataMapa.lat : "");
-    formData.set("map_length]", dataMapa ? dataMapa.lng : "");
+    formData.set(
+      "map_latitude",
+      dataMapa
+        ? dataMapa.lat
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.address &&
+          dataSelected.corporation.address.map_latitude
+        ? dataSelected.corporation.address.map_latitude
+        : ""
+    );
+    formData.set(
+      "map_length]",
+      dataMapa
+        ? dataMapa.lng
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.address &&
+          dataSelected.corporation.address.map_length
+        ? dataSelected.corporation.address.map_length
+        : ""
+    );
 
     formData.set(
       "contacts[0][name]",
-      data.name ? data.name : dataSelected.corporation.contacts[0].name
+      data.name
+        ? data.name
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[0] &&
+          dataSelected.corporation.contacts[0].name
+        ? dataSelected.corporation.contacts[0].name
+        : ""
     );
     formData.set(
       "contacts[0][phone]",
-      data.phone ? data.phone : dataSelected.corporation.contacts[0].phone
+      data.phone
+        ? data.phone
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[0] &&
+          dataSelected.corporation.contacts[0].phone
+        ? dataSelected.corporation.contacts[0].phone
+        : ""
     );
     formData.set(
       "contacts[0][email]",
-      data.email ? data.email : dataSelected.corporation.contacts[0].email
+      data.email
+        ? data.email
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[0] &&
+          dataSelected.corporation.contacts[0].email
+        ? dataSelected.corporation.contacts[0].email
+        : ""
     );
     formData.set("contacts[0][contact_type]", 1);
 
-    formData.set("work_days[0][day_id]", data.workday.monday || "");
-    formData.set("work_days[0][opening]", data.workday.opening || "");
-    formData.set("work_days[0][closing]", data.workday.closing || "");
+    formData.set(
+      "work_days[0][day_id]",
+      data && data.workday && data.workday.monday
+        ? data.workday.monday
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[0] &&
+          dataSelected.corporation.work_day[0].hours &&
+          dataSelected.corporation.work_day[0].hours.day_id
+        ? dataSelected.corporation.work_day[0].hours.day_id
+        : ""
+    );
+    formData.set(
+      "work_days[0][opening]",
+      data && data.workday && data.workday.opening
+        ? data.workday.opening
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[0] &&
+          dataSelected.corporation.work_day[0].hours &&
+          dataSelected.corporation.work_day[0].hours.opening
+        ? dataSelected.corporation.work_day[0].hours.opening
+        : ""
+    );
+    formData.set(
+      "work_days[0][closing]",
+      data && data.workday && data.workday.closing
+        ? data.workday.closing
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[0] &&
+          dataSelected.corporation.work_day[0].hours &&
+          dataSelected.corporation.work_day[0].hours.closing
+        ? dataSelected.corporation.work_day[0].hours.closing
+        : ""
+    );
 
-    formData.set("work_days[1][day_id]", data.workday.tuesday || "");
-    formData.set("work_days[1][opening]", data.workday.opening || "");
-    formData.set("work_days[1][closing]", data.workday.closing || "");
+    formData.set(
+      "work_days[1][day_id]",
+      data && data.workday && data.workday.tuesday
+        ? data.workday.tuesday
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[1] &&
+          dataSelected.corporation.work_day[1].hours &&
+          dataSelected.corporation.work_day[1].hours.day_id
+        ? dataSelected.corporation.work_day[1].hours.day_id
+        : ""
+    );
+    formData.set(
+      "work_days[1][opening]",
+      data && data.workday && data.workday.opening
+        ? data.workday.opening
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[1] &&
+          dataSelected.corporation.work_day[1].hours &&
+          dataSelected.corporation.work_day[1].hours.opening
+        ? dataSelected.corporation.work_day[1].hours.opening
+        : ""
+    );
+    formData.set(
+      "work_days[1][closing]",
+      data && data.workday && data.workday.closing
+        ? data.workday.closing
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[2] &&
+          dataSelected.corporation.work_day[2].hours &&
+          dataSelected.corporation.work_day[2].hours.closing
+        ? dataSelected.corporation.work_day[2].hours.closing
+        : ""
+    );
 
-    formData.set("work_days[2][day_id]", data.workday.wednesday || "");
-    formData.set("work_days[2][opening]", data.workday.opening || "");
-    formData.set("work_days[2][closing]", data.workday.closing || "");
+    formData.set(
+      "work_days[2][day_id]",
+      data && data.workday && data.workday.wednesday
+        ? data.workday.wednesday
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[2] &&
+          dataSelected.corporation.work_day[2].hours &&
+          dataSelected.corporation.work_day[2].hours.day_id
+        ? dataSelected.corporation.work_day[2].hours.day_id
+        : ""
+    );
+    formData.set(
+      "work_days[2][opening]",
+      data && data.workday && data.workday.opening
+        ? data.workday.opening
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[2] &&
+          dataSelected.corporation.work_day[2].hours &&
+          dataSelected.corporation.work_day[2].hours.opening
+        ? dataSelected.corporation.work_day[2].hours.opening
+        : ""
+    );
+    formData.set(
+      "work_days[2][closing]",
+      data && data.workday && data.workday.closing
+        ? data.workday.closing
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[2] &&
+          dataSelected.corporation.work_day[2].hours &&
+          dataSelected.corporation.work_day[2].hours.closing
+        ? dataSelected.corporation.work_day[2].hours.closing
+        : ""
+    );
 
-    formData.set("work_days[3][day_id]", data.workday.thursday || "");
-    formData.set("work_days[3][opening]", data.workday.opening || "");
-    formData.set("work_days[3][closing]", data.workday.closing || "");
+    formData.set(
+      "work_days[3][day_id]",
+      data && data.workday && data.workday.thursday
+        ? data.workday.thursday
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[3] &&
+          dataSelected.corporation.work_day[3].hours &&
+          dataSelected.corporation.work_day[3].hours.day_id
+        ? dataSelected.corporation.work_day[3].hours.day_id
+        : ""
+    );
+    formData.set(
+      "work_days[3][opening]",
+      data && data.workday && data.workday.opening
+        ? data.workday.opening
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[3] &&
+          dataSelected.corporation.work_day[3].hours &&
+          dataSelected.corporation.work_day[3].hours.opening
+        ? dataSelected.corporation.work_day[3].hours.opening
+        : ""
+    );
+    formData.set(
+      "work_days[3][closing]",
+      data && data.workday && data.workday.closing
+        ? data.workday.closing
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[3] &&
+          dataSelected.corporation.work_day[3].hours &&
+          dataSelected.corporation.work_day[3].hours.closing
+        ? dataSelected.corporation.work_day[3].hours.closing
+        : ""
+    );
 
-    formData.set("work_days[4][day_id]", data.workday.friday || "");
-    formData.set("work_days[4][opening]", data.workday.opening || "");
-    formData.set("work_days[4][closing]", data.workday.closing || "");
+    formData.set(
+      "work_days[4][day_id]",
+      data && data.workday && data.workday.friday
+        ? data.workday.friday
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[4] &&
+          dataSelected.corporation.work_day[4].hours &&
+          dataSelected.corporation.work_day[4].hours.day_id
+        ? dataSelected.corporation.work_day[4].hours.day_id
+        : ""
+    );
+    formData.set(
+      "work_days[4][opening]",
+      data && data.workday && data.workday.opening
+        ? data.workday.opening
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[4] &&
+          dataSelected.corporation.work_day[4].hours &&
+          dataSelected.corporation.work_day[4].hours.opening
+        ? dataSelected.corporation.work_day[4].hours.opening
+        : ""
+    );
+    formData.set(
+      "work_days[4][closing]",
+      data && data.workday && data.workday.closing
+        ? data.workday.closing
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[4] &&
+          dataSelected.corporation.work_day[4].hours &&
+          dataSelected.corporation.work_day[4].hours.closing
+        ? dataSelected.corporation.work_day[4].hours.closing
+        : ""
+    );
 
-    formData.set("work_days[5][day_id]", data.workday.saturday || "");
-    formData.set("work_days[5][opening]", data.workday.opening || "");
-    formData.set("work_days[5][closing]", data.workday.closing || "");
+    formData.set(
+      "work_days[5][day_id]",
+      data && data.workday && data.workday.saturday
+        ? data.workday.saturday
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[5] &&
+          dataSelected.corporation.work_day[5].hours &&
+          dataSelected.corporation.work_day[5].hours.day_id
+        ? dataSelected.corporation.work_day[5].hours.day_id
+        : ""
+    );
+    formData.set(
+      "work_days[5][opening]",
+      data && data.workday && data.workday.opening
+        ? data.workday.opening
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[5] &&
+          dataSelected.corporation.work_day[5].hours &&
+          dataSelected.corporation.work_day[5].hours.opening
+        ? dataSelected.corporation.work_day[5].hours.opening
+        : ""
+    );
+    formData.set(
+      "work_days[5][closing]",
+      data && data.workday && data.workday.closing
+        ? data.workday.closing
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[5] &&
+          dataSelected.corporation.work_day[5].hours &&
+          dataSelected.corporation.work_day[5].hours.closing
+        ? dataSelected.corporation.work_day[5].hours.closing
+        : ""
+    );
 
-    formData.set("work_days[6][day_id]", data.workday.sunday || "");
-    formData.set("work_days[6][opening]", data.workday.opening || "");
-    formData.set("work_days[6][closing]", data.workday.closing || "");
+    formData.set(
+      "work_days[6][day_id]",
+      data && data.workday && data.workday.sunday
+        ? data.workday.sunday
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[6] &&
+          dataSelected.corporation.work_day[6].hours &&
+          dataSelected.corporation.work_day[6].hours.day_id
+        ? dataSelected.corporation.work_day[6].hours.day_id
+        : ""
+    );
+    formData.set(
+      "work_days[6][opening]",
+      data && data.workday && data.workday.opening
+        ? data.workday.opening
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[6] &&
+          dataSelected.corporation.work_day[6].hours &&
+          dataSelected.corporation.work_day[6].hours.opening
+        ? dataSelected.corporation.work_day[6].hours.opening
+        : ""
+    );
+    formData.set(
+      "work_days[6][closing]",
+      data && data.workday && data.workday.closing
+        ? data.workday.closing
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.work_day &&
+          dataSelected.corporation.work_day[6] &&
+          dataSelected.corporation.work_day[6].hours &&
+          dataSelected.corporation.work_day[6].hours.closing
+        ? dataSelected.corporation.work_day[6].hours.closing
+        : ""
+    );
 
     fetchGETPOSTPUTDELETE(
       `clinics/update/${dataSelected.id}`,
@@ -210,7 +536,28 @@ const MRegistroClinica = ({
       // console.log(resp);
       if (resp.status === 200) {
         closeModal();
-        getClinica();
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se actualizo la clínica correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getClinica();
+          }
+        });
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
       }
     });
   };

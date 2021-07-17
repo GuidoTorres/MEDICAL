@@ -14,6 +14,7 @@ const Usuarios = ({ history }) => {
   const [addRegistro, setAddRegistro] = useState(false);
   const [generarAtencion, setGenerarAtencion] = useState(false);
   const [getDateAttention, setGetDateAttention] = useState([]);
+  const [editar, setEditar] = useState(false);
   const [dataSelected, setDataSelected] = useState({});
 
   const handleAddRegistro = () => {
@@ -25,16 +26,14 @@ const Usuarios = ({ history }) => {
   };
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("patient")
+    fetchGETPOSTPUTDELETE("users")
       .then((data) => data.json())
-      .then((datos) => setGetDateAttention(datos.data));
+      .then((datos) => setGetDateAttention(datos));
   };
 
   useEffect(() => {
     getAttention();
   }, []);
-
-  
 
   console.log(getDateAttention);
 
@@ -51,7 +50,7 @@ const Usuarios = ({ history }) => {
     },
     {
       name: "Nombres y apellidos",
-      selector: (row) => row.person.name || "",
+      selector: (row) => (row.name ? row.name : ""),
       sortable: true,
       grow: 2,
       style: {
@@ -61,7 +60,8 @@ const Usuarios = ({ history }) => {
     },
     {
       name: "DNI",
-      selector: (row) => row.person.dni || "",
+      selector: (row) => (row.dni ? row.dni : ""),
+      sortable: true,
       sortable: true,
       style: {
         color: "#8f9196",
@@ -80,7 +80,8 @@ const Usuarios = ({ history }) => {
     },
     {
       name: "Telefono",
-      selector: (row) => row.person.cellphone || "",
+      selector: (row) => (row.cellphone ? row.cellphone : ""),
+      sortable: true,
       sortable: true,
       style: {
         color: "#8f9196",
@@ -89,7 +90,8 @@ const Usuarios = ({ history }) => {
     },
     {
       name: "Correo",
-      selector: (row) => row.person.email || "",
+      selector: (row) => (row.email ? row.email : ""),
+      sortable: true,
       sortable: true,
       style: {
         color: "#8f9196",
@@ -112,7 +114,10 @@ const Usuarios = ({ history }) => {
       name: "Editar",
       button: true,
       cell: (e) => (
-        <button className="table__tablebutton editar">
+        <button
+          onClick={() => handleEditar(e)}
+          className="table__tablebutton editar"
+        >
           <i className="fas fa-pencil-alt"></i>
         </button>
       ),
@@ -161,6 +166,12 @@ const Usuarios = ({ history }) => {
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
+  };
+
+  const handleEditar = (e) => {
+    setAddRegistro(true);
+    setDataSelected(e);
+    setEditar(true);
   };
 
   const handleEliminar = (e) => {
@@ -229,12 +240,16 @@ const Usuarios = ({ history }) => {
         <MCrearPaciente
           addRegistro={addRegistro}
           setAddRegistro={setAddRegistro}
+          getAttention={getAttention}
+          dataSelected={dataSelected}
+          editar={editar}
+          setEditar={setEditar}
         />
       )}
 
       {generarAtencion && (
         <MGenerarAtencion
-        generarAtencion={generarAtencion}
+          generarAtencion={generarAtencion}
           setGenerarAtencion={setGenerarAtencion}
           dataSelected={dataSelected}
         />
