@@ -25,7 +25,7 @@ const Usuarios = ({ history }) => {
   };
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("attention")
+    fetchGETPOSTPUTDELETE("patient")
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos.data));
   };

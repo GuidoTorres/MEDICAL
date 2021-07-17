@@ -4,16 +4,25 @@ import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 
 // USAR ESTADISTCAS RECEPCION /recepcionista/estadisticas
 
-
 const Estadisticas = () => {
   const [fechas, setFechas] = useState({});
-  const [estadisticas, setEstadisticas] = useState({})
+  const [estadisticas, setEstadisticas] = useState({});
   const data = {
     labels: estadisticas && estadisticas.labels ? estadisticas.labels : "",
     datasets: [
       {
         label: "First dataset",
-        data: estadisticas && estadisticas.data ? estadisticas.data : "",
+        data: [
+          estadisticas && estadisticas.labels && estadisticas.labels[0]
+            ? "eclea"
+            : "",
+          estadisticas && estadisticas.labels && estadisticas.labels[1]
+            ? "eclea"
+            : "",
+            estadisticas && estadisticas.labels && estadisticas.labels[2]
+            ? "eclea"
+            : "",
+        ],
         fill: true,
         backgroundColor: "rgba(75,192,192,0.2)",
         borderColor: "rgba(75,192,192,1)",
@@ -34,11 +43,9 @@ const Estadisticas = () => {
 
   console.log(fechas);
   const getEstadisticas = () => {
-    fetchGETPOSTPUTDELETEJSON(
-      "receptionista/estadisticas",
-      fechas,
-      "POST"
-    ).then((resp) => resp.json()).then(res => setEstadisticas(res));
+    fetchGETPOSTPUTDELETEJSON("receptionista/estadisticas", fechas, "POST")
+      .then((resp) => resp.json())
+      .then((res) => setEstadisticas(res));
   };
   console.log(estadisticas);
   return (
