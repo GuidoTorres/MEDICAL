@@ -48,7 +48,7 @@ const MDescargar = ({
       preventScroll={true}
       ariaHideApp={false}
     >
-      <h3 className="title__modal">Descargar Historial de precios</h3>
+      <h3 className="title__modal">Descargar historial de precios</h3>
       <div className="container">
         <div className="row mt-3">
           <div className="col-12 mregistro__servicios">

@@ -17,8 +17,6 @@ const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
     googleMapsApiKey: "AIzaSyC14u7ry3uBKIHsEnEql4sA2MaebwNJWI4",
   });
 
-  console.log(dataSelected);
-  console.log(editar);
 
   const center2 = {
     lat:

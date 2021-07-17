@@ -8,14 +8,24 @@ import {
 import { customStyles } from "../../helpers/tablaOpciones";
 import { UploadAvatar } from "../uploadAvatar/uploadAvatar";
 import WebCamScreenshot from "../webcam/WebCamScreenshot";
+import Swal from "sweetalert2";
 
-const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
+const MCrearPaciente = ({
+  addRegistro,
+  setAddRegistro,
+  dataSelected,
+  getAttention,
+  editar,
+  setEditar,
+}) => {
   const [avatar, setAvatar] = useState(null);
   const [imagenes, setImagenes] = useState(false);
   const [paciente, setPaciente] = useState({});
   const [religions, setReligions] = useState({});
+
   const closeModal = () => {
     setAddRegistro(false);
+    setEditar(false);
   };
   const handleCambio = () => {
     setImagenes(true);
@@ -69,15 +79,71 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
     // formData.set("country_id", paciente.country_id || "");
     formData.set("grade_id", "");
 
- 
+    fetchGETPOSTPUTDELETE("patient", formData, "POST").then((data) => {
+      if (data.status === 200) {
+        closeModal();
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se ha creado el paciente correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getAttention();
+          }
+        });
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
+      }
+    });
+  };
 
- 
+  const actualizarPaciente = () => {
+    const formData = new FormData();
+    formData.set("document_type_id", paciente.document_type_id || "");
+    formData.set("dni", paciente.dni || "");
+    formData.set("name", paciente.name || "");
+    formData.set("pat_lastname", paciente.pat_lastname || "");
+    formData.set("mom_lastname", paciente.mom_lastname || "");
+    formData.set("gender_id", paciente.gender_id || "");
+    formData.set("birthday", paciente.birthday || "");
+    formData.set("religion_id", 1);
+    formData.set("department_id", paciente.department_id || "");
+    formData.set("civil_status_id", paciente.civil_status_id || "");
+    formData.set("grade_id", paciente.grade_id || "");
+    formData.set("cellphone", paciente.cellphone || "");
+    formData.set("phone", paciente.phone || "");
+    formData.set("email", paciente.email || "");
+    formData.set("emergency_phone", paciente.emergy_phone || "");
+    formData.set("contact_emergency", paciente.contact_emergency || "");
+    formData.set("company_id", "");
+    formData.set("workstation", paciente.workstation || "");
+    formData.set("birthplace", "");
+    formData.set("address", paciente.address || "");
+    formData.set("reference", paciente.reference || "");
+    formData.set("district_id", paciente.district_id || "");
+    formData.set("department_id", paciente.district_id || "");
+    formData.set("user_type_id", paciente.user_type_id || "");
+    // formData.set("country_id", paciente.country_id || "");
+    formData.set("grade_id", "");
 
-
-    fetchGETPOSTPUTDELETE("patient", formData, "POST").then((data) =>
-      console.log(data)
+    fetchGETPOSTPUTDELETE(`patient/${dataSelected}`, formData, "POST").then(
+      (data) => console.log(data)
     );
   };
+
+  console.log(dataSelected);
+
   return (
     <Modal
       isOpen={addRegistro}
@@ -89,7 +155,11 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
       preventScroll={true}
       ariaHideApp={false}
     >
-      <h3 className="title__modal">Registro de nuevo paciente</h3>
+      {editar ? (
+        <h3 className="title__modal">Editar paciente</h3>
+      ) : (
+        <h3 className="title__modal">Registro de nuevo paciente</h3>
+      )}{" "}
       <div className="container">
         <div className="row">
           <div className="col-md-6 mreceptcion__crearusuario">
@@ -113,6 +183,7 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
                   type="number"
                   placeholder=""
                   name="dni"
+                  defaultValue={dataSelected}
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -121,7 +192,7 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
                 <input
                   type="text"
                   placeholder=""
-                  name="mom_lastname"
+                  name="pat_lastname"
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -130,7 +201,7 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
                 <input
                   type="text"
                   placeholder=""
-                  name="pat_lastname"
+                  name="mom_lastname"
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -169,15 +240,15 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
               </div>
               <div>
                 <label htmlFor="">Religión:</label>
-                <select name="religion_id"
-                  onChange={(e) => handleChange(e)}>
+                <select name="religion_id" onChange={(e) => handleChange(e)}>
                   <option value="">Seleccione</option>
-                  {religions.length>0 && religions.map((data, i)=>(
-
-                    <option key={i} value={i}>{data.name}</option>
-                  ))}
+                  {religions.length > 0 &&
+                    religions.map((data, i) => (
+                      <option key={i} value={i}>
+                        {data.name}
+                      </option>
+                    ))}
                 </select>
-
               </div>
               <div>
                 <label htmlFor="">País: </label>
@@ -259,7 +330,12 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
               </div>
               <div>
                 <label htmlFor="">Dirección:</label>
-                <input type="text" placeholder="" name="reference" onChange={handleChange}/>
+                <input
+                  type="text"
+                  placeholder=""
+                  name="reference"
+                  onChange={handleChange}
+                />
               </div>
             </div>
           </div>
@@ -352,10 +428,11 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
               {/*  */}
               <div>
                 <label htmlFor="">Tipo de usuario:</label>
-                <select name="user_type_id" onChange={(e)=> handleChange(e)}>
+                <select name="user_type_id" onChange={(e) => handleChange(e)}>
                   <option value="">Seleccione</option>
                   <option value="1">Empresa</option>
                   <option value="2">Particular</option>
+                  <option value="3">Trabajador</option>
                 </select>
               </div>
               <div>
@@ -384,9 +461,15 @@ const MCrearPaciente = ({ addRegistro, setAddRegistro }) => {
                 Cancelar
               </button>
 
-              <button className="botones" onClick={crearPaciente}>
-                Agregar
-              </button>
+              {editar ? (
+                <button className="botones" onClick={crearPaciente}>
+                  Editar
+                </button>
+              ) : (
+                <button className="botones" onClick={crearPaciente}>
+                  Agregar
+                </button>
+              )}
             </div>
           </div>
         </div>

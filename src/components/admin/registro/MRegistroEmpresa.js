@@ -57,30 +57,30 @@ const MRegistroEmpresa = ({
     formData.set("commercial_name", empresa.commercial_name || "");
     formData.set("logo", avatar ? avatar.file : "logo");
 
-    formData.set("address", empresa.address.address || "");
-    formData.set("reference", empresa.address.reference || "");
+    formData.set("address", empresa.address || "");
+    formData.set("reference", empresa.reference || "");
 
-    formData.set("contacts[0][name]", empresa.contacts.name || "");
-    formData.set("contacts[0][phone]", empresa.contacts.phone || "");
-    formData.set("contacts[0][email]", empresa.contacts.email || "");
+    formData.set("contacts[0][name]", empresa.name || "");
+    formData.set("contacts[0][phone]", empresa.phone || "");
+    formData.set("contacts[0][email]", empresa.email || "");
     formData.set("contacts[0][contact_type]", 1);
 
-    formData.set("contacts[1][name]", empresa.contacts.name1 || "");
-    formData.set("contacts[1][phone]", empresa.contacts.phone1 || "");
-    formData.set("contacts[1][email]", empresa.contacts.email1 || "");
+    formData.set("contacts[1][name]", empresa.name1 || "");
+    formData.set("contacts[1][phone]", empresa.phone1 || "");
+    formData.set("contacts[1][email]", empresa.email1 || "");
     formData.set("contacts[1][contact_type]", 2);
 
-    formData.set("before", empresa.billing.before || "");
-    formData.set("credit", empresa.billing.credit || "");
+    formData.set("before", empresa.before || "");
+    formData.set("credit", empresa.credit || "");
 
-    formData.set("services[0][service_id]", empresa.services.service_id1 || "");
-    formData.set("services[0][state]", 0);
-    formData.set("services[1][service_id]", empresa.services.service_id2 || "");
-    formData.set("services[0][state]", 0);
-    formData.set("services[2][service_id]", empresa.services.service_id3 || "");
-    formData.set("services[0][state]", 0);
-    formData.set("services[3][service_id]", empresa.services.service_id4 || "");
-    formData.set("services[0][state]", 0);
+    formData.set("services[0][service_id]", empresa.service_id1 || "");
+    // formData.set("services[0][state]", 0);
+    formData.set("services[1][service_id]", empresa.service_id2 || "");
+    // formData.set("services[0][state]", 0);
+    formData.set("services[2][service_id]", empresa.service_id3 || "");
+    // formData.set("services[0][state]", 0);
+    formData.set("services[3][service_id]", empresa.service_id4 || "");
+    // formData.set("services[0][state]", 0);
 
     fetchGETPOSTPUTDELETE("company", formData, "POST").then((resp) => {
       console.log(resp);
@@ -112,100 +112,204 @@ const MRegistroEmpresa = ({
     });
   };
 
-  console.log(empresa);
-  console.log(dataSelected);
   const putCorporation = () => {
     const formData = new FormData();
 
-    formData.set("ruc", empresa.ruc ? empresa.ruc
-    : dataSelected.corporation.ruc);
+    formData.set(
+      "ruc",
+      dataSelected && dataSelected.corporation.ruc
+        ? dataSelected.corporation.ruc
+        : ""
+    );
     formData.set(
       "business_name",
       empresa.business_name
         ? empresa.business_name
-        : dataSelected.corporation.business_name
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.business_name
+        ? dataSelected.corporation.business_name
+        : ""
     );
     formData.set(
       "commercial_name",
       empresa.commercial_name
         ? empresa.commercial_name
-        : dataSelected.corporation.commercial_name
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.commercial_name
+        ? dataSelected.corporation.commercial_name
+        : ""
     );
-    formData.set("logo", avatar ? avatar.file : dataSelected.corporation.logo);
+    formData.set("logo", avatar ? avatar.file : "");
 
     formData.set(
       "address",
-      empresa.address.address
-        ? empresa.address.address
-        : dataSelected.corporation.address.address || ""
+      empresa.address
+        ? empresa.address
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.address &&
+          dataSelected.corporation.address.address
+        ? dataSelected.corporation.address.address
+        : ""
     );
     formData.set(
       "reference",
-      empresa.address.reference
-        ? empresa.address.reference
-        : dataSelected.corporation.address.reference
+      empresa.reference
+        ? empresa.reference
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.address &&
+          dataSelected.corporation.address.reference
+        ? dataSelected.corporation.address.reference
+        : ""
     );
 
     formData.set(
       "contacts[0][name]",
-      empresa.contacts.name
-        ? empresa.contacts.name
-        : dataSelected.corporation.contacts[0].name
+      empresa.name
+        ? empresa.name
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[0] &&
+          dataSelected.corporation.contacts[0].name
+        ? dataSelected.corporation.contacts[0].name
+        : ""
     );
     formData.set(
       "contacts[0][phone]",
-      empresa.contacts.phone
-        ? empresa.contacts.phone
-        : dataSelected.corporation.contacts[0].phone
+      empresa.phone
+        ? empresa.phone
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[0] &&
+          dataSelected.corporation.contacts[0].phone
+        ? dataSelected.corporation.contacts[0].phone
+        : ""
     );
     formData.set(
       "contacts[0][email]",
-      empresa.contacts.email
-        ? empresa.contacts.email
-        : dataSelected.corporation.contacts[0].email
+      empresa.email
+        ? empresa.email
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[0] &&
+          dataSelected.corporation.contacts[0].email
+        ? dataSelected.corporation.contacts[0].email
+        : ""
     );
     formData.set("contacts[0][contact_type]", 1);
 
     formData.set(
       "contacts[1][name]",
-      empresa.contacts.name1
-        ? empresa.contacts.name1
-        : dataSelected.corporation.contacts[1].name
+      empresa.name1
+        ? empresa.name1
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[1] &&
+          dataSelected.corporation.contacts[1].name
+        ? dataSelected.corporation.contacts[1].name
+        : ""
     );
     formData.set(
       "contacts[1][phone]",
-      empresa.contacts.phone1
-        ? empresa.contacts.phone1
-        : dataSelected.corporation.contacts[1].phone
+      empresa.phone1
+        ? empresa.phone1
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[1] &&
+          dataSelected.corporation.contacts[1].phone
+        ? dataSelected.corporation.contacts[1].phone
+        : ""
     );
     formData.set(
       "contacts[1][email]",
-      empresa.contacts.email1
-        ? empresa.contacts.email1
-        : dataSelected.corporation.contacts[1].email
+      empresa.email1
+        ? empresa.email1
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[1] &&
+          dataSelected.corporation.contacts[1].email
+        ? dataSelected.corporation.contacts[1].email
+        : ""
     );
     formData.set("contacts[1][contact_type]", 2);
 
     formData.set(
       "before",
-      empresa.billing ? empresa.billing.before : dataSelected.billing.before
+      empresa.before
+        ? empresa.before
+        : dataSelected && dataSelected.billing && dataSelected.billing.before
+        ? dataSelected.billing.before
+        : ""
     );
     formData.set(
       "credit",
-      empresa.billing ? empresa.billing.credit : dataSelected.billing.credit
+      empresa.credit
+        ? empresa.credit
+        : dataSelected && dataSelected.billing && dataSelected.billing.credit
+        ? dataSelected.billing.credit
+        : ""
     );
 
-    formData.set("services[0][service_id]", empresa.services.service_id1 || "");
+    formData.set(
+      "services[0][service_id]",
+      empresa.service_id1
+        ? empresa.service_id1
+        : dataSelected &&
+          dataSelected.services &&
+          dataSelected.services[0] &&
+          dataSelected.services[0].id
+        ? dataSelected.services[0].id
+        : ""
+    );
     formData.set("services[0][state]", 0);
 
-    formData.set("services[1][service_id]", empresa.services.service_id2 || "");
+    formData.set(
+      "services[1][service_id]",
+      empresa.service_id2
+        ? empresa.service_id2
+        : dataSelected &&
+          dataSelected.services &&
+          dataSelected.services[1] &&
+          dataSelected.services[1].id
+        ? dataSelected.services[1].id
+        : ""
+    );
     formData.set("services[1][state]", 0);
 
-    formData.set("services[2][service_id]", empresa.services.service_id3 || "");
-    formData.set("services[1][state]", 0);
+    formData.set(
+      "services[2][service_id]",
+      empresa.service_id3
+        ? empresa.service_id3
+        : dataSelected &&
+          dataSelected.services &&
+          dataSelected.services[2] &&
+          dataSelected.services[2].id
+        ? dataSelected.services[2].id
+        : ""
+    );
+    formData.set("services[2][state]", 0);
 
-    formData.set("services[3][service_id]", empresa.services.service_id4 || "");
-    formData.set("services[1][state]", 0);
+    formData.set(
+      "services[3][service_id]",
+      empresa.service_id4
+        ? empresa.service_id4
+        : dataSelected &&
+          dataSelected.services &&
+          dataSelected.services[3] &&
+          dataSelected.services[3].id
+        ? dataSelected.services[3].id
+        : ""
+    );
+    formData.set("services[3][state]", 0);
 
     fetchGETPOSTPUTDELETE(
       `company/update/${dataSelected.id}`,
@@ -217,7 +321,7 @@ const MRegistroEmpresa = ({
         Swal.fire({
           icon: "success",
           title: "Éxito",
-          text: "Se ha editado la empresa correctamente.",
+          text: "Se actualizo la empresa correctamente.",
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Aceptar",
@@ -239,6 +343,8 @@ const MRegistroEmpresa = ({
       }
     });
   };
+
+  console.log(dataSelected);
 
   return (
     <Modal
@@ -265,8 +371,11 @@ const MRegistroEmpresa = ({
                 <input
                   type="text"
                   name="ruc"
+                  disabled={editar ? true : false}
                   defaultValue={
-                    dataSelected && dataSelected.corporation
+                    dataSelected &&
+                    dataSelected.corporation &&
+                    dataSelected.corporation.ruc
                       ? dataSelected.corporation.ruc
                       : ""
                   }
@@ -282,7 +391,9 @@ const MRegistroEmpresa = ({
                   name="business_name"
                   defaultValue={
                     editar
-                      ? dataSelected && dataSelected.corporation
+                      ? dataSelected &&
+                        dataSelected.corporation &&
+                        dataSelected.corporation.business_name
                         ? dataSelected.corporation.business_name
                         : ""
                       : ruc.razonSocial
@@ -298,7 +409,9 @@ const MRegistroEmpresa = ({
                   type="text"
                   name="commercial_name"
                   defaultValue={
-                    dataSelected && dataSelected.corporation
+                    dataSelected &&
+                    dataSelected.corporation &&
+                    dataSelected.corporation.commercial_name
                       ? dataSelected.corporation.commercial_name
                       : ""
                   }
@@ -325,7 +438,7 @@ const MRegistroEmpresa = ({
                   onChange={(e) =>
                     setEmpresa({
                       ...empresa,
-                      address: { ...empresa.address, address: e.target.value },
+                      address: e.target.value,
                     })
                   }
                 />
@@ -346,10 +459,8 @@ const MRegistroEmpresa = ({
                   onChange={(e) =>
                     setEmpresa({
                       ...empresa,
-                      address: {
-                        ...empresa.address,
-                        reference: e.target.value,
-                      },
+
+                      reference: e.target.value,
                     })
                   }
                 />
@@ -403,7 +514,7 @@ const MRegistroEmpresa = ({
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        contacts: { ...empresa.contacts, name: e.target.value },
+                        name: e.target.value,
                       })
                     }
                   />
@@ -425,10 +536,8 @@ const MRegistroEmpresa = ({
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        contacts: {
-                          ...empresa.contacts,
-                          phone: e.target.value,
-                        },
+
+                        phone: e.target.value,
                       })
                     }
                   />
@@ -450,10 +559,7 @@ const MRegistroEmpresa = ({
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        contacts: {
-                          ...empresa.contacts,
-                          email: e.target.value,
-                        },
+                        email: e.target.value,
                       })
                     }
                   />
@@ -479,10 +585,8 @@ const MRegistroEmpresa = ({
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        contacts: {
-                          ...empresa.contacts,
-                          name1: e.target.value,
-                        },
+
+                        name1: e.target.value,
                       })
                     }
                   />
@@ -503,10 +607,8 @@ const MRegistroEmpresa = ({
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        contacts: {
-                          ...empresa.contacts,
-                          phone1: e.target.value,
-                        },
+
+                        phone1: e.target.value,
                       })
                     }
                   />
@@ -527,10 +629,8 @@ const MRegistroEmpresa = ({
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        contacts: {
-                          ...empresa.contacts,
-                          email1: e.target.value,
-                        },
+
+                        email1: e.target.value,
                       })
                     }
                   />
@@ -569,7 +669,7 @@ const MRegistroEmpresa = ({
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        billing: { ...empresa.billing, before: e.target.value },
+                        before: e.target.value,
                       })
                     }
                   />
@@ -588,7 +688,7 @@ const MRegistroEmpresa = ({
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        billing: { ...empresa.billing, credit: e.target.value },
+                        credit: e.target.value,
                       })
                     }
                   />
@@ -602,14 +702,17 @@ const MRegistroEmpresa = ({
                   <label>Tipo de servicio</label>
                   <select
                     aria-label="Default select example"
-                    defaultValue={dataSelected && dataSelected.services && dataSelected.services[0] && dataSelected.services[0].services_category_id  }
+                    defaultValue={
+                      dataSelected &&
+                      dataSelected.services &&
+                      dataSelected.services[0] &&
+                      dataSelected.services[0].services_category_id
+                    }
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        services: {
-                          ...empresa.services,
-                          service_id: e.target.value,
-                        },
+
+                        service_id: e.target.value,
                       })
                     }
                   >
@@ -626,17 +729,15 @@ const MRegistroEmpresa = ({
                         className="w-auto"
                         defaultChecked={
                           dataSelected &&
-                          dataSelected.services[0] 
+                          dataSelected.services &&
+                          dataSelected.services[0]
                             ? true
                             : false
                         }
                         onChange={(e) =>
                           setEmpresa({
                             ...empresa,
-                            services: {
-                              ...empresa.services,
-                              service_id1: e.target.checked ? 1 : "",
-                            },
+                            service_id1: e.target.checked ? 1 : "",
                           })
                         }
                       />
@@ -648,17 +749,15 @@ const MRegistroEmpresa = ({
                         className="w-auto"
                         defaultChecked={
                           dataSelected &&
-                          dataSelected.services[1] 
+                          dataSelected.services &&
+                          dataSelected.services[1]
                             ? true
                             : false
                         }
                         onChange={(e) =>
                           setEmpresa({
                             ...empresa,
-                            services: {
-                              ...empresa.services,
-                              service_id2: e.target.checked ? 2 : "",
-                            },
+                            service_id2: e.target.checked ? 2 : "",
                           })
                         }
                       />
@@ -670,17 +769,16 @@ const MRegistroEmpresa = ({
                         className="w-auto"
                         defaultChecked={
                           dataSelected &&
-                          dataSelected.services[2] 
+                          dataSelected.services &&
+                          dataSelected.services[2]
                             ? true
                             : false
                         }
                         onChange={(e) =>
                           setEmpresa({
                             ...empresa,
-                            services: {
-                              ...empresa.services,
-                              service_id3: e.target.checked ? 3 : "",
-                            },
+
+                            service_id3: e.target.checked ? 3 : "",
                           })
                         }
                       />
@@ -692,17 +790,16 @@ const MRegistroEmpresa = ({
                         className="w-auto"
                         defaultChecked={
                           dataSelected &&
-                          dataSelected.services[3] 
+                          dataSelected.services &&
+                          dataSelected.services[3]
                             ? true
                             : false
                         }
                         onChange={(e) =>
                           setEmpresa({
                             ...empresa,
-                            services: {
-                              ...empresa.services,
-                              service_id4: e.target.checked ? 4 : "",
-                            },
+
+                            service_id4: e.target.checked ? 4 : "",
                           })
                         }
                       />
