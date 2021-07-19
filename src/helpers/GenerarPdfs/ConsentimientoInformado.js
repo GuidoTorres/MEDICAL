@@ -33,10 +33,10 @@ const generarConsentimientoInformado = () => {
 
   doc.addImage(consentimiento, "PNG", 70, 30, 450, 500);
 
-  doc.text(110, 155, `${data.nombre}`);
-  doc.text(350, 155, `${data.dni}`);
+  // doc.text(110, 155, `${data.nombre}`);
+  // doc.text(350, 155, `${data.dni}`);
 
-  doc.text(350, 318, `${getFecha()}`);
+  // doc.text(350, 318, `${getFecha()}`);
 
   window.open(doc.output("bloburl"), "_blank");
 };

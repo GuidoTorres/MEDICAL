@@ -49,7 +49,7 @@ const SubirLaboratorio = () => {
     },
     {
       name: "Nro de documento",
-      selector: (row) => (row.dni ? row.person.dni : ""),
+      selector: (row) => (row.person.dni ? row.person.dni : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -164,7 +164,7 @@ const SubirLaboratorio = () => {
               <div>
                 <label>Sub-Categoría</label>
                 <select
-                  class="form-select"
+                  className="form-select"
                   aria-label="Default select example"
                   onChange={(e) => setTipoPrueba(Number(e.target.value))}
                 >
@@ -173,6 +173,7 @@ const SubirLaboratorio = () => {
                   <option value="1">Antígeno</option>
                   <option value="2">Eclea</option>
                   <option value="3">Rápida</option>
+                  <option value="3">Molecular</option>
                 </select>
               </div>
             </div>

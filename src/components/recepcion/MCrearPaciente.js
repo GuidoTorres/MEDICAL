@@ -17,15 +17,18 @@ const MCrearPaciente = ({
   getAttention,
   editar,
   setEditar,
+  setDataSelected
 }) => {
   const [avatar, setAvatar] = useState(null);
   const [imagenes, setImagenes] = useState(false);
   const [paciente, setPaciente] = useState({});
   const [religions, setReligions] = useState({});
+  const [company, setCompany] = useState({});
 
   const closeModal = () => {
     setAddRegistro(false);
     setEditar(false);
+    setDataSelected({})
   };
   const handleCambio = () => {
     setImagenes(true);
@@ -45,11 +48,20 @@ const MCrearPaciente = ({
       .then((res) => res.json())
       .then((res) => setReligions(res.religions));
   };
+
+  const getCompany = () => {
+    fetchGETPOSTPUTDELETE("company", null, "GET")
+      .then((res) => res.json())
+      .then((res) => setCompany(res.data));
+  };
+
   useEffect(() => {
     getReligions();
+    getCompany();
   }, []);
   console.log(religions);
   console.log(paciente);
+  console.log(company);
   const crearPaciente = () => {
     const formData = new FormData();
     formData.set("document_type_id", paciente.document_type_id || "");
@@ -68,7 +80,7 @@ const MCrearPaciente = ({
     formData.set("email", paciente.email || "");
     formData.set("emergency_phone", paciente.emergy_phone || "");
     formData.set("contact_emergency", paciente.contact_emergency || "");
-    formData.set("company_id", "");
+    formData.set("company_id", Number(paciente.company_id) || "");
     formData.set("workstation", paciente.workstation || "");
     formData.set("birthplace", "");
     formData.set("address", paciente.address || "");
@@ -110,11 +122,46 @@ const MCrearPaciente = ({
 
   const actualizarPaciente = () => {
     const formData = new FormData();
-    formData.set("document_type_id", paciente.document_type_id || "");
-    formData.set("dni", paciente.dni || "");
-    formData.set("name", paciente.name || "");
-    formData.set("pat_lastname", paciente.pat_lastname || "");
-    formData.set("mom_lastname", paciente.mom_lastname || "");
+    formData.set(
+      "document_type_id",
+      paciente.document_type_id
+        ? paciente.document_type_id
+        : dataSelected && dataSelected.document_type_id
+        ? dataSelected.document_type_id
+        : ""
+    );
+    formData.set(
+      "dni",
+      paciente.dni
+        ? paciente.dni
+        : dataSelected && dataSelected.dni
+        ? dataSelected.dni
+        : ""
+    );
+    formData.set(
+      "name",
+      paciente.name
+        ? paciente.name
+        : dataSelected && dataSelected.name
+        ? dataSelected.name
+        : ""
+    );
+    formData.set(
+      "pat_lastname",
+      paciente.pat_lastname
+        ? paciente.pat_lastname
+        : dataSelected && dataSelected.pat_lastname
+        ? dataSelected.pat_lastname
+        : ""
+    );
+    formData.set(
+      "mom_lastname",
+      paciente.mom_lastname
+        ? paciente.mom_lastname
+        : dataSelected && dataSelected.mom_lastname
+        ? dataSelected.mom_lastname
+        : ""
+    );
     formData.set("gender_id", paciente.gender_id || "");
     formData.set("birthday", paciente.birthday || "");
     formData.set("religion_id", 1);
@@ -137,7 +184,7 @@ const MCrearPaciente = ({
     // formData.set("country_id", paciente.country_id || "");
     formData.set("grade_id", "");
 
-    fetchGETPOSTPUTDELETE(`patient/${dataSelected}`, formData, "POST").then(
+    fetchGETPOSTPUTDELETE(`patient/${dataSelected.id}`, formData, "POST").then(
       (data) => console.log(data)
     );
   };
@@ -169,6 +216,15 @@ const MCrearPaciente = ({
                 <label htmlFor="">Tipo de documento:</label>
                 <select
                   name="document_type_id"
+                  defaultValue={
+                    dataSelected && dataSelected.document_type_id === 1
+                      ? 1
+                      : dataSelected && dataSelected.document_type_id === 2
+                      ? 2
+                      : dataSelected && dataSelected.document_type_id === 3
+                      ? 3
+                      : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 >
                   <option selected>Seleccione</option>
@@ -183,7 +239,9 @@ const MCrearPaciente = ({
                   type="number"
                   placeholder=""
                   name="dni"
-                  defaultValue={dataSelected}
+                  defaultValue={
+                    dataSelected && dataSelected.dni ? dataSelected.dni : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -193,6 +251,11 @@ const MCrearPaciente = ({
                   type="text"
                   placeholder=""
                   name="pat_lastname"
+                  defaultValue={
+                    dataSelected && dataSelected.pat_lastname
+                      ? dataSelected.pat_lastname
+                      : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -202,6 +265,11 @@ const MCrearPaciente = ({
                   type="text"
                   placeholder=""
                   name="mom_lastname"
+                  defaultValue={
+                    dataSelected && dataSelected.mom_lastname
+                      ? dataSelected.mom_lastname
+                      : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -211,6 +279,9 @@ const MCrearPaciente = ({
                   type="text"
                   placeholder=""
                   name="name"
+                  defaultValue={
+                    dataSelected && dataSelected.name ? dataSelected.name : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -219,7 +290,17 @@ const MCrearPaciente = ({
               <p>Datos de nacimiento:</p>
               <div>
                 <label htmlFor="">Sexo:</label>
-                <select name="gender_id" onChange={(e) => handleChange(e)}>
+                <select
+                  name="gender_id"
+                  defaultValue={
+                    dataSelected && dataSelected.gender_id === 1
+                      ? 1
+                      : dataSelected && dataSelected.gender_id === 2
+                      ? 2
+                      : ""
+                  }
+                  onChange={(e) => handleChange(e)}
+                >
                   <option selected>Seleccione</option>
                   <option value="1">Masculino</option>
                   <option value="2">Femenino</option>
@@ -231,6 +312,7 @@ const MCrearPaciente = ({
                   type="date"
                   placeholder=""
                   name="birthday"
+                  defaultValue={dataSelected && dataSelected.birthday}
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -240,7 +322,17 @@ const MCrearPaciente = ({
               </div>
               <div>
                 <label htmlFor="">Religión:</label>
-                <select name="religion_id" onChange={(e) => handleChange(e)}>
+                <select
+                  name="religion_id"
+                  defaultValue={
+                    dataSelected && dataSelected.religion_id === 1
+                      ? 1
+                      : dataSelected && dataSelected.religion_id === 2
+                      ? 2
+                      : ""
+                  }
+                  onChange={(e) => handleChange(e)}
+                >
                   <option value="">Seleccione</option>
                   {religions.length > 0 &&
                     religions.map((data, i) => (
@@ -432,15 +524,23 @@ const MCrearPaciente = ({
                   <option value="">Seleccione</option>
                   <option value="1">Empresa</option>
                   <option value="2">Particular</option>
-                  <option value="3">Trabajador</option>
                 </select>
               </div>
-              <div>
-                <input type="text" placeholder="Buscar" />
-              </div>
-              <div>
-                <input type="text" placeholder="" disabled />
-              </div>
+              {paciente.user_type_id === "1" ? (
+                <div>
+                  <label htmlFor="">Empresa:</label>
+                  <select name="company_id" onChange={(e) => handleChange(e)}>
+                    <option value="">Seleccione</option>
+
+                    {company &&
+                      company.map((data, i) => (
+                        <option key={i} value={data.id}>{data.corporation.business_name}</option>
+                      ))}
+                  </select>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             <div>
               <div>
@@ -462,7 +562,7 @@ const MCrearPaciente = ({
               </button>
 
               {editar ? (
-                <button className="botones" onClick={crearPaciente}>
+                <button className="botones" onClick={actualizarPaciente}>
                   Editar
                 </button>
               ) : (

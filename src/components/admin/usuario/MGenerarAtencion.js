@@ -1,69 +1,44 @@
 import Modal from "react-modal";
 import { customStyles } from "../../../helpers/tablaOpciones";
 import React, { useState } from "react";
-import Swal from "sweetalert2";
 
-import DeclaracionJurada from "../FormatosPDF/DeclaracionJurada";
-import ConsentimientoInformado from "../FormatosPDF/ConsentimientoInformado";
-import FichaCovid19 from "../FormatosPDF/FichaCovid19";
+
+import DeclaracionJurada from "../usuario/FormatosPDF/DeclaracionJurada";
+import ConsentimientoInformado from "../usuario/FormatosPDF/ConsentimientoInformado";
+import FichaCovid19 from "../usuario/FormatosPDF/FichaCovid19";
 import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
 
-const MGenerarAtencion = ({
-  generarAtencion,
+const MGenerarAtencion = (
+  {generarAtencion,
   setGenerarAtencion,
-  dataSelected,
-  getAttention
-}) => {
-  const closeModal = () => {
-    setGenerarAtencion(false);
-  };
+  dataSelected}
+) => {
   const [datos, setDatos] = useState({});
   const [condicion, setCondicion] = useState({});
 
   const [declaracion, setDeclaracion] = useState({});
   const [ficha, setFicha] = useState({});
 
+  const closeModal = () => {
+    setGenerarAtencion(false);
+  };
+
   const crearAtencion = () => {
     const formData = new FormData();
     formData.set("date_attention", "2021-07-17");
     formData.set("time_attention", "17:30");
-    formData.set("people_id", dataSelected.id || "");
-    formData.set("service_id", 6);
+    formData.set("people_id", dataSelected.user.person_id || "");
+    formData.set("service_id", 3);
     // formData.set("clinic_id", dataSelected.clinic.id || "");
-    formData.set("clinic_id", 1);
+    formData.set("clinic_id", 3);
     formData.set("codebar", "111111");
     // formData.set("forms", "");
 
     // formData.set("user_type_id ", 2)
 
-    fetchGETPOSTPUTDELETE("attention", formData, "POST").then((res) => {
-      console.log(res);
-      if (res.status === 200) {
-        closeModal();
-        Swal.fire({
-          icon: "success",
-          title: "Éxito",
-          text: "Se ha genero la atención correctamente.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getAttention();
-          }
-        });
-      } else {
-        closeModal();
-        Swal.fire({
-          icon: "error",
-          title: "Ups¡",
-          text: "Algo salió mal.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Cerrar",
-        });
-      }
-    });
+    fetchGETPOSTPUTDELETE("attention", formData, "POST").then((res) =>
+      console.log(res)
+    );
   };
   console.log(dataSelected);
 
@@ -123,12 +98,9 @@ const MGenerarAtencion = ({
       <h3 className="title__modal">Generar atencion</h3>
       <div className="generarAtencion">
         <div className="datosPaciente">
-          <label htmlFor="">Paciente: {dataSelected.name}</label>
-          <label htmlFor="">Tipo de paciente: {dataSelected.user &&
-        dataSelected.user.user_type &&
-        dataSelected.user.user_type &&
-        dataSelected.user.user_type.name}</label>
-          <label htmlFor="">Empresa: {dataSelected.business_name}</label>
+          <label htmlFor="">Paciente: {dataSelected && dataSelected.name}</label>
+          <label htmlFor="">Tipo de paciente: {dataSelected && dataSelected.user_type}</label>
+          <label htmlFor="">Empresa: {dataSelected && dataSelected.business_name}</label>
         </div>
 
         <div className="container1">
@@ -154,21 +126,6 @@ const MGenerarAtencion = ({
                 class="form-select"
                 aria-label="Default select example"
                 name="service_id"
-                onChange={handleOnChange}
-              >
-                <option selected>Seleccione</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
-
-            <div className="mx-4">
-              <label htmlFor="">Clínica:</label>
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                name="clinic_id"
                 onChange={handleOnChange}
               >
                 <option selected>Seleccione</option>

@@ -3,10 +3,10 @@ import Modal from "react-modal";
 import { customStyles } from "../../helpers/tablaOpciones";
 
 const MEmpresa = ({ openModal, setOpenModal, datos }) => {
-  console.log(datos);
   const closeModal = () => {
     setOpenModal(false);
   };
+
   console.log(datos);
   return (
     <Modal
@@ -36,12 +36,14 @@ const MEmpresa = ({ openModal, setOpenModal, datos }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {datos.length > 0 &&
-                    datos.map((data, i) => (
+                  {datos &&
+                    datos.services.map((data, i) => (
                       <tr key={i}>
-                        <td>{data.corporation.address}</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <td>
+                          {data.name}
+                        </td>
+                        <td>{data.last_discount.percent} %</td>
+                        <td>{data.last_discount.amount}</td>
                       </tr>
                     ))}
                 </tbody>
@@ -52,11 +54,11 @@ const MEmpresa = ({ openModal, setOpenModal, datos }) => {
             <div>
               <div>
                 <label>Facturación (días):</label>
-                <input type="text" />
+                <input type="text" defaultValue={datos.billing.before}/>
               </div>
               <div>
                 <label>Crédito (días):</label>
-                <input type="text" />
+                <input type="text" defaultValue={datos.billing.credit}/>
               </div>
             </div>
           </div>
