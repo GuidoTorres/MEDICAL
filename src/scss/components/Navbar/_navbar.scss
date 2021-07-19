@@ -3,8 +3,14 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: $color-secondary;
-
+  background: linear-gradient(
+    90deg,
+    rgba(0, 93, 150, 1) 0%,
+    rgba(0, 93, 150, 1) 0%,
+    rgba(0, 157, 202, 1) 100%
+  );
+  border-radius: 0px 0px 30px 30px;
+  padding: 0px;
   .containerLogo {
     width: 100%;
     display: flex;
@@ -16,7 +22,9 @@
       border: none;
       width: 10%;
       font-size: 20px;
-      background-color: $color-secondary;
+      border-radius: 5px;
+      background-color: rgba(0, 212, 255, 1);
+      box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.089);
       i {
         cursor: pointer;
       }
@@ -24,13 +32,12 @@
     .navbarLink {
       width: 90%;
       display: flex;
-      // justify-content: center;
       align-items: center;
     }
 
     .logoImg {
-      width: 50px;
-      margin-right: 20px;
+      height: 50px;
+      margin: 10px 5px 10px 0px;
     }
   }
   .navbar-nav {
@@ -68,10 +75,8 @@
     .navUl {
       display: flex;
       flex-direction: column;
-      // margin-top: 12vh;
       font-size: 15px;
       text-align: center;
-      // margin-top: 100px;
 
       li {
         color: white;
@@ -90,7 +95,6 @@
     .btnCerrar {
       color: white;
       cursor: pointer;
-      // margin-top: 100px;
       margin: 25px 0;
 
       i {
@@ -100,6 +104,11 @@
   }
 }
 
+.active {
+  background-color: #005c9669;
+  border-radius: 5px;
+  font-weight: 600;
+}
 @media screen and (min-width: 450px) {
   .navbar {
     .navBarUl {

@@ -5,7 +5,7 @@ import DataTable from 'react-data-table-component';
 
 import { ToastContainer } from 'react-toastify';
 // import { clinicas } from '../../data/clinicas';
-import jsPDF  from "jspdf";
+import jsPDF from 'jspdf';
 // import 'jspdf-autotable';
 
 const EmpresaResultados = () => {
@@ -18,49 +18,46 @@ const EmpresaResultados = () => {
     selectAllRowsItem: true,
     selectAllRowsItemText: 'Todos',
   };
-  
-  const generarPdf = () =>{
 
+  const generarPdf = () => {
     const doc = new jsPDF('p', 'pt');
     doc.setFontSize(10);
 
     // doc.addImage(image, 'PNG', 60,20,180,100)
 
-    doc.setFillColor(255,255,255);
+    doc.setFillColor(255, 255, 255);
     doc.rect(400, 20, 150, 100, 'FD');
 
-    doc.text(440, 50, 'RUC: 200000002')
-    doc.text(420, 70, 'FACTURA ELECTRÓNICA')
-    doc.text(440, 90, 'F001-00000011')
+    doc.text(440, 50, 'RUC: 200000002');
+    doc.text(420, 70, 'FACTURA ELECTRÓNICA');
+    doc.text(440, 90, 'F001-00000011');
 
-    doc.text(60,150, 'FECHA DE EMISIÓN')
-    doc.text(170,150, ': 20/05/2021')
+    doc.text(60, 150, 'FECHA DE EMISIÓN');
+    doc.text(170, 150, ': 20/05/2021');
 
-    doc.text(60,170, 'SEÑOR(ES)')
-    doc.text(170,170, ': Alles Peru' )
+    doc.text(60, 170, 'SEÑOR(ES)');
+    doc.text(170, 170, ': Alles Peru');
 
-    doc.text(60,190, 'RUC')
-    doc.text(170,190, ': 20104578922')
+    doc.text(60, 190, 'RUC');
+    doc.text(170, 190, ': 20104578922');
 
-    doc.text(60,210, 'DIRECCIÓN')
-    doc.text(170,210, ': Matara sn, CUSCO-CUSCO')
+    doc.text(60, 210, 'DIRECCIÓN');
+    doc.text(170, 210, ': Matara sn, CUSCO-CUSCO');
 
-    doc.text(60,230, 'TELÉFONO')
-    doc.text(170,230, ': 987654768')
+    doc.text(60, 230, 'TELÉFONO');
+    doc.text(170, 230, ': 987654768');
 
-    doc.text(60,250, 'MONEDA')
-    doc.text(170,250, ': Soles')
+    doc.text(60, 250, 'MONEDA');
+    doc.text(170, 250, ': Soles');
 
-    doc.setLineWidth(0.5)
-    doc.line(270, 25, 160, 25)
+    doc.setLineWidth(0.5);
+    doc.line(270, 25, 160, 25);
 
-
-
-    doc.autoTable( {
-      theme:'plain',
-      tableWidth: "grid",
+    doc.autoTable({
+      theme: 'plain',
+      tableWidth: 'grid',
       head: [['Cant.', 'Unidad', 'Descripción', 'Total']],
-      margin: { top: 270, left: 60, },
+      margin: { top: 270, left: 60 },
       body: [
         ['1.000', 'servicio', 'Alquiler de cisterna', '96.78'],
         ['1.000', 'unidades', 'Barniz', '25.40'],
@@ -68,28 +65,20 @@ const EmpresaResultados = () => {
 
         // ...
       ],
-      foot:[['Son: ciento veinte y dos'],
-      ['','','',''],
-      ['','','', 'OP. EXONERADAS    : S/'],
-      ['','','', 'OP. GRAVADAS         : S/'],
-      ['','','', 'IGV                               : S/'],
-      ['','','', 'TOTAL A PAGAR        : S/'],
-    ]
+      foot: [
+        ['Son: ciento veinte y dos'],
+        ['', '', '', ''],
+        ['', '', '', 'OP. EXONERADAS    : S/'],
+        ['', '', '', 'OP. GRAVADAS         : S/'],
+        ['', '', '', 'IGV                               : S/'],
+        ['', '', '', 'TOTAL A PAGAR        : S/'],
+      ],
+    });
 
-    })
+    doc.setFont('courier');
 
-
-    
-
-    doc.setFont('courier')
-
-
-    
-
-    
-      window.open(doc.output('bloburl'), '_blank');
-
-  }
+    window.open(doc.output('bloburl'), '_blank');
+  };
   const columnas = [
     {
       name: 'Seleccionar',
@@ -174,7 +163,7 @@ const EmpresaResultados = () => {
       button: true,
       cell: (e) => (
         <button
-        type="button"
+          type="button"
           onClick={() => generarPdf(e)}
           className="table__tablebutton eliminar"
         >
@@ -182,7 +171,6 @@ const EmpresaResultados = () => {
         </button>
       ),
     },
-
   ];
 
   const handleDelete = (e) => {
@@ -236,11 +224,11 @@ const EmpresaResultados = () => {
 
   return (
     <>
-    <div className=" container ">
-      {/* <h3 className="tituloResultados mt-3">Resultados</h3> */}
+      <div className=" container ">
+        {/* <h3 className="tituloResultados mt-3">Resultados</h3> */}
 
-      <div className="empresaResultado">
-        <div >
+        <div className="empresaResultado">
+          <div>
             <input
               type="text"
               className="inputBuscar"
@@ -249,39 +237,44 @@ const EmpresaResultados = () => {
               value={busqueda}
               onChange={handleOnChange}
             />
-        </div>
+          </div>
 
-        <div
+          <div
           // onClick={(e) => history.push('/admin/registroempresa')}
-        >
-        <div class="form-check form-switch">
-        <label class="form-check-label" for="flexSwitchCheckDefault">Enviar resultados automáticamente </label>
-        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault"/>
+          >
+            <div class="form-check form-switch">
+              <label class="form-check-label" for="flexSwitchCheckDefault">
+                Enviar resultados automáticamente{' '}
+              </label>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="flexSwitchCheckDefault"
+              />
+            </div>
+            <button type="button" className="botones btn btn-primary">
+              Enviar
+            </button>
+          </div>
         </div>
-          <button type="button" className="botones btn btn-primary">Enviar</button>
-
+        <ToastContainer />
+        <div className="row px-2">
+          <div className=" table-responsive">
+            <DataTable
+              className="dataTable"
+              columns={columnas}
+              data={clinica}
+              pagination
+              paginationComponentOptions={paginacionOpciones}
+              fixedHeader
+              fixedHeaderScrollHeight="450px"
+              noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            />
+          </div>
         </div>
       </div>
-      <ToastContainer />
-      <div className="row px-2">
-        <div className=" table-responsive">
-          <DataTable
-            className="dataTable"
-            columns={columnas}
-            data={clinica}
-            pagination
-            paginationComponentOptions={paginacionOpciones}
-            fixedHeader
-            fixedHeaderScrollHeight="450px"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
-          />
-        </div>
-      </div>
-    </div> 
- 
- 
     </>
-    )
-}
+  );
+};
 
-export default EmpresaResultados
+export default EmpresaResultados;

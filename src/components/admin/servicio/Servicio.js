@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import DataTable from "react-data-table-component";
-import Swal from "sweetalert2";
+import DataTable from 'react-data-table-component';
+import Swal from 'sweetalert2';
 
 // import { servicio } from '../../../data/AServicio';
 import {
   fetchGETPOSTPUTDELETE,
   fetchGETPOSTPUTDELETEJSON,
-} from "../../../helpers/fetch";
-import { paginacionOpciones } from "../../../helpers/tablaOpciones";
-import MCrearServicio from "./MCrearServicio";
-import MDescargar from "./MDescargar";
-import MServicio from "./MServicio";
-import MSubCategoria from "./MSubCategoria";
+} from '../../../helpers/fetch';
+import { paginacionOpciones } from '../../../helpers/tablaOpciones';
+import MCrearServicio from './MCrearServicio';
+import MDescargar from './MDescargar';
+import MServicio from './MServicio';
+import MSubCategoria from './MSubCategoria';
 
 const Servicio = () => {
-  const [busqueda, setBusqueda] = useState("");
-  // const [listRegistro, setListRegistro] = useState([]);
+  const [busqueda, setBusqueda] = useState('');
+  const [listRegistro, setListRegistro] = useState([]);
   const [getServicio, setGetServicio] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [dataSelected, setDataSelected] = useState({});
@@ -27,7 +27,7 @@ const Servicio = () => {
   // const [servicios, setServicios] = useState({});
 
   const getServices = () => {
-    fetchGETPOSTPUTDELETE("services")
+    fetchGETPOSTPUTDELETE('services')
       .then((info) => info.json())
       .then((datos) => setGetServicio(datos.data));
   };
@@ -36,28 +36,28 @@ const Servicio = () => {
     getServices();
   }, []);
 
-  console.log(getServicio);
+  // console.log(getServicio);
   const columnas = [
     {
-      name: "Item",
-      selector: "id",
+      name: 'Item',
+      selector: 'id',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Categoria",
-      selector: "name",
+      name: 'Categoria',
+      selector: 'name',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Sub-categorias",
+      name: 'Sub-categorias',
       button: true,
       cell: (e) => (
         <button
@@ -67,9 +67,10 @@ const Servicio = () => {
           <i className="fas fa-eye"></i>
         </button>
       ),
+      grow: 2,
     },
     {
-      name: "Historial",
+      name: 'Historial',
       button: true,
       cell: (e) => (
         <button
@@ -81,7 +82,7 @@ const Servicio = () => {
       ),
     },
     {
-      name: "Editar",
+      name: 'Editar',
       button: true,
       cell: (e) => (
         <button onClick={() => handleEditar(e)} className="table__tablebutton">
@@ -90,7 +91,7 @@ const Servicio = () => {
       ),
     },
     {
-      name: "Eliminar",
+      name: 'Eliminar',
       button: true,
       cell: (e) => (
         <button
@@ -103,27 +104,19 @@ const Servicio = () => {
     },
   ];
 
-  // useEffect(() => {
-  //   const filtrarElemento = () => {
-  //     const search = servicio.filter((data) => {
-  //       return (
-  //         data.categoria
-  //           .normalize('NFD')
-  //           .replace(/[\u0300-\u036f]/g, '')
-  //           .toLocaleLowerCase()
-  //           .includes(busqueda) ||
-  //         data.subcategoria
-  //           .normalize('NFD')
-  //           .replace(/[\u0300-\u036f]/g, '')
-  //           .toLocaleLowerCase()
-  //           .includes(busqueda) ||
-  //         data.precio.toString().includes(busqueda)
-  //       );
-  //     });
-  //     setListRegistro(search);
-  //   };
-  //   filtrarElemento();
-  // }, [busqueda]);
+  useEffect(() => {
+    const filtrarElemento = () => {
+      const search = getServicio.filter((data) => {
+        return data.name
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLocaleLowerCase()
+          .includes(busqueda);
+      });
+      setListRegistro(search);
+    };
+    filtrarElemento();
+  }, [busqueda, getServicio]);
   //
 
   const handleEditar = (e) => {
@@ -140,31 +133,31 @@ const Servicio = () => {
     });
 
     Swal.fire({
-      title: "¿Desea eliminar?",
+      title: '¿Desea eliminar?',
       text: `${e.name}`,
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
-      input: "select",
+      input: 'select',
       inputOptions,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Eliminar",
-      cancelButtonText: "Cancelar",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
         fetchGETPOSTPUTDELETEJSON(
           `services/${result.value}`,
           {},
-          "DELETE"
+          'DELETE'
         ).then((result) => {
           if (result.status === 204) {
             Swal.fire({
-              icon: "success",
-              title: "Éxito",
-              text: "Se elimino la sub-categoria correctamente.",
-              confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
-              confirmButtonText: "Aceptar",
+              icon: 'success',
+              title: 'Éxito',
+              text: 'Se elimino la sub-categoria correctamente.',
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Aceptar',
             }).then((resp) => {
               if (resp.isConfirmed) {
                 getServices();
@@ -172,12 +165,12 @@ const Servicio = () => {
             });
           } else {
             Swal.fire({
-              icon: "error",
-              title: "!Ups¡",
-              text: "Algo salió mal.",
-              confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
-              confirmButtonText: "Cerrar",
+              icon: 'error',
+              title: '!Ups¡',
+              text: 'Algo salió mal.',
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Cerrar',
             });
           }
         });
@@ -219,18 +212,18 @@ const Servicio = () => {
             </div>
             <div>
               <label>
-                Agregar servicio{" "}
+                Agregar servicio{' '}
                 <i
                   className="fas fa-plus-circle"
                   onClick={handleAddService}
-                ></i>{" "}
+                ></i>{' '}
               </label>
             </div>
           </div>
 
           <DataTable
             columns={columnas}
-            data={getServicio}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
@@ -238,7 +231,7 @@ const Servicio = () => {
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: "lightgrey" }}>No hay datos</p>
+                <p style={{ color: 'lightgrey' }}>No hay datos</p>
               </div>
             }
           />
