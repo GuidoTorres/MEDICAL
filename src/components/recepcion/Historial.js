@@ -15,7 +15,7 @@ const Historial = () => {
   const [dataBarCode, setDataBarCode] = useState({});
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("result")
+    fetchGETPOSTPUTDELETE("attention_history")
       .then((data) => data.json())
       .then((datos) => setAttention(datos.data));
   };
@@ -80,7 +80,7 @@ const Historial = () => {
     },
     {
       name: "Tipo de atención",
-      // selector: "service.name",
+      selector: row => row.service && row.service.name ? row.service.name : "",
       sortable: true,
       style: {
         color: "#8f9196",

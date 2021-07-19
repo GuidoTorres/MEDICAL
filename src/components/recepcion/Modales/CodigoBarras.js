@@ -53,7 +53,7 @@ const CodigoBarras = ({ openModalBar, setOpenModalBar, dataBarCode }) => {
       <h3 className="title__modal">Código de barras</h3>
       <div className="container">
         <div className="row">
-          <BarCode textobarcode={`${dataBarCode.person.pat_lastname}`} id="bar" />
+          <BarCode textobarcode={`${"aaaa"}`} id="bar" />
           <div className="d-flex justify-content-between mt-5">
             <button
               type="button"

@@ -11,6 +11,13 @@ const Particulares = () => {
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
 
+
+  const getParticular = () =>{
+
+    
+  }
+
+
   const columnas = [
     {
       name: "Item",

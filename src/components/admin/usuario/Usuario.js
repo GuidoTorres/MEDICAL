@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 
-import DataTable from 'react-data-table-component';
-import Swal from 'sweetalert2';
-import { usuario } from '../../../data/ACUsuario';
-import { fetchGETPOSTPUTDELETE } from '../../../helpers/fetch';
-import { paginacionOpciones } from '../../../helpers/tablaOpciones';
-import MUsuario from './MUsuario';
+import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
+import { usuario } from "../../../data/ACUsuario";
+import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
+import { paginacionOpciones } from "../../../helpers/tablaOpciones";
+import MGenerarAtencion from "./MGenerarAtencion";
+import MUsuario from "./MUsuario";
 
 const Usuario = () => {
   const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
   const [getUsuario, setGetUsuario] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [generarAtencion, setGenerarAtencion] = useState(false);
   const [dataSelected, setDataSelected] = useState({});
 
   // //TODO LISTAR
@@ -25,9 +27,6 @@ const Usuario = () => {
     resp();
   }, []);
 
-  console.log(getUsuario);
-
-  // console.log(getUsuario);
   const columnas = [
     {
       name: 'Item',
@@ -96,7 +95,7 @@ const Usuario = () => {
       name: 'Generar atención',
       button: true,
       cell: (e) => (
-        <button className="table__tablebutton">
+        <button onClick={() => handleAtencion(e)} className="table__tablebutton">
           <i class="fas fa-stethoscope"></i>
         </button>
       ),
@@ -164,6 +163,10 @@ const Usuario = () => {
 
   const handleEditar = (e) => {
     setOpenModal(true);
+    setDataSelected(e);
+  };
+  const handleAtencion = (e) => {
+    setGenerarAtencion(true);
     setDataSelected(e);
   };
   const handleEliminar = (e) => {
@@ -244,6 +247,14 @@ const Usuario = () => {
           openModal={openModal}
           setOpenModal={setOpenModal}
           dataSelected={dataSelected}
+        />
+      )}
+
+      {generarAtencion && (
+        <MGenerarAtencion
+        generarAtencion={generarAtencion}
+        setGenerarAtencion={setGenerarAtencion}
+        dataSelected={dataSelected}
         />
       )}
     </div>

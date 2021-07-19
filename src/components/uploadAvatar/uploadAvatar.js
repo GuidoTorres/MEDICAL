@@ -23,7 +23,7 @@ const UploadAvatar = ({ setAvatar, avatar, editar, dataSelected }) => {
           src=""
           alt=""
         />
-      ) : editar && dataSelected.corporation.logo ? (
+      ) : editar && dataSelected && dataSelected.corporation &&dataSelected.corporation.logo ? (
         <img
           className="image__avatar"
           src={

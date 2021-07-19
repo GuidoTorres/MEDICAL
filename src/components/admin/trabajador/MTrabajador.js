@@ -37,6 +37,8 @@ const MTrabajador = ({
       .then((res) => setDni(res));
   };
 
+  console.log(trabajador);
+
   useEffect(() => {
     if (trabajador && trabajador.dni && trabajador.dni.length === 8) {
       getDni();
@@ -47,14 +49,27 @@ const MTrabajador = ({
 
   const postEmployee = () => {
     const formData = new FormData();
-    formData.set("dni",  trabajador.dni || "");
+    formData.set("dni", trabajador.dni || "");
     formData.set("name", dni.nombres || trabajador.name || "");
-    formData.set("pat_lastname", dni.apellidoPaterno || trabajador.pat_lastname || "");
-    formData.set("mom_lastname", dni.apellidoMaterno || trabajador.mom_lastname || "");
+    formData.set(
+      "pat_lastname",
+      dni.apellidoPaterno || trabajador.pat_lastname || ""
+    );
+    formData.set(
+      "mom_lastname",
+      dni.apellidoMaterno || trabajador.mom_lastname || ""
+    );
     formData.set("email", trabajador.email || "");
     formData.set("cellphone", trabajador.cellphone || "");
-    formData.set("photo", avatar.file || "");
+    formData.set("photo",  avatar && avatar.file ? avatar.file : "");
     formData.set("role_id", trabajador.role_id || "");
+
+    if(trabajador.role_id === "5"){
+
+      formData.set("vehicle_name", trabajador.vehicle_name || "")
+      formData.set("license_plate", trabajador.license_plate || "")
+    }
+
 
     fetchGETPOSTPUTDELETE("employees", formData, "POST").then((resp) => {
       if (resp.status === 201) {
@@ -178,8 +193,7 @@ const MTrabajador = ({
                   name="dni"
                   disabled={editar ? true : false}
                   defaultValue={
-                    dataSelected && dataSelected.dni ? dataSelected.dni : "" 
-                    
+                    dataSelected && dataSelected.dni ? dataSelected.dni : ""
                   }
                   onChange={handleOnChange}
                 />
@@ -190,11 +204,11 @@ const MTrabajador = ({
                   type="text"
                   name="name"
                   defaultValue={
-                    editar ?
-
-                    dataSelected && dataSelected.name ? dataSelected.name : "" :
-
-                    dni.nombres
+                    editar
+                      ? dataSelected && dataSelected.name
+                        ? dataSelected.name
+                        : ""
+                      : dni.nombres
                   }
                   onChange={handleOnChange}
                 />
@@ -205,12 +219,11 @@ const MTrabajador = ({
                   type="text"
                   name="pat_lastname"
                   defaultValue={
-
-                    editar ? 
-                    dataSelected && dataSelected.pat_lastname
-                      ? dataSelected.pat_lastname
-                      : "" :
-                      dni.apellidoPaterno
+                    editar
+                      ? dataSelected && dataSelected.pat_lastname
+                        ? dataSelected.pat_lastname
+                        : ""
+                      : dni.apellidoPaterno
                   }
                   onChange={handleOnChange}
                 />
@@ -221,10 +234,10 @@ const MTrabajador = ({
                   type="text"
                   name="mom_lastname"
                   defaultValue={
-                    editar ? 
-                    dataSelected && dataSelected.mom_lastname
-                      ? dataSelected.mom_lastname
-                      : ""
+                    editar
+                      ? dataSelected && dataSelected.mom_lastname
+                        ? dataSelected.mom_lastname
+                        : ""
                       : dni.apellidoMaterno
                   }
                   onChange={handleOnChange}
@@ -315,6 +328,38 @@ const MTrabajador = ({
                   </option>
                 </select>
               </div>
+              {trabajador && trabajador.role_id === "5" ? (
+                <>
+                  <div>
+                    <label>Tipo de vehiculo:</label>
+                    <input
+                      type="text"
+                      name="vehicle_name"
+                      // defaultValue={
+                      //   dataSelected && dataSelected.cellphone
+                      //     ? dataSelected.cellphone
+                      //     : ""
+                      // }
+                      onChange={handleOnChange}
+                    />
+                  </div>
+                  <div>
+                    <label>Placa:</label>
+                    <input
+                      type="text"
+                      name="license_plate"
+                      // defaultValue={
+                      //   dataSelected && dataSelected.cellphone
+                      //     ? dataSelected.cellphone
+                      //     : ""
+                      // }
+                      onChange={handleOnChange}
+                    />
+                  </div>
+                </>
+              ) : (
+                ""
+              )}
             </div>
           </div>
           <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 mregistro__trabajador">
