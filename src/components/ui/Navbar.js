@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 import { startLogout } from '../../actions/auth';
 // import { useSelector } from 'react-redux';
-import logo from '../../assets/icons/Isotipo.png';
+import logo from '../../assets/icons/logo.png';
+import titles from '../../assets/icons/medical.png';
 
 const Navbar = ({
   titulo1,
@@ -43,7 +44,11 @@ const Navbar = ({
               alt="Medical Roma"
               className="logoImg d-inline-block align-text-top"
             />
-            Clinica Roma
+            <img
+              src={titles}
+              alt="Medical Roma"
+              className="logoImg d-inline-block align-text-top"
+            />
           </Link>
           <button
             className="buttonNav "
@@ -63,18 +68,20 @@ const Navbar = ({
         </div>
 
         <ul className=" navbar-nav mr-auto">
-          <li className="nav-item active">
-            <Link
+          <li className="nav-item">
+            <NavLink
+              activeClassName="active"
               className="navLink nav-link"
               aria-current="page"
               to={url1}
               style={{ color: 'white', fontSize: '15px' }}
             >
               {titulo1}
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-item">
             <NavLink
+              activeClassName="active"
               className="navLink nav-link"
               to={url2}
               style={{ color: 'white', fontSize: '15px' }}
@@ -84,6 +91,7 @@ const Navbar = ({
           </li>
           <li className="nav-item">
             <NavLink
+              activeClassName="active"
               className="navLink nav-link"
               to={url3}
               style={{ color: 'white', fontSize: '15px' }}
@@ -93,6 +101,7 @@ const Navbar = ({
           </li>
           <li className="nav-item">
             <NavLink
+              activeClassName="active"
               className="navLink nav-link"
               to={url4}
               style={{ color: 'white', fontSize: '15px' }}
@@ -102,6 +111,7 @@ const Navbar = ({
           </li>
           <li className="nav-item">
             <NavLink
+              activeClassName="active"
               className="navLink nav-link"
               to={url5}
               style={{ color: 'white', fontSize: '15px' }}
@@ -111,6 +121,7 @@ const Navbar = ({
           </li>
           <li className="nav-item">
             <NavLink
+              activeClassName=""
               className="navLink nav-link"
               to={url6}
               style={{ color: 'white', fontSize: '15px' }}

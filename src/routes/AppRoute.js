@@ -11,14 +11,14 @@ import {
 import { startCkecking } from '../actions/auth';
 import Login from '../components/auth/Login';
 // import Error404 from '../pages/Error404';
-import AdminRouter from "./AdminRouter";
-import AgenteVentasRouter from "./AgenteVentasRouter";
-import ClinicaProcesaRouter from "./ClinicaProcesaRouter";
-import ClinicaTomaRouter from "./ClinicaTomaRouter";
-import EmpresaAsociadaRouter from "./EmpresaAsociadaRouter";
-import FacturacionRouter from "./FacturacionRouter";
-import LaboratoristaRouter from "./LaboratoristaRouter";
-import OrganizadorRouter from "./OrganizadorRouter";
+import AdminRouter from './AdminRouter';
+import AgenteVentasRouter from './AgenteVentasRouter';
+import ClinicaProcesaRouter from './ClinicaProcesaRouter';
+import ClinicaTomaRouter from './ClinicaTomaRouter';
+import EmpresaAsociadaRouter from './EmpresaAsociadaRouter';
+import FacturacionRouter from './FacturacionRouter';
+import LaboratoristaRouter from './LaboratoristaRouter';
+import OrganizadorRouter from './OrganizadorRouter';
 
 import PrivateRoutes from './PrivateRoutes';
 import PublicRoutes from './PublicRoutes';
@@ -44,48 +44,48 @@ const AppRoute = () => {
             // isAuthenticated={!!checking}
           />
 
-          <Route
+          <PrivateRoutes
             path="/admin"
             component={AdminRouter}
             isAuthenticated={checking}
           />
-          <Route
-            path="/empresa"
+          <PrivateRoutes
+            path="/cliente/corporativo"
             component={EmpresaAsociadaRouter}
             isAuthenticated={checking}
           />
-          <Route
+          <PrivateRoutes
             path="/clinica/procesa"
             component={ClinicaProcesaRouter}
             isAuthenticated={checking}
           />
-          <Route
+          <PrivateRoutes
             path="/clinica/toma"
             component={ClinicaTomaRouter}
             isAuthenticated={checking}
           />
-          <Route
+          <PrivateRoutes
             path="/laboratorio"
             component={LaboratoristaRouter}
             isAuthenticated={checking}
           />
-          <Route
+          <PrivateRoutes
             path="/ventas"
             component={AgenteVentasRouter}
             isAuthenticated={checking}
           />
-          <Route
+          <PrivateRoutes
             path="/recepcion"
             component={RecepcionistaRouter}
             isAuthenticated={checking}
           />
-          <Route
+          <PrivateRoutes
             path="/organizador"
             component={OrganizadorRouter}
             isAuthenticated={checking}
           />
 
-          <Route
+          <PrivateRoutes
             path="/facturacion"
             component={FacturacionRouter}
             isAuthenticated={checking}
