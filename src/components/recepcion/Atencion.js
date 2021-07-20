@@ -21,7 +21,7 @@ const Atencion = () => {
   // por ahora usar clinics get
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("attention_clinic")
+    fetchGETPOSTPUTDELETE("attention")
       .then((data) => data.json())
       .then((datos) => setAttention(datos.data));
   };
@@ -53,32 +53,32 @@ const Atencion = () => {
     },
     {
       name: "Nombres y apellidos",
-      selector: (row) => (row.fullName ? row.fullName : ""),
+      selector: (row) => (row.person && row.person.name && row.person.pat_lastname ? row.person.name +" "+ row.person.pat_lastname  : ""),
       sortable: true,
       style: {
         color: "#8f9196",
         borderBotton: "none",
       },
     },
-    // {
-    //   name: "Tipo de documento",
-    //   selector: (row) =>
-    //     row.person && row.person.document_type_id === 3
-    //       ? "Carné de extranjería"
-    //       : row.person && row.person.document_type_id === 2
-    //       ? "Pasaporte"
-    //       : row.person && row.person.document_type_id === 1
-    //       ? "DNI"
-    //       : "",
-    //   sortable: true,
-    //   style: {
-    //     color: "#8f9196",
-    //     borderBotton: "none",
-    //   },
-    // },
+    {
+      name: "Tipo de documento",
+      selector: (row) =>
+        row.person && row.person.document_type_id === 3
+          ? "Carné de extranjería"
+          : row.person && row.person.document_type_id === 2
+          ? "Pasaporte"
+          : row.person && row.person.document_type_id === 1
+          ? "DNI"
+          : "",
+      sortable: true,
+      style: {
+        color: "#8f9196",
+        borderBotton: "none",
+      },
+    },
     {
       name: "Nº de documento",
-      selector: (row) => (row.DNI ? row.DNI : ""),
+      selector: (row) => (row.person && row.person.dni ? row.person.dni   : ""),
       sortable: true,
       style: {
         color: "#8f9196",
@@ -96,7 +96,7 @@ const Atencion = () => {
     },
     {
       name: "Tipo de prueba",
-      selector: (row) => (row.service_type ? row.service_type : ""),
+      selector: (row) => (row.service && row.service.name ? row.service.name : ""),
       sortable: true,
       style: {
         color: "#8f9196",
@@ -161,7 +161,7 @@ const Atencion = () => {
       date_creation: getHora() || "",
       time_attention: getHora(),
       people_id: e.id || "",
-      service_id: e.service_details.service_category_id || "",
+      service_id: e.service_details && e.service_details.service_category_id?  e.service_details.service_category_id : "",
       clinic_id: 1 || "",
       codebar: "0213000011111",
     });
