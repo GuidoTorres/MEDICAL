@@ -22,17 +22,13 @@ const MSubirLaboratorio = ({
   console.log(result);
 
   const postResults = () => {
-    const formData = new FormData();
 
-    formData.set("id", 8);
-    formData.set("result", "0");
-
-    fetchGETPOSTPUTDELETE(`result`, formData, "POST").then((data) =>
+    fetchGETPOSTPUTDELETE(`result`, result, "POST").then((data) =>
       console.log(data)
     );
   };
 
-  console.log(dataSelected);
+  console.log(result);
   return (
     <Modal
       isOpen={openModal}

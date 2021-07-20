@@ -88,7 +88,7 @@ const Historial = () => {
       button: true,
       cell: (e) => (
         <button
-          // onClick={() => handleDetalles(e)}
+          onClick={() => handleDetalles(e)}
           className="table__tablebutton"
         >
           <i class="fas fa-file-pdf"></i>
@@ -130,8 +130,8 @@ const Historial = () => {
   }, [busqueda]);
   //
   const handleDetalles = (e) => {
-    // console.log(e);
-    setOpenModal(true);
+    console.log(e);
+    // setOpenModal(true);
   };
 
   const handleSearch = (e) => {

@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
+import jsPDF from "jspdf";
+import eclia from "../../assets/pdf Imagen/eclia.png";
+import antigeno from "../../assets/pdf Imagen/antigeno.png";
+import molecular from "../../assets/pdf Imagen/molecular.png";
 
 // import { historial } from '../../data/PHistorial';
 import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
@@ -8,15 +12,10 @@ import { paginacionOpciones } from "../../helpers/tablaOpciones";
 const CargarResultado = () => {
   const [busqueda, setBusqueda] = useState("");
   // const [listResult, setListResult] = useState([]);
-  const [result, setResult] = useState([]);
+  const [result, setResult] = useState({});
+  const [resultado, setResultado] = useState({});
 
   const getResult = () => {
-    fetchGETPOSTPUTDELETE("result")
-      .then((info) => info.json())
-      .then((datos) => setResult(datos.data));
-  };
-
-  const postResult = () => {
     fetchGETPOSTPUTDELETE("result")
       .then((info) => info.json())
       .then((datos) => setResult(datos.data));
@@ -167,8 +166,63 @@ const CargarResultado = () => {
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
-  const handleDetalles = () => {
-    console.log("detalles");
+  const handleDetalles = (e) => {
+    if (e.service.name == "Eclia") {
+      generarPDF(e, eclia, "Formato Eclia");
+    } else if (e.service.name === "Antígeno") {
+      generarPDF(e, antigeno, "Formato Antígeno");
+    } else if (e.service.name === "Molecular") {
+      generarPDF(e, molecular, "Formato Molecular");
+    }
+  };
+
+  const generarPDF = (e, imagen, formato) => {
+    console.log(e);
+    const doc = new jsPDF("p", "pt");
+    doc.setProperties({
+      title: formato,
+    });
+    doc.setFontSize(10);
+
+    doc.addImage(imagen, "PNG", 40, 30, 520, 800);
+
+    doc.text(
+      328,
+      128,
+      `${e && e.person && e.person.gender_id === 1 ? "Masculino" : "Femenino"}`
+    );
+    doc.text(90, 150, `${e && e.person && e.person.dni ? e.person.dni : ""}`);
+    doc.text(
+      107,
+      173,
+      `${
+        e && e.person && e.person.name && e.person.pat_lastname
+          ? e.person.name + " " + e.person.pat_lastname
+          : ""
+      }`
+    );
+
+    window.open(doc.output("bloburl"), "_blank");
+
+    var file = new File([doc.output("blob")], "resultados.pdf", {
+      type: "application/pdf",
+    });
+    // console.log(file);
+    // setResultado({
+    //   id: e.id,
+    //   pdf: file,
+    // });
+    // postResult(resultado);
+  };
+
+  const postResult = (resultado) => {
+    const formData = new FormData();
+    formData.set("id", resultado.id);
+    formData.set("pdf", resultado.pdf);
+
+    fetchGETPOSTPUTDELETE("result", formData, "POST").then((info) =>
+      console.log(info)
+    );
   };
   //
   return (
@@ -189,7 +243,7 @@ const CargarResultado = () => {
 
           <DataTable
             columns={columnas}
-            data={getDateAttention}
+            data={result}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader

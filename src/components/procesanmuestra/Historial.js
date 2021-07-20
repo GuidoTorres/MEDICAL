@@ -17,7 +17,9 @@ const Historial = () => {
   
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("result_historial")
+    // fetchGETPOSTPUTDELETE(`resultados/clinica/${getDateAttention[0].clinic_id}`)
+
+    fetchGETPOSTPUTDELETE(`result`)
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos.data));
   };
@@ -26,7 +28,7 @@ const Historial = () => {
     getAttention();
   }, []);
 
-  console.log(getDateAttention);
+  console.log(getDateAttention.clin);
 
   const columnas = [
     {
@@ -121,7 +123,7 @@ const Historial = () => {
           onClick={() => handleDetalles(e)}
           className="table__tablebutton"
         >
-          <i class="far fa-file-pdf"></i>
+          <i className="far fa-file-pdf"></i>
         </button>
       ),
     },

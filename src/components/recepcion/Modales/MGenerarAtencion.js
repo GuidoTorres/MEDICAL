@@ -1,6 +1,6 @@
 import Modal from "react-modal";
 import { customStyles } from "../../../helpers/tablaOpciones";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 import DeclaracionJurada from "../FormatosPDF/DeclaracionJurada";
@@ -12,7 +12,7 @@ const MGenerarAtencion = ({
   generarAtencion,
   setGenerarAtencion,
   dataSelected,
-  getAttention
+  getAttention,
 }) => {
   const closeModal = () => {
     setGenerarAtencion(false);
@@ -22,15 +22,43 @@ const MGenerarAtencion = ({
 
   const [declaracion, setDeclaracion] = useState({});
   const [ficha, setFicha] = useState({});
+  const [services, setServices] = useState({});
+  const [clinics, setClinics] = useState({});
+
+  const getServices = () => {
+    fetchGETPOSTPUTDELETE("services")
+      .then((res) => res.json())
+      .then((res) => setServices(res.data));
+  };
+  const getClinics = () => {
+    fetchGETPOSTPUTDELETE("clinics")
+      .then((res) => res.json())
+      .then((res) => setClinics(res.data));
+  };
+  useEffect(() => {
+    getServices();
+    getClinics();
+  }, []);
+
+  const getFecha = () => {
+    let newDate = new Date();
+    let date = newDate.getDate();
+    let month = newDate.toLocaleString("default", { month: "long" });
+    let year = newDate.getFullYear();
+
+    return `${date}${" de "}${month}${" "}${"de "}${year}`;
+  };
+
+  console.log(services);
+  console.log(clinics);
 
   const crearAtencion = () => {
     const formData = new FormData();
-    formData.set("date_attention", "2021-07-17");
-    formData.set("time_attention", "17:30");
+    formData.set("date_attention", getFecha() || "");
+    formData.set("time_attention", getFecha() || "");
     formData.set("people_id", dataSelected.id || "");
-    formData.set("service_id", 6);
-    // formData.set("clinic_id", dataSelected.clinic.id || "");
-    formData.set("clinic_id", 1);
+    formData.set("service_id", datos.service_id || "");
+    formData.set("clinic_id", datos.clinic_id || "");
     formData.set("codebar", "111111");
     // formData.set("forms", "");
 
@@ -65,7 +93,7 @@ const MGenerarAtencion = ({
       }
     });
   };
-  console.log(dataSelected);
+  console.log(datos);
 
   const handleOnChange = (e) => {
     setDatos({
@@ -124,10 +152,13 @@ const MGenerarAtencion = ({
       <div className="generarAtencion">
         <div className="datosPaciente">
           <label htmlFor="">Paciente: {dataSelected.name}</label>
-          <label htmlFor="">Tipo de paciente: {dataSelected.user &&
-        dataSelected.user.user_type &&
-        dataSelected.user.user_type &&
-        dataSelected.user.user_type.name}</label>
+          <label htmlFor="">
+            Tipo de paciente:{" "}
+            {dataSelected.user &&
+              dataSelected.user.user_type &&
+              dataSelected.user.user_type &&
+              dataSelected.user.user_type.name}
+          </label>
           <label htmlFor="">Empresa: {dataSelected.business_name}</label>
         </div>
 
@@ -138,17 +169,6 @@ const MGenerarAtencion = ({
 
           <div className="tipoServicio mt-3">
             <div>
-              <label htmlFor="">Tipo de servicio:</label>
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                name="service_id"
-              >
-                <option selected>Seleccione</option>
-                <option value="1">COVID19</option>
-              </select>
-            </div>
-            <div>
               <label htmlFor="">Plan de atención:</label>
               <select
                 class="form-select"
@@ -157,13 +177,34 @@ const MGenerarAtencion = ({
                 onChange={handleOnChange}
               >
                 <option selected>Seleccione</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+
+                {services &&
+                  services[0] &&
+                  services[0].services &&
+                  services[0].services.map((data, i) => (
+                    <option value={data.id}>{data.name}</option>
+                  ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="">Clínica:</label>
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                name="clinic_id"
+                onChange={handleOnChange}
+              >
+                <option selected>Seleccione</option>
+                {clinics.length > 0 &&
+                  clinics.map((data, i) => (
+                    <option key={i} value={data.id}>
+                      {data.corporation.business_name}
+                    </option>
+                  ))}
               </select>
             </div>
 
-            <div className="mx-4">
+            {/* <div className="mx-4">
               <label htmlFor="">Clínica:</label>
               <select
                 class="form-select"
@@ -176,7 +217,7 @@ const MGenerarAtencion = ({
                 <option value="2">Two</option>
                 <option value="3">Three</option>
               </select>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="container2">
