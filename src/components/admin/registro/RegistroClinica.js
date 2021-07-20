@@ -75,7 +75,7 @@ const RegistroClinica = () => {
       },
     },
     {
-      name: 'Telefono',
+      name: 'Teléfono',
       selector: (row) =>
         row.corporation && row.corporation.contacts[0]
           ? row.corporation.contacts[0].phone
@@ -217,7 +217,7 @@ const RegistroClinica = () => {
   return (
     <div className="container">
       <div className="row">
-        <h3 className ="titulo">Registro de clinicas</h3>
+        <h3 className="titulo">Registro de clínicas</h3>
         <div className="table-responsive">
           <div className="adminregistro__option">
             <div>
@@ -246,7 +246,7 @@ const RegistroClinica = () => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="500px"
+            fixedHeaderScrollHeight="100%"
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>

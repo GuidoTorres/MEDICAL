@@ -13,49 +13,53 @@ const EmpresaAsociadaRouter = () => {
     <>
       <Navbar
         titulo1={'Registro de trabajador'}
-        url1={'/empresa/registro'}
+        url1={'/cliente/corporativo/registro'}
         titulo2={'Asignación de pruebas'}
-        url2={'/empresa/asignacion1'}
+        url2={'/cliente/corporativo/asignacion1'}
         titulo3={'Facturación'}
-        url3={'/empresa/facturacion'}
+        url3={'/cliente/corporativo/facturacion'}
         titulo4={'Resultados'}
-        url4={'/empresa/resultados'}
+        url4={'/cliente/corporativo/resultados'}
         titulo5={''}
         url5={''}
         titulo6={''}
         url6={''}
-        ruta={'/empresa/registro'}
+        ruta={'/cliente/corporativo/registro'}
       />
 
       <div>
         <Switch>
-          <Route exact path="/empresa/registro" component={Registro} />
           <Route
             exact
-            path="/empresa/asignacion1"
+            path="/cliente/corporativo/registro"
+            component={Registro}
+          />
+          <Route
+            exact
+            path="/cliente/corporativo/asignacion1"
             component={EmpresaAsignacion}
           />
           <Route
             exact
-            path="/empresa/asignacion2"
+            path="/cliente/corporativo/asignacion2"
             component={EmpresaAsignacion2}
           />
           <Route
             exact
-            path="/empresa/asignacion3"
+            path="/cliente/corporativo/asignacion3"
             component={EmpresaAsignacion4}
           />
           <Route
             exact
-            path="/empresa/facturacion"
+            path="/cliente/corporativo/facturacion"
             component={EmpresaFacturacion}
           />
           <Route
             exact
-            path="/empresa/resultados"
+            path="/cliente/corporativo/resultados"
             component={EmpresaResultados}
           />
-          <Redirect to="/empresa/registro" />
+          <Redirect to="/cliente/corporativo/registro" />
         </Switch>
       </div>
     </>
