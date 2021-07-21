@@ -4,6 +4,9 @@ import jsPDF from "jspdf";
 import eclia from "../../assets/pdf Imagen/eclia.png";
 import antigeno from "../../assets/pdf Imagen/antigeno.png";
 import molecular from "../../assets/pdf Imagen/molecular.png";
+import rapida from "../../assets/pdf Imagen/rapida.png";
+import Swal from "sweetalert2";
+
 
 // import { historial } from '../../data/PHistorial';
 import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
@@ -14,9 +17,10 @@ const CargarResultado = () => {
   // const [listResult, setListResult] = useState([]);
   const [result, setResult] = useState({});
   const [resultado, setResultado] = useState({});
+  const [getDateAttention, setGetDateAttention] = useState([]);
 
   const getResult = () => {
-    fetchGETPOSTPUTDELETE("result")
+    fetchGETPOSTPUTDELETE("result_historial")
       .then((info) => info.json())
       .then((datos) => setResult(datos.data));
   };
@@ -25,27 +29,12 @@ const CargarResultado = () => {
     getResult();
   }, []);
 
-  console.log(result);
-
-  const [getDateAttention, setGetDateAttention] = useState([]);
-
-  const getAttention = () => {
-    fetchGETPOSTPUTDELETE("attention")
-      .then((data) => data.json())
-      .then((datos) => setGetDateAttention(datos.data));
-  };
-
-  useEffect(() => {
-    getAttention();
-  }, []);
-
-  console.log(getDateAttention);
-
   const columnas = [
     {
       name: "Item",
       selector: "id",
       sortable: true,
+
       style: {
         borderBotton: "none",
         color: "#555555",
@@ -119,14 +108,31 @@ const CargarResultado = () => {
     {
       name: "Cargar Resultados",
       button: true,
-      cell: (e) => (
-        <button
-          onClick={() => handleDetalles(e)}
-          className="table__tablebutton"
-        >
-          <i className="far fa-file-pdf"></i>
-        </button>
-      ),
+      cell: (e) =>
+        e.result.pdf === null ? (
+          <button
+            disabled
+            onClick={() => handleDetalles(e)}
+            className="table__tablebutton"
+          >
+            {e.result.pdf === null ? (
+              <i className="far fa-file-pdf"></i>
+            ) : (
+              <i className="far fa-file-pdf" style={{ color: "grey" }}></i>
+            )}
+          </button>
+        ) : (
+          <button
+            onClick={() => handleDetalles(e)}
+            className="table__tablebutton"
+          >
+            {e.result.pdf === null ? (
+              <i className="far fa-file-pdf"></i>
+            ) : (
+              <i className="far fa-file-pdf" style={{ color: "grey" }}></i>
+            )}
+          </button>
+        ),
     },
   ];
 
@@ -167,12 +173,14 @@ const CargarResultado = () => {
     setBusqueda(([e.target.name] = e.target.value));
   };
   const handleDetalles = (e) => {
-    if (e.service.name == "Eclia") {
-      generarPDF(e, eclia, "Formato Eclia");
-    } else if (e.service.name === "Antígeno") {
+    if (e.service.id == 5) {
       generarPDF(e, antigeno, "Formato Antígeno");
-    } else if (e.service.name === "Molecular") {
+    } else if (e.service.id === 6) {
+      generarPDF(e, eclia, "Formato Eclia");
+    } else if (e.service.id === 7) {
       generarPDF(e, molecular, "Formato Molecular");
+    } else if (e.service.id === 8) {
+      generarPDF(e, rapida, "Formato Rapida");
     }
   };
 
@@ -184,45 +192,149 @@ const CargarResultado = () => {
     });
     doc.setFontSize(10);
 
-    doc.addImage(imagen, "PNG", 40, 30, 520, 800);
+    doc.addImage(imagen, "PNG", 5, 20, 580, 800, "", "FAST");
 
-    doc.text(
-      328,
-      128,
-      `${e && e.person && e.person.gender_id === 1 ? "Masculino" : "Femenino"}`
-    );
-    doc.text(90, 150, `${e && e.person && e.person.dni ? e.person.dni : ""}`);
-    doc.text(
-      107,
-      173,
-      `${
-        e && e.person && e.person.name && e.person.pat_lastname
-          ? e.person.name + " " + e.person.pat_lastname
-          : ""
-      }`
-    );
+    if (e.service.id === 5) {
+      doc.text(
+        328,
+        135,
+        `${
+          e && e.person && e.person.gender_id === 1 ? "Masculino" : "Femenino"
+        }`
+      );
+      doc.text(60, 158, `${e && e.person && e.person.dni ? e.person.dni : ""}`);
+      doc.text(
+        428,
+        157,
+        `${e && e.result && e.result.date ? e.result.date : ""}`
+      );
 
-    window.open(doc.output("bloburl"), "_blank");
+      doc.text(
+        90,
+        180,
+        `${
+          e && e.person && e.person.name && e.person.pat_lastname
+            ? e.person.name + " " + e.person.pat_lastname
+            : ""
+        }`
+      );
+    } else if (e.service.id == 6) {
+      doc.text(
+        328,
+        120,
+        `${
+          e && e.person && e.person.gender_id === 1 ? "Masculino" : "Femenino"
+        }`
+      );
+      doc.text(55, 141, `${e && e.person && e.person.dni ? e.person.dni : ""}`);
+      doc.text(
+        428,
+        141,
+        `${e && e.result && e.result.date ? e.result.date : ""}`
+      );
 
+      doc.text(
+        85,
+        163,
+        `${
+          e && e.person && e.person.name && e.person.pat_lastname
+            ? e.person.name + " " + e.person.pat_lastname
+            : ""
+        }`
+      );
+    } else if (e.service.id == 7) {
+      doc.text(
+        328,
+        141,
+        `${
+          e && e.person && e.person.gender_id === 1 ? "Masculino" : "Femenino"
+        }`
+      );
+      doc.text(55, 163, `${e && e.person && e.person.dni ? e.person.dni : ""}`);
+      doc.text(
+        428,
+        163,
+        `${e && e.result && e.result.date ? e.result.date : ""}`
+      );
+
+      doc.text(
+        85,
+        185,
+        `${
+          e && e.person && e.person.name && e.person.pat_lastname
+            ? e.person.name + " " + e.person.pat_lastname
+            : ""
+        }`
+      );
+    } else if (e.service.id == 8) {
+      doc.text(
+        328,
+        141,
+        `${
+          e && e.person && e.person.gender_id === 1 ? "Masculino" : "Femenino"
+        }`
+      );
+      doc.text(55, 163, `${e && e.person && e.person.dni ? e.person.dni : ""}`);
+      doc.text(
+        428,
+        163,
+        `${e && e.result && e.result.date ? e.result.date : ""}`
+      );
+
+      doc.text(
+        85,
+        185,
+        `${
+          e && e.person && e.person.name && e.person.pat_lastname
+            ? e.person.name + " " + e.person.pat_lastname
+            : ""
+        }`
+      );
+    }
+
+    // window.open(doc.output("bloburl"), "_blank");
+    // var blob = doc.output('blob');
     var file = new File([doc.output("blob")], "resultados.pdf", {
       type: "application/pdf",
     });
-    // console.log(file);
-    // setResultado({
-    //   id: e.id,
-    //   pdf: file,
-    // });
-    // postResult(resultado);
+    setResultado({
+      id: e.id,
+      pdf: file,
+    });
+    postResult(resultado.id, resultado.pdf);
   };
 
-  const postResult = (resultado) => {
+  const postResult = (id, pdf) => {
     const formData = new FormData();
-    formData.set("id", resultado.id);
-    formData.set("pdf", resultado.pdf);
+    formData.set("id", id);
+    formData.set("pdf", pdf);
 
-    fetchGETPOSTPUTDELETE("result", formData, "POST").then((info) =>
-      console.log(info)
-    );
+    fetchGETPOSTPUTDELETE("result", formData, "POST").then((info) => {
+      console.log(info);
+      if (info.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se ha cargo el pdf correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getResult();
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
+      }
+    });
   };
   //
   return (
@@ -247,7 +359,9 @@ const CargarResultado = () => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="500px"
+            striped
+            highlightOnHover
+            fixedHeaderScrollHeight="100%"
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
