@@ -39,7 +39,7 @@ const Login = () => {
     if (role.id === 1) {
       return history.push('admin/registro');
     } else if (role.id === 2) {
-      return history.replace('empresa/registro');
+      return history.replace('cliente/corporativo/registro');
     } else if (role.id === 3) {
       return history.replace('clinica/toma/reservas');
     } else if (role.id === 4) {
@@ -52,6 +52,8 @@ const Login = () => {
       return history.replace('facturacion/empresas');
     } else if (role.id === 11) {
       return history.replace('clinica/procesa/reservas');
+    } else if (role.id === 12) {
+      return history.replace('ventas');
     } else {
       return history.replace('/');
     }

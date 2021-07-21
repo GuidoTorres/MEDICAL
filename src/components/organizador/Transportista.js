@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { transportista } from '../../data/OTransportista';
+import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
 
 const Transportista = () => {
   const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
+
+  const getTransportista = () => {
+    fetchGETPOSTPUTDELETEJSON('carriers')
+      .then((data) => data.json())
+      .then((result) => console.log(result));
+  };
+  // useEffect(() => {
+  getTransportista();
+  // }, []);
 
   const columnas = [
     {
