@@ -15,7 +15,7 @@ const EmpresaAsociadaRouter = () => {
         titulo1={'Registro de trabajador'}
         url1={'/cliente/corporativo/registro'}
         titulo2={'Asignación de pruebas'}
-        url2={'/cliente/corporativo/asignacion1'}
+        url2={'/cliente/corporativo/asignacion'}
         titulo3={'Facturación'}
         url3={'/cliente/corporativo/facturacion'}
         titulo4={'Resultados'}
@@ -36,7 +36,7 @@ const EmpresaAsociadaRouter = () => {
           />
           <Route
             exact
-            path="/cliente/corporativo/asignacion1"
+            path="/cliente/corporativo/asignacion"
             component={EmpresaAsignacion}
           />
           <Route

@@ -247,12 +247,7 @@ const RegistroClinica = () => {
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
             fixedHeaderScrollHeight="100%"
-            noDataComponent={
-              <div className="spinner">
-                <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: 'lightgrey' }}>No hay datos</p>
-              </div>
-            }
+            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
           />
         </div>
       </div>

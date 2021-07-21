@@ -1,25 +1,25 @@
 const baseUrl = process.env.REACT_APP_API_URL;
 
-const fetchSinToken = (endpoint, data, method = "GET") => {
+const fetchSinToken = (endpoint, data, method = 'GET') => {
   const url = `${baseUrl}/${endpoint}`;
-  if (method === "GET") {
+  if (method === 'GET') {
     return fetch(url);
   } else {
     return fetch(url, {
       method,
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json',
       },
       body: JSON.stringify(data),
     });
   }
 };
 
-const fetchConToken = (endpoint, data, method = "GET") => {
+const fetchConToken = (endpoint, data, method = 'GET') => {
   const url = `${baseUrl}/${endpoint}`;
-  const token = localStorage.getItem("token") || "";
+  const token = localStorage.getItem('token') || '';
 
-  if (method === "GET") {
+  if (method === 'GET') {
     return fetch(url, {
       method,
       headers: {
@@ -31,7 +31,7 @@ const fetchConToken = (endpoint, data, method = "GET") => {
       method,
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     });
@@ -40,7 +40,7 @@ const fetchConToken = (endpoint, data, method = "GET") => {
 
 const fetchGETPOSTPUTDELETE = (endpoint, data, method) => {
   const url = `${baseUrl}/${endpoint}`;
-  const token = localStorage.getItem("token") || "";
+  const token = localStorage.getItem('token') || '';
   return fetch(url, {
     method,
     headers: {
@@ -52,12 +52,12 @@ const fetchGETPOSTPUTDELETE = (endpoint, data, method) => {
 
 const fetchGETPOSTPUTDELETEJSON = (endpoint, data, method) => {
   const url = `${baseUrl}/${endpoint}`;
-  const token = localStorage.getItem("token") || "";
+  const token = localStorage.getItem('token') || '';
   return fetch(url, {
     method,
     headers: {
       Authorization: `bearer ${token}`,
-      "Content-type": "application/json",
+      'Content-type': 'application/json',
     },
     body: JSON.stringify(data),
   });
@@ -69,7 +69,7 @@ const fetchRUC = (documento, method) => {
   return fetch(url, {
     method,
     headers: {
-      "Content-type": "application/json",
+      'Content-type': 'application/json',
     },
   });
 };
@@ -80,14 +80,14 @@ const fetchDNI = (documento, method) => {
   return fetch(url, {
     method,
     headers: {
-      "Content-type": "application/json",
+      'Content-type': 'application/json',
     },
   });
 };
 
 const postExcel = (endpoint, data, method) => {
   const url = `${baseUrl}/${endpoint}`;
-  const token = localStorage.getItem("token") || "";
+  const token = localStorage.getItem('token') || '';
   return fetch(url, {
     method,
     headers: {
@@ -104,5 +104,5 @@ export {
   fetchGETPOSTPUTDELETEJSON,
   fetchRUC,
   fetchDNI,
-  postExcel
+  postExcel,
 };

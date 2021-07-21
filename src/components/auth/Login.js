@@ -39,7 +39,7 @@ const Login = () => {
     if (role.id === 1) {
       return history.push('admin/registro');
     } else if (role.id === 2) {
-      return history.replace('empresa/registro');
+      return history.replace('cliente/corporativo/registro');
     } else if (role.id === 3) {
       return history.replace('clinica/toma/reservas');
     } else if (role.id === 4) {

@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   BrowserRouter as Router,
   Switch,
-  Redirect,
+  // Redirect,
   Route,
-  useHistory,
+  // useHistory,
 } from 'react-router-dom';
 import { startCkecking } from '../actions/auth';
 import Login from '../components/auth/Login';
@@ -21,7 +21,7 @@ import LaboratoristaRouter from './LaboratoristaRouter';
 import OrganizadorRouter from './OrganizadorRouter';
 
 import PrivateRoutes from './PrivateRoutes';
-import PublicRoutes from './PublicRoutes';
+// import PublicRoutes from './PublicRoutes';
 import RecepcionistaRouter from './RecepcionistaRouter';
 
 const AppRoute = () => {

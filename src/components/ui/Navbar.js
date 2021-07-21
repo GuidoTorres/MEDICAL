@@ -35,7 +35,7 @@ const Navbar = ({
     side.display === '' ? (side.display = 'flex') : (side.display = '');
   };
   return (
-    <nav className="navbar navbar-expand-md navbar-light mb-5">
+    <nav className="navbar navbar-expand-md navbar-light mb-4">
       <div className="container">
         <div className="containerLogo">
           <Link className="navbarLink navbar-brand text-white" to={ruta}>
@@ -111,7 +111,7 @@ const Navbar = ({
           </li>
           <li className="nav-item">
             <NavLink
-              activeClassName="active"
+              activeClassName=""
               className="navLink nav-link"
               to={url5}
               style={{ color: 'white', fontSize: '15px' }}
@@ -153,7 +153,7 @@ const Navbar = ({
             </Link>
           </div>
           <ul className="navUl navbar-nav mr-auto">
-            <li className="nav-item active">
+            <li className="nav-item">
               <Link className="navLink nav-link" aria-current="page" to={url1}>
                 {titulo1}
               </Link>

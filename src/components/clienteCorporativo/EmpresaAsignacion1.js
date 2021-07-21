@@ -1,75 +1,26 @@
-import { useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
-import DataTable from "react-data-table-component";
-// import iconAgregar from '../../assets/images/icon_anadir.png';
-// import image from '../../assets/logo/logo.png'
-import { usuario } from "../../data/ACUsuario";
-import XLSX from "xlsx";
+import { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component';
 
-import { ToastContainer } from "react-toastify";
-// import { clinicas } from '../../data/clinicas';
+import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 
 const EmpresaAsignacion = () => {
-  let history = useHistory();
-  const fileRef = useRef();
+  const [busqueda, setBusqueda] = useState('');
+  const [asignation, setAsignation] = useState([]);
 
-  const [busqueda, setBusqueda] = useState("");
-  const [clinica, setClinica] = useState([]);
-  const [header, setHeader] = useState();
-  const [excel, setExcel] = useState();
-
-  const paginacionOpciones = {
-    rowsPerPageText: "Fila por pagina",
-    rangerSeparatorText: "de",
-    selectAllRowsItem: true,
-    selectAllRowsItemText: "Todos",
-  };
-  const triggerClick = () => {
-    fileRef.current.click();
+  const getAsignacion = () => {
+    fetchGETPOSTPUTDELETE('company_employees')
+      .then((res) => res.json())
+      .then((result) => setAsignation(result));
   };
 
-  const converToJson = (headers, data) => {
-    const rows = [];
-    data.forEach((row) => {
-      let rowData = {};
-      row.forEach((element, index) => {
-        rowData[headers[index]] = element;
-      });
-      rows.push(rowData);
-    });
-    return rows;
-  };
-
-  const importExcel = (e) => {
-    const file = e.target.files[0];
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      //parse data
-      const bstr = event.target.result;
-      const workBook = XLSX.read(bstr, { type: "binary" });
-
-      //get first sheet
-      const workSheetName = workBook.SheetNames[0];
-      const workSheet = workBook.Sheets[workSheetName];
-
-      //convert to array
-      const fileData = XLSX.utils.sheet_to_json(workSheet, { header: 1 });
-      const headers = fileData[0];
-      const heads = headers.map((head) => ({ title: head, field: head }));
-      setHeader(heads);
-
-      //eliminando cabecera
-      fileData.splice(0, 1);
-
-      setExcel(converToJson(headers, fileData));
-    };
-    reader.readAsBinaryString(file);
-  };
+  useEffect(() => {
+    getAsignacion();
+  }, []);
 
   const columnas = [
     {
-      name: "Seleccionar",
+      name: 'Seleccionar',
       button: true,
       cell: (e) => (
         <input
@@ -80,176 +31,137 @@ const EmpresaAsignacion = () => {
         />
       ),
     },
-    {
-      name: "Ítem",
-      selector: "id",
-      sortable: true,
-      style: {
-        color: "#8f9196",
-        borderBotton: "none",
-      },
-    },
-    {
-      name: "Tipo de documento",
-      selector: "documento",
-      sortable: true,
-      style: {
-        color: "#8f9196",
-        borderBotton: "none",
-      },
-    },
-    {
-      name: "Nº de documento",
-      selector: "nro",
-      sortable: true,
-      style: {
-        color: "#8f9196",
-        borderBotton: "none",
-      },
-    },
-    {
-      name: "Nombres",
-      selector: "nombre",
-      sortable: true,
-      style: {
-        color: "#8f9196",
-        borderBotton: "none",
-      },
-    },
-    {
-      name: "Sexo",
-      selector: "sexo",
-      sortable: true,
-      style: {
-        color: "#8f9196",
-        borderBotton: "none",
-      },
-    },
-    {
-      name: "Fecha de Nacimiento",
-      selector: "fecha",
-      sortable: true,
-      style: {
-        color: "#8f9196",
-        borderBotton: "none",
-      },
-    },
-    {
-      name: "Departamento de Nacimiento",
-      selector: "departamento",
-      sortable: true,
 
+    {
+      name: 'Tipo de documento',
+      selector: (row) =>
+        row.person && row.person.document_type_id === 3
+          ? 'Carné de extranjería'
+          : row.person && row.person.document_type_id === 2
+          ? 'Pasaporte'
+          : row.person && row.person.document_type_id === 1
+          ? 'DNI'
+          : '',
+
+      sortable: true,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     {
-      name: "Cargo",
-      button: true,
+      name: 'Nº de documento',
+      selector: (row) => (row.person && row.person.dni ? row.person.dni : ''),
+      sortable: true,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+    {
+      name: 'Nombres',
+      selector: (row) => (row.person && row.person.name ? row.person.name : ''),
+      sortable: true,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+    {
+      name: 'A. Paterno',
+      selector: (row) =>
+        row.person && row.person.pat_lastname ? row.person.pat_lastname : '',
+      sortable: true,
+      grow: 2,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+    {
+      name: 'A. Materno',
+      selector: (row) =>
+        row.person && row.person.mom_lastname ? row.person.mom_lastname : '',
+      sortable: true,
+      grow: 2,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+    {
+      name: 'Sexo',
+      selector: (row) =>
+        row.person && row.person.gender_id === 1 ? 'Masculino' : 'Femenino',
+      sortable: true,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+    {
+      name: 'Fecha de Nacimiento',
+      selector: (row) =>
+        row.fecha_nacimiento && row.fecha_nacimiento
+          ? row.fecha_nacimiento
+          : '',
+      sortable: true,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+    {
+      name: 'Cargo',
+      selector: (row) =>
+        row.person && row.person.workstation ? row.person.workstation : '',
+      sortable: true,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
     },
   ];
-
-  useEffect(() => {
-    // const filtrarElemento = () => {
-    //   const search = excel.filter((data) => {
-    //     return (
-    //       data.razonsocial
-    //         .normalize('NFD')
-    //         .replace(/[\u0300-\u036f]/g, '')
-    //         .toLocaleLowerCase()
-    //         .includes(busqueda) ||
-    //       data.ruc
-    //         .normalize('NFD')
-    //         .replace(/[\u0300-\u036f]/g, '')
-    //         .toLocaleLowerCase()
-    //         .includes(busqueda) ||
-    //       data.responsable
-    //         .normalize('NFD')
-    //         .replace(/[\u0300-\u036f]/g, '')
-    //         .toLocaleLowerCase()
-    //         .includes(busqueda) ||
-    //       data.telefono.toString().includes(busqueda) ||
-    //       data.correo
-    //         .normalize('NFD')
-    //         .replace(/[\u0300-\u036f]/g, '')
-    //         .toLocaleLowerCase()
-    //         .includes(busqueda) ||
-    //       data.actividad
-    //         .normalize('NFD')
-    //         .replace(/[\u0300-\u036f]/g, '')
-    //         .toLocaleLowerCase()
-    //         .includes(busqueda)
-    //     );
-    //   });
-    //   setClinica(search);
-    // };
-    // filtrarElemento();
-  }, [busqueda]);
 
   const handleOnChange = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
 
   return (
-    <>
-      <div className="container mt-3">
-        {/* <label>Asignacion de pruebas</label> */}
-        <div className="asignacion1">
-          <div>
-            <input
-              type="text"
-              className="inputBuscar"
-              placeholder="Buscar"
-              name="busqueda"
-              value={busqueda}
-              onChange={handleOnChange}
-            />
-          </div>
-          <div
-            // onClick={(e) => history.push('/admin/registroempresa')}
-            style={{display:'flex', alignItems:'center'}}
-            >
-            <input
-              type="file"
-              ref={fileRef}
-              id="file"
-              onChange={importExcel}/>
-
-            <p className="pagregar" onClick={triggerClick} style={{cursor:'pointer', marginRight:'5px'}}>Cargar</p>
-            <i class="fas fa-upload" onClick={triggerClick} style={{cursor:'pointer'}}></i>
-
-          </div>
-        </div>
-        <div className="row mt-4">
-          <ToastContainer />
-          <div className="row px-2">
-            <div className=" table-responsive">
-              <DataTable
-                className="dataTable"
-                id="table"
-                columns={columnas}
-                data={excel}
-                pagination
-                paginationComponentOptions={paginacionOpciones}
-                fixedHeader
-                fixedHeaderScrollHeight="450px"
-                noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+    <div className="container">
+      <div className="row">
+        <h3 className="titulo">Asignar pruebas</h3>
+        <div className=" table-responsive">
+          <div className="adminregistro__option">
+            <div>
+              <input
+                type="text"
+                placeholder="Buscar"
+                name="busqueda"
+                value={busqueda}
+                onChange={handleOnChange}
               />
             </div>
+            <div>
+              <label>
+                Cargar <i class="fas fa-upload"></i>
+              </label>
+            </div>
           </div>
-        </div>
-        <div className="mt-5">
-          <button
-            type="button"
-            className="botones btn btn-primary"
-            onClick={(e) => history.push("/empresa/asignacion2")}
-          >
-            Siguiente
-          </button>
+          <DataTable
+            className="dataTable"
+            id="table"
+            columns={columnas}
+            data={asignation}
+            pagination
+            paginationComponentOptions={paginacionOpciones}
+            fixedHeader
+            fixedHeaderScrollHeight="100%"
+            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+          />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
