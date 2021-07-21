@@ -24,6 +24,8 @@ const MGenerarAtencion = ({
   const [ficha, setFicha] = useState({});
   const [services, setServices] = useState({});
   const [clinics, setClinics] = useState({});
+  const [departamentos, setDepartamentos] = useState({});
+
 
   const getServices = () => {
     fetchGETPOSTPUTDELETE("services")
@@ -35,6 +37,7 @@ const MGenerarAtencion = ({
       .then((res) => res.json())
       .then((res) => setClinics(res.data));
   };
+
   useEffect(() => {
     getServices();
     getClinics();
@@ -48,8 +51,7 @@ const MGenerarAtencion = ({
 
     return `${date}${" de "}${month}${" "}${"de "}${year}`;
   };
-  
-  console.log(dataSelected);
+
 
   const crearAtencion = () => {
     const formData = new FormData();

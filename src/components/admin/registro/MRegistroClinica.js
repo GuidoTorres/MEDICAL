@@ -251,7 +251,7 @@ const MRegistroClinica = ({
         : ""
     );
     formData.set(
-      "map_length]",
+      "map_length",
       dataMapa
         ? dataMapa.lng
         : dataSelected &&

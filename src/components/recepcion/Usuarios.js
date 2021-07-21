@@ -32,6 +32,8 @@ const Usuarios = ({ history }) => {
       .then((datos) => setGetDateAttention(datos.data));
   };
 
+
+
   useEffect(() => {
     getAttention();
   }, []);

@@ -17,18 +17,19 @@ const MCrearPaciente = ({
   getAttention,
   editar,
   setEditar,
-  setDataSelected
+  setDataSelected,
 }) => {
   const [avatar, setAvatar] = useState(null);
   const [imagenes, setImagenes] = useState(false);
   const [paciente, setPaciente] = useState({});
   const [religions, setReligions] = useState({});
   const [company, setCompany] = useState({});
+  const [departamentos, setDepartamentos] = useState({});
 
   const closeModal = () => {
     setAddRegistro(false);
     setEditar(false);
-    setDataSelected(null)
+    setDataSelected(null);
   };
   const handleCambio = () => {
     setImagenes(true);
@@ -41,6 +42,12 @@ const MCrearPaciente = ({
       address: 1,
       district_id: 1,
     });
+  };
+
+  const getDepartments = () => {
+    fetchGETPOSTPUTDELETE("departamentos")
+      .then((res) => res.json())
+      .then((res) => setDepartamentos(res.departments));
   };
 
   const getReligions = () => {
@@ -58,10 +65,9 @@ const MCrearPaciente = ({
   useEffect(() => {
     getReligions();
     getCompany();
+    getDepartments();
   }, []);
-  console.log(religions);
-  console.log(paciente);
-  console.log(company);
+  console.log(departamentos);
   const crearPaciente = () => {
     const formData = new FormData();
     formData.set("document_type_id", paciente.document_type_id || "");
@@ -395,7 +401,11 @@ const MCrearPaciente = ({
                 <label htmlFor="">Departmento: </label>
                 <select>
                   <option selected>Seleccione</option>
-                  <option value="1">One</option>
+
+                  {/* {departamentos &&
+                    departamentos.map((data, i) => {
+                      <option value="1">One</option>;
+                    })} */}
                   <option value="2">Two</option>
                   <option value="3">Three</option>
                 </select>
@@ -534,7 +544,9 @@ const MCrearPaciente = ({
 
                     {company &&
                       company.map((data, i) => (
-                        <option key={i} value={data.id}>{data.corporation.business_name}</option>
+                        <option key={i} value={data.id}>
+                          {data.corporation.business_name}
+                        </option>
                       ))}
                   </select>
                 </div>

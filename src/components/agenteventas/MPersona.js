@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 
 import { customStyles } from "../../helpers/tablaOpciones";
@@ -6,6 +6,7 @@ import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 
 const MPersona = ({ openModal, setOpenModal }) => {
   const [persona, setPersona] = useState({});
+  const [services, setServices] = useState({});
 
   const closeModal = () => {
     setOpenModal(false);
@@ -18,6 +19,19 @@ const MPersona = ({ openModal, setOpenModal }) => {
       [e.target.name]: e.target.value,
     });
   };
+
+  const getServices = () => {
+    
+    fetchGETPOSTPUTDELETEJSON("services")
+      .then((res) => res.json())
+      .then((res) => setServices(res.data));
+  };
+
+  useEffect(()=>{
+
+    getServices();
+
+  },[])
 
   const crearDescuentoParticular = () => {
     fetchGETPOSTPUTDELETEJSON("particular_discount", persona, "POST").then(
@@ -45,7 +59,7 @@ const MPersona = ({ openModal, setOpenModal }) => {
             </p>
             <div className="mt-2">
               <div>
-                <label >Tipo de documento</label>
+                <label>Tipo de documento</label>
                 <select
                   class="form-select"
                   aria-label="Default select example"
@@ -108,10 +122,10 @@ const MPersona = ({ openModal, setOpenModal }) => {
                   style={{ width: "163px" }}
                 >
                   <option selected>Seleccione</option>
-                  <option value="1">Antígeno</option>
-                  <option value="2">Electroquimioluminiscencia</option>
-                  <option value="3">Inmunocromatografia</option>
-                  <option value="4">RT-PCR</option>
+                  <option value="5">Antígeno</option>
+                  <option value="6">Electroquimioluminiscencia</option>
+                  <option value="7">Inmunocromatografia</option>
+                  <option value="8">RT-PCR</option>
                 </select>
               </div>
               <div>
@@ -140,8 +154,12 @@ const MPersona = ({ openModal, setOpenModal }) => {
               </div>
             </div>
             <div className="list-botones">
-              <button className="botones" onClick={closeModal}>Cancelar</button>
-              <button className="botones" onClick={crearDescuentoParticular}>Agregar</button>
+              <button className="botones" onClick={closeModal}>
+                Cancelar
+              </button>
+              <button className="botones" onClick={crearDescuentoParticular}>
+                Agregar
+              </button>
             </div>
           </div>
         </div>
