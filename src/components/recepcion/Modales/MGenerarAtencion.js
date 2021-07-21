@@ -48,9 +48,8 @@ const MGenerarAtencion = ({
 
     return `${date}${" de "}${month}${" "}${"de "}${year}`;
   };
-
-  console.log(services);
-  console.log(clinics);
+  
+  console.log(dataSelected);
 
   const crearAtencion = () => {
     const formData = new FormData();
@@ -58,8 +57,8 @@ const MGenerarAtencion = ({
     formData.set("time_attention", getFecha() || "");
     formData.set("people_id", dataSelected.id || "");
     formData.set("service_id", datos.service_id || "");
-    formData.set("clinic_id", datos.clinic_id || "");
-    formData.set("codebar", "111111");
+    formData.set("clinic_id", 1 || "");
+    formData.set("codebar", dataSelected.id);
     // formData.set("forms", "");
 
     // formData.set("user_type_id ", 2)
@@ -93,7 +92,6 @@ const MGenerarAtencion = ({
       }
     });
   };
-  console.log(datos);
 
   const handleOnChange = (e) => {
     setDatos({
@@ -135,6 +133,8 @@ const MGenerarAtencion = ({
     ficha.visibility = "visible";
   };
 
+  console.log(datos);
+
   return (
     <Modal
       isOpen={generarAtencion}
@@ -151,7 +151,14 @@ const MGenerarAtencion = ({
       <h3 className="title__modal">Generar atencion</h3>
       <div className="generarAtencion">
         <div className="datosPaciente">
-          <label htmlFor="">Paciente: {dataSelected.name}</label>
+          <label htmlFor="">
+            Paciente:{" "}
+            {dataSelected.name +
+              " " +
+              dataSelected.pat_lastname +
+              " " +
+              dataSelected.mom_lastname}
+          </label>
           <label htmlFor="">
             Tipo de paciente:{" "}
             {dataSelected.user &&
@@ -168,13 +175,31 @@ const MGenerarAtencion = ({
           </label>
 
           <div className="tipoServicio mt-3">
+            <div className="">
+              <label htmlFor="">Tipo de servicio:</label>
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                name="clinic_id"
+                onChange={handleOnChange}
+              >
+                <option selected>Seleccione</option>
+                <option value="1">Covid 19</option>
+              </select>
+            </div>
+
             <div>
               <label htmlFor="">Plan de atención:</label>
               <select
                 class="form-select"
                 aria-label="Default select example"
+                disabled={datos.clinic_id === "1" ? false : true}
                 name="service_id"
-                onChange={handleOnChange}
+                onChange={(e) => {
+                  handleOnChange(e);
+                  console.log(e);
+                  // setPrueba(e.target);
+                }}
               >
                 <option selected>Seleccione</option>
 
@@ -182,42 +207,12 @@ const MGenerarAtencion = ({
                   services[0] &&
                   services[0].services &&
                   services[0].services.map((data, i) => (
-                    <option value={data.id}>{data.name}</option>
-                  ))}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="">Clínica:</label>
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                name="clinic_id"
-                onChange={handleOnChange}
-              >
-                <option selected>Seleccione</option>
-                {clinics.length > 0 &&
-                  clinics.map((data, i) => (
-                    <option key={i} value={data.id}>
-                      {data.corporation.business_name}
+                    <option key={i} title={data.name} value={data.id}>
+                      {data.name}
                     </option>
                   ))}
               </select>
             </div>
-
-            {/* <div className="mx-4">
-              <label htmlFor="">Clínica:</label>
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                name="clinic_id"
-                onChange={handleOnChange}
-              >
-                <option selected>Seleccione</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div> */}
           </div>
         </div>
         <div className="container2">
@@ -232,7 +227,7 @@ const MGenerarAtencion = ({
             <button
               type="button"
               class="botones btn btn-primary"
-              onClick={() => mostrarConsentimiento()}
+              onClick={() => mostrarConsentimiento(dataSelected)}
             >
               Consentimiento informado
             </button>
@@ -256,7 +251,10 @@ const MGenerarAtencion = ({
             </div>
 
             <div className="containerPDF1">
-              <ConsentimientoInformado />
+              <ConsentimientoInformado
+                dataSelected={dataSelected}
+                datos={datos}
+              />
             </div>
 
             <div className="containerPDF2">

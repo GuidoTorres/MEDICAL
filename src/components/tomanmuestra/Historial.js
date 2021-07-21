@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
+import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
 
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import { paginacionOpciones } from "../../helpers/tablaOpciones";
 
 const Historial = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [dataHistorial, setDataHistorial] = useState([]);
 
   const getHistorial = () => {
-    fetchGETPOSTPUTDELETE('attention_historial')
+    fetchGETPOSTPUTDELETE(`resultados/clinica`, {}, "POST")
       .then((data) => data.json())
-      .then((datos) => setDataHistorial(datos.data));
+      .then((datos) => setDataHistorial(datos));
   };
 
   useEffect(() => {
@@ -23,94 +23,95 @@ const Historial = () => {
 
   const columnas = [
     {
-      name: 'Item',
-      selector: (row) => (row.id ? row.id : ''),
+      name: "Item",
+      selector: (row) => (row.nro_atencion ? row.nro_atencion : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'DNI',
-      selector: (row) => (row.person && row.person.dni ? row.person.dni : ''),
+      name: "Tipo de documento",
+      selector: (row) => (row.tipo_documento ? row.tipo_documento : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Nombre',
-      selector: (row) => (row.person && row.person.name ? row.person.name : ''),
+      name: "Nº documento",
+      selector: (row) => (row.dni ? row.dni : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Apellido',
+      name: "Nombres y apellidos",
+      selector: (row) => (row.paciente ? row.paciente : ""),
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+
+    {
+      name: "Tipo de prueba",
+      selector: (row) => (row.prueba ? row.prueba : ""),
+
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Fecha solicitud",
+      selector: (row) => (row.fecha_solicitud ? row.fecha_solicitud : ""),
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Fecha entrega",
       selector: (row) =>
-        row.person && row.person.pat_lastname ? row.person.pat_lastname : '',
+        row.resultado && row.resultado.date ? row.resultado.date : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
-    },
-    {
-      name: 'Tipo prueba',
-      selector: (row) =>
-        row.service && row.service.name ? row.service.name : '',
-      sortable: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
-    },
-    {
-      name: 'Fecha solicitud',
-      selector: (row) => (row.date_creation ? row.date_creation : ''),
-      sortable: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
-    },
-    {
-      name: 'Fecha entrega',
-      selector: (row) => (row.date_creation ? row.date_creation : ''),
-      sortable: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
   ];
   //
-  useEffect(() => {
-    const filtrarElemento = () => {
-      const search = dataHistorial.filter((data) => {
-        return (
-          data.person.dni.toString().includes(busqueda) ||
-          data.person.name
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.person.pat_lastname
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda)
-        );
-      });
-      setListRegistro(search);
-    };
-    filtrarElemento();
-  }, [busqueda, dataHistorial]);
-  console.log(listRegistro);
+  // useEffect(() => {
+  //   const filtrarElemento = () => {
+  //     const search = dataHistorial.filter((data) => {
+  //       return (
+  //         data.person.dni.toString().includes(busqueda) ||
+  //         data.person.name
+  //           .normalize('NFD')
+  //           .replace(/[\u0300-\u036f]/g, '')
+  //           .toLocaleLowerCase()
+  //           .includes(busqueda) ||
+  //         data.person.pat_lastname
+  //           .normalize('NFD')
+  //           .replace(/[\u0300-\u036f]/g, '')
+  //           .toLocaleLowerCase()
+  //           .includes(busqueda)
+  //       );
+  //     });
+  //     setListRegistro(search);
+  //   };
+  //   filtrarElemento();
+  // }, [busqueda, dataHistorial]);
+  // console.log(listRegistro);
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
@@ -134,15 +135,17 @@ const Historial = () => {
 
           <DataTable
             columns={columnas}
-            data={listRegistro}
+            data={dataHistorial}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="500px"
+            striped
+            highlightOnHover
+            fixedHeaderScrollHeight="100%"
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: 'lightgrey' }}>No hay datos</p>
+                <p style={{ color: "lightgrey" }}>No hay datos</p>
               </div>
             }
           />

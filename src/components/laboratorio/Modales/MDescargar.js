@@ -2,8 +2,16 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import { customStyles } from "../../../helpers/tablaOpciones";
 import ExportarExcel from "../../../helpers/ExportarExcel";
+import { fetchGETPOSTPUTDELETEJSON } from "../../../helpers/fetch";
 
-const MDescargar = ({ setOpenHModal, openHModal, dataSelected }) => {
+const MDescargar = ({ openDescarga, setOpenDescarga, dataSelected }) => {
+  const [historial, setHistorial] = useState({});
+  const [descargar, setDescargar] = useState();
+
+  const closeModal = () => {
+    setOpenDescarga(false);
+  };
+
   const downloadHistorial = (e) => {
     setDescargar({
       ...descargar,
@@ -12,15 +20,15 @@ const MDescargar = ({ setOpenHModal, openHModal, dataSelected }) => {
     });
   };
 
-  const [descargar, setDescargar] = useState();
-  const [historial, setHistorial] = useState({});
-  const closeModal = () => {
-    setOpenHModal(false);
+  const descargarResultados = () => {
+    fetchGETPOSTPUTDELETEJSON("resultados/mi-clinica/todos", descargar, "POST")
+      .then((res) => res.json())
+      .then((res) => setHistorial(res));
   };
 
   return (
     <Modal
-      isOpen={openHModal}
+      isOpen={openDescarga}
       onRequestClose={closeModal}
       style={customStyles}
       className="modal modal__hprecio"
@@ -35,29 +43,10 @@ const MDescargar = ({ setOpenHModal, openHModal, dataSelected }) => {
           <div className="col-12 mregistro__servicios">
             <div className="">
               <div>
-                <label> Sub-Categoria:</label>
-                <select
-                  className="form-select"
-                  aria-label="Default select example"
-                  style={{ width: "50%" }}
-                  name="id"
-                  onChange={(e) => downloadHistorial(e)}
-                >
-                  <option value={-1}>Seleccione</option>
-
-                  {dataSelected &&
-                    dataSelected.services.map((data, i) => (
-                      <option key={i} value={data.id}>
-                        {data.name}
-                      </option>
-                    ))}
-                </select>
-              </div>
-              <div>
                 <label>Fecha inicio:</label>
                 <input
                   type="date"
-                  name="initial_date"
+                  name="fecha_inicio"
                   onChange={(e) => downloadHistorial(e)}
                 />
               </div>
@@ -65,7 +54,7 @@ const MDescargar = ({ setOpenHModal, openHModal, dataSelected }) => {
                 <label>Fecha final:</label>
                 <input
                   type="date"
-                  name="end_date"
+                  name="fecha_fin"
                   onChange={(e) => downloadHistorial(e)}
                 />
               </div>
@@ -74,8 +63,9 @@ const MDescargar = ({ setOpenHModal, openHModal, dataSelected }) => {
               <button className="botones " onClick={closeModal}>
                 Cancelar
               </button>
-              <button className="botones " 
-            //   onClick={() => getDateHistorial()}
+              <button
+                className="botones "
+                onClick={() => descargarResultados()}
               >
                 Generar historial
               </button>

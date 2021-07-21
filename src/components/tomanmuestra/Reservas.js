@@ -14,7 +14,7 @@ const Reservas = () => {
   const [getDateAttention, setGetDateAttention] = useState([]);
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE('attention_clinic')
+    fetchGETPOSTPUTDELETE('attention')
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos.data));
   };
@@ -22,7 +22,7 @@ const Reservas = () => {
   useEffect(() => {
     getAttention();
   }, []);
-  console.log(getDateAttention[22]);
+  console.log(getDateAttention);
   const columnas = [
     {
       name: 'Item',
@@ -122,29 +122,29 @@ const Reservas = () => {
     },
   ];
   //
-  useEffect(() => {
-    const filtrarElemento = () => {
-      const search =
-        getDateAttention.length > 0 &&
-        getDateAttention.filter((data) => {
-          return (
-            data.person.dni.toString().includes(busqueda) ||
-            data.person.name
-              .normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '')
-              .toLocaleLowerCase()
-              .includes(busqueda) ||
-            data.person.pat_lastname
-              .normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '')
-              .toLocaleLowerCase()
-              .includes(busqueda)
-          );
-        });
-      setListRegistro(search);
-    };
-    filtrarElemento();
-  }, [busqueda, getDateAttention]);
+  // useEffect(() => {
+  //   const filtrarElemento = () => {
+  //     const search =
+  //       getDateAttention.length > 0 &&
+  //       getDateAttention.filter((data) => {
+  //         return (
+  //           data.person.dni.toString().includes(busqueda) ||
+  //           data.person.name
+  //             .normalize('NFD')
+  //             .replace(/[\u0300-\u036f]/g, '')
+  //             .toLocaleLowerCase()
+  //             .includes(busqueda) ||
+  //           data.person.pat_lastname
+  //             .normalize('NFD')
+  //             .replace(/[\u0300-\u036f]/g, '')
+  //             .toLocaleLowerCase()
+  //             .includes(busqueda)
+  //         );
+  //       });
+  //     setListRegistro(search);
+  //   };
+  //   filtrarElemento();
+  // }, [busqueda, getDateAttention]);
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -197,11 +197,13 @@ const Reservas = () => {
 
           <DataTable
             columns={columnas}
-            data={listRegistro}
+            data={getDateAttention}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="500px"
+            striped
+            highlightOnHover
+            fixedHeaderScrollHeight="100%"
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>

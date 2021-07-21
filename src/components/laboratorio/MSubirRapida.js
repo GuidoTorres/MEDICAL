@@ -4,6 +4,8 @@ import {
   fetchGETPOSTPUTDELETEJSON,
   fetchGETPOSTPUTDELETE,
 } from "../../helpers/fetch";
+import Swal from "sweetalert2";
+
 
 import { customStyles } from "../../helpers/tablaOpciones";
 
@@ -12,6 +14,8 @@ const MSubirRapida = ({
   setOpenModal,
   dataSelected,
   tipoPrueba,
+  getAtencion,
+
 }) => {
   const [result, setResult] = useState({
     id: dataSelected.id,
@@ -25,7 +29,34 @@ const MSubirRapida = ({
     
 
     fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) =>
-      console.log(data)
+      {console.log(data)
+        if (data.status === 200) {
+          closeModal();
+          Swal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Se cargo el resultado correctamente.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Aceptar",
+          }).then((resp) => {
+            if (resp.isConfirmed) {
+              getAtencion();
+            }
+          });
+        } else {
+          closeModal();
+          Swal.fire({
+            icon: "error",
+            title: "!Ups¡",
+            text: "Algo salió mal.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cerrar",
+          });
+        }
+      
+      }
     );
   };
 

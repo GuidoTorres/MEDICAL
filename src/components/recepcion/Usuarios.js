@@ -36,7 +36,6 @@ const Usuarios = ({ history }) => {
     getAttention();
   }, []);
 
-  console.log(getDateAttention);
 
   const columnas = [
     {
@@ -232,7 +231,9 @@ const Usuarios = ({ history }) => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="500px"
+            striped
+            highlightOnHover
+            fixedHeaderScrollHeight="100%"
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
@@ -250,8 +251,7 @@ const Usuarios = ({ history }) => {
           dataSelected={dataSelected}
           editar={editar}
           setEditar={setEditar}
-          setDataSelected ={setDataSelected}
-
+          setDataSelected={setDataSelected}
         />
       )}
 
