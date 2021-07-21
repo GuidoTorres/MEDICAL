@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
-
+import { useHistory } from 'react-router-dom';
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
 import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
+import EmpresaAsignacion4 from './EmpresaAsignacion4';
 
 const EmpresaAsignacion = () => {
+  const history = useHistory();
   const [busqueda, setBusqueda] = useState('');
   const [asignation, setAsignation] = useState([]);
+  const [seleccionar, setSeleccionar] = useState({});
+  const [modaesCorporativo, setModaesCorporativo] = useState(false);
+
+  const { seleccionado } = seleccionar;
 
   const getAsignacion = () => {
     fetchGETPOSTPUTDELETE('company_employees')
@@ -18,18 +24,22 @@ const EmpresaAsignacion = () => {
     getAsignacion();
   }, []);
 
+  console.log(seleccionar);
+
   const columnas = [
     {
       name: 'Seleccionar',
       button: true,
-      cell: (e) => (
-        <input
-          class="form-check-input"
-          type="checkbox"
-          value=""
-          id="flexCheckDefault"
-        />
-      ),
+      // cell: (e) => (
+      //   <input
+      //     className="form-check-input"
+      //     type="checkbox"
+      //     name="seleccionado"
+      //     checked={seleccionado}
+      //     onChange={provandoCambios}
+      //     id="flexCheckDefault"
+      //   />
+      // ),
     },
 
     {
@@ -126,7 +136,9 @@ const EmpresaAsignacion = () => {
   const handleOnChange = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
-
+  const modales = () => {
+    setModaesCorporativo(!modaesCorporativo);
+  };
   return (
     <div className="container">
       <div className="row">
@@ -144,7 +156,7 @@ const EmpresaAsignacion = () => {
             </div>
             <div>
               <label>
-                Cargar <i class="fas fa-upload"></i>
+                Cargar <i onClick={modales} className="fas fa-upload"></i>
               </label>
             </div>
           </div>
@@ -158,9 +170,19 @@ const EmpresaAsignacion = () => {
             fixedHeader
             fixedHeaderScrollHeight="100%"
             noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            striped
+            selectableRows
+            highlightOnHover
+            selectableRowsHighlight
           />
         </div>
       </div>
+      {modaesCorporativo && (
+        <EmpresaAsignacion4
+          setModaesCorporativo={setModaesCorporativo}
+          modaesCorporativo={modaesCorporativo}
+        />
+      )}
     </div>
   );
 };

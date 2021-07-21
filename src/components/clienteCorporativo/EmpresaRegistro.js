@@ -16,20 +16,22 @@ const EmpresaRegistro = () => {
       .then((res) => res.json())
       .then((res) => setEmployees(res));
   };
-
   useEffect(() => {
-    const importarExcel = () => {
-      const formData = new FormData();
-      formData.set('file', loadExcel);
-      fetchGETPOSTPUTDELETE('company_employees/import', formData, 'POST').then(
-        (data) => {
-          data.json();
-        }
-      );
-    };
-    importarExcel();
     getEmployees();
-  }, [loadExcel]);
+  }, []);
+
+  const importarExcel = () => {
+    const formData = new FormData();
+    formData.set('file', loadExcel);
+    fetchGETPOSTPUTDELETE('company_employees/import', formData, 'POST').then(
+      (data) => {
+        data.json();
+      }
+    );
+  };
+  useEffect(() => {
+    importarExcel();
+  }, []);
 
   const subidaExcel = (e) => {
     const file = e.target.files[0];
@@ -209,7 +211,7 @@ const EmpresaRegistro = () => {
               />
             </div>
             <div className="">
-              <input type="file" onChange={subidaExcel} />
+              <input type="file" onClick={subidaExcel} />
             </div>
             <div>
               <label>
@@ -228,6 +230,7 @@ const EmpresaRegistro = () => {
             fixedHeader
             fixedHeaderScrollHeight="100%"
             noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            striped
           />
         </div>
         <EditarDatosTrabajador

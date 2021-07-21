@@ -53,7 +53,7 @@ const Atencion = () => {
     },
     {
       name: "Nombres y apellidos",
-      selector: (row) => (row.person && row.person.name ? row.person.name : ""),
+      selector: (row) => (row.person && row.person.name && row.person.pat_lastname ? row.person.name +" "+ row.person.pat_lastname  : ""),
       sortable: true,
       style: {
         color: "#8f9196",
@@ -78,7 +78,7 @@ const Atencion = () => {
     },
     {
       name: "Nº de documento",
-      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
+      selector: (row) => (row.person && row.person.dni ? row.person.dni   : ""),
       sortable: true,
       style: {
         color: "#8f9196",
@@ -87,7 +87,7 @@ const Atencion = () => {
     },
     {
       name: "Estado",
-      selector: (row) => (row.status === 1 ? "Particular" : "Empresa"),
+      selector: (row) => (row.type_user ? row.type_user : ""),
       sortable: true,
       style: {
         color: "#8f9196",
@@ -96,8 +96,7 @@ const Atencion = () => {
     },
     {
       name: "Tipo de prueba",
-      selector: (row) =>
-        row.service && row.service.name ? row.service.name : "",
+      selector: (row) => (row.service && row.service.name ? row.service.name : ""),
       sortable: true,
       style: {
         color: "#8f9196",
@@ -159,16 +158,16 @@ const Atencion = () => {
 
   const generarAtencion = (e) => {
     setGenerateAttention({
-      date_creation: e.date_creation || "",
+      date_creation: getHora() || "",
       time_attention: getHora(),
-      people_id: e.people_id || "",
-      service_id: e.service_id || "",
-      clinic_id: e.clinic_id || "",
+      people_id: e.id || "",
+      service_id: e.service_details && e.service_details.service_category_id?  e.service_details.service_category_id : "",
+      clinic_id: 1 || "",
       codebar: "0213000011111",
     });
     Swal.fire({
       title: "¿Desea Atender al paciente?",
-      text: `${e.person && e.person.name ? e.person.name : "No hay datos"}`,
+      text: `${e.fullName ? e.fullName : "No hay datos"}`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -176,9 +175,31 @@ const Atencion = () => {
       confirmButtonText: "Atender",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetchGETPOSTPUTDELETEJSON(`attention/attend/${e.id}`).then((data) =>
-          console.log(data)
-        );
+        fetchGETPOSTPUTDELETEJSON(`attention/attend/${e.id}`).then((data) => {
+          if (data.status === 200) {
+            Swal.fire({
+              icon: "success",
+              title: "Éxito",
+              text: "Se ha genero la atención correctamente.",
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Aceptar",
+            }).then((resp) => {
+              if (resp.isConfirmed) {
+                getAttention();
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Ups¡",
+              text: "Algo salió mal.",
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Cerrar",
+            });
+          }
+        });
         // .then((datos) => setAttention(datos.data));
         // Swal.fire("Éxito!", "Se genero la atención correctamente.", "success");
       }

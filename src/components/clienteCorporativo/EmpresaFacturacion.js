@@ -51,7 +51,7 @@ const EmpresaFacturacion = () => {
           onClick={() => openModal()}
           className="table__tablebutton eliminar"
         >
-          <i class="far fa-file-pdf"></i>
+          <i className="far fa-file-pdf"></i>
         </button>
       ),
     },
@@ -63,7 +63,7 @@ const EmpresaFacturacion = () => {
           onClick={() => handleDelete()}
           className="table__tablebutton eliminar"
         >
-          <i class="far fa-file-pdf"></i>
+          <i className="far fa-file-pdf"></i>
         </button>
       ),
     },
@@ -75,7 +75,7 @@ const EmpresaFacturacion = () => {
           onClick={() => handleDelete(e)}
           className="table__tablebutton eliminar"
         >
-          <i class="far fa-file-pdf"></i>
+          <i className="far fa-file-pdf"></i>
         </button>
       ),
     },
@@ -194,7 +194,7 @@ const EmpresaFacturacion = () => {
   return (
     <>
       <div className="facturacion container ">
-        {/* <button type="button" class="btn btn-primary" onClick={generarPdf}>GenerarPDF</button> */}
+        {/* <button type="button" className="btn btn-primary" onClick={generarPdf}>GenerarPDF</button> */}
 
         {/* <h3 className="tituloFacturacion mt-3">Facturación</h3> */}
         <div>

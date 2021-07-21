@@ -17,7 +17,7 @@ const Empresa = () => {
   // facuturacion empresa modal usar company discount
 
   const getCorporations = () => {
-    fetchGETPOSTPUTDELETE('company_discount')
+    fetchGETPOSTPUTDELETE('company')
       .then((info) => info.json())
       .then((info) => setCorporations(info.data));
   };
@@ -58,7 +58,7 @@ const Empresa = () => {
     },
     {
       name: "Responsable",
-      // selector: row=> row.corporation.contacts[0].name ? row.corporation.contacts[0].name : "",
+      selector: row=> row.corporation.contacts[0].name ? row.corporation.contacts[0].name : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -67,7 +67,7 @@ const Empresa = () => {
     },
     {
       name: "Telefono",
-      // selector: row=> row.corporation.contacts[0].phone ? row.corporation.contacts[0].phone : "",
+      selector: row=> row.corporation.contacts[0].phone ? row.corporation.contacts[0].phone : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -76,7 +76,7 @@ const Empresa = () => {
     },
     {
       name: "Correo",
-      // selector: row=> row.corporation.contacts[0].email ? row.corporation.contacts[0].email : "",
+      selector: row=> row.corporation.contacts[0].email ? row.corporation.contacts[0].email : "",
       sortable: true,
       style: {
         borderBotton: "none",

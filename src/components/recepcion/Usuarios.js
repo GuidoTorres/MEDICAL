@@ -26,9 +26,10 @@ const Usuarios = ({ history }) => {
   };
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("users")
+    // fetchGETPOSTPUTDELETE("patient")
+    fetchGETPOSTPUTDELETE("patient")
       .then((data) => data.json())
-      .then((datos) => setGetDateAttention(datos));
+      .then((datos) => setGetDateAttention(datos.data));
   };
 
   useEffect(() => {
@@ -71,7 +72,12 @@ const Usuarios = ({ history }) => {
     {
       name: "Tipo de usuario",
       selector: (row) =>
-        row.person && row.status === 1 ? "Particular" : "Empresa",
+        row.user &&
+        row.user.user_type &&
+        row.user.user_type &&
+        row.user.user_type.name
+          ? row.user.user_type.name
+          : "",
       sortable: true,
       style: {
         color: "#8f9196",
@@ -80,7 +86,7 @@ const Usuarios = ({ history }) => {
     },
     {
       name: "Telefono",
-      selector: (row) => (row.cellphone ? row.cellphone : ""),
+      selector: (row) => (row.phone ? row.phone : ""),
       sortable: true,
       sortable: true,
       style: {
@@ -106,7 +112,7 @@ const Usuarios = ({ history }) => {
           className="table__tablebutton editar"
           onClick={() => generateAttention(e)}
         >
-          <i class="fas fa-stethoscope"></i>
+          <i className="fas fa-stethoscope"></i>
         </button>
       ),
     },
@@ -135,34 +141,6 @@ const Usuarios = ({ history }) => {
       ),
     },
   ];
-
-  useEffect(() => {
-    const filtrarElemento = () => {
-      const search = rusuario.filter((data) => {
-        return (
-          data.nombre
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.dni.toString().includes(busqueda) ||
-          data.tipousuario
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.telefono.toString().includes(busqueda) ||
-          data.correo
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda)
-        );
-      });
-      setListServicio(search);
-    };
-    filtrarElemento();
-  }, [busqueda]);
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -195,6 +173,34 @@ const Usuarios = ({ history }) => {
       }
     });
   };
+
+  useEffect(() => {
+    const filtrarElemento = () => {
+      const search = rusuario.filter((data) => {
+        return (
+          data.nombre
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLocaleLowerCase()
+            .includes(busqueda) ||
+          data.dni.toString().includes(busqueda) ||
+          data.tipousuario
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLocaleLowerCase()
+            .includes(busqueda) ||
+          data.telefono.toString().includes(busqueda) ||
+          data.correo
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLocaleLowerCase()
+            .includes(busqueda)
+        );
+      });
+      setListServicio(search);
+    };
+    filtrarElemento();
+  }, [busqueda]);
   return (
     <div className="container">
       <div className="row">
@@ -244,6 +250,8 @@ const Usuarios = ({ history }) => {
           dataSelected={dataSelected}
           editar={editar}
           setEditar={setEditar}
+          setDataSelected ={setDataSelected}
+
         />
       )}
 
@@ -252,6 +260,7 @@ const Usuarios = ({ history }) => {
           generarAtencion={generarAtencion}
           setGenerarAtencion={setGenerarAtencion}
           dataSelected={dataSelected}
+          getAttention={getAttention}
         />
       )}
     </div>

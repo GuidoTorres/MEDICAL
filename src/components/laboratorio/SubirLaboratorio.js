@@ -15,7 +15,8 @@ const SubirLaboratorio = () => {
   const [openModal3, setOpenModal3] = useState(false);
   const [attention, setAttention] = useState({});
   const [dataSelected, setDataSelected] = useState(null);
-  const [tipoPrueba, setTipoPrueba] = useState(-1);
+  const [tipoPrueba, setTipoPrueba] = useState({});
+  const [servicios, setServicios] = useState({});
 
   const getAtencion = () => {
     fetchGETPOSTPUTDELETE("result")
@@ -23,8 +24,15 @@ const SubirLaboratorio = () => {
       .then((datos) => setAttention(datos.data));
   };
 
+  const getServicios = () => {
+    fetchGETPOSTPUTDELETE("services")
+      .then((data) => data.json())
+      .then((datos) => setServicios(datos.data));
+  };
+
   useEffect(() => {
     getAtencion();
+    getServicios();
   }, []);
 
   console.log(attention);
@@ -49,7 +57,7 @@ const SubirLaboratorio = () => {
     },
     {
       name: "Nro de documento",
-      selector: (row) => (row.dni ? row.person.dni : ""),
+      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -94,6 +102,8 @@ const SubirLaboratorio = () => {
         ),
     },
   ];
+
+  console.log(tipoPrueba);
 
   useEffect(() => {
     const filtrarElemento = () => {
@@ -156,7 +166,13 @@ const SubirLaboratorio = () => {
             <div className="laboratorio__resultados">
               <div>
                 <label>Categoría</label>
-                <select class="form-select" aria-label="Default select example">
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  onChange={(e) =>
+                    setTipoPrueba({ ...tipoPrueba, id: e.target.value })
+                  }
+                >
                   <option>Seleccione</option>
                   <option value="1">COVID-19</option>
                 </select>
@@ -164,15 +180,25 @@ const SubirLaboratorio = () => {
               <div>
                 <label>Sub-Categoría</label>
                 <select
-                  class="form-select"
+                  className="form-select"
                   aria-label="Default select example"
-                  onChange={(e) => setTipoPrueba(Number(e.target.value))}
+                  disabled={tipoPrueba.id ? false : true}
+                  onChange={(e) =>
+                    setTipoPrueba({
+                      ...tipoPrueba,
+                      prueba: Number(e.target.value),
+                    })
+                  }
                 >
-                  <option value="-1">Seleccione</option>
-
-                  <option value="1">Antígeno</option>
-                  <option value="2">Eclea</option>
-                  <option value="3">Rápida</option>
+                  <option value="">Seleccione</option>
+                  {servicios &&
+                    servicios[0] &&
+                    servicios[0].services &&
+                    servicios[0].services.map((data, i) => (
+                      <option key={i} value={data.id}>
+                        {data.name}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
