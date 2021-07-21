@@ -52,6 +52,8 @@ const Login = () => {
       return history.replace('facturacion/empresas');
     } else if (role.id === 11) {
       return history.replace('clinica/procesa/reservas');
+    } else if (role.id === 12) {
+      return history.replace('ventas');
     } else {
       return history.replace('/');
     }
