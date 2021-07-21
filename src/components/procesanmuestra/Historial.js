@@ -13,13 +13,10 @@ const Historial = () => {
 
   //usar historial results
 
-
-  
-
   const getAttention = () => {
     // fetchGETPOSTPUTDELETE(`resultados/clinica/${getDateAttention[0].clinic_id}`)
 
-    fetchGETPOSTPUTDELETE(`result`)
+    fetchGETPOSTPUTDELETE(`result_historial`)
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos.data));
   };
@@ -28,7 +25,7 @@ const Historial = () => {
     getAttention();
   }, []);
 
-  console.log(getDateAttention.clin);
+  console.log(getDateAttention);
 
   const columnas = [
     {
@@ -66,7 +63,7 @@ const Historial = () => {
       },
     },
     {
-      name: "Nombre",
+      name: "Nombres y apellidos",
       selector: (row) => (row.person && row.person.name ? row.person.name : ""),
       sortable: true,
       style: {
@@ -74,31 +71,12 @@ const Historial = () => {
         color: "#555555",
       },
     },
-    {
-      name: "Apellido",
-      selector: (row) =>
-        row.person && row.person.pat_lastname ? row.person.pat_lastname : "",
 
-      sortable: true,
-      style: {
-        borderBotton: "none",
-        color: "#555555",
-      },
-    },
     {
       name: "Tipo de prueba",
       selector: (row) =>
-        row.service && row.service.name ? row.service.name : "",
+        row.service && row.service && row.service.name ? row.service.name : "",
 
-      sortable: true,
-      style: {
-        borderBotton: "none",
-        color: "#555555",
-      },
-    },
-    {
-      name: "Fecha entrega",
-      selector: (row) => (row.date_creation ? row.date_creation : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -107,7 +85,16 @@ const Historial = () => {
     },
     {
       name: "Fecha solicitud",
-      selector: (row) => (row.date_creation ? row.date_creation : ""),
+      selector: (row) => (row.date_attention ? row.date_attention : ""),
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Fecha entrega",
+      selector: (row) => (row.result && row.result.date ? row.result.date : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -118,14 +105,34 @@ const Historial = () => {
     {
       name: "Detalles",
       button: true,
-      cell: (e) => (
-        <button
-          onClick={() => handleDetalles(e)}
-          className="table__tablebutton"
-        >
-          <i className="far fa-file-pdf"></i>
-        </button>
-      ),
+      cell: (e) =>
+        e.result.pdf !== null ? (
+          <a
+            href={e.result.pdf}
+            download
+            target="_blank"
+            style={{ color: "red" }}
+          >
+            {e.result.pdf !== null ? (
+              <i className="far fa-file-pdf"></i>
+            ) : (
+              <i className="far fa-file-pdf"></i>
+            )}
+          </a>
+        ) : (
+          <a
+            href={e.result.pdf}
+            download
+            target="_blank"
+            style={{ color: "grey" }}
+          >
+            {e.result.pdf !== null ? (
+              <i className="far fa-file-pdf"></i>
+            ) : (
+              <i className="far fa-file-pdf"></i>
+            )}
+          </a>
+        ),
     },
   ];
   //
@@ -164,10 +171,8 @@ const Historial = () => {
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
-  const handleDetalles = () => {
-    console.log("detalles");
-  };
-  //
+
+
   return (
     <div className="container">
       <div className="row">
@@ -190,7 +195,9 @@ const Historial = () => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="500px"
+            striped
+            highlightOnHover
+            fixedHeaderScrollHeight="100%"
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>

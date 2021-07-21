@@ -1,65 +1,59 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import {
-  fetchGETPOSTPUTDELETEJSON,
-} from "../../helpers/fetch";
+import { fetchGETPOSTPUTDELETEJSON } from "../../../helpers/fetch";
 import Swal from "sweetalert2";
+import { customStyles } from "../../../helpers/tablaOpciones";
 
-
-import { customStyles } from "../../helpers/tablaOpciones";
-
-const MSubirLaboratorio = ({
-  openModal,
-  setOpenModal,
+const MAnticuerpos = ({
+  openModal5,
+  setOpenModal5,
   dataSelected,
+  tipoPrueba,
   getAtencion,
 }) => {
   const [result, setResult] = useState({
     id: dataSelected.id,
   });
   const closeModal = () => {
-    setOpenModal(false);
+    setOpenModal5(false);
   };
   console.log(result);
 
   const postResults = () => {
+    fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) => {
+      console.log(data);
 
-    fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) =>
-      {console.log(data)
-      
-        if (data.status === 200) {
-          closeModal();
-          Swal.fire({
-            icon: "success",
-            title: "Éxito",
-            text: "Se cargo el resultado correctamente.",
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Aceptar",
-          }).then((resp) => {
-            if (resp.isConfirmed) {
-              getAtencion();
-            }
-          });
-        } else {
-          closeModal();
-          Swal.fire({
-            icon: "error",
-            title: "!Ups¡",
-            text: "Algo salió mal.",
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Cerrar",
-          });
-        }
+      if (data.status === 200) {
+        closeModal();
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se cargo el resultado correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getAtencion();
+          }
+        });
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
       }
-    );
+    });
   };
 
-  console.log(result);
   return (
     <Modal
-      isOpen={openModal}
+      isOpen={openModal5}
       onRequestClose={closeModal}
       style={customStyles}
       className="modal mlaboratorio_subir"
@@ -138,4 +132,4 @@ const MSubirLaboratorio = ({
   );
 };
 
-export default MSubirLaboratorio;
+export default MAnticuerpos;

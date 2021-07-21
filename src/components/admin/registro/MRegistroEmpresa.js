@@ -273,52 +273,52 @@ const MRegistroEmpresa = ({
 
     formData.set(
       "services[0][service_id]",
-      empresa.service_id5
+      empresa && empresa.service_id5
         ? empresa.service_id5
         : dataSelected &&
           dataSelected.services &&
-          dataSelected.services[5] &&
-          dataSelected.services[5].id
-        ? dataSelected.services[5].id
+          dataSelected.services[0] &&
+          dataSelected.services[0].id
+        ? dataSelected.services[0].id
         : ""
     );
     formData.set("services[0][state]", 0);
 
     formData.set(
       "services[1][service_id]",
-      empresa.service_id6
+      empresa && empresa.service_id6
         ? empresa.service_id6
         : dataSelected &&
           dataSelected.services &&
-          dataSelected.services[6] &&
-          dataSelected.services[6].id
-        ? dataSelected.services[6].id
+          dataSelected.services[1] &&
+          dataSelected.services[1].id
+        ? dataSelected.services[1].id
         : ""
     );
     formData.set("services[1][state]", 0);
 
     formData.set(
       "services[2][service_id]",
-      empresa.service_id7
+      empresa && empresa.service_id7
         ? empresa.service_id7
         : dataSelected &&
           dataSelected.services &&
-          dataSelected.services[7] &&
-          dataSelected.services[7].id
-        ? dataSelected.services[7].id
+          dataSelected.services[2] &&
+          dataSelected.services[2].id
+        ? dataSelected.services[2].id
         : ""
     );
     formData.set("services[2][state]", 0);
 
     formData.set(
       "services[3][service_id]",
-      empresa.service_id8
+      empresa && empresa.service_id8
         ? empresa.service_id8
         : dataSelected &&
           dataSelected.services &&
-          dataSelected.services[8] &&
-          dataSelected.services[8].id
-        ? dataSelected.services[8].id
+          dataSelected.services[3] &&
+          dataSelected.services[3].id
+        ? dataSelected.services[3].id
         : ""
     );
     formData.set("services[3][state]", 0);
