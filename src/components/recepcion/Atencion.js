@@ -94,18 +94,18 @@ const Atencion = () => {
         borderBotton: "none",
       },
     },
-    {
-      name: "Código de barras",
-      button: true,
-      cell: (e) => (
-        <button
-          className="table__tablebutton editar"
-          onClick={() => openBarcode(e)}
-        >
-          <i className="fas fa-barcode"></i>
-        </button>
-      ),
-    },
+    // {
+    //   name: "Código de barras",
+    //   button: true,
+    //   cell: (e) => (
+    //     <button
+    //       className="table__tablebutton editar"
+    //       onClick={() => openBarcode(e)}
+    //     >
+    //       <i className="fas fa-barcode"></i>
+    //     </button>
+    //   ),
+    // },
     {
       name: "Atención",
       button: true,
