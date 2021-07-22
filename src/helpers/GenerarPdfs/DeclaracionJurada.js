@@ -30,7 +30,7 @@ const generarDeclaracionJurada = () => {
   });
   doc.setFontSize(10);
 
-  doc.addImage(image, 'PNG', 70, 20, 450, 800);
+  doc.addImage(image, 'PNG', 15, 20, 600, 800);
 
   //sintomas
   // doc.text(125, 115, `${data.nombre}`);
