@@ -11,12 +11,7 @@ const Particulares = () => {
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
 
-
-  const getParticular = () =>{
-
-    
-  }
-
+  const getParticular = () => {};
 
   const columnas = [
     {
@@ -217,7 +212,7 @@ const Particulares = () => {
                   noDataComponent={
                     <i className="fas fa-inbox table__icono"></i>
                   }
-                  selectableRows
+                  // selectableRows
                 />
               </div>
             </div>
@@ -250,7 +245,7 @@ const Particulares = () => {
                   noDataComponent={
                     <i className="fas fa-inbox table__icono"></i>
                   }
-                  selectableRows
+                  // selectableRows
                 />
               </div>
             </div>
