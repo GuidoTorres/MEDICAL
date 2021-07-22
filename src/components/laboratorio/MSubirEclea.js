@@ -139,7 +139,6 @@ const MSubirEclea = ({
               <button className="botones" onClick={closeModal}>
                 Cancelar
               </button>
-              <button className="botones">Visualizar</button>
               <button className="botones" onClick={postResults}>
                 Enviar
               </button>
