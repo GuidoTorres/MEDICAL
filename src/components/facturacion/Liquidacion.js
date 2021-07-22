@@ -14,7 +14,7 @@ const Liquidacion = () => {
 
   const columnas = [
     {
-      name: "Item",
+      name: "Ítem",
       selector: "id",
       sortable: true,
       style: {
@@ -50,7 +50,7 @@ const Liquidacion = () => {
       },
     },
     {
-      name: "Telefono",
+      name: "Teléfono",
       selector: "telefono",
       sortable: true,
       style: {

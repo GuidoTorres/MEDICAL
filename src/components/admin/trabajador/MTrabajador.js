@@ -336,7 +336,7 @@ const MTrabajador = ({
               {trabajador && trabajador.role_id === "5" ? (
                 <>
                   <div>
-                    <label>Tipo de vehiculo:</label>
+                    <label>Tipo de vehículo:</label>
                     <input
                       type="text"
                       name="vehicle_name"

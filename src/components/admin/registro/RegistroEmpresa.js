@@ -170,7 +170,7 @@ const RegistroEmpresa = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire('Eliminado!', 'Se ha eliminado correctamente.', 'success');
-        fetchGETPOSTPUTDELETE(`company/${e.id}`, {}, 'DELETE').then(
+        fetchGETPOSTPUTDELETE(`company/delete/${e.id}`, {}, 'DELETE').then(
           (result) => {
             result.json();
             getCorporations();
@@ -215,7 +215,9 @@ const RegistroEmpresa = () => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="500px"
+            striped
+            highlightOnHover
+            fixedHeaderScrollHeight="100%"
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>

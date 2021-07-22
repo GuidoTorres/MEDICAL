@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
+import Swal from "sweetalert2";
 
 import { customStyles } from "../../helpers/tablaOpciones";
 import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 
-const MPersona = ({ openModal, setOpenModal }) => {
+const MPersona = ({
+  openModal,
+  setOpenModal,
+  dataSelected,
+  setDataSelected,
+  editar,
+  setEditar,
+  getParticularDiscount,
+}) => {
   const [persona, setPersona] = useState({});
   const [services, setServices] = useState({});
 
   const closeModal = () => {
     setOpenModal(false);
+    setEditar(false);
+    setDataSelected(null);
   };
 
   const handleChange = (e) => {
@@ -21,17 +32,14 @@ const MPersona = ({ openModal, setOpenModal }) => {
   };
 
   const getServices = () => {
-    
     fetchGETPOSTPUTDELETEJSON("services")
       .then((res) => res.json())
       .then((res) => setServices(res.data));
   };
 
-  useEffect(()=>{
-
+  useEffect(() => {
     getServices();
-
-  },[])
+  }, []);
 
   const crearDescuentoParticular = () => {
     fetchGETPOSTPUTDELETEJSON("particular_discount", persona, "POST").then(
@@ -39,6 +47,54 @@ const MPersona = ({ openModal, setOpenModal }) => {
     );
   };
 
+  const actualizarDescuentoParticular = () => {
+    const actualizar = {
+      dni: persona.dni || dataSelected.user.person.dni,
+      document_type_id:
+        persona.document_type_id || dataSelected.user.person.document_type_id,
+      name: persona.name || dataSelected.user.person.name,
+      pat_lastname:
+        persona.pat_lastname || dataSelected.user.person.pat_lastname,
+      mom_lastname:
+        persona.mom_lastname || dataSelected.user.person.mom_lastname,
+      percent: persona.percent || dataSelected.percent,
+      quantity: persona.quantity || dataSelected.quantity,
+      service_id: persona.service_id || dataSelected.service_id,
+      amount: persona.amount || dataSelected.amount
+    };
+
+    fetchGETPOSTPUTDELETEJSON("particular_discount", actualizar, "POST").then(
+      (res) => {
+        if (res.status === 200) {
+          closeModal();
+          Swal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Se creo el descuento particular correctamente.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Aceptar",
+          }).then((resp) => {
+            if (resp.isConfirmed) {
+              getParticularDiscount();
+            }
+          });
+        } else {
+          closeModal();
+          Swal.fire({
+            icon: "error",
+            title: "!Ups¡",
+            text: "Algo salió mal.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cerrar",
+          });
+        }
+      }
+    );
+  };
+
+  console.log(dataSelected);
   return (
     <Modal
       isOpen={openModal}
@@ -50,7 +106,11 @@ const MPersona = ({ openModal, setOpenModal }) => {
       overlayClassName="modal-fondo"
       ariaHideApp={false}
     >
-      <h3 className="title__modal mb-3">Usuario particular</h3>
+      {editar ? (
+        <h3 className="title__modal mb-3">Editar precio particular</h3>
+      ) : (
+        <h3 className="title__modal mb-3">Precio particular</h3>
+      )}
       <div className="container">
         <div className="row">
           <div className="col-12 mventas__persona">
@@ -79,6 +139,14 @@ const MPersona = ({ openModal, setOpenModal }) => {
                   type="number"
                   name="dni"
                   maxLength="8"
+                  defaultValue={
+                    dataSelected &&
+                    dataSelected.user &&
+                    dataSelected.user.person &&
+                    dataSelected.user.person.dni
+                      ? dataSelected.user.person.dni
+                      : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -95,6 +163,14 @@ const MPersona = ({ openModal, setOpenModal }) => {
                 <input
                   type="text"
                   name="name"
+                  defaultValue={
+                    dataSelected &&
+                    dataSelected.user &&
+                    dataSelected.user.person &&
+                    dataSelected.user.person.name
+                      ? dataSelected.user.person.name
+                      : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -103,6 +179,14 @@ const MPersona = ({ openModal, setOpenModal }) => {
                 <input
                   type="text"
                   name="pat_lastname"
+                  defaultValue={
+                    dataSelected &&
+                    dataSelected.user &&
+                    dataSelected.user.person &&
+                    dataSelected.user.person.pat_lastname
+                      ? dataSelected.user.person.pat_lastname
+                      : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -118,6 +202,13 @@ const MPersona = ({ openModal, setOpenModal }) => {
                   class="form-select"
                   aria-label="Default select example"
                   name="service_id"
+                  defaultValue={
+                    dataSelected &&
+                    dataSelected.service &&
+                    dataSelected.service.id
+                      ? dataSelected.service.id
+                      : ""
+                  }
                   onChange={(e) => handleChange(e)}
                   style={{ width: "163px" }}
                 >
@@ -133,6 +224,11 @@ const MPersona = ({ openModal, setOpenModal }) => {
                 <input
                   type="number"
                   name="percent"
+                  defaultValue={
+                    dataSelected && dataSelected.percent
+                      ? dataSelected.percent
+                      : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -141,6 +237,11 @@ const MPersona = ({ openModal, setOpenModal }) => {
                 <input
                   type="number"
                   name="amount"
+                  defaultValue={
+                    dataSelected && dataSelected.amount
+                      ? dataSelected.amount
+                      : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -149,6 +250,11 @@ const MPersona = ({ openModal, setOpenModal }) => {
                 <input
                   type="number"
                   name="quantity"
+                  defaultValue={
+                    dataSelected && dataSelected.quantity
+                      ? dataSelected.quantity
+                      : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -157,9 +263,19 @@ const MPersona = ({ openModal, setOpenModal }) => {
               <button className="botones" onClick={closeModal}>
                 Cancelar
               </button>
-              <button className="botones" onClick={crearDescuentoParticular}>
-                Agregar
-              </button>
+
+              {editar ? (
+                <button
+                  className="botones"
+                  onClick={actualizarDescuentoParticular}
+                >
+                  Editar
+                </button>
+              ) : (
+                <button className="botones" onClick={crearDescuentoParticular}>
+                  Agregar
+                </button>
+              )}
             </div>
           </div>
         </div>

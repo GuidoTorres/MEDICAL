@@ -89,7 +89,7 @@ const Estadistica = () => {
                       value=""
                       id="flexCheckDefault"
                     />
-                    <label>Seleccionar Clinica</label>
+                    <label>Seleccionar Clínica</label>
                   </div>
                   <select
                     className="form-select"

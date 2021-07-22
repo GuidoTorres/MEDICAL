@@ -41,7 +41,7 @@ const Usuarios = ({ history }) => {
 
   const columnas = [
     {
-      name: "Item",
+      name: "Ítem",
       selector: "id",
       sortable: true,
       style: {
@@ -86,7 +86,7 @@ const Usuarios = ({ history }) => {
       },
     },
     {
-      name: "Telefono",
+      name: "Teléfono",
       selector: (row) => (row.phone ? row.phone : ""),
       sortable: true,
       sortable: true,

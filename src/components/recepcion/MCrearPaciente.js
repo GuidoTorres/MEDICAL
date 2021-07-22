@@ -25,6 +25,8 @@ const MCrearPaciente = ({
   const [religions, setReligions] = useState({});
   const [company, setCompany] = useState({});
   const [departamentos, setDepartamentos] = useState({});
+  const [provinces, setProvinces] = useState({});
+  const [districts, setDistricts] = useState();
 
   const closeModal = () => {
     setAddRegistro(false);
@@ -43,6 +45,8 @@ const MCrearPaciente = ({
       district_id: 1,
     });
   };
+
+  console.log(paciente);
 
   const getDepartments = () => {
     fetchGETPOSTPUTDELETE("departamentos")
@@ -195,7 +199,30 @@ const MCrearPaciente = ({
     );
   };
 
-  console.log(dataSelected);
+  const getProvinces = () => {
+    const provincias =
+      departamentos.length > 0 &&
+      departamentos.filter((data) =>
+        data.id === Number(paciente.department_id) 
+      );
+
+    setProvinces(provincias);
+
+    const distrito =
+      provinces &&
+      provinces.provinces &&
+      provinces.provinces.filter(
+        (data) => data.department_id === Number(paciente.province_id)
+      );
+
+    setDistricts(distrito);
+  };
+
+  useEffect(() => {
+    getProvinces();
+  }, [paciente]);
+
+  console.log(districts);
 
   return (
     <Modal
@@ -352,36 +379,52 @@ const MCrearPaciente = ({
                 <label htmlFor="">País: </label>
                 <select name="country_id" onChange={(e) => handleChange(e)}>
                   <option value="">Seleccione</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option value="1">Perú</option>
                 </select>
               </div>
               <div>
                 <label htmlFor="">Departmento:</label>
                 <select name="department_id" onChange={(e) => handleChange(e)}>
                   <option value="">Seleccione</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+
+                  {departamentos.length > 0 &&
+                    departamentos.map((data, i) => (
+                      <option value={data.id}>{data.name}</option>
+                    ))}
                 </select>
               </div>
               <div>
                 <label htmlFor="">Provincia:</label>
-                <select>
+                <select name="province_id" onChange={(e) => handleChange(e)}>
                   <option value="">Seleccione</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  {provinces.length > 0 &&
+                    provinces.map((data, i) =>
+                      data.provinces.map((prov, i) => (
+                        <option key={i} value={prov.department_id}>
+                          {prov.name}
+                        </option>
+                      ))
+                    )}
                 </select>
               </div>
               <div>
                 <label htmlFor="">Distrito: </label>
                 <select name="district_id" onChange={(e) => handleChange(e)}>
                   <option value="">Seleccione</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  {provinces.length > 0 &&
+                    provinces.map(
+                      (data, i) =>
+                        data.provinces &&
+                        data.provinces.map(
+                          (prov, i) =>
+                            prov.districs &&
+                            prov.districs.map((dis, i) => (
+                              <option key={i} value={dis.id}>
+                                {dis.name}
+                              </option>
+                            ))
+                        )
+                    )}
                 </select>
               </div>
             </div>
@@ -391,9 +434,7 @@ const MCrearPaciente = ({
                 <label htmlFor="">País: </label>
                 <select>
                   <option selected>Seleccione</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option value="1">Perú</option>
                 </select>
               </div>
 
@@ -451,9 +492,10 @@ const MCrearPaciente = ({
                   onChange={(e) => handleChange(e)}
                 >
                   <option selected>Seleccione</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option value="1">Soltero</option>
+                  <option value="2">Casado</option>
+                  <option value="3">Divorciado</option>
+                  <option value="4">Viudo</option>
                 </select>
               </div>
 
@@ -461,9 +503,9 @@ const MCrearPaciente = ({
                 <label htmlFor="">Grado de instrucción:</label>
                 <select name="grade_id" onChange={(e) => handleChange(e)}>
                   <option value="">Seleccione</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option value="1">Primaria</option>
+                  <option value="2">Secundaria</option>
+                  <option value="3">Superior</option>
                 </select>
               </div>
 

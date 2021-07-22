@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import DataTable from 'react-data-table-component';
-import Swal from 'sweetalert2';
+import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
 
-import { paginacionOpciones } from '../../../helpers/tablaOpciones';
-import { fetchGETPOSTPUTDELETE } from '../../../helpers/fetch';
+import { paginacionOpciones } from "../../../helpers/tablaOpciones";
+import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
 
-import MRegistroClinica from './MRegistroClinica';
+import MRegistroClinica from "./MRegistroClinica";
 
 const RegistroClinica = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [editar, setEditar] = useState(false);
   const [dataSelected, setDataSelected] = useState();
@@ -18,7 +18,7 @@ const RegistroClinica = () => {
   const [metGetClinic, setMetGetClinic] = useState([]);
 
   const getClinica = () => {
-    fetchGETPOSTPUTDELETE('clinics')
+    fetchGETPOSTPUTDELETE("clinics")
       .then((data) => data.json())
       .then((datos) => {
         setMetGetClinic(datos.data);
@@ -32,84 +32,84 @@ const RegistroClinica = () => {
   // console.log(metGetClinic);
   const columnas = [
     {
-      name: 'Item',
-      selector: 'id',
+      name: "Ítem",
+      selector: "id",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Razón social',
+      name: "Razón social",
       selector: (row) =>
         row.corporation && row.corporation.business_name
           ? row.corporation.business_name
-          : '',
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'RUC',
+      name: "RUC",
       selector: (row) =>
-        row.corporation && row.corporation.ruc ? row.corporation.ruc : '',
+        row.corporation && row.corporation.ruc ? row.corporation.ruc : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Responsable',
+      name: "Responsable",
       selector: (row) =>
         row.corporation && row.corporation.contacts[0]
           ? row.corporation.contacts[0].name
-          : '',
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Teléfono',
+      name: "Teléfono",
       selector: (row) =>
         row.corporation && row.corporation.contacts[0]
           ? row.corporation.contacts[0].phone
-          : '',
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Correo',
+      name: "Correo",
       selector: (row) =>
         row.corporation && row.corporation.contacts[0]
           ? row.corporation.contacts[0].email
-          : '',
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Actividad',
+      name: "Actividad",
       selector: (row) =>
-        row.clinic_type_id === 1 ? 'Toman muestra' : 'Procesan muestra ',
+        row.clinic_type_id === 1 ? "Toman muestra" : "Procesan muestra ",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Editar',
+      name: "Editar",
       button: true,
       cell: (e) => (
         <button onClick={() => handleEditar(e)} className="table__tablebutton">
@@ -118,7 +118,7 @@ const RegistroClinica = () => {
       ),
     },
     {
-      name: 'Eliminar',
+      name: "Eliminar",
       button: true,
       cell: (e) => (
         <button
@@ -140,19 +140,19 @@ const RegistroClinica = () => {
           return (
             data.corporation.ruc.toString().includes(busqueda) ||
             data.corporation.business_name
-              .normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '')
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
               .toLocaleLowerCase()
               .includes(busqueda) ||
             data.corporation.contacts[0].name
-              .normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '')
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
               .toLocaleLowerCase()
               .includes(busqueda) ||
             data.corporation.contacts[0].phone.toString().includes(busqueda) ||
             data.corporation.contacts[0].email
-              .normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '')
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
               .toLocaleLowerCase()
               .includes(busqueda)
           );
@@ -178,22 +178,22 @@ const RegistroClinica = () => {
   const handleEliminar = (e) => {
     // console.log(e.corporation.business_name);
     Swal.fire({
-      title: '¿Desea eliminar?',
+      title: "¿Desea eliminar?",
       text: `${e.corporation.business_name}`,
-      icon: 'info',
+      icon: "info",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Eliminar',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetchGETPOSTPUTDELETE(`clinics/${e.id}`, {}, 'DELETE').then(
+        fetchGETPOSTPUTDELETE(`clinics/delete/${e.id}`, {}, "DELETE").then(
           (result) => {
             if (result.status === 204) {
               Swal.fire(
-                'Eliminado!',
-                'Se ha eliminado correctamente.',
-                'success'
+                "Eliminado!",
+                "Se ha eliminado correctamente.",
+                "success"
               ).then((resp) => {
                 if (resp.isConfirmed) {
                   getClinica();
@@ -201,12 +201,12 @@ const RegistroClinica = () => {
               });
             } else {
               Swal.fire({
-                icon: 'error',
-                title: '!Ups¡',
-                text: 'Algo salió mal.',
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Cerrar',
+                icon: "error",
+                title: "!Ups¡",
+                text: "Algo salió mal.",
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Cerrar",
               });
             }
           }
@@ -231,11 +231,11 @@ const RegistroClinica = () => {
             </div>
             <div>
               <label>
-                Agregar clinica{' '}
+                Agregar clínica{" "}
                 <i
                   className="fas fa-plus-circle"
                   onClick={handleAddRegistro}
-                ></i>{' '}
+                ></i>{" "}
               </label>
             </div>
           </div>
@@ -246,6 +246,8 @@ const RegistroClinica = () => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
+            striped
+            highlightOnHover
             fixedHeaderScrollHeight="100%"
             noDataComponent={<i className="fas fa-inbox table__icono"></i>}
           />

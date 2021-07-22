@@ -29,7 +29,7 @@ const Usuario = () => {
 
   const columnas = [
     {
-      name: 'Item',
+      name: 'Ítem',
       selector: 'id',
       sortable: true,
       style: {
@@ -232,6 +232,8 @@ const Usuario = () => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
+            striped
+            highlightOnHover
             fixedHeaderScrollHeight="100%"
             noDataComponent={
               <div className="spinner">

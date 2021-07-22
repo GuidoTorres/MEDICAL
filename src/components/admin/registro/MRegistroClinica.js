@@ -840,7 +840,7 @@ const MRegistroClinica = ({
                   />
                 </div>
                 <div>
-                  <label>Horario final de atenciónes</label>
+                  <label>Horario final de atención</label>
                   <input
                     type="time"
                     name="closing"
