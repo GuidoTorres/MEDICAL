@@ -6,10 +6,10 @@ const GraficoBarra = () => {
     <div style={{ width: '100%', height: '50%' }}>
       <Bar
         data={{
-          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+          labels: ['Antígeno', 'Eclea', 'Rápida', 'Molecular', 'RT-PCR'],
           datasets: [
             {
-              label: 'evaluacion',
+              label: 'Número de evaluaciones por periodo de tiempo',
               data: [12, 19, 3, 5, 2, 3],
               // backgroundColor: [
               //   '#ff4c4c',

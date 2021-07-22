@@ -24,6 +24,8 @@ const MGenerarAtencion = ({
   const [ficha, setFicha] = useState({});
   const [services, setServices] = useState({});
   const [clinics, setClinics] = useState({});
+  const [departamentos, setDepartamentos] = useState({});
+
 
   const getServices = () => {
     fetchGETPOSTPUTDELETE("services")
@@ -35,6 +37,7 @@ const MGenerarAtencion = ({
       .then((res) => res.json())
       .then((res) => setClinics(res.data));
   };
+
   useEffect(() => {
     getServices();
     getClinics();
@@ -43,25 +46,32 @@ const MGenerarAtencion = ({
   const getFecha = () => {
     let newDate = new Date();
     let date = newDate.getDate();
-    let month = newDate.toLocaleString("default", { month: "long" });
+    let month = newDate.getMonth()+1;
     let year = newDate.getFullYear();
 
-    return `${date}${" de "}${month}${" "}${"de "}${year}`;
+    return `${year}${"-"}${month > 9 ? month : "0" + month}${"-"}${date >0 ? date : "0" + date}`;
   };
-  
-  console.log(dataSelected);
+
+  const getHora = () => {
+    var d = new Date();
+    var h = d.getHours();
+    var m = d.getMinutes();
+    var s = d.getSeconds();
+    return `${h > 9 ? h : "0" + h}${":"}${m > 9 ? m : "0" + m}${":"}${
+      s > 9 ? s : "0" + s
+    }`;
+  };
+
 
   const crearAtencion = () => {
     const formData = new FormData();
     formData.set("date_attention", getFecha() || "");
-    formData.set("time_attention", getFecha() || "");
+    formData.set("time_attention", getHora() || "");
     formData.set("people_id", dataSelected.id || "");
     formData.set("service_id", datos.service_id || "");
     formData.set("clinic_id", 1 || "");
     formData.set("codebar", dataSelected.id);
-    // formData.set("forms", "");
 
-    // formData.set("user_type_id ", 2)
 
     fetchGETPOSTPUTDELETE("attention", formData, "POST").then((res) => {
       console.log(res);

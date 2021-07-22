@@ -16,7 +16,7 @@ const Historial = () => {
 
   const getAttention = () => {
     //falta servicio
-    fetchGETPOSTPUTDELETE("attention_history")
+    fetchGETPOSTPUTDELETE("attention")
       .then((data) => data.json())
       .then((datos) => setAttention(datos.data));
   };
@@ -44,7 +44,7 @@ const Historial = () => {
 
   const columnas = [
     {
-      name: "Item",
+      name: "Ítem",
       selector: "id",
       sortable: true,
       style: {

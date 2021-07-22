@@ -1,0 +1,86 @@
+.EditarServicioFlex {
+  display: flex;
+  flex-direction: column;
+
+  .contenedor1 {
+    div {
+      display: flex;
+      flex-direction: column;
+      h6 {
+      }
+    }
+  }
+
+  .contenedor2 {
+    div {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .btnContainer {
+    margin-top: 10px;
+
+    button {
+      margin-top: 10px;
+    }
+  }
+}
+
+@media screen and (min-width: 650px) {
+  .EditarServicioFlex {
+    .contenedor1 {
+      div {
+        flex-direction: row;
+        align-items: center;
+        h6 {
+          width: 50%;
+        }
+      }
+    }
+
+    .contenedor2 {
+      div {
+        flex-direction: row;
+        align-items: center;
+        h6 {
+          width: 50%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 950px) {
+  .EditarServicioFlex {
+    flex-direction: row;
+
+    .contenedor1 {
+      width: 50%;
+      margin-right: 10px;
+
+      div {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    .contenedor2 {
+      margin-left: 10px;
+      width: 50%;
+      div {
+        flex-direction: row;
+      }
+    }
+
+    .btnContainer {
+      display: flex;
+      justify-content: flex-end;
+
+      button:nth-child(1) {
+        margin-top: 10px;
+        margin-right: 10px;
+      }
+    }
+  }
+}

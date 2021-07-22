@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import {
-  fetchGETPOSTPUTDELETEJSON,
-} from "../../helpers/fetch";
+import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 import Swal from "sweetalert2";
-
 
 import { customStyles } from "../../helpers/tablaOpciones";
 
@@ -23,37 +20,35 @@ const MSubirLaboratorio = ({
   console.log(result);
 
   const postResults = () => {
+    fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) => {
+      console.log(data);
 
-    fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) =>
-      {console.log(data)
-      
-        if (data.status === 200) {
-          closeModal();
-          Swal.fire({
-            icon: "success",
-            title: "Éxito",
-            text: "Se cargo el resultado correctamente.",
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Aceptar",
-          }).then((resp) => {
-            if (resp.isConfirmed) {
-              getAtencion();
-            }
-          });
-        } else {
-          closeModal();
-          Swal.fire({
-            icon: "error",
-            title: "!Ups¡",
-            text: "Algo salió mal.",
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Cerrar",
-          });
-        }
+      if (data.status === 200) {
+        closeModal();
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se cargo el resultado correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getAtencion();
+          }
+        });
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
       }
-    );
+    });
   };
 
   console.log(result);

@@ -10,16 +10,19 @@ const Estadisticas = () => {
   const data = {
     labels: [
       estadisticas && estadisticas.labels && estadisticas.labels[0]
-        ? "eclea"
+        ? "Eclia"
         : "",
       estadisticas && estadisticas.labels && estadisticas.labels[1]
-        ? "rapida"
+        ? "Rápida"
         : "",
       estadisticas && estadisticas.labels && estadisticas.labels[2]
-        ? "molecular"
+        ? "Molecular"
         : "",
       estadisticas && estadisticas.labels && estadisticas.labels[3]
-        ? "antígeno"
+        ? "Antígeno"
+        : "",
+        estadisticas && estadisticas.labels && estadisticas.labels[3]
+        ? "RT-PCR"
         : "",
     ],
     datasets: [

@@ -31,13 +31,14 @@ const MDescargar = ({ openDescarga, setOpenDescarga, dataSelected }) => {
       isOpen={openDescarga}
       onRequestClose={closeModal}
       style={customStyles}
-      className="modal modal__hprecio"
+      className="modal 
+      mlaboratorio__historial"
       overlayClassName="modal-fondo"
       closeTimeoutMS={200}
       preventScroll={true}
       ariaHideApp={false}
     >
-      <h3 className="title__modal">Descargar Historial de precios</h3>
+      <h3 className="title__modal">Descargar Historial </h3>
       <div className="container">
         <div className="row mt-3">
           <div className="col-12 mregistro__servicios">

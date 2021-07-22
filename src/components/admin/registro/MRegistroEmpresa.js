@@ -55,9 +55,6 @@ const MRegistroEmpresa = ({
     }
   }, [empresa.ruc]);
 
-  console.log(dataSelected);
-  console.log(empresa);
-
   const postCorporation = (e) => {
     const formData = new FormData();
 
@@ -282,7 +279,7 @@ const MRegistroEmpresa = ({
         ? dataSelected.services[0].id
         : ""
     );
-    formData.set("services[0][state]", 0);
+    formData.set("services[0][state]", 1);
 
     formData.set(
       "services[1][service_id]",
@@ -295,7 +292,7 @@ const MRegistroEmpresa = ({
         ? dataSelected.services[1].id
         : ""
     );
-    formData.set("services[1][state]", 0);
+    formData.set("services[1][state]", 1);
 
     formData.set(
       "services[2][service_id]",
@@ -308,7 +305,7 @@ const MRegistroEmpresa = ({
         ? dataSelected.services[2].id
         : ""
     );
-    formData.set("services[2][state]", 0);
+    formData.set("services[2][state]", 1);
 
     formData.set(
       "services[3][service_id]",
@@ -321,7 +318,7 @@ const MRegistroEmpresa = ({
         ? dataSelected.services[3].id
         : ""
     );
-    formData.set("services[3][state]", 0);
+    formData.set("services[3][state]", 1);
 
     fetchGETPOSTPUTDELETE(
       `company/update/${dataSelected.id}`,
@@ -750,7 +747,7 @@ const MRegistroEmpresa = ({
                         servicios[0].services.map((data, i) => (
                           <>
                             <input
-                            key={i}
+                              key={i}
                               type="checkbox"
                               className="w-auto"
                               defaultChecked={
@@ -761,7 +758,6 @@ const MRegistroEmpresa = ({
                                   : false
                               }
                               onChange={(e) =>
-                                
                                 setEmpresa({
                                   ...empresa,
                                   [`service_id${data.id}`]: e.target.checked

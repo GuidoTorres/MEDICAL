@@ -29,7 +29,7 @@ const Registro = () => {
 
   const columnas = [
     {
-      name: "Item",
+      name: "Ítem",
       selector: "id",
       sortable: true,
       style: {
@@ -69,7 +69,7 @@ const Registro = () => {
       },
     },
     {
-      name: "Telefono",
+      name: "Teléfono",
       selector: (row) =>
         row.corporation && row.corporation.contacts[0]
           ? row.corporation.contacts[0].phone

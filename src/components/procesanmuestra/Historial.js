@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 
 import { historial } from "../../data/PHistorial";
-import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import {
+  fetchGETPOSTPUTDELETE,
+  fetchGETPOSTPUTDELETEJSON,
+} from "../../helpers/fetch";
 import { paginacionOpciones } from "../../helpers/tablaOpciones";
 
 const Historial = () => {
   const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
-
   const [getDateAttention, setGetDateAttention] = useState([]);
 
   //usar historial results
@@ -25,7 +27,7 @@ const Historial = () => {
     getAttention();
   }, []);
 
-  console.log(getDateAttention);
+  
 
   const columnas = [
     {
@@ -171,7 +173,6 @@ const Historial = () => {
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
-
 
   return (
     <div className="container">

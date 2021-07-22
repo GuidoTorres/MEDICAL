@@ -251,7 +251,7 @@ const MRegistroClinica = ({
         : ""
     );
     formData.set(
-      "map_length]",
+      "map_length",
       dataMapa
         ? dataMapa.lng
         : dataSelected &&
@@ -840,7 +840,7 @@ const MRegistroClinica = ({
                   />
                 </div>
                 <div>
-                  <label>Horario final de atenciónes</label>
+                  <label>Horario final de atención</label>
                   <input
                     type="time"
                     name="closing"

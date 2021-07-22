@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
-import Swal from 'sweetalert2';
-import { empresa } from '../../data/AVEmpresa';
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
+import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
+import { empresa } from "../../data/AVEmpresa";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 
 // import { servicio } from '../../data/AVServicio';
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import { paginacionOpciones } from "../../helpers/tablaOpciones";
+import MEmpresa from "./MEmpresa";
 
-const Empresa = () => {
-  const [busqueda, setBusqueda] = useState('');
+const Empresa = ({getServicio}) => {
+  const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
-
   const [metGetClinic, setMetGetClinic] = useState([]);
+  const [dataSelected, setDataSelected] = useState({});
+  const [editar, setEditar] = useState(false);
 
   const getClinica = () => {
-    fetchGETPOSTPUTDELETE('company_discount')
+    fetchGETPOSTPUTDELETE("company_discount")
       .then((data) => data.json())
       .then((datos) => {
         setMetGetClinic(datos.data);
@@ -26,55 +28,64 @@ const Empresa = () => {
     getClinica();
   }, []);
 
-
   const columnas = [
     {
-      name: 'Item',
-      selector: 'id',
+      name: "Item",
+      selector: "id",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Empresa',
-      selector: row => row.corporation && row.corporation.business_name ? row.corporation.business_name : "",
+      name: "Empresa",
+      selector: (row) =>
+        row.corporation && row.corporation.business_name
+          ? row.corporation.business_name
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Tipo de prueba',
-      selector: row => row.services && row.services[0].name ? row.services[0].name : "",
+      name: "Tipo de prueba",
+      selector: (row) =>
+        row.services && row.services[0].name ? row.services[0].name : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Descuento',
-      selector: row => row.services && row.services[0].last_discount ? row.services[0].last_discount.percent : "",
+      name: "Descuento",
+      selector: (row) =>
+        row.services && row.services[0].last_discount
+          ? row.services[0].last_discount.percent
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Total',
-      selector: row => row.services && row.services[0].last_discount ? row.services[0].last_discount.amount : "",
+      name: "Total",
+      selector: (row) =>
+        row.services && row.services[0].last_discount
+          ? row.services[0].last_discount.amount
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Editar',
+      name: "Editar",
       button: true,
       cell: (e) => (
         <button onClick={() => handleEditar(e)} className="table__tablebutton">
@@ -83,7 +94,7 @@ const Empresa = () => {
       ),
     },
     {
-      name: 'Eliminar',
+      name: "Eliminar",
       button: true,
       cell: (e) => (
         <button
@@ -100,8 +111,8 @@ const Empresa = () => {
     const filtrarElemento = () => {
       const search = empresa.filter((data) => {
         return data.empresa
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
           .toLocaleLowerCase()
           .includes(busqueda);
       });
@@ -112,16 +123,16 @@ const Empresa = () => {
 
   const handleEliminar = (e) => {
     Swal.fire({
-      title: '¿Desea eliminar?',
+      title: "¿Desea eliminar?",
       text: `${e.empresa}`,
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Eliminar',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire('Eliminado!', 'Se ha eliminado correctamente.', 'success');
+        Swal.fire("Eliminado!", "Se ha eliminado correctamente.", "success");
       }
     });
   };
@@ -132,8 +143,10 @@ const Empresa = () => {
     setOpenModal(true);
   };
 
-  const handleEditar = () => {
+  const handleEditar = (e) => {
     setOpenModal(true);
+    setDataSelected(e);
+    setEditar(true);
   };
 
   return (
@@ -163,6 +176,19 @@ const Empresa = () => {
           />
         </div>
       </div>
+
+      {openModal && (
+        <MEmpresa
+          setOpenModal={setOpenModal}
+          openModal={openModal}
+          dataSelected={dataSelected}
+          setDataSelected={setDataSelected}
+          editar={editar}
+          setEditar={setEditar}
+          getClinica={getClinica}
+          getServicio={getServicio}
+        />
+      )}
     </div>
   );
 };
