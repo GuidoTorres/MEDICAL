@@ -21,7 +21,7 @@ const Estadisticas = () => {
       estadisticas && estadisticas.labels && estadisticas.labels[3]
         ? "Antígeno"
         : "",
-        estadisticas && estadisticas.labels && estadisticas.labels[3]
+      estadisticas && estadisticas.labels && estadisticas.labels[3]
         ? "RT-PCR"
         : "",
     ],
@@ -32,9 +32,9 @@ const Estadisticas = () => {
         fill: true,
         backgroundColor: [
           "rgba(75,192,192,0.2)",
-          "rgb(255, 99, 132)",
-          "rgb(54, 162, 235)",
-          "rgb(255, 205, 86)",
+          "rgba(75,192,192,0.2)",
+          "rgba(75,192,192,0.2)",
+          "rgba(75,192,192,0.2)",
         ],
         borderColor: "rgba(75,192,192,1)",
       },

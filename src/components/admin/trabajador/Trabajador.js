@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import DataTable from 'react-data-table-component';
-import Swal from 'sweetalert2';
+import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
 
-import { fetchGETPOSTPUTDELETE } from '../../../helpers/fetch';
-import { paginacionOpciones } from '../../../helpers/tablaOpciones';
-import MTrabajador from './MTrabajador';
+import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
+import { paginacionOpciones } from "../../../helpers/tablaOpciones";
+import MTrabajador from "./MTrabajador";
 
 const Trabajador = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [getTrabajador, setGetTrabajador] = useState([]);
   const [openModal, setOpenModal] = useState(false);
@@ -17,7 +17,7 @@ const Trabajador = () => {
   const [trabajadores, setTrabajador] = useState([]);
 
   const getEmployee = () => {
-    fetchGETPOSTPUTDELETE('employees')
+    fetchGETPOSTPUTDELETE("employees")
       .then((info) => info.json())
       .then((datos) => setTrabajador(datos));
   };
@@ -27,34 +27,34 @@ const Trabajador = () => {
 
   const columnas = [
     {
-      name: 'Ítem',
-      selector: 'user_id',
+      name: "Ítem",
+      selector: "user_id",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Tipo',
-      selector: (row) => (row.type ? row.type : ''),
+      name: "Tipo",
+      selector: (row) => (row.type ? row.type : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Nombre',
-      selector: (row) => (row.name ? row.name : ''),
+      name: "Nombre",
+      selector: (row) => (row.name ? row.name : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Editar',
+      name: "Editar",
       button: true,
       cell: (e) => (
         <button onClick={() => handleEditar(e)} className="table__tablebutton">
@@ -63,7 +63,7 @@ const Trabajador = () => {
       ),
     },
     {
-      name: 'Eliminar',
+      name: "Eliminar",
       button: true,
       cell: (e) => (
         <button
@@ -83,13 +83,13 @@ const Trabajador = () => {
       const search = trabajadores.filter((data) => {
         return (
           data.fullName
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.type
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda)
         );
@@ -107,25 +107,25 @@ const Trabajador = () => {
   };
   const handleEliminar = (e) => {
     Swal.fire({
-      title: '¿Desea eliminar?',
-      text: `${e.name ? e.name : ''}`,
-      icon: 'info',
+      title: "¿Desea eliminar?",
+      text: `${e.name ? e.name : ""}`,
+      icon: "info",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Eliminar',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetchGETPOSTPUTDELETE(`employees/${e.user_id}`, {}, 'DELETE').then(
+        fetchGETPOSTPUTDELETE(`employees/${e.user_id}`, {}, "DELETE").then(
           (result) => {
             if (result.status === 204) {
               Swal.fire({
-                icon: 'success',
-                title: 'Éxito',
-                text: 'Se elimino el trabajador correctamente.',
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Aceptar',
+                icon: "success",
+                title: "Éxito",
+                text: "Se elimino el trabajador correctamente.",
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Aceptar",
               }).then((resp) => {
                 if (resp.isConfirmed) {
                   getEmployee();
@@ -133,12 +133,12 @@ const Trabajador = () => {
               });
             } else {
               Swal.fire({
-                icon: 'error',
-                title: '!Ups¡',
-                text: 'Algo salió mal.',
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Cerrar',
+                icon: "error",
+                title: "!Ups¡",
+                text: "Algo salió mal.",
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Cerrar",
               });
             }
           }
@@ -169,11 +169,11 @@ const Trabajador = () => {
             </div>
             <div>
               <label>
-                Agregar trabajador{' '}
+                Agregar trabajador{" "}
                 <i
                   className="fas fa-plus-circle"
                   onClick={handleAddRegistro}
-                ></i>{' '}
+                ></i>{" "}
               </label>
             </div>
           </div>
@@ -184,11 +184,13 @@ const Trabajador = () => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="500px"
+            striped
+            highlightOnHover
+            fixedHeaderScrollHeight="100%"
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: 'lightgrey' }}>No hay datos</p>
+                <p style={{ color: "lightgrey" }}>No hay datos</p>
               </div>
             }
           />
