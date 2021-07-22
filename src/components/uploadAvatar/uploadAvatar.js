@@ -15,7 +15,7 @@ const UploadAvatar = ({ setAvatar, avatar, editar, dataSelected }) => {
     onDrop,
   });
   return (
-    <div className="image__upload" {...getRootProps()}>
+    <div className="image__upload" {...getRootProps()} >
       <input {...getInputProps()} />
       {isDragActive ? (
         <img
@@ -26,6 +26,7 @@ const UploadAvatar = ({ setAvatar, avatar, editar, dataSelected }) => {
       ) : editar && dataSelected && dataSelected.corporation &&dataSelected.corporation.logo ? (
         <img
           className="image__avatar"
+          style={{width:'80%'}}
           src={
             dataSelected.corporation.logo ? dataSelected.corporation.logo : ""
           }
