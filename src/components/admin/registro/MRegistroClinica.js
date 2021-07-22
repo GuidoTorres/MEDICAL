@@ -36,7 +36,7 @@ const MRegistroClinica = ({
       .then((res) => setRuc(res));
   };
 
-  console.log(data);
+  console.log(dataSelected);
 
   const postClinics = (e) => {
     const formData = new FormData();
@@ -208,7 +208,14 @@ const MRegistroClinica = ({
         ? dataSelected.corporation.commercial_name
         : ""
     );
-    formData.set("logo", avatar ? avatar.file : "");
+    formData.set(
+      "logo",
+      avatar
+        ? avatar.file
+        : dataSelected &&
+            dataSelected.corporation &&
+            dataSelected.corporation.logo
+    );
     formData.set(
       "address",
       data.address
