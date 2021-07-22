@@ -218,7 +218,9 @@ const Persona = () => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="500px"
+            striped
+            highlightOnHover
+            fixedHeaderScrollHeight="100%"
             noDataComponent={<i className="fas fa-inbox table__icono"></i>}
           />
         </div>
@@ -230,7 +232,7 @@ const Persona = () => {
           dataSelected={dataSelected}
           setDataSelected={setDataSelected}
           editar={editar}
-          setEditar ={setEditar}
+          setEditar={setEditar}
           getParticularDiscount={getParticularDiscount}
         />
       )}

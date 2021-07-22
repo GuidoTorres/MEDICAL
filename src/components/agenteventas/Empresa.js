@@ -8,7 +8,7 @@ import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 import { paginacionOpciones } from "../../helpers/tablaOpciones";
 import MEmpresa from "./MEmpresa";
 
-const Empresa = ({getServicio}) => {
+const Empresa = ({ getServicio }) => {
   const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
@@ -171,7 +171,9 @@ const Empresa = ({getServicio}) => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="500px"
+            striped
+            highlightOnHover
+            fixedHeaderScrollHeight="100%"
             noDataComponent={<i className="fas fa-inbox table__icono"></i>}
           />
         </div>
