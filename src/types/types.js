@@ -6,6 +6,8 @@ const types = {
   authStartRegister: '[auth] Start register',
   authStartTokenRenew: '[auth] Start token renew',
   authLogout: '[auth] Logout',
+
+  organizador: '[organizador] organizador',
 };
 
 export { types };

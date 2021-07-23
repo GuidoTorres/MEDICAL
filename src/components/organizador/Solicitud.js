@@ -2,13 +2,37 @@ import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
-import { solicitud } from '../../data/OSolicitud';
-import { useHistory } from 'react-router-dom';
+import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
+import OMLista from './OMLista';
+import { useDispatch, useSelector } from 'react-redux';
+import { lista, listarOrganizador } from '../../actions/organizador';
 
 const Solicitud = () => {
-  const history = useHistory();
   const [busqueda, setBusqueda] = useState('');
-  const [listRegistro, setListRegistro] = useState([]);
+  const [listRegistro, setListRegistro] = useState({});
+  const [oranizadorxd, setOranizadorxd] = useState([]);
+  const [modalList, setModalList] = useState(false);
+  const [search, setSearch] = useState([]);
+
+  const getSolicitudes = () => {
+    // const dispatch = useDispatch()
+    fetchGETPOSTPUTDELETEJSON('reservation/organizer')
+      .then((data) => data.json())
+      .then((datos) => setOranizadorxd(datos.data));
+  };
+  // console.log(listOrganizador);
+  const abrirModal = (e) => {
+    fetchGETPOSTPUTDELETEJSON(`reservation/get/${e.id}`)
+      .then((data) => data.json())
+      .then((resultados) => setListRegistro(resultados));
+    // dispatch(lista(123456));
+    // console.log(dispatch);
+    // setModalList(true);
+  };
+
+  useEffect(() => {
+    getSolicitudes();
+  }, []);
 
   const columnas = [
     {
@@ -21,35 +45,17 @@ const Solicitud = () => {
       },
     },
     {
+      name: 'Usuario',
+      selector: (row) => (row ? row.users.username : ''),
+      sortable: true,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
       name: 'Distrito',
-      selector: 'distrito',
-      sortable: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
-    },
-    {
-      name: 'Tipo de servicio',
-      selector: 'servicio',
-      sortable: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
-    },
-    {
-      name: 'Plan de Atención',
-      selector: 'atencion',
-      sortable: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
-    },
-    {
-      name: 'Número de atenciones',
-      selector: 'numero',
+      selector: (row) => (row ? row.address.district.name : ''),
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -58,7 +64,7 @@ const Solicitud = () => {
     },
     {
       name: 'Fecha solicitada',
-      selector: 'fecha',
+      selector: (row) => (row ? row.attention_date : ''),
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -67,7 +73,7 @@ const Solicitud = () => {
     },
     {
       name: 'Hora solicitada',
-      selector: 'hora',
+      selector: (row) => (row ? row.attention_time : ''),
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -75,13 +81,10 @@ const Solicitud = () => {
       },
     },
     {
-      name: 'Atender',
+      name: 'Atención',
       button: true,
       cell: (e) => (
-        <button
-          onClick={() => handleDetalles(e)}
-          className="table__tablebutton"
-        >
+        <button onClick={() => abrirModal(e)} className="table__tablebutton">
           <i className="fas fa-angle-right"></i>
         </button>
       ),
@@ -90,53 +93,29 @@ const Solicitud = () => {
   //
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = solicitud.filter((data) => {
+      const search = oranizadorxd.filter((data) => {
         return (
-          data.distrito
+          data.address.district.name
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda) ||
-          data.servicio
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.atencion
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.numero.toString().includes(busqueda) ||
-          data.fecha
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.hora
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda)
+          data.attention_date.toString().includes(busqueda) ||
+          data.attention_time.toString().includes(busqueda)
         );
       });
-      setListRegistro(search);
+      setSearch(search);
     };
     filtrarElemento();
-  }, [busqueda]);
-
+  }, [busqueda, oranizadorxd]);
+  console.log(oranizadorxd);
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
-  const handleDetalles = () => {
-    console.log('click');
-    history.push('/organizador/calendario');
-  };
+
   return (
     <div className="container">
       <div className="row">
-        {/* <h3>Horarios disponibles</h3> */}
-
         <div className="table-responsive">
           <div className="adminregistro__option">
             <div>
@@ -149,18 +128,26 @@ const Solicitud = () => {
               />
             </div>
           </div>
-
           <DataTable
             columns={columnas}
-            data={listRegistro}
+            data={search}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="600px"
+            fixedHeaderScrollHeight="100%"
+            highlightOnHover
+            striped
             noDataComponent={<i className="fas fa-inbox table__icono"></i>}
           />
         </div>
       </div>
+      {modalList && (
+        <OMLista
+          modalList={modalList}
+          setModalList={setModalList}
+          listRegistro={listRegistro}
+        />
+      )}
     </div>
   );
 };

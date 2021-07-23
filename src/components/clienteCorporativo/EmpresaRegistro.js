@@ -16,22 +16,20 @@ const EmpresaRegistro = () => {
       .then((res) => res.json())
       .then((res) => setEmployees(res));
   };
-  useEffect(() => {
-    getEmployees();
-  }, []);
 
-  const importarExcel = () => {
-    const formData = new FormData();
-    formData.set('file', loadExcel);
-    fetchGETPOSTPUTDELETE('company_employees/import', formData, 'POST').then(
-      (data) => {
-        data.json();
-      }
-    );
-  };
   useEffect(() => {
+    const importarExcel = () => {
+      const formData = new FormData();
+      formData.set('file', loadExcel);
+      fetchGETPOSTPUTDELETE('company_employees/import', formData, 'POST').then(
+        (data) => {
+          data.json();
+        }
+      );
+    };
     importarExcel();
-  }, []);
+    getEmployees();
+  }, [loadExcel]);
 
   const subidaExcel = (e) => {
     const file = e.target.files[0];
@@ -109,9 +107,7 @@ const EmpresaRegistro = () => {
     {
       name: 'Fecha de Nacimiento',
       selector: (row) =>
-        row.fecha_nacimiento && row.fecha_nacimiento
-          ? row.fecha_nacimiento
-          : '',
+        row.person && row.person.birthday ? row.person.birthday : '',
       sortable: true,
       style: {
         color: '#8f9196',
@@ -155,7 +151,7 @@ const EmpresaRegistro = () => {
     setIsOpen(true);
   };
   const handleEliminar = (e) => {
-    console.log(e);
+    // console.log(e);
     Swal.fire({
       title: '¿Desea eliminar?',
       text: `${e.dni}`,
@@ -213,12 +209,6 @@ const EmpresaRegistro = () => {
             <div className="">
               <input type="file" onClick={subidaExcel} />
             </div>
-            <div>
-              <label>
-                Carga trabajadores
-                <i className="fas fa-upload"></i>
-              </label>
-            </div>
           </div>
           <DataTable
             className="dataTable"
@@ -231,6 +221,7 @@ const EmpresaRegistro = () => {
             fixedHeaderScrollHeight="100%"
             noDataComponent={<i className="fas fa-inbox table__icono"></i>}
             striped
+            highlightOnHover
           />
         </div>
         <EditarDatosTrabajador

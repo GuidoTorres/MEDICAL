@@ -326,7 +326,10 @@ input[type="checkbox"] {
     border: none !important;
   }
 }
-
+.organizador__modal {
+  max-height: 80%;
+  max-width: 80%;
+}
 // TODO MODAL AGENTE VENTAS PERSONA
 .modal__persona {
   max-height: 55%;
@@ -451,13 +454,14 @@ input[type="checkbox"] {
 
 // TODO CORPORTVIO XD
 .modal__corporativoxd {
-  max-height: 90%;
+  max-height: 80%;
   max-width: 90%;
 }
 .modal__corporativopruebas {
   max-height: 65%;
   max-width: 90%;
 }
+
 // TODO AVATAR
 .image__upload {
   align-items: center;

@@ -46,7 +46,7 @@ const Calendario = () => {
         <h3>Horarios disponibles</h3>
         <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
           <div className="barra">
-            <span>Datos del paciente</span>
+            <span>Datos del solicitante</span>
             <div className="organizador__datos">
               <div>
                 <div>
@@ -81,18 +81,6 @@ const Calendario = () => {
                   ></i>
                 </div>
               </div>
-            </div>
-
-            <div className="organizador__transportista">
-              {/* <div> */}
-              <label>Seleccionar transportista</label>
-              <select className="form-select">
-                <option>Open this select menu</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-              {/* </div> */}
             </div>
           </div>
         </div>
@@ -132,23 +120,34 @@ const Calendario = () => {
         </div>
         <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
           <div className="barra">
-            <span className="">Material disponible</span>
-            <div className="organizador__datostransportistas">
-              <div>
-                <label>P. Antigeno(kit):</label>
-                <input type="text" />
-              </div>
-              <div>
-                <label>P. Electroquimioluminiscencia(kit):</label>
-                <input type="text" />
-              </div>
-              <div>
-                <label>P. Inmunocromatografía(kit):</label>
-                <input type="text" />
-              </div>
-              <div>
-                <label>P. RT-PCR en tiempo real(kit):</label>
-                <input type="text" />
+            <div className="organizador__transportista mb-3">
+              <label>Seleccionar transportista</label>
+              <select className="form-select">
+                <option>Seleccionar</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+            </div>
+            <div>
+              <span className="">Material disponible</span>
+              <div className="organizador__datostransportistas">
+                <div>
+                  <label>P. Antigeno(kit):</label>
+                  <input type="text" />
+                </div>
+                <div>
+                  <label>P. Electroquimioluminiscencia(kit):</label>
+                  <input type="text" />
+                </div>
+                <div>
+                  <label>P. Inmunocromatografía(kit):</label>
+                  <input type="text" />
+                </div>
+                <div>
+                  <label>P. RT-PCR en tiempo real(kit):</label>
+                  <input type="text" />
+                </div>
               </div>
             </div>
           </div>

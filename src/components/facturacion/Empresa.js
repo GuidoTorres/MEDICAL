@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import DataTable from "react-data-table-component";
-import { fempresa } from "../../data/FEmpresa";
-import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import DataTable from 'react-data-table-component';
+import { fempresa } from '../../data/FEmpresa';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 
-import { paginacionOpciones } from "../../helpers/tablaOpciones";
-import MEmpresa from "./MEmpresa";
+import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import MEmpresa from './MEmpresa';
 
 const Empresa = () => {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [datos, setDatos] = useState({});
@@ -34,8 +34,8 @@ const Empresa = () => {
       selector: "id",
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
@@ -43,8 +43,8 @@ const Empresa = () => {
       selector: (row) => (row.corporation ? row.corporation.business_name : ""),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
@@ -52,8 +52,8 @@ const Empresa = () => {
       selector: (row) => (row.corporation ? row.corporation.ruc : ""),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
@@ -64,8 +64,8 @@ const Empresa = () => {
           : "",
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
@@ -76,8 +76,8 @@ const Empresa = () => {
           : "",
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
@@ -88,12 +88,12 @@ const Empresa = () => {
           : "",
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Detalles",
+      name: 'Detalles',
       button: true,
       cell: (e) => (
         <button
@@ -111,20 +111,20 @@ const Empresa = () => {
       const search = fempresa.filter((data) => {
         return (
           data.razon
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.ruc.toString().includes(busqueda) ||
           data.responsable
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.telefono.toString().includes(busqueda) ||
           data.correo
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda)
         );

@@ -1,43 +1,38 @@
-import React from "react";
-import Modal from "react-modal";
-// import { customStyles } from "../../../helpers/ModalStyles";
+import React from 'react';
+import Modal from 'react-modal';
+import { customStyles } from '../../../helpers/tablaOpciones';
 
-const Comentarios = ({ modalIsOpen, setIsOpen }) => {
-  function closeModal() {
+const Comentarios = ({ modalIsOpen, setIsOpen, comentarios }) => {
+  const closeModal = () => {
     setIsOpen(false);
-  }
+  };
   return (
     <Modal
       isOpen={modalIsOpen}
-      // onAfterOpen={afterOpenModal}
       onRequestClose={closeModal}
-      // style={customStyles}
+      style={customStyles}
       contentLabel="Example Modal"
+      overlayClassName="modal-fondo"
+      ariaHideApp={false}
     >
-      <div className="modalHeader container">
-        <h2>Comentarios</h2>
-
-        <br></br>
-        <div className="mt-2">
-          <label htmlFor="">Comentarios ligados a la factura:</label>
-          <div class="form-floating mb-3">
-            <input
-              type="email"
-              class="form-control"
-              id="floatingInput"
-              placeholder="name@example.com"
-            />
-            <label for="floatingInput">Email address</label>
+      <div className="container">
+        <h3 className="title__modal">Comentarios</h3>
+        <div>
+          <div>
+            <textarea
+              rows="10"
+              cols="40"
+              disabled
+              value={comentarios.observation}
+            >
+              {comentarios.observation}
+            </textarea>
+            <div className="lista__botones">
+              <button type="button" className="botones" onClick={closeModal}>
+                Cerrar
+              </button>
+            </div>
           </div>
-        </div>
-
-        <div className="btnContainer">
-        <button type="button" class="btn1 btn btn-primary" onClick={closeModal}>
-            Cancelar
-          </button>
-          <button type="button" class="btn1 btn btn-primary">
-            Guardar
-          </button>
         </div>
       </div>
     </Modal>
