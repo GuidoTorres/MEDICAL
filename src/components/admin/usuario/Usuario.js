@@ -27,6 +27,8 @@ const Usuario = () => {
     resp();
   }, []);
 
+  console.log(getUsuario);
+
   const columnas = [
     {
       name: 'Ítem',

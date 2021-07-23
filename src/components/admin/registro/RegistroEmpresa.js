@@ -170,7 +170,7 @@ const RegistroEmpresa = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire('Eliminado!', 'Se ha eliminado correctamente.', 'success');
-        fetchGETPOSTPUTDELETE(`company/delete/${e.id}`, {}, 'DELETE').then(
+        fetchGETPOSTPUTDELETE(`company/delete/${e.id}`, ).then(
           (result) => {
             result.json();
             getCorporations();

@@ -30,9 +30,24 @@ const MEmpresa = ({
       company_id: dataSelected.id,
       services: Object.values(discount),
     };
+
+    const dataEstatica = {
+      company_id: dataSelected.id,
+      credit: 12,
+      before: 12,
+      services: [
+        {
+          amount: "600",
+          state: 1,
+          percent: 50,
+          service_id: 5,
+        },
+      ],
+    };
+
     console.log(data);
-    fetchGETPOSTPUTDELETEJSON("company_discount", data, "POST").then((res) =>
-      console.log(res)
+    fetchGETPOSTPUTDELETEJSON("company_discount", dataEstatica, "POST").then(
+      (res) => console.log(res)
     );
   };
 
@@ -44,7 +59,19 @@ const MEmpresa = ({
     setFilterServices(data);
   };
 
-  const handleChange = () => {};
+  const handleChange = (e, data, i) => {
+    setDiscount({
+      ...discount,
+      [i++]: {
+        [e.target.name]: data.id,
+        status: e.target.checked ? 1 : 0,
+      },
+      [e.target.percent]: e.target.value,
+      [e.target.amount]: e.target.value,
+    });
+  };
+
+  console.log(discount);
 
   useEffect(() => {
     filtrarServicios();
@@ -198,15 +225,16 @@ const MEmpresa = ({
                             name="services"
                             value={data.service_id}
                             id="flexCheckDefault"
-                            onChange={(e) =>
-                              setDiscount((discount) => ({
-                                ...discount,
-                                [i]: {
-                                  service_id: data.id,
-                                  state: e.target.checked ? 1 : 0,
-                                },
-                              }))
-                            }
+                            // onChange={(e) =>
+                            //   setDiscount((discount) => ({
+                            //     ...discount,
+                            //     [i]: {
+                            //       service_id: data.id,
+                            //       state: e.target.checked ? 1 : 0,
+                            //     },
+                            //   }))
+                            // }
+                            onChange={(e) => handleChange(e, data, i)}
                           />
                         </div>
                       </td>
@@ -217,23 +245,26 @@ const MEmpresa = ({
                           class="form-control"
                           placeholder=""
                           aria-label=""
+                          name="percent"
                           defaultValue={
                             data.last_discount && data.last_discount.percent
                               ? data.last_discount.percent
                               : 0
                           }
-                          onChange={(e) =>
-                            setDiscount((discount) => [
-                              {
-                                ...discount,
+                          // onChange={(e) =>
+                          //   setDescuento((descuento) => [
+                          //     {
+                          //       ...descuento,
 
-                                [i]: {
-                                  ...discount[i],
-                                  percent: e.target.value,
-                                },
-                              },
-                            ])
-                          }
+                          //       [i]: {
+                          //         ...discount[i],
+                          //         percent: e.target.value,
+                          //       },
+                          //     },
+                          //   ])
+                          // }
+
+                          onChange={handleChange}
                           aria-describedby="basic-addon1"
                         />
                       </td>
@@ -244,22 +275,24 @@ const MEmpresa = ({
                             class="form-control"
                             placeholder=""
                             aria-label=""
+                            name="amount"
                             defaultValue={
                               data.last_discount && data.last_discount.amount
                                 ? data.last_discount.amount
                                 : ""
                             }
-                            onChange={(e) =>
-                              setDiscount((discount) => [
-                                {
-                                  ...discount,
-                                  [i]: {
-                                    ...discount[i],
-                                    amount: e.target.value,
-                                  },
-                                },
-                              ])
-                            }
+                            // onChange={(e) =>
+                            //   setDiscount((discount) => [
+                            //     {
+                            //       ...discount,
+                            //       [i]: {
+                            //         ...discount[i],
+                            //         amount: e.target.value,
+                            //       },
+                            //     },
+                            //   ])
+                            // }
+                            onChange={handleChange}
                             aria-describedby="basic-addon1"
                           />
                         </div>
