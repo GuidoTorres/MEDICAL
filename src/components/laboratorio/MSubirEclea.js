@@ -6,8 +6,15 @@ import {
 } from "../../helpers/fetch";
 
 import { customStyles } from "../../helpers/tablaOpciones";
+import Swal from "sweetalert2";
 
-const MSubirEclea = ({ openModal, setOpenModal, dataSelected, tipoPrueba }) => {
+const MSubirEclea = ({
+  openModal,
+  setOpenModal,
+  dataSelected,
+  tipoPrueba,
+  getAtencion,
+}) => {
   const [result, setResult] = useState({
     id: dataSelected.id,
   });
@@ -22,9 +29,34 @@ const MSubirEclea = ({ openModal, setOpenModal, dataSelected, tipoPrueba }) => {
     formData.set("id", 8);
     formData.set("result", "0");
 
-    fetchGETPOSTPUTDELETE(`result`, formData, "POST").then((data) =>
-      console.log(data)
-    );
+    fetchGETPOSTPUTDELETE(`result`, formData, "POST").then((data) => {
+      console.log(data);
+      if (data.status === 200) {
+        closeModal();
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se cargo el resultado correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getAtencion();
+          }
+        });
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
+      }
+    });
   };
 
   console.log(dataSelected);

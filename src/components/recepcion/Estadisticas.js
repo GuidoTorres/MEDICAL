@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Bar, Doughnut } from "react-chartjs-2";
+import { Bar, Doughnut, Pie } from "react-chartjs-2";
 import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 
 // USAR ESTADISTCAS RECEPCION /recepcionista/estadisticas
@@ -9,18 +9,30 @@ const Estadisticas = () => {
   const [estadisticas, setEstadisticas] = useState({});
   const data = {
     labels: [
-      estadisticas && estadisticas.labels && estadisticas.labels[0] ? "eclea": "",
-      estadisticas && estadisticas.labels && estadisticas.labels[1] ? "rapida": "",
-      estadisticas && estadisticas.labels && estadisticas.labels[2] ? "molecular": "",
-      estadisticas && estadisticas.labels && estadisticas.labels[3] ? "": "",
-    
+      estadisticas && estadisticas.labels && estadisticas.labels[0]
+        ? "eclea"
+        : "",
+      estadisticas && estadisticas.labels && estadisticas.labels[1]
+        ? "rapida"
+        : "",
+      estadisticas && estadisticas.labels && estadisticas.labels[2]
+        ? "molecular"
+        : "",
+      estadisticas && estadisticas.labels && estadisticas.labels[3]
+        ? "antígeno"
+        : "",
     ],
     datasets: [
       {
-        label: "First dataset",
+        label: "Pruebas COVID19",
         data: estadisticas.data,
         fill: true,
-        backgroundColor: "rgba(75,192,192,0.2)",
+        backgroundColor: [
+          "rgba(75,192,192,0.2)",
+          "rgb(255, 99, 132)",
+          "rgb(54, 162, 235)",
+          "rgb(255, 205, 86)",
+        ],
         borderColor: "rgba(75,192,192,1)",
       },
     ],
@@ -48,11 +60,10 @@ const Estadisticas = () => {
     <div className="container">
       {/* <h2 className="mt-3">Estadísticas</h2> */}
 
-      <label htmlFor="">Seleccionar el intervalo de tiempo</label>
-
       <div className="row mt-2">
         <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 recepcion__estadistica">
           <div className="barra">
+            <label htmlFor="">Seleccionar el intervalo de tiempo</label>
             <div className="adminestadistica__fecha">
               <label>Fecha</label>
               <div className="adminestadistica__subfecha">
@@ -129,7 +140,7 @@ const Estadisticas = () => {
                 role="tabpanel"
                 aria-labelledby="home-tab"
               >
-                <Bar className="bar mt-5" data={data} />
+                <Bar className=" mt-5" data={data} />
               </div>
               <div
                 class="tab-pane fade"
@@ -137,10 +148,7 @@ const Estadisticas = () => {
                 role="tabpanel"
                 aria-labelledby="profile-tab"
               >
-                <Doughnut
-                  data={data}
-                  style={{ width: "50%", height: "40%", marginLeft: "100px" }}
-                ></Doughnut>
+                <Pie data={data} style={{ width: "50%", height: "40%" }}></Pie>
               </div>
             </div>
           </div>

@@ -28,7 +28,7 @@ const MCrearPaciente = ({
   const closeModal = () => {
     setAddRegistro(false);
     setEditar(false);
-    setDataSelected({})
+    setDataSelected(null)
   };
   const handleCambio = () => {
     setImagenes(true);

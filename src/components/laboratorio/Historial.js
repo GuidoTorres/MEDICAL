@@ -13,23 +13,32 @@ const Historial = () => {
   const [openModal, setOpenModal] = useState(false);
   const [openDescarga, setOpenDescarga] = useState(false);
   const [results, setResults] = useState({});
+  const [tipoPrueba, setTipoPrueba] = useState({});
+  const [servicios, setServicios] = useState({});
+  const [filterData, setFilterData] = useState({});
 
   const getResults = () => {
-    fetchGETPOSTPUTDELETE("result_historial")
+    fetchGETPOSTPUTDELETE("resultados/clinica", null, "POST")
       .then((data) => data.json())
-      .then((datos) => setResults(datos.data));
+      .then((datos) => setResults(datos));
+  };
+
+  const getServicios = () => {
+    fetchGETPOSTPUTDELETE("services")
+      .then((data) => data.json())
+      .then((datos) => setServicios(datos.data));
   };
 
   useEffect(() => {
     getResults();
+    getServicios();
   }, []);
 
-  console.log(results);
 
   const columnas = [
     {
       name: "Item",
-      selector: "id",
+      selector: (row) => (row.nro_atencion ? row.nro_atencion : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -38,7 +47,7 @@ const Historial = () => {
     },
     {
       name: "Tipo de usuario",
-      selector: (row) => (row.people_id === 1 ? "Particular" : "Empresa"),
+      selector: (row) => (row.tipo_usuario ? row.tipo_usuario : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -47,7 +56,7 @@ const Historial = () => {
     },
     {
       name: "Nº de documento",
-      selector: (row) => (row.person.dni ? row.person.dni : ""),
+      selector: (row) => (row.dni ? row.dni : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -56,7 +65,7 @@ const Historial = () => {
     },
     {
       name: "Fecha",
-      selector: (row) => (row.result.date ? row.result.date : ""),
+      selector: (row) => (row.fecha_atencion ? row.fecha_atencion : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -64,31 +73,21 @@ const Historial = () => {
       },
     },
     {
-      name: "Nombre",
-      selector: (row) => (row.person.name ? row.person.name : ""),
+      name: "Nombre y apellido",
+      selector: (row) => (row.paciente ? row.paciente : ""),
       sortable: true,
       style: {
         borderBotton: "none",
         color: "#555555",
       },
     },
-    {
-      name: "Apellido",
-      selector: (row) =>
-        row.person.pat_lastname ? row.person.pat_lastname : "",
 
-      sortable: true,
-      style: {
-        borderBotton: "none",
-        color: "#555555",
-      },
-    },
     {
       name: "Visualización",
       button: true,
       cell: (e) => (
         <button
-          // onClick={() => handleDetalles(e)}
+          onClick={() => handleDetalles(e)}
           className="table__tablebutton"
         >
           <i class="fas fa-file-pdf"></i>
@@ -97,46 +96,58 @@ const Historial = () => {
     },
   ];
 
+  const filtrarTabla = () => {
+    const result = Object.values(results).filter(
+      (data) => data && data.prueba === tipoPrueba.id
+    );
+
+    setFilterData(result);
+  };
+
   useEffect(() => {
-    const filtrarElemento = () => {
-      const search = lasubir.filter((data) => {
-        return (
-          data.tipo
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.dni.toString().includes(busqueda) ||
-          data.fecha
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.nombre
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.apellido
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda)
-        );
-      });
-      setListRegistro(search);
-    };
-    filtrarElemento();
-  }, [busqueda]);
-  //
+    filtrarTabla();
+  }, [tipoPrueba]);
+
+// console.log(filterData);
+//   useEffect(() => {
+//     const filtrarElemento = () => {
+//       const search =
+//         filterData &&
+//         Object.values(filterData).filter((data) => {
+//           return (
+//             data.tipo_usuario
+//               .normalize("NFD")
+//               .replace(/[\u0300-\u036f]/g, "")
+//               .toLocaleLowerCase()
+//               .includes(busqueda) ||
+//             data.dni.toString().includes(busqueda) ||
+//             data.fecha_atencion
+//               .normalize("NFD")
+//               .replace(/[\u0300-\u036f]/g, "")
+//               .toLocaleLowerCase()
+//               .includes(busqueda) ||
+//             data.paciente
+//               .normalize("NFD")
+//               .replace(/[\u0300-\u036f]/g, "")
+//               .toLocaleLowerCase()
+//               .includes(busqueda)
+//           );
+//         });
+//       setListRegistro(search);
+//     };
+//     filtrarElemento();
+//   }, [busqueda]);
+
   const handleDetalles = (e) => {
-    // console.log(e);
-    setOpenModal(true);
+    console.log(e);
+    // setOpenModal(true);
   };
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
+
+  console.log(openDescarga);
   return (
     <div className="container">
       <div className="row">
@@ -146,17 +157,37 @@ const Historial = () => {
             <div className="laboratorio__resultados">
               <div>
                 <label>Categoría</label>
-                <select class="form-select" aria-label="Default select example">
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  onChange={(e) =>
+                    setTipoPrueba({ ...tipoPrueba, cat: e.target.value })
+                  }
+                >
+                  <option>Seleccione</option>
                   <option value="1">COVID - 19</option>
                 </select>
               </div>
               <div>
                 <label>Sub-categoría</label>
-                <select class="form-select" aria-label="Default select example">
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  disabled={tipoPrueba.cat === "1" ? false : true}
+                  onChange={(e) =>
+                    setTipoPrueba({ ...tipoPrueba, id: e.target.value })
+                  }
+                >
                   <option>Seleccione</option>
-                  <option value="1">Antigeno</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+
+                  {servicios &&
+                    servicios[0] &&
+                    servicios[0].services &&
+                    servicios[0].services.map((data, i) => (
+                      <option key={i} value={data.name}>
+                        {data.name}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
@@ -184,7 +215,7 @@ const Historial = () => {
 
             <DataTable
               columns={columnas}
-              data={results}
+              data={filterData}
               pagination
               paginationComponentOptions={paginacionOpciones}
               fixedHeader
@@ -204,12 +235,12 @@ const Historial = () => {
             setOpenModal={setOpenModal}
           />
         )}
-        {openModal && (
+        {openDescarga === true ?
           <MDescargar
             openDescarga={openDescarga}
             setOpenDescarga={setOpenDescarga}
           />
-        )}
+        : ""}
       </div>
     </div>
   );

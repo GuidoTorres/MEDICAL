@@ -7,7 +7,7 @@ const MEmpresa = ({ openModal, setOpenModal, datos }) => {
     setOpenModal(false);
   };
 
-  console.log(datos);
+  // console.log(datos);
   return (
     <Modal
       isOpen={openModal}

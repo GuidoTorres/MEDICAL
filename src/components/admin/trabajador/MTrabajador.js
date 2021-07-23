@@ -102,26 +102,26 @@ const MTrabajador = ({
 
   const putEmployee = () => {
     const formData = new FormData();
-    formData.set("dni", editarTrabajador.dni || dataSelected.dni);
-    formData.set("name", editarTrabajador.name || dataSelected.name);
+    formData.set("dni", trabajador.dni || dataSelected.dni);
+    formData.set("name", trabajador.name || dataSelected.name);
     formData.set(
       "pat_lastname",
-      editarTrabajador.pat_lastname || dataSelected.pat_lastname
+      trabajador.pat_lastname || dataSelected.pat_lastname
     );
     formData.set(
       "mom_lastname",
-      editarTrabajador.mom_lastname || dataSelected.mom_lastname
+      trabajador.mom_lastname || dataSelected.mom_lastname
     );
-    formData.set("email", editarTrabajador.email || dataSelected.email);
+    formData.set("email", trabajador.email || dataSelected.email);
     formData.set(
       "cellphone",
-      editarTrabajador.cellphone || dataSelected.cellphone
+      trabajador.cellphone || dataSelected.cellphone
     );
-    formData.set("photo", avatar.file || "");
-    formData.set("role_id", editarTrabajador.role_id || dataSelected.role_id);
+    formData.set("photo", avatar && avatar.file ? avatar.file : "");
+    formData.set("role_id", trabajador.role_id || dataSelected.role_id);
     fetchGETPOSTPUTDELETEJSON(
       `employees/${dataSelected.user_id}`,
-      editarTrabajador,
+      trabajador,
       "PUT"
     ).then((resp) => {
       if (resp.status === 200) {
@@ -153,17 +153,17 @@ const MTrabajador = ({
   };
 
   const handleOnChange = (e) => {
-    if (editar === true) {
-      setEditarTrabajador({
-        ...editarTrabajador,
-        [e.target.name]: e.target.value,
-      });
-    } else {
+    // if (editar === true) {
+    //   setEditarTrabajador({
+    //     ...editarTrabajador,
+    //     [e.target.name]: e.target.value,
+    //   });
+    // } else {
       setTrabajador({
         ...trabajador,
         [e.target.name]: e.target.value,
       });
-    }
+    // }
   };
 
   const handleSubmit = (e) => {

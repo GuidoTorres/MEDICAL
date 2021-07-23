@@ -6,6 +6,7 @@ import MSubirLaboratorio from "./MSubirLaboratorio";
 import MSubirEclea from "./MSubirEclea";
 import MSubirRapida from "./MSubirRapida";
 import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import MAnticuerpos from "./Modales/MAnticuerpos";
 
 const SubirLaboratorio = () => {
   const [busqueda, setBusqueda] = useState("");
@@ -13,9 +14,14 @@ const SubirLaboratorio = () => {
   const [openModal, setOpenModal] = useState(false);
   const [openModal2, setOpenModal2] = useState(false);
   const [openModal3, setOpenModal3] = useState(false);
+  const [openModal4, setOpenModal4] = useState(false);
+  const [openModal5, setOpenModal5] = useState(false);
+
   const [attention, setAttention] = useState({});
   const [dataSelected, setDataSelected] = useState(null);
-  const [tipoPrueba, setTipoPrueba] = useState(-1);
+  const [tipoPrueba, setTipoPrueba] = useState({});
+  const [servicios, setServicios] = useState({});
+  const [filterData, setFilterData] = useState({});
 
   const getAtencion = () => {
     fetchGETPOSTPUTDELETE("result")
@@ -23,11 +29,17 @@ const SubirLaboratorio = () => {
       .then((datos) => setAttention(datos.data));
   };
 
+  const getServicios = () => {
+    fetchGETPOSTPUTDELETE("services")
+      .then((data) => data.json())
+      .then((datos) => setServicios(datos.data));
+  };
+
   useEffect(() => {
     getAtencion();
+    getServicios();
   }, []);
 
-  console.log(attention);
   const columnas = [
     {
       name: "Item",
@@ -40,7 +52,12 @@ const SubirLaboratorio = () => {
     },
     {
       name: "Tipo de usuario",
-      selector: (row) => (row.people_id === 1 ? "Particular" : "Empresa"),
+      selector: (row) =>
+        tipoPrueba.prueba === row.service.id
+          ? row.people_id === 1
+            ? "Particular"
+            : "Empresa"
+          : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -49,7 +66,12 @@ const SubirLaboratorio = () => {
     },
     {
       name: "Nro de documento",
-      selector: (row) => (row.person.dni ? row.person.dni : ""),
+      selector: (row) =>
+        tipoPrueba.prueba === row.service.id
+          ? row.person && row.person.dni
+            ? row.person.dni
+            : ""
+          : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -58,7 +80,12 @@ const SubirLaboratorio = () => {
     },
     {
       name: "Fecha",
-      selector: (row) => (row.date_creation ? row.date_creation : ""),
+      selector: (row) =>
+        tipoPrueba.prueba === row.service.id
+          ? row.date_creation
+            ? row.date_creation
+            : ""
+          : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -68,8 +95,10 @@ const SubirLaboratorio = () => {
     {
       name: "Nombres y apellidos",
       selector: (row) =>
-        row.person && row.person.name && row.person.pat_lastname
-          ? row.person.name + " " + row.person.pat_lastname
+        tipoPrueba.prueba === row.service.id
+          ? row.person && row.person.name && row.person.pat_lastname
+            ? row.person.name + " " + row.person.pat_lastname
+            : ""
           : "",
       sortable: true,
       style: {
@@ -82,7 +111,7 @@ const SubirLaboratorio = () => {
       name: "Acción",
       button: true,
       cell: (e) =>
-        tipoPrueba !== -1 ? (
+        tipoPrueba.prueba === e.service.id ? (
           <button
             onClick={() => handleModal(tipoPrueba, e)}
             className="table__tablebutton"
@@ -131,22 +160,37 @@ const SubirLaboratorio = () => {
   const handleModal = (tipoPrueba, e) => {
     setDataSelected(e);
 
-    switch (tipoPrueba) {
-      case 1:
-        setOpenModal(true);
-        break;
-      case 2:
-        setOpenModal2(true);
-        break;
-      case 3:
-        setOpenModal3(true);
-        break;
+    if (tipoPrueba.prueba === 5) {
+      setOpenModal(true);
+    } else if (tipoPrueba.prueba === 6) {
+      setOpenModal2(true);
+    } else if (tipoPrueba.prueba === 7) {
+      setOpenModal3(true);
+    } else if (tipoPrueba.prueba === 8) {
+      setOpenModal4(true);
+    } else if (tipoPrueba.prueba === 9) {
+      setOpenModal5(true);
+      console.log(openModal5);
     }
   };
+
+  const filtrarTabla = () => {
+    const result = Object.values(attention).filter(
+      (data) => data && data.service && data.service.id === tipoPrueba.prueba
+    );
+
+    setFilterData(result);
+  };
+
+  useEffect(() => {
+    filtrarTabla();
+  }, [tipoPrueba]);
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
+
+  console.log(servicios);
   return (
     <div className="container">
       <div className="row">
@@ -156,7 +200,13 @@ const SubirLaboratorio = () => {
             <div className="laboratorio__resultados">
               <div>
                 <label>Categoría</label>
-                <select class="form-select" aria-label="Default select example">
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  onChange={(e) =>
+                    setTipoPrueba({ ...tipoPrueba, id: e.target.value })
+                  }
+                >
                   <option>Seleccione</option>
                   <option value="1">COVID-19</option>
                 </select>
@@ -166,14 +216,23 @@ const SubirLaboratorio = () => {
                 <select
                   className="form-select"
                   aria-label="Default select example"
-                  onChange={(e) => setTipoPrueba(Number(e.target.value))}
+                  disabled={tipoPrueba.id ? false : true}
+                  onChange={(e) =>
+                    setTipoPrueba({
+                      ...tipoPrueba,
+                      prueba: Number(e.target.value),
+                    })
+                  }
                 >
-                  <option value="-1">Seleccione</option>
-
-                  <option value="1">Antígeno</option>
-                  <option value="2">Eclea</option>
-                  <option value="3">Rápida</option>
-                  <option value="3">Molecular</option>
+                  <option value="">Seleccione</option>
+                  {servicios &&
+                    servicios[0] &&
+                    servicios[0].services &&
+                    servicios[0].services.map((data, i) => (
+                      <option key={i} value={data.id}>
+                        {data.name}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
@@ -196,11 +255,13 @@ const SubirLaboratorio = () => {
 
             <DataTable
               columns={columnas}
-              data={attention}
+              data={filterData}
               pagination
               paginationComponentOptions={paginacionOpciones}
               fixedHeader
-              fixedHeaderScrollHeight="500px"
+              striped
+              highlightOnHover
+              fixedHeaderScrollHeight="100%"
               noDataComponent={
                 <div className="spinner">
                   <i className="fas fa-inbox table__icono"></i>
@@ -216,6 +277,7 @@ const SubirLaboratorio = () => {
             setOpenModal={setOpenModal}
             dataSelected={dataSelected}
             tipoPrueba={tipoPrueba}
+            getAtencion={getAtencion}
           />
         )}
         {openModal2 && (
@@ -224,6 +286,7 @@ const SubirLaboratorio = () => {
             setOpenModal={setOpenModal2}
             dataSelected={dataSelected}
             tipoPrueba={tipoPrueba}
+            getAtencion={getAtencion}
           />
         )}
         {openModal3 && (
@@ -232,6 +295,25 @@ const SubirLaboratorio = () => {
             setOpenModal={setOpenModal3}
             dataSelected={dataSelected}
             tipoPrueba={tipoPrueba}
+            getAtencion={getAtencion}
+          />
+        )}
+        {openModal4 && (
+          <MSubirEclea
+            openModal={openModal4}
+            setOpenModal={setOpenModal4}
+            dataSelected={dataSelected}
+            tipoPrueba={tipoPrueba}
+            getAtencion={getAtencion}
+          />
+        )}
+        {openModal5 && (
+          <MAnticuerpos
+            openModal={openModal5}
+            setOpenModal={setOpenModal5}
+            dataSelected={dataSelected}
+            tipoPrueba={tipoPrueba}
+            getAtencion={getAtencion}
           />
         )}
       </div>

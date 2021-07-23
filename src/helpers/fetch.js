@@ -104,5 +104,5 @@ export {
   fetchGETPOSTPUTDELETEJSON,
   fetchRUC,
   fetchDNI,
-  postExcel
+  postExcel,
 };

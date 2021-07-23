@@ -1,134 +1,55 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
-// import iconAgregar from '../../assets/images/icon_anadir.png';
-// import image from '../../assets/logo/logo.png'
-import { ToastContainer } from 'react-toastify';
-import XLSX from 'xlsx'
-import { fetchGETPOSTPUTDELETE, postExcel } from '../../helpers/fetch';
-import EditarDatosTrabajador from './Modales/EditarDatosTrabajador'
-
-
+import Swal from 'sweetalert2';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
+import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import EditarDatosTrabajador from './Modales/EditarDatosTrabajador';
 
 const EmpresaRegistro = () => {
   const [busqueda, setBusqueda] = useState('');
   const [employees, setEmployees] = useState([]);
-  const [header, setHeader]= useState()
-  const [excel, setExcel] = useState();
-  const [uploadExcel, setUploadExcel] = useState();
-  const fileRef = useRef();
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [loadExcel, setLoadExcel] = useState();
 
-  const [modalIsOpen,setIsOpen] = useState(false);
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  const getEmployees = () =>{
-
-    fetchGETPOSTPUTDELETE("company_employees").then(res=> res.json()).then(res=> setEmployees(res))
-  }
-  useEffect(()=>{
-
-    getEmployees();
-
-  },[])
-
-  console.log(employees);
-
-  const subirExcel = () =>{
-    const formData = new FormData()
-
-    formData.set("file", uploadExcel)
-
-    fetchGETPOSTPUTDELETE("company_employees/import", formData, "POST").then(res => console.log(res))
-
-  }
-
-  const triggerClick= () =>{
-
-    fileRef.current.click();
-  }
-
-
-
-  const paginacionOpciones = {
-    rowsPerPageText: 'Fila por pagina',
-    rangerSeparatorText: 'de',
-    selectAllRowsItem: true,
-    selectAllRowsItemText: 'Todos',
+  const getEmployees = () => {
+    fetchGETPOSTPUTDELETE('company_employees')
+      .then((res) => res.json())
+      .then((res) => setEmployees(res));
   };
+  useEffect(() => {
+    getEmployees();
+  }, []);
 
-  const converToJson = (headers,data)=>{
+  const importarExcel = () => {
+    const formData = new FormData();
+    formData.set('file', loadExcel);
+    fetchGETPOSTPUTDELETE('company_employees/import', formData, 'POST').then(
+      (data) => {
+        data.json();
+      }
+    );
+  };
+  useEffect(() => {
+    importarExcel();
+  }, []);
 
-    const rows= []
-    data.forEach(row => {
-      let rowData = {}
-      row.forEach((element, index) => {
-
-        rowData[headers[index]]= element
-      })
-      rows.push(rowData)
-      
-    });
-    return rows;
-
-  }
-
-  const importExcel = (e)=>{
-
-    const file = e.target.files[0]
-    setUploadExcel(file)
-    const reader = new FileReader()
-    reader.onload = (event) =>{
-        //parse data
-        const bstr = event.target.result
-        const workBook = XLSX.read(bstr, {type:"binary"})
-
-        //get first sheet
-        const workSheetName = workBook.SheetNames[0]
-        const workSheet = workBook.Sheets[workSheetName]
-
-        //convert to array
-        const fileData = XLSX.utils.sheet_to_json(workSheet, {header:1})
-        const headers = fileData[0]
-        const heads = headers.map(head=>({title:head, field:head}))
-        setHeader(heads)
-
-        //eliminando cabecera
-        fileData.splice(0,1)
-      
-        setExcel(converToJson(headers, fileData))
-    }
-        reader.readAsBinaryString(file)
-  }
+  const subidaExcel = (e) => {
+    const file = e.target.files[0];
+    setLoadExcel(file);
+  };
 
   const columnas = [
     {
-      name: 'Seleccionar',
-      button: true,
-      cell: (e) => (
-        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-      ),
-    },
-    {
-      name: 'Ítem',
-      selector: 'id',
-      sortable: true,
-      style: {
-        color: '#8f9196',
-        borderBotton: 'none',
-      },
-    },
-    {
       name: 'Tipo de documento',
       selector: (row) =>
-      row.person && row.person.document_type_id === 3
-        ? "Carné de extranjería"
-        : row.person && row.person.document_type_id === 2
-        ? "Pasaporte"
-        : row.person && row.person.document_type_id === 1
-        ? "DNI"
-        : "",
+        row.person && row.person.document_type_id === 3
+          ? 'Carné de extranjería'
+          : row.person && row.person.document_type_id === 2
+          ? 'Pasaporte'
+          : row.person && row.person.document_type_id === 1
+          ? 'DNI'
+          : '',
+
       sortable: true,
       style: {
         color: '#8f9196',
@@ -137,7 +58,7 @@ const EmpresaRegistro = () => {
     },
     {
       name: 'Nº de documento',
-      selector: row => row.person && row.person.dni ? row.person.dni :"",
+      selector: (row) => (row.person && row.person.dni ? row.person.dni : ''),
       sortable: true,
       style: {
         color: '#8f9196',
@@ -146,7 +67,7 @@ const EmpresaRegistro = () => {
     },
     {
       name: 'Nombres',
-      selector: row => row.person && row.person.name ? row.person.name :"",
+      selector: (row) => (row.person && row.person.name ? row.person.name : ''),
       sortable: true,
       style: {
         color: '#8f9196',
@@ -154,9 +75,31 @@ const EmpresaRegistro = () => {
       },
     },
     {
+      name: 'A. Paterno',
+      selector: (row) =>
+        row.person && row.person.pat_lastname ? row.person.pat_lastname : '',
+      sortable: true,
+      grow: 2,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+    {
+      name: 'A. Materno',
+      selector: (row) =>
+        row.person && row.person.mom_lastname ? row.person.mom_lastname : '',
+      sortable: true,
+      grow: 2,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+    {
       name: 'Sexo',
-      selector: row => row.person && row.person.gender_id === 1 ? "Masculino" :"Femenino",
-
+      selector: (row) =>
+        row.person && row.person.gender_id === 1 ? 'Masculino' : 'Femenino',
       sortable: true,
       style: {
         color: '#8f9196',
@@ -165,18 +108,11 @@ const EmpresaRegistro = () => {
     },
     {
       name: 'Fecha de Nacimiento',
-      selector: 'fecha',
+      selector: (row) =>
+        row.fecha_nacimiento && row.fecha_nacimiento
+          ? row.fecha_nacimiento
+          : '',
       sortable: true,
-      style: {
-        color: '#8f9196',
-        borderBotton: 'none',
-      },
-    },
-    {
-      name: 'Departamento de Nacimiento',
-      selector: 'departamento',
-      sortable: true,
-      
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -184,70 +120,87 @@ const EmpresaRegistro = () => {
     },
     {
       name: 'Cargo',
-      selector: 'Cargo',
+      selector: (row) =>
+        row.person && row.person.workstation ? row.person.workstation : '',
       sortable: true,
-      
       style: {
         color: '#8f9196',
         borderBotton: 'none',
       },
     },
-
+    {
+      name: 'Editar',
+      button: true,
+      cell: (e) => (
+        <button onClick={() => handleEditar(e)} className="table__tablebutton">
+          <i className="fas fa-pencil-alt"></i>
+        </button>
+      ),
+    },
+    {
+      name: 'Eliminar',
+      button: true,
+      cell: (e) => (
+        <button
+          onClick={() => handleEliminar(e)}
+          className="table__tablebutton"
+        >
+          <i className="far fa-trash-alt"></i>
+        </button>
+      ),
+    },
   ];
 
-
-  useEffect(() => {
-    // const filtrarElemento = () => {
-    //   const search = excel && excel.filter((data) => {
-    //     return (
-    //       excel.id
-    //         .normalize('NFD')
-    //         .replace(/[\u0300-\u036f]/g, '')
-    //         .toLocaleLowerCase()
-    //         .includes(busqueda) ||
-    //       data.ruc
-    //         .normalize('NFD')
-    //         .replace(/[\u0300-\u036f]/g, '')
-    //         .toLocaleLowerCase()
-    //         .includes(busqueda) ||
-    //       data.responsable
-    //         .normalize('NFD')
-    //         .replace(/[\u0300-\u036f]/g, '')
-    //         .toLocaleLowerCase()
-    //         .includes(busqueda) ||
-    //       data.telefono.toString().includes(busqueda) ||
-    //       data.correo
-    //         .normalize('NFD')
-    //         .replace(/[\u0300-\u036f]/g, '')
-    //         .toLocaleLowerCase()
-    //         .includes(busqueda) ||
-    //       data.actividad
-    //         .normalize('NFD')
-    //         .replace(/[\u0300-\u036f]/g, '')
-    //         .toLocaleLowerCase()
-    //         .includes(busqueda)
-    //     );
-    //   });
-    //   setExcel(search);
-    // };
-    // filtrarElemento();
-
-
-  }, [busqueda, excel]);
-
+  const handleEditar = (e) => {
+    setIsOpen(true);
+  };
+  const handleEliminar = (e) => {
+    console.log(e);
+    Swal.fire({
+      title: '¿Desea eliminar?',
+      text: `${e.dni}`,
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Eliminar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // fetchGETPOSTPUTDELETE(`users/${e.id}`, {}, 'DELETE').then((result) => {
+        //   if (result.status === 204) {
+        //     Swal.fire(
+        //       'Eliminado!',
+        //       'Se ha eliminado correctamente.',
+        //       'success'
+        //     ).then((response) => {
+        //       if (response.isConfirmed) {
+        //         resp();
+        //       }
+        //     });
+        //   } else {
+        //     Swal.fire({
+        //       icon: 'error',
+        //       title: '!Ups¡',
+        //       text: 'Algo salió mal.',
+        //       confirmButtonColor: '#3085d6',
+        //       cancelButtonColor: '#d33',
+        //       confirmButtonText: 'Cerrar',
+        //     });
+        //   }
+        // });
+      }
+    });
+  };
   const handleOnChange = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
 
-
-
   return (
-    <>
-    
-    <div className="registro container " id="target">
-      {/* <h3 className="tituloRegTrabajadores mt-3">Registro de trabajadores</h3> */}
-      <div className="containerRegistro">
-      <div className="">
+    <div className="container">
+      <div className="row">
+        <h3 className="titulo">Registro de trabajadores</h3>
+        <div className=" table-responsive">
+          <div className="adminregistro__option">
             <div>
               <input
                 type="text"
@@ -257,28 +210,16 @@ const EmpresaRegistro = () => {
                 onChange={handleOnChange}
               />
             </div>
+            <div className="">
+              <input type="file" onClick={subidaExcel} />
+            </div>
+            <div>
+              <label>
+                Carga trabajadores
+                <i className="fas fa-upload"></i>
+              </label>
+            </div>
           </div>
-        <div
-          className="contenedorDer"
-          // onClick={(e) => history.push('/admin/registroempresa')}
-        >
-          <input className="cargar" type='file' ref={fileRef} id='file' onChange={importExcel} />
-          
-          <p className="pagregar" onClick={triggerClick} style={{cursor:'pointer'}}>Cargar trabajadores</p>
-          <i class="fas fa-upload" onClick={triggerClick} style={{cursor:'pointer'}}></i>
-          
-          <p className="pagregar" >Editar</p>
-          <i class="fas fa-pencil-alt" onClick={()=> openModal()}></i>
-
-          <p className="pagregar">Eliminar</p>
-          <i class="fas fa-trash-alt"></i>
-
-        </div>
-      </div>
-      <ToastContainer />
-      <div className="row px-2">
-
-        <div className=" table-responsive">
           <DataTable
             className="dataTable"
             id="table"
@@ -287,25 +228,18 @@ const EmpresaRegistro = () => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="450px"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>
-            
-          }
+            fixedHeaderScrollHeight="100%"
+            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            striped
           />
         </div>
-
-        <button type="button" class="botones btn btn-primary" onClick={subirExcel}>Subir archivo</button>
+        <EditarDatosTrabajador
+          modalIsOpen={modalIsOpen}
+          setIsOpen={setIsOpen}
+        />
       </div>
     </div>
-        
-      <EditarDatosTrabajador
-      
-      modalIsOpen={modalIsOpen}
-      setIsOpen={setIsOpen}
-      />
-    
-</>
-    )
-}
+  );
+};
 
-export default EmpresaRegistro
+export default EmpresaRegistro;

@@ -26,7 +26,7 @@ const Empresa = () => {
     getCorporations();
   }, []);
 
-  console.log(corporations);
+  // console.log(corporations);
 
   const columnas = [
     {

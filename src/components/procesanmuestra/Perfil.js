@@ -1,6 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from '../../assets/icons/Isotipo.png';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 const Perfil = () => {
+
+  const [dataPerfil, setDataPerfil] = useState({})
+
+  const perfil = () =>{
+
+    fetchGETPOSTPUTDELETE("auth/me", null, "POST").then(res => res.json()).then(res => setDataPerfil(res))
+
+  }
+
+  useEffect(()=>{
+    perfil()
+  },[])
+
+  console.log(dataPerfil);
+
   return (
     <div className="container">
       <div className="row">
@@ -8,23 +24,23 @@ const Perfil = () => {
           <div className="barra procesa__perfil">
             <div>
               <label>Razón social: </label>
-              <input type="text" disabled placeholder="Jorje" />
+              <input type="text" disabled placeholder={dataPerfil.business_name} />
             </div>
             <div>
               <label>RUC: </label>
-              <input type="text" disabled placeholder="987654321" />
+              <input type="text" disabled placeholder={dataPerfil.ruc} />
             </div>
             <div>
               <label>Dirección: </label>
-              <input type="text" disabled placeholder="Mz A lt 15 Callao" />
+              <input type="text" disabled placeholder={dataPerfil.direction} />
             </div>
             <div>
               <label>Ubicación: </label>
-              <input type="text" disabled placeholder="Callao" />
+              <input type="text" disabled placeholder={dataPerfil.reference} />
             </div>
             <div>
               <label>Referencia: </label>
-              <input type="text" disabled placeholder="La perla" />
+              <input type="text" disabled placeholder={dataPerfil.reference} />
             </div>
             <div>
               <h5>Mi calificación</h5>

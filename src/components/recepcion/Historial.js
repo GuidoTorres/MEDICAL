@@ -15,6 +15,7 @@ const Historial = () => {
   const [dataBarCode, setDataBarCode] = useState({});
 
   const getAttention = () => {
+    //falta servicio
     fetchGETPOSTPUTDELETE("attention_history")
       .then((data) => data.json())
       .then((datos) => setAttention(datos.data));
@@ -80,7 +81,8 @@ const Historial = () => {
     },
     {
       name: "Tipo de atención",
-      selector: row => row.service && row.service.name ? row.service.name : "",
+      selector: (row) =>
+        row.service && row.service.name ? row.service.name : "",
       sortable: true,
       style: {
         color: "#8f9196",
@@ -218,7 +220,9 @@ const Historial = () => {
               pagination
               paginationComponentOptions={paginacionOpciones}
               fixedHeader
-              fixedHeaderScrollHeight="450px"
+              striped
+              highlightOnHover
+              fixedHeaderScrollHeight="100%"
               noDataComponent={
                 <div className="spinner">
                   <i className="fas fa-inbox table__icono"></i>

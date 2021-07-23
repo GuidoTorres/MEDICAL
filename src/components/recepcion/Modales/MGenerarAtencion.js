@@ -1,6 +1,6 @@
 import Modal from "react-modal";
 import { customStyles } from "../../../helpers/tablaOpciones";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 import DeclaracionJurada from "../FormatosPDF/DeclaracionJurada";
@@ -12,7 +12,7 @@ const MGenerarAtencion = ({
   generarAtencion,
   setGenerarAtencion,
   dataSelected,
-  getAttention
+  getAttention,
 }) => {
   const closeModal = () => {
     setGenerarAtencion(false);
@@ -22,16 +22,43 @@ const MGenerarAtencion = ({
 
   const [declaracion, setDeclaracion] = useState({});
   const [ficha, setFicha] = useState({});
+  const [services, setServices] = useState({});
+  const [clinics, setClinics] = useState({});
+
+  const getServices = () => {
+    fetchGETPOSTPUTDELETE("services")
+      .then((res) => res.json())
+      .then((res) => setServices(res.data));
+  };
+  const getClinics = () => {
+    fetchGETPOSTPUTDELETE("clinics")
+      .then((res) => res.json())
+      .then((res) => setClinics(res.data));
+  };
+  useEffect(() => {
+    getServices();
+    getClinics();
+  }, []);
+
+  const getFecha = () => {
+    let newDate = new Date();
+    let date = newDate.getDate();
+    let month = newDate.toLocaleString("default", { month: "long" });
+    let year = newDate.getFullYear();
+
+    return `${date}${" de "}${month}${" "}${"de "}${year}`;
+  };
+  
+  console.log(dataSelected);
 
   const crearAtencion = () => {
     const formData = new FormData();
-    formData.set("date_attention", "2021-07-17");
-    formData.set("time_attention", "17:30");
+    formData.set("date_attention", getFecha() || "");
+    formData.set("time_attention", getFecha() || "");
     formData.set("people_id", dataSelected.id || "");
-    formData.set("service_id", 6);
-    // formData.set("clinic_id", dataSelected.clinic.id || "");
-    formData.set("clinic_id", 1);
-    formData.set("codebar", "111111");
+    formData.set("service_id", datos.service_id || "");
+    formData.set("clinic_id", 1 || "");
+    formData.set("codebar", dataSelected.id);
     // formData.set("forms", "");
 
     // formData.set("user_type_id ", 2)
@@ -65,7 +92,6 @@ const MGenerarAtencion = ({
       }
     });
   };
-  console.log(dataSelected);
 
   const handleOnChange = (e) => {
     setDatos({
@@ -107,6 +133,8 @@ const MGenerarAtencion = ({
     ficha.visibility = "visible";
   };
 
+  console.log(datos);
+
   return (
     <Modal
       isOpen={generarAtencion}
@@ -123,11 +151,21 @@ const MGenerarAtencion = ({
       <h3 className="title__modal">Generar atencion</h3>
       <div className="generarAtencion">
         <div className="datosPaciente">
-          <label htmlFor="">Paciente: {dataSelected.name}</label>
-          <label htmlFor="">Tipo de paciente: {dataSelected.user &&
-        dataSelected.user.user_type &&
-        dataSelected.user.user_type &&
-        dataSelected.user.user_type.name}</label>
+          <label htmlFor="">
+            Paciente:{" "}
+            {dataSelected.name +
+              " " +
+              dataSelected.pat_lastname +
+              " " +
+              dataSelected.mom_lastname}
+          </label>
+          <label htmlFor="">
+            Tipo de paciente:{" "}
+            {dataSelected.user &&
+              dataSelected.user.user_type &&
+              dataSelected.user.user_type &&
+              dataSelected.user.user_type.name}
+          </label>
           <label htmlFor="">Empresa: {dataSelected.business_name}</label>
         </div>
 
@@ -137,34 +175,8 @@ const MGenerarAtencion = ({
           </label>
 
           <div className="tipoServicio mt-3">
-            <div>
+            <div className="">
               <label htmlFor="">Tipo de servicio:</label>
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                name="service_id"
-              >
-                <option selected>Seleccione</option>
-                <option value="1">COVID19</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="">Plan de atención:</label>
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                name="service_id"
-                onChange={handleOnChange}
-              >
-                <option selected>Seleccione</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
-
-            <div className="mx-4">
-              <label htmlFor="">Clínica:</label>
               <select
                 class="form-select"
                 aria-label="Default select example"
@@ -172,9 +184,33 @@ const MGenerarAtencion = ({
                 onChange={handleOnChange}
               >
                 <option selected>Seleccione</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option value="1">Covid 19</option>
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="">Plan de atención:</label>
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                disabled={datos.clinic_id === "1" ? false : true}
+                name="service_id"
+                onChange={(e) => {
+                  handleOnChange(e);
+                  console.log(e);
+                  // setPrueba(e.target);
+                }}
+              >
+                <option selected>Seleccione</option>
+
+                {services &&
+                  services[0] &&
+                  services[0].services &&
+                  services[0].services.map((data, i) => (
+                    <option key={i} title={data.name} value={data.id}>
+                      {data.name}
+                    </option>
+                  ))}
               </select>
             </div>
           </div>
@@ -191,7 +227,7 @@ const MGenerarAtencion = ({
             <button
               type="button"
               class="botones btn btn-primary"
-              onClick={() => mostrarConsentimiento()}
+              onClick={() => mostrarConsentimiento(dataSelected)}
             >
               Consentimiento informado
             </button>
@@ -215,7 +251,10 @@ const MGenerarAtencion = ({
             </div>
 
             <div className="containerPDF1">
-              <ConsentimientoInformado />
+              <ConsentimientoInformado
+                dataSelected={dataSelected}
+                datos={datos}
+              />
             </div>
 
             <div className="containerPDF2">

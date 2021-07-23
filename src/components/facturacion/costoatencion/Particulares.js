@@ -2,16 +2,33 @@ import React, { useEffect, useState } from "react";
 
 import DataTable from "react-data-table-component";
 import { fparticular } from "../../../data/FParticular";
+import { fempresa2 } from "../../../data/FEmpresa";
+import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
 
 import { paginacionOpciones } from "../../../helpers/tablaOpciones";
 import MParticulares from "./MParticulares";
+import MEmpresa from "./MEmpresa";
 
 const Particulares = () => {
   const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [openModalEmpresa, setOpenModalEmpresa] = useState(false);
 
-  const getParticular = () => {};
+  const [dataEmpresa, setDataEmpresa] = useState({});
+  const [empresas, setEmpresas] = useState([]);
+
+  const getEmpresas = () => {
+    fetchGETPOSTPUTDELETE("liquidacion/empresas")
+      .then((info) => info.json())
+      .then((info) => setEmpresas(info));
+  };
+
+  useEffect(() => {
+    getEmpresas();
+  }, []);
+
+  // console.log(empresas);
 
   const columnas = [
     {
@@ -118,6 +135,84 @@ const Particulares = () => {
     },
   ];
 
+  const columnasEmpresa = [
+    {
+      name: "Item",
+      selector: "id",
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Razón social",
+      selector: "nombre",
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Ruc",
+      selector: "ruc",
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Cant. atenciones",
+      selector: "cant_atenciones",
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Sub total",
+      selector: "sub_total",
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Impuesto",
+      selector: "igv",
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Total",
+      selector: "total",
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Detalles",
+      button: true,
+      cell: (e) => (
+        <button
+          onClick={() => handleDetallesEmpresa(e)}
+          className="table__tablebutton"
+        >
+          <i className="far fa-folder-open"></i>
+        </button>
+      ),
+    },
+  ];
+
   useEffect(() => {
     const filtrarElemento = () => {
       const search = fparticular.filter((data) => {
@@ -162,6 +257,11 @@ const Particulares = () => {
     setOpenModal(true);
   };
 
+  const handleDetallesEmpresa = (e) => {
+    setOpenModalEmpresa(true);
+    setDataEmpresa(e);
+  };
+
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
@@ -182,11 +282,11 @@ const Particulares = () => {
             </div>
           </div>
 
-          <div class="accordion mt-4" id="accordionExample">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingOne">
+          <div className="accordion mt-4" id="accordionExample">
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingOne">
                 <button
-                  class="accordion-button"
+                  className="accordion-button"
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#collapseOne"
@@ -198,7 +298,7 @@ const Particulares = () => {
               </h2>
               <div
                 id="collapseOne"
-                class="accordion-collapse collapse show"
+                className="accordion-collapse collapse show"
                 aria-labelledby="headingOne"
                 data-bs-parent="#accordionExample"
               >
@@ -216,10 +316,10 @@ const Particulares = () => {
                 />
               </div>
             </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingTwo">
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingTwo">
                 <button
-                  class="accordion-button collapsed"
+                  className="accordion-button collapsed"
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#collapseTwo"
@@ -231,13 +331,13 @@ const Particulares = () => {
               </h2>
               <div
                 id="collapseTwo"
-                class="accordion-collapse collapse"
+                className="accordion-collapse collapse"
                 aria-labelledby="headingTwo"
                 data-bs-parent="#accordionExample"
               >
                 <DataTable
-                  columns={columnas}
-                  data={listRegistro}
+                  columns={columnasEmpresa}
+                  data={empresas}
                   pagination
                   paginationComponentOptions={paginacionOpciones}
                   fixedHeader
@@ -254,6 +354,13 @@ const Particulares = () => {
       </div>
       {openModal && (
         <MParticulares openModal={openModal} setOpenModal={setOpenModal} />
+      )}
+      {openModalEmpresa && (
+        <MEmpresa
+          openModalEmpresa={openModalEmpresa}
+          setOpenModalEmpresa={setOpenModalEmpresa}
+          dataEmpresa={dataEmpresa}
+        />
       )}
     </div>
   );

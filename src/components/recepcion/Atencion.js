@@ -78,7 +78,7 @@ const Atencion = () => {
     // },
     {
       name: "Nº de documento",
-      selector: (row) => (row.DNI ? row.DNI : ""),
+      selector: (row) => (row.DNI ? row.DNI   : ""),
       sortable: true,
       style: {
         color: "#8f9196",
@@ -161,7 +161,7 @@ const Atencion = () => {
       date_creation: getHora() || "",
       time_attention: getHora(),
       people_id: e.id || "",
-      service_id: e.service_details.service_category_id || "",
+      service_id: e.service_details && e.service_details.service_category_id?  e.service_details.service_category_id : "",
       clinic_id: 1 || "",
       codebar: "0213000011111",
     });
@@ -231,7 +231,9 @@ const Atencion = () => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="500px"
+            striped
+            highlightOnHover
+            fixedHeaderScrollHeight="100%"
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
