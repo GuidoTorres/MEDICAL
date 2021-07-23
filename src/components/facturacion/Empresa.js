@@ -17,7 +17,7 @@ const Empresa = () => {
   // facuturacion empresa modal usar company discount
 
   const getCorporations = () => {
-    fetchGETPOSTPUTDELETE("company")
+    fetchGETPOSTPUTDELETE('company')
       .then((info) => info.json())
       .then((info) => setCorporations(info.data));
   };
@@ -30,8 +30,8 @@ const Empresa = () => {
 
   const columnas = [
     {
-      name: "Ítem",
-      selector: "id",
+      name: 'Item',
+      selector: 'id',
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -39,8 +39,8 @@ const Empresa = () => {
       },
     },
     {
-      name: "Razón social",
-      selector: (row) => (row.corporation ? row.corporation.business_name : ""),
+      name: 'Razón social',
+      // selector: row=> row.corporation.business_name ? row.corporation.business_name : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -48,8 +48,8 @@ const Empresa = () => {
       },
     },
     {
-      name: "RUC",
-      selector: (row) => (row.corporation ? row.corporation.ruc : ""),
+      name: 'RUC',
+      // selector: row=> row.corporation.ruc ? row.corporation.ruc : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -57,11 +57,8 @@ const Empresa = () => {
       },
     },
     {
-      name: "Responsable",
-      selector: (row) =>
-        row.corporation.contacts.length > 0
-          ? row.corporation.contacts[0].name
-          : "",
+      name: 'Responsable',
+      // selector: row=> row.corporation.contacts[0].name ? row.corporation.contacts[0].name : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -69,11 +66,8 @@ const Empresa = () => {
       },
     },
     {
-      name: "Telefono",
-      selector: (row) =>
-        row.corporation.contacts.length > 0
-          ? row.corporation.contacts[0].phone
-          : "",
+      name: 'Telefono',
+      // selector: row=> row.corporation.contacts[0].phone ? row.corporation.contacts[0].phone : "",
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -81,11 +75,8 @@ const Empresa = () => {
       },
     },
     {
-      name: "Correo",
-      selector: (row) =>
-        row.corporation.contacts.length > 0
-          ? row.corporation.contacts[0].email
-          : "",
+      name: 'Correo',
+      // selector: row=> row.corporation.contacts[0].email ? row.corporation.contacts[0].email : "",
       sortable: true,
       style: {
         borderBotton: 'none',

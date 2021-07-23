@@ -7,15 +7,18 @@ import { paginacionOpciones } from '../../helpers/tablaOpciones';
 const Transportista = () => {
   const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
+  const [listTransportista, setListTransportista] = useState([]);
 
   const getTransportista = () => {
     fetchGETPOSTPUTDELETEJSON('transportistas_asignados')
       .then((data) => data.json())
-      .then((result) => console.log(result));
+      .then((result) => setListTransportista(result));
   };
-  // useEffect(() => {
-  getTransportista();
-  // }, []);
+  useEffect(() => {
+    getTransportista();
+  }, []);
+
+  // console.log(listTransportista);
 
   const columnas = [
     {
