@@ -13,7 +13,7 @@ const Registro = () => {
   const [openModal, setOpenModal] = useState(false);
   const [corporations, setCorporations] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
-  const [editar, setEditar] = useState(false)
+  const [editar, setEditar] = useState(false);
 
   const getCorporations = () => {
     fetchGETPOSTPUTDELETE("company")
@@ -25,11 +25,10 @@ const Registro = () => {
     getCorporations();
   }, []);
 
-  console.log(corporations);
 
   const columnas = [
     {
-      name: "Item",
+      name: "Ítem",
       selector: "id",
       sortable: true,
       style: {
@@ -69,7 +68,7 @@ const Registro = () => {
       },
     },
     {
-      name: "Telefono",
+      name: "Teléfono",
       selector: (row) =>
         row.corporation && row.corporation.contacts[0]
           ? row.corporation.contacts[0].phone
@@ -157,7 +156,7 @@ const Registro = () => {
   const handleEditar = (e) => {
     setOpenModal(true);
     setDataSelected(e);
-    setEditar(true)
+    setEditar(true);
   };
   const handleEliminar = (e) => {
     Swal.fire({
@@ -211,18 +210,26 @@ const Registro = () => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="500px"
+            striped
+            highlightOnHover
+            fixedHeaderScrollHeight="100%"
             noDataComponent={
               <div className="spinner">
-              <i className="fas fa-inbox table__icono"></i>
-              <p style={{ color: "lightgrey" }}>No hay datos</p>
-            </div>
+                <i className="fas fa-inbox table__icono"></i>
+                <p style={{ color: "lightgrey" }}>No hay datos</p>
+              </div>
             }
           />
         </div>
       </div>
       {openModal && (
-        <MRegistrarEmpresa openModal={openModal} setOpenModal={setOpenModal} dataSelected={dataSelected} editar={editar} getCorporations={getCorporations} />
+        <MRegistrarEmpresa
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          dataSelected={dataSelected}
+          editar={editar}
+          getCorporations={getCorporations}
+        />
       )}
     </div>
   );

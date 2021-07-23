@@ -38,12 +38,12 @@ h6 {
 textarea,
 select,
 select.form-select,
-input[type='number'],
-input[type='text'],
-input[type='email'],
-input[type='password'],
-input[type='date'],
-input[type='time'] {
+input[type="number"],
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="time"] {
   border-radius: 3px;
   border: 1px solid $color-borde !important;
   border: none;
@@ -58,7 +58,7 @@ input[type='time'] {
   }
 }
 
-input[type='checkbox'] {
+input[type="checkbox"] {
   border: 1px solid $color-borde !important;
   box-shadow: none !important;
   font-size: 0.9rem !important;
@@ -298,7 +298,7 @@ input[type='checkbox'] {
   font-size: 0.9rem;
   select,
   select.form-select,
-  input[type='number'] {
+  input[type="number"] {
     border: none;
   }
   .react-datetime-picker__wrapper {
@@ -317,12 +317,12 @@ input[type='checkbox'] {
   textarea,
   select,
   select.form-select,
-  input[type='number'],
-  input[type='text'],
-  input[type='email'],
-  input[type='password'],
-  input[type='date'],
-  input[type='time'] {
+  input[type="number"],
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="date"],
+  input[type="time"] {
     border: none !important;
   }
 }
@@ -336,6 +336,21 @@ input[type='checkbox'] {
   max-width: 400px;
 }
 
+.mventas__empresa {
+  height: 85%;
+  width: 85%;
+  max-height: 855px;
+  max-width: 1320px;
+}
+
+.mventas__precios {
+  height: 85%;
+  width: 85%;
+  max-height: 340px;
+  max-width: 600px;
+  overflow: hidden;
+}
+
 // TODO MODAL FACTURACION EMPRESA
 .mfacturacion__empresa {
   max-height: 45%;
@@ -345,6 +360,13 @@ input[type='checkbox'] {
 // TODO MODAL FACTURACION PARTICULAR
 .mfacturacion__particular {
   max-height: 83%;
+  max-width: 80%;
+}
+
+//MODAL FACTURACION LIQUIDACION
+.mfacturacion__liquidacion {
+  height: auto;
+  max-height: 80%;
   max-width: 80%;
 }
 
@@ -361,6 +383,14 @@ input[type='checkbox'] {
   height: 71%;
   width: 75%;
 }
+
+.mlaboratorio__historial {
+  // height: 27%;
+  // width: 35%;
+  max-height: 240px;
+  max-width: 350px;
+}
+
 @media screen and (min-width: 700px) {
   .mlaboratorio_subir {
     height: 51%;
@@ -435,7 +465,7 @@ input[type='checkbox'] {
 // TODO AVATAR
 .image__upload {
   align-items: center;
-  background-image: url('../../assets/icons/upload.png');
+  background-image: url("../../assets/icons/upload.png");
   background-position: center;
   background-repeat: no-repeat;
   display: flex;

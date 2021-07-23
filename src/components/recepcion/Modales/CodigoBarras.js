@@ -22,7 +22,7 @@ const CodigoBarras = ({ openModalBar, setOpenModalBar, dataBarCode }) => {
   const closeModal = () => {
     setOpenModalBar(false);
   };
-
+  console.log(dataBarCode);
   const descargar = () => {
 
     const data = document.querySelector("#bar")

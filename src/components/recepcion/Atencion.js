@@ -26,24 +26,15 @@ const Atencion = () => {
       .then((datos) => setAttention(datos.data));
   };
 
-  const getHora = () => {
-    var d = new Date();
-    var h = d.getHours();
-    var m = d.getMinutes();
-    var s = d.getSeconds();
-    return `${h > 9 ? h : "0" + h}${":"}${m > 9 ? m : "0" + m}${":"}${
-      s > 9 ? s : "0" + s
-    }`;
-  };
 
   useEffect(() => {
     getAttention();
+
   }, []);
 
-  console.log(attention);
   const columnas = [
     {
-      name: "Item",
+      name: "Ítem",
       selector: "id",
       sortable: true,
       style: {
@@ -78,7 +69,7 @@ const Atencion = () => {
     // },
     {
       name: "Nº de documento",
-      selector: (row) => (row.DNI ? row.DNI   : ""),
+      selector: (row) => (row.DNI ? row.DNI : ""),
       sortable: true,
       style: {
         color: "#8f9196",
@@ -103,20 +94,20 @@ const Atencion = () => {
         borderBotton: "none",
       },
     },
+    // {
+    //   name: "Código de barras",
+    //   button: true,
+    //   cell: (e) => (
+    //     <button
+    //       className="table__tablebutton editar"
+    //       onClick={() => openBarcode(e)}
+    //     >
+    //       <i className="fas fa-barcode"></i>
+    //     </button>
+    //   ),
+    // },
     {
-      name: "Código de barras",
-      button: true,
-      cell: (e) => (
-        <button
-          className="table__tablebutton editar"
-          onClick={() => openBarcode(e)}
-        >
-          <i className="fas fa-barcode"></i>
-        </button>
-      ),
-    },
-    {
-      name: "Atencion",
+      name: "Atención",
       button: true,
       cell: (e) => (
         <button
@@ -157,14 +148,17 @@ const Atencion = () => {
   };
 
   const generarAtencion = (e) => {
-    setGenerateAttention({
-      date_creation: getHora() || "",
-      time_attention: getHora(),
-      people_id: e.id || "",
-      service_id: e.service_details && e.service_details.service_category_id?  e.service_details.service_category_id : "",
-      clinic_id: 1 || "",
-      codebar: "0213000011111",
-    });
+    // setGenerateAttention({
+    //   date_creation: getFecha() || "",
+    //   time_attention: getHora(),
+    //   people_id: e.id || "",
+    //   service_id:
+    //     e.service_details && e.service_details.service_category_id
+    //       ? e.service_details.service_category_id
+    //       : "",
+    //   clinic_id: 1 || "",
+    //   codebar: "0213000011111",
+    // });
     Swal.fire({
       title: "¿Desea Atender al paciente?",
       text: `${e.fullName ? e.fullName : "No hay datos"}`,
@@ -174,6 +168,7 @@ const Atencion = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Atender",
     }).then((result) => {
+      console.log(result);
       if (result.isConfirmed) {
         fetchGETPOSTPUTDELETEJSON(`attention/attend/${e.id}`).then((data) => {
           if (data.status === 200) {

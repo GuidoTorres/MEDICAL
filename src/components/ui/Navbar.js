@@ -70,7 +70,7 @@ const Navbar = ({
         <ul className=" navbar-nav mr-auto">
           <li className="nav-item">
             <NavLink
-              activeClassName="active"
+              activeClassName="activo"
               className="navLink nav-link"
               aria-current="page"
               to={url1}
@@ -81,7 +81,7 @@ const Navbar = ({
           </li>
           <li className="nav-item">
             <NavLink
-              activeClassName="active"
+              activeClassName="activo"
               className="navLink nav-link"
               to={url2}
               style={{ color: 'white', fontSize: '15px' }}
@@ -91,7 +91,7 @@ const Navbar = ({
           </li>
           <li className="nav-item">
             <NavLink
-              activeClassName="active"
+              activeClassName="activo"
               className="navLink nav-link"
               to={url3}
               style={{ color: 'white', fontSize: '15px' }}
@@ -101,7 +101,7 @@ const Navbar = ({
           </li>
           <li className="nav-item">
             <NavLink
-              activeClassName="active"
+              activeClassName="activo"
               className="navLink nav-link"
               to={url4}
               style={{ color: 'white', fontSize: '15px' }}

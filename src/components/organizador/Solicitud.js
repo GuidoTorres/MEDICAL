@@ -36,8 +36,13 @@ const Solicitud = () => {
 
   const columnas = [
     {
+<<<<<<< HEAD
       name: 'Item',
       selector: (row) => (row ? row.id : ''),
+=======
+      name: 'Ítem',
+      selector: 'id',
+>>>>>>> cc02a692c62d569359c038b0d15125d0271a0660
       sortable: true,
       style: {
         borderBotton: 'none',

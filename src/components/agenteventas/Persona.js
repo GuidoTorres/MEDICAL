@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
-import Swal from 'sweetalert2';
+import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
 
-import { servicio } from '../../data/AVServicio';
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
-import MPersona from './MPersona';
+import { servicio } from "../../data/AVServicio";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import { paginacionOpciones } from "../../helpers/tablaOpciones";
+import MPersona from "./MPersona";
 
 const Persona = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [dataSelected, setDataSelected] = useState({});
+  const [editar, setEditar] = useState(false);
 
   const [particular, setParticular] = useState([]);
 
   const getParticularDiscount = () => {
-    fetchGETPOSTPUTDELETE('particular_discount')
+    fetchGETPOSTPUTDELETE("particular_discount")
       .then((data) => data.json())
       .then((datos) => {
         setParticular(datos.data);
@@ -26,76 +28,78 @@ const Persona = () => {
     getParticularDiscount();
   }, []);
 
-  console.log(particular);
-
   const columnas = [
     {
-      name: 'Item',
-      selector: 'id',
+      name: "Item",
+      selector: "id",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
+        // maxWidth: "40px",
       },
     },
     {
-      name: 'DNI',
-      selector: row => row.user && row.user.person && row.user.person.dni ? row.user.person.dni: "",
+      name: "DNI",
+      selector: (row) =>
+        row.user && row.user.person && row.user.person.dni
+          ? row.user.person.dni
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
+        // maxWidth: "80px",
       },
     },
     {
-      name: 'Nombre',
-      selector: row => row.user && row.user.person && row.user.person.name ? row.user.person.name : "",
+      name: "Nombres y apellidos",
+      selector: (row) =>
+        row.user &&
+        row.user.person &&
+        row.user.person.name &&
+        row.user.person.pat_lastname
+          ? row.user.person.name + " " + row.user.person.pat_lastname
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+
+    {
+      name: "Tipo de prueba",
+      selector: (row) =>
+        row.service && row.service.name ? row.service.name : "",
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Apellido',
-      selector: row => row.user && row.user.person && row.user.person.pat_lastname ? row.user.person.pat_lastname :"",
+      name: "Descuento para usuario (%)",
+      selector: (row) => (row.percent ? row.percent + "%" : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
+        display: "flex",
+        marginLeft: "20px",
       },
     },
     {
-      name: 'Tipo de prueba',
-      selector: row => row.service && row.service.name ? row.service.name : "",
+      name: "Total",
+      selector: (row) => (row.amount ? row.amount : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Descuento para usuario (%)',
-      selector: row => row.percent ? row.percent + "%" : "",
-      sortable: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
-        display:'flex',
-        marginLeft:"20px"
-      },
-    },
-    {
-      name: 'Total',
-      selector: row => row.amount ? row.amount: "",
-      sortable: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
-    },
-    {
-      name: 'Editar',
+      name: "Editar",
       button: true,
       cell: (e) => (
         <button onClick={() => handleEditar(e)} className="table__tablebutton">
@@ -104,7 +108,7 @@ const Persona = () => {
       ),
     },
     {
-      name: 'Eliminar',
+      name: "Eliminar",
       button: true,
       cell: (e) => (
         <button
@@ -123,18 +127,18 @@ const Persona = () => {
         return (
           data.dni.toString().includes(busqueda) ||
           data.nombre
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.apellido
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.tipo
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.descuento.toString().includes(busqueda) ||
@@ -149,16 +153,16 @@ const Persona = () => {
   const handleEliminar = (e) => {
     console.log(e);
     Swal.fire({
-      title: '¿Desea eliminar?',
+      title: "¿Desea eliminar?",
       text: `${e.nombre}`,
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Eliminar',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire('Eliminado!', 'Se ha eliminado correctamente.', 'success');
+        Swal.fire("Eliminado!", "Se ha eliminado correctamente.", "success");
       }
     });
   };
@@ -169,8 +173,10 @@ const Persona = () => {
     setOpenModal(true);
   };
 
-  const handleEditar = () => {
+  const handleEditar = (e) => {
     setOpenModal(true);
+    setDataSelected(e);
+    setEditar(true);
   };
 
   return (
@@ -189,11 +195,11 @@ const Persona = () => {
             </div>
             <div>
               <label>
-                Agregar {' '}
+                Agregar{" "}
                 <i
                   className="fas fa-plus-circle"
                   onClick={handleAddRegistro}
-                ></i>{' '}
+                ></i>{" "}
               </label>
             </div>
           </div>
@@ -204,13 +210,23 @@ const Persona = () => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="500px"
+            striped
+            highlightOnHover
+            fixedHeaderScrollHeight="100%"
             noDataComponent={<i className="fas fa-inbox table__icono"></i>}
           />
         </div>
       </div>
       {openModal && (
-        <MPersona setOpenModal={setOpenModal} openModal={openModal} />
+        <MPersona
+          setOpenModal={setOpenModal}
+          openModal={openModal}
+          dataSelected={dataSelected}
+          setDataSelected={setDataSelected}
+          editar={editar}
+          setEditar={setEditar}
+          getParticularDiscount={getParticularDiscount}
+        />
       )}
     </div>
   );

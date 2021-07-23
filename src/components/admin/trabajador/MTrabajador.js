@@ -61,15 +61,13 @@ const MTrabajador = ({
     );
     formData.set("email", trabajador.email || "");
     formData.set("cellphone", trabajador.cellphone || "");
-    formData.set("photo",  avatar && avatar.file ? avatar.file : "");
+    formData.set("photo", avatar && avatar.file ? avatar.file : "");
     formData.set("role_id", trabajador.role_id || "");
 
-    if(trabajador.role_id === "5"){
-
-      formData.set("vehicle_name", trabajador.vehicle_name || "")
-      formData.set("license_plate", trabajador.license_plate || "")
+    if (trabajador.role_id === "5") {
+      formData.set("vehicle_name", trabajador.vehicle_name || "");
+      formData.set("license_plate", trabajador.license_plate || "");
     }
-
 
     fetchGETPOSTPUTDELETE("employees", formData, "POST").then((resp) => {
       if (resp.status === 201) {
@@ -113,10 +111,7 @@ const MTrabajador = ({
       trabajador.mom_lastname || dataSelected.mom_lastname
     );
     formData.set("email", trabajador.email || dataSelected.email);
-    formData.set(
-      "cellphone",
-      trabajador.cellphone || dataSelected.cellphone
-    );
+    formData.set("cellphone", trabajador.cellphone || dataSelected.cellphone);
     formData.set("photo", avatar && avatar.file ? avatar.file : "");
     formData.set("role_id", trabajador.role_id || dataSelected.role_id);
     fetchGETPOSTPUTDELETEJSON(
@@ -159,10 +154,10 @@ const MTrabajador = ({
     //     [e.target.name]: e.target.value,
     //   });
     // } else {
-      setTrabajador({
-        ...trabajador,
-        [e.target.name]: e.target.value,
-      });
+    setTrabajador({
+      ...trabajador,
+      [e.target.name]: e.target.value,
+    });
     // }
   };
 
@@ -326,12 +321,22 @@ const MTrabajador = ({
                   >
                     Facturador
                   </option>
+                  <option
+                    value="12"
+                    selected={
+                      dataSelected && dataSelected.type === "Facturación"
+                        ? true
+                        : false
+                    }
+                  >
+                    Ventas
+                  </option>
                 </select>
               </div>
               {trabajador && trabajador.role_id === "5" ? (
                 <>
                   <div>
-                    <label>Tipo de vehiculo:</label>
+                    <label>Tipo de vehículo:</label>
                     <input
                       type="text"
                       name="vehicle_name"

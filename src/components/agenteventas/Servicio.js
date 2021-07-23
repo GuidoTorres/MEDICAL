@@ -1,39 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import Persona from './Persona';
-import Empresa from './Empresa';
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
+import React, { useEffect, useState } from "react";
+import Persona from "./Persona";
+import Empresa from "./Empresa";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 
 const Servicio = () => {
   const [getServicio, setGetServicio] = useState([]);
 
   //modal de particular particualar discount create para la tabla igual
 
-  //usuario particular 
+  //usuario particular
 
   const getServices = () => {
-    fetchGETPOSTPUTDELETE('services')
+    fetchGETPOSTPUTDELETE("services")
       .then((info) => info.json())
       // .then((data) => console.log(data.data));
       .then((datos) => setGetServicio(datos.data));
   };
 
-  // const getParticularDiscount = () => {
-  //   fetchGETPOSTPUTDELETE('particular_discount')
-  //     .then((info) => info.json())
-  //     // .then((data) => console.log(data.data));
-  //     .then((datos) => setGetServicio(datos.data));
-  // };
-
-
-  useEffect(()=>{
-    getServices()
+  useEffect(() => {
+    getServices();
     // getParticularDiscount()
-    
+  }, []);
 
-  }, [])
-
-  console.log(getServicio);
-  
   return (
     <div className="container">
       <div className="row">
@@ -48,14 +36,17 @@ const Servicio = () => {
                 </tr>
               </thead>
               <tbody>
-
-                {getServicio.length > 0 && getServicio[0].services.map((servicio, i ) => (
-
-                  <tr key={i}>
-                  <td>{servicio.name ? servicio.name : ""}</td>
-                  <td>{servicio.last_price && servicio.last_price.amount ? servicio.last_price.amount : ""}</td>
-                </tr>
-                ))}
+                {getServicio.length > 0 &&
+                  getServicio[0].services.map((servicio, i) => (
+                    <tr key={i}>
+                      <td>{servicio.name ? servicio.name : ""}</td>
+                      <td>
+                        {servicio.last_price && servicio.last_price.amount
+                          ? servicio.last_price.amount
+                          : ""}
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
@@ -84,7 +75,7 @@ const Servicio = () => {
                   aria-labelledby="headingOne"
                   data-bs-parent="#accordionExample"
                 >
-                  <Persona />
+                  <Persona getServicio={getServicio} />
                 </div>
               </div>
               <div className="accordion-item">
@@ -106,7 +97,7 @@ const Servicio = () => {
                   aria-labelledby="headingTwo"
                   data-bs-parent="#accordionExample"
                 >
-                  <Empresa />
+                  <Empresa getServicio={getServicio} />
                 </div>
               </div>
             </div>

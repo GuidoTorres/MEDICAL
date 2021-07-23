@@ -52,7 +52,7 @@ const Estadistica = () => {
             </div>
           </div>
           <div className=" barra">
-            <p className="">Solucionar intervalo de tiempo</p>
+            <p className="">Seleccionar intervalo de tiempo</p>
             <div className="laboratorio__estadistica-intervalo">
               <div>
                 <input type="checkbox" className="form-check-input" />

@@ -37,7 +37,7 @@ const Transportista = () => {
       },
     },
     {
-      name: 'Tipo vehiculo',
+      name: 'Tipo vehículo',
       selector: 'tipo',
       sortable: true,
       style: {

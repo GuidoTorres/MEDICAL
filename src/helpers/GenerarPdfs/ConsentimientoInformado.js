@@ -31,7 +31,7 @@ const generarConsentimientoInformado = () => {
   });
   doc.setFontSize(10);
 
-  doc.addImage(consentimiento, "PNG", 70, 30, 450, 500);
+  doc.addImage(consentimiento, "PNG", 15, 20, 600, 700);
 
   // doc.text(110, 155, `${data.nombre}`);
   // doc.text(350, 155, `${data.dni}`);

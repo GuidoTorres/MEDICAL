@@ -7,6 +7,12 @@ import { paginacionOpciones } from "../../helpers/tablaOpciones";
 import MDescargar from "./Modales/MDescargar";
 import MSubirLaboratorio from "./MSubirLaboratorio";
 
+import jsPDF from "jspdf";
+import eclia from "../../assets/pdf Imagen/eclia.png";
+import antigeno from "../../assets/pdf Imagen/antigeno.png";
+import molecular from "../../assets/pdf Imagen/molecular.png";
+import rapida from "../../assets/pdf Imagen/rapida.png";
+
 const Historial = () => {
   const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
@@ -34,10 +40,10 @@ const Historial = () => {
     getServicios();
   }, []);
 
-
+  console.log(results);
   const columnas = [
     {
-      name: "Item",
+      name: "Ítem",
       selector: (row) => (row.nro_atencion ? row.nro_atencion : ""),
       sortable: true,
       style: {
@@ -108,46 +114,150 @@ const Historial = () => {
     filtrarTabla();
   }, [tipoPrueba]);
 
-// console.log(filterData);
-//   useEffect(() => {
-//     const filtrarElemento = () => {
-//       const search =
-//         filterData &&
-//         Object.values(filterData).filter((data) => {
-//           return (
-//             data.tipo_usuario
-//               .normalize("NFD")
-//               .replace(/[\u0300-\u036f]/g, "")
-//               .toLocaleLowerCase()
-//               .includes(busqueda) ||
-//             data.dni.toString().includes(busqueda) ||
-//             data.fecha_atencion
-//               .normalize("NFD")
-//               .replace(/[\u0300-\u036f]/g, "")
-//               .toLocaleLowerCase()
-//               .includes(busqueda) ||
-//             data.paciente
-//               .normalize("NFD")
-//               .replace(/[\u0300-\u036f]/g, "")
-//               .toLocaleLowerCase()
-//               .includes(busqueda)
-//           );
-//         });
-//       setListRegistro(search);
-//     };
-//     filtrarElemento();
-//   }, [busqueda]);
+  //   useEffect(() => {
+  //     const filtrarElemento = () => {
+  //       const search =
+  //         filterData &&
+  //         Object.values(filterData).filter((data) => {
+  //           return (
+  //             data.tipo_usuario
+  //               .normalize("NFD")
+  //               .replace(/[\u0300-\u036f]/g, "")
+  //               .toLocaleLowerCase()
+  //               .includes(busqueda) ||
+  //             data.dni.toString().includes(busqueda) ||
+  //             data.fecha_atencion
+  //               .normalize("NFD")
+  //               .replace(/[\u0300-\u036f]/g, "")
+  //               .toLocaleLowerCase()
+  //               .includes(busqueda) ||
+  //             data.paciente
+  //               .normalize("NFD")
+  //               .replace(/[\u0300-\u036f]/g, "")
+  //               .toLocaleLowerCase()
+  //               .includes(busqueda)
+  //           );
+  //         });
+  //       setListRegistro(search);
+  //     };
+  //     filtrarElemento();
+  //   }, [busqueda]);
 
   const handleDetalles = (e) => {
     console.log(e);
-    // setOpenModal(true);
+    if (e.servicio_id == 5) {
+      generarPDF(e, antigeno, "Formato Antígeno");
+    } else if (e.servicio_id === 6) {
+      generarPDF(e, eclia, "Formato Eclia");
+    } else if (e.servicio_id === 7) {
+      generarPDF(e, molecular, "Formato Molecular");
+    } else if (e.servicio_id === 8) {
+      generarPDF(e, rapida, "Formato Rapida");
+    }
+  };
+
+  const generarPDF = (e, imagen, formato) => {
+    console.log(e);
+    const doc = new jsPDF("p", "pt");
+    doc.setProperties({
+      title: formato,
+    });
+    doc.setFontSize(10);
+
+    doc.addImage(imagen, "PNG", 5, 20, 580, 800, "", "FAST");
+
+    if (e.servicio_id === 5) {
+      doc.text(
+        328,
+        135,
+        `${
+          e && e.person && e.person.gender_id === 1 ? "Masculino" : "Femenino"
+        }`
+      );
+      doc.text(90, 136, `${e.nro_atencion ? e.nro_atencion : ""}`);
+      doc.text(60, 158, `${e.dni ? e.dni : ""}`);
+      doc.text(428, 157, `${e.fecha_atencion ? e.fecha_atencion : ""}`);
+
+      doc.text(90, 180, `${e.paciente ? e.paciente : ""}`);
+
+      doc.text(
+        280,
+        268,
+        `${
+          e.resultado && e.resultado.result === 0 ? "No detectado" : "Detectado"
+        }`
+      );
+    } else if (e.servicio_id == 6) {
+      doc.text(
+        328,
+        120,
+        `${
+          e && e.person && e.person.gender_id === 1 ? "Masculino" : "Femenino"
+        }`
+      );
+      doc.text(85, 119, `${e.nro_atencion ? e.nro_atencion : ""}`);
+      doc.text(55, 141, `${e.dni ? e.dni : ""}`);
+      doc.text(428, 141, `${e.fecha_atencion ? e.fecha_atencion : ""}`);
+
+      doc.text(85, 163, `${e.paciente ? e.paciente : ""}`);
+      doc.text(
+        195,
+        268,
+        `${e.resultado && e.resultado.result_igm ? e.resultado.result_igm : ""}`
+      );
+      doc.text(
+        285,
+        268,
+        `${e.resultado && e.resultado.result_igg ? e.resultado.result_igg : ""}`
+      );
+    } else if (e.servicio_id == 7) {
+      doc.text(
+        328,
+        141,
+        `${
+          e && e.person && e.person.gender_id === 1 ? "Masculino" : "Femenino"
+        }`
+      );
+
+      doc.text(85, 140, `${e.nro_atencion ? e.nro_atencion : ""}`);
+      doc.text(55, 163, `${e.dni ? e.dni : ""}`);
+      doc.text(428, 163, `${e.fecha_atencion ? e.fecha_atencion : ""}`);
+
+      doc.text(85, 185, `${e.paciente ? e.paciente : ""}`);
+    } else if (e.servicio_id == 8) {
+      doc.text(
+        328,
+        141,
+        `${
+          e && e.person && e.person.gender_id === 1 ? "Masculino" : "Femenino"
+        }`
+      );
+      doc.text(55, 163, `${e && e.person && e.person.dni ? e.person.dni : ""}`);
+      doc.text(
+        428,
+        163,
+        `${e && e.result && e.result.date ? e.result.date : ""}`
+      );
+
+      doc.text(
+        85,
+        185,
+        `${
+          e && e.person && e.person.name && e.person.pat_lastname
+            ? e.person.name + " " + e.person.pat_lastname
+            : ""
+        }`
+      );
+    }
+
+    window.open(doc.output("bloburl"), "_blank");
+    var blob = doc.output("blob");
   };
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
 
-  console.log(openDescarga);
   return (
     <div className="container">
       <div className="row">
@@ -219,7 +329,9 @@ const Historial = () => {
               pagination
               paginationComponentOptions={paginacionOpciones}
               fixedHeader
-              fixedHeaderScrollHeight="500px"
+              striped
+              highlightOnHover
+              fixedHeaderScrollHeight="100%"
               noDataComponent={
                 <div className="spinner">
                   <i className="fas fa-inbox table__icono"></i>
@@ -235,12 +347,14 @@ const Historial = () => {
             setOpenModal={setOpenModal}
           />
         )}
-        {openDescarga === true ?
+        {openDescarga === true ? (
           <MDescargar
             openDescarga={openDescarga}
             setOpenDescarga={setOpenDescarga}
           />
-        : ""}
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

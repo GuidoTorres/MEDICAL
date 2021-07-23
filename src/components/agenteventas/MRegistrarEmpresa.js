@@ -3,25 +3,25 @@ import Modal from "react-modal";
 import Swal from "sweetalert2";
 import { customStyles } from "../../helpers/tablaOpciones";
 import { UploadAvatar } from "../../components/uploadAvatar/uploadAvatar";
-import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import { fetchGETPOSTPUTDELETE, fetchRUC } from "../../helpers/fetch";
 
-const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getCorporations }) => {
+const MRegistrarEmpresa = ({
+  openModal,
+  setOpenModal,
+  dataSelected,
+  editar,
+  getCorporations,
+}) => {
   const [avatar, setAvatar] = useState(null);
   const [empresa, setEmpresa] = useState(null);
   const [types, setTypes] = useState([]);
+  const [ruc, setRuc] = useState({});
+  const [servicios, setServicios] = useState({});
 
   const closeModal = () => {
     setOpenModal(false);
-    console.log("cerrar modal");
   };
 
-  const handleChange = (e) => {
-    setEmpresa({
-      ...empresa,
-
-      [e.target.name]: e.target.value,
-    });
-  };
   const getCorporationTypes = () => {
     fetchGETPOSTPUTDELETE("corporation_types")
       .then((data) => data.json())
@@ -29,36 +29,67 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
         setTypes(datos.types);
       });
   };
-  
+  // const [servicios, setServicios] = useState({});
+
+  const getServices = () => {
+    fetchGETPOSTPUTDELETE("services")
+      .then((info) => info.json())
+      .then((datos) => setServicios(datos.data));
+  };
+
+  const getRuc = () => {
+    fetchRUC(empresa.ruc, "GET")
+      .then((res) => res.json())
+      .then((res) => setRuc(res));
+  };
+
+  useEffect(() => {
+    getCorporationTypes();
+    getServices();
+    if (empresa && empresa.ruc && empresa.ruc.length === 11) {
+      getRuc();
+    }
+  }, [empresa]);
+
   useEffect(() => {
     getCorporationTypes();
   }, []);
 
-  const postCorporation = () => {
+  const postCorporation = (e) => {
     const formData = new FormData();
 
     formData.set("ruc", empresa.ruc || "");
-    formData.set("business_name", empresa.business_name || "");
+    formData.set(
+      "business_name",
+      ruc.razonSocial || empresa.business_name || ""
+    );
     formData.set("commercial_name", empresa.commercial_name || "");
-    formData.set("logo", avatar ? avatar.file : "logo");
+    formData.set("logo", avatar && avatar.file ? avatar.file : "");
 
-    formData.set("address", empresa.address.address || "");
-    formData.set("reference", empresa.address.reference || "");
+    formData.set("address", ruc.direccion || empresa.address || "");
+    formData.set("reference", empresa.reference || "");
 
-    formData.set("contacts[0][name]", empresa.contacts.name || "");
-    formData.set("contacts[0][phone]", empresa.contacts.phone || "");
-    formData.set("contacts[0][email]", empresa.contacts.email || "");
+    formData.set("contacts[0][name]", empresa.name || "");
+    formData.set("contacts[0][phone]", empresa.phone || "");
+    formData.set("contacts[0][email]", empresa.email || "");
     formData.set("contacts[0][contact_type]", 1);
 
-    formData.set("contacts[1][name]", empresa.contacts.name1 || "");
-    formData.set("contacts[1][phone]", empresa.contacts.phone1 || "");
-    formData.set("contacts[1][email]", empresa.contacts.email1 || "");
+    formData.set("contacts[1][name]", empresa.name1 || "");
+    formData.set("contacts[1][phone]", empresa.phone1 || "");
+    formData.set("contacts[1][email]", empresa.email1 || "");
     formData.set("contacts[1][contact_type]", 2);
 
-    formData.set("before", empresa.billing.before || "");
-    formData.set("credit", empresa.billing.credit || "");
+    formData.set("before", empresa.before || "");
+    formData.set("credit", empresa.credit || "");
 
-    formData.set("services[0][service_id]", empresa.services.service_id || "");
+    formData.set("services[0][service_id]", empresa.service_id5 || "");
+    // formData.set("services[0][state]", 0);
+    formData.set("services[1][service_id]", empresa.service_id6 || "");
+    // formData.set("services[0][state]", 0);
+    formData.set("services[2][service_id]", empresa.service_id7 || "");
+    // formData.set("services[0][state]", 0);
+    formData.set("services[3][service_id]", empresa.service_id8 || "");
+    // formData.set("services[0][state]", 0);
 
     fetchGETPOSTPUTDELETE("company", formData, "POST").then((resp) => {
       console.log(resp);
@@ -90,34 +121,204 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
     });
   };
 
-  console.log(empresa);
-  console.log(dataSelected);
-  const putCorporation = () => {
+  const putCorporation = (e) => {
     const formData = new FormData();
 
-    formData.set("ruc", empresa.ruc || "");
-    formData.set("business_name",empresa.business_name || dataSelected.corporation.ruc);
-    formData.set("commercial_name",empresa.commercial_name || dataSelected.corporation.commercial_name);
-    formData.set("logo", avatar ? avatar.file : dataSelected.corporation.logo);
+    formData.set(
+      "ruc",
+      dataSelected && dataSelected.corporation.ruc
+        ? dataSelected.corporation.ruc
+        : ""
+    );
+    formData.set(
+      "business_name",
+      empresa.business_name
+        ? empresa.business_name
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.business_name
+        ? dataSelected.corporation.business_name
+        : ""
+    );
+    formData.set(
+      "commercial_name",
+      empresa.commercial_name
+        ? empresa.commercial_name
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.commercial_name
+        ? dataSelected.corporation.commercial_name
+        : ""
+    );
+    formData.set("logo", avatar ? avatar.file : "");
 
-    formData.set("address", empresa.address.address || dataSelected.corporation.address.address);
-    formData.set("reference", empresa.address.reference || dataSelected.corporation.address.reference);
+    formData.set(
+      "address",
+      empresa.address
+        ? empresa.address
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.address &&
+          dataSelected.corporation.address.address
+        ? dataSelected.corporation.address.address
+        : ""
+    );
+    formData.set(
+      "reference",
+      empresa.reference
+        ? empresa.reference
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.address &&
+          dataSelected.corporation.address.reference
+        ? dataSelected.corporation.address.reference
+        : ""
+    );
 
-    formData.set("contacts[0][name]", empresa.contacts.name || dataSelected.corporation.contacts[0].name);
-    formData.set("contacts[0][phone]", empresa.contacts.phone || dataSelected.corporation.contacts[0].phone);
-    formData.set("contacts[0][email]", empresa.contacts.email || dataSelected.corporation.contacts[0].email);
+    formData.set(
+      "contacts[0][name]",
+      empresa.name
+        ? empresa.name
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[0] &&
+          dataSelected.corporation.contacts[0].name
+        ? dataSelected.corporation.contacts[0].name
+        : ""
+    );
+    formData.set(
+      "contacts[0][phone]",
+      empresa.phone
+        ? empresa.phone
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[0] &&
+          dataSelected.corporation.contacts[0].phone
+        ? dataSelected.corporation.contacts[0].phone
+        : ""
+    );
+    formData.set(
+      "contacts[0][email]",
+      empresa.email
+        ? empresa.email
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[0] &&
+          dataSelected.corporation.contacts[0].email
+        ? dataSelected.corporation.contacts[0].email
+        : ""
+    );
     formData.set("contacts[0][contact_type]", 1);
 
-    formData.set("contacts[1][name]", empresa.contacts.name1 || dataSelected.corporation.contacts[1].name);
-    formData.set("contacts[1][phone]", empresa.contacts.phone1 || dataSelected.corporation.contacts[1].phone);
-    formData.set("contacts[1][email]", empresa.contacts.email1 || dataSelected.corporation.contacts[1].email);
+    formData.set(
+      "contacts[1][name]",
+      empresa.name1
+        ? empresa.name1
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[1] &&
+          dataSelected.corporation.contacts[1].name
+        ? dataSelected.corporation.contacts[1].name
+        : ""
+    );
+    formData.set(
+      "contacts[1][phone]",
+      empresa.phone1
+        ? empresa.phone1
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[1] &&
+          dataSelected.corporation.contacts[1].phone
+        ? dataSelected.corporation.contacts[1].phone
+        : ""
+    );
+    formData.set(
+      "contacts[1][email]",
+      empresa.email1
+        ? empresa.email1
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[1] &&
+          dataSelected.corporation.contacts[1].email
+        ? dataSelected.corporation.contacts[1].email
+        : ""
+    );
     formData.set("contacts[1][contact_type]", 2);
 
-    formData.set("before", empresa.billing ? empresa.billing.before : dataSelected.billing.before);
-    formData.set("credit", empresa.billing ? empresa.billing.credit : dataSelected.billing.credit);
+    formData.set(
+      "before",
+      empresa.before
+        ? empresa.before
+        : dataSelected && dataSelected.billing && dataSelected.billing.before
+        ? dataSelected.billing.before
+        : ""
+    );
+    formData.set(
+      "credit",
+      empresa.credit
+        ? empresa.credit
+        : dataSelected && dataSelected.billing && dataSelected.billing.credit
+        ? dataSelected.billing.credit
+        : ""
+    );
 
-    formData.set("services[0][service_id]", empresa.services.service_id || "");
-    formData.set("services[0][state]", 0);
+    formData.set(
+      "services[0][service_id]",
+      empresa && empresa.service_id5
+        ? empresa.service_id5
+        : dataSelected &&
+          dataSelected.services &&
+          dataSelected.services[0] &&
+          dataSelected.services[0].id
+        ? dataSelected.services[0].id
+        : ""
+    );
+    formData.set("services[0][state]", 1);
+
+    formData.set(
+      "services[1][service_id]",
+      empresa && empresa.service_id6
+        ? empresa.service_id6
+        : dataSelected &&
+          dataSelected.services &&
+          dataSelected.services[1] &&
+          dataSelected.services[1].id
+        ? dataSelected.services[1].id
+        : ""
+    );
+    formData.set("services[1][state]", 1);
+
+    formData.set(
+      "services[2][service_id]",
+      empresa && empresa.service_id7
+        ? empresa.service_id7
+        : dataSelected &&
+          dataSelected.services &&
+          dataSelected.services[2] &&
+          dataSelected.services[2].id
+        ? dataSelected.services[2].id
+        : ""
+    );
+    formData.set("services[2][state]", 1);
+
+    formData.set(
+      "services[3][service_id]",
+      empresa && empresa.service_id8
+        ? empresa.service_id8
+        : dataSelected &&
+          dataSelected.services &&
+          dataSelected.services[3] &&
+          dataSelected.services[3].id
+        ? dataSelected.services[3].id
+        : ""
+    );
+    formData.set("services[3][state]", 1);
 
     fetchGETPOSTPUTDELETE(
       `company/update/${dataSelected.id}`,
@@ -129,7 +330,7 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
         Swal.fire({
           icon: "success",
           title: "Éxito",
-          text: "Se ha editado la empresa correctamente.",
+          text: "Se actualizo la empresa correctamente.",
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Aceptar",
@@ -152,7 +353,10 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
     });
   };
 
-  console.log(empresa);
+  const submit = (e) => {
+    e.preventDefault();
+    editar ? putCorporation() : postCorporation();
+  };
 
   return (
     <Modal
@@ -171,16 +375,20 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
         <h3 className="title__modal">Registar Empresa</h3>
       )}
       <div className="container">
-        <div className="row mt-3">
+        <form className="row mt-3" onSubmit={(e) => submit(e)}>
           <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 mregistro__empresa">
             <div className="mregistro__datos">
               <div>
                 <label>RUC:</label>
                 <input
-                  type="text"
+                  type="number"
                   name="ruc"
+                  required
+                  disabled={editar ? true : false}
                   defaultValue={
-                    dataSelected && dataSelected.corporation
+                    dataSelected &&
+                    dataSelected.corporation &&
+                    dataSelected.corporation.ruc
                       ? dataSelected.corporation.ruc
                       : ""
                   }
@@ -194,10 +402,15 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
                 <input
                   type="text"
                   name="business_name"
+                  required
                   defaultValue={
-                    dataSelected && dataSelected.corporation
-                      ? dataSelected.corporation.business_name
-                      : ""
+                    editar
+                      ? dataSelected &&
+                        dataSelected.corporation &&
+                        dataSelected.corporation.business_name
+                        ? dataSelected.corporation.business_name
+                        : ""
+                      : ruc.razonSocial
                   }
                   onChange={(e) =>
                     setEmpresa({ ...empresa, business_name: e.target.value })
@@ -210,7 +423,9 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
                   type="text"
                   name="commercial_name"
                   defaultValue={
-                    dataSelected && dataSelected.corporation
+                    dataSelected &&
+                    dataSelected.corporation &&
+                    dataSelected.corporation.commercial_name
                       ? dataSelected.corporation.commercial_name
                       : ""
                   }
@@ -225,17 +440,19 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
                   type="text"
                   name="address"
                   defaultValue={
-                    dataSelected &&
-                    dataSelected.corporation &&
-                    dataSelected.corporation.address &&
-                    dataSelected.corporation.address.address
-                      ? dataSelected.corporation.address.address
-                      : ""
+                    editar
+                      ? dataSelected &&
+                        dataSelected.corporation &&
+                        dataSelected.corporation.address &&
+                        dataSelected.corporation.address.address
+                        ? dataSelected.corporation.address.address
+                        : ""
+                      : ruc.direccion
                   }
                   onChange={(e) =>
                     setEmpresa({
                       ...empresa,
-                      address: { ...empresa.address, address: e.target.value },
+                      address: e.target.value,
                     })
                   }
                 />
@@ -256,10 +473,8 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
                   onChange={(e) =>
                     setEmpresa({
                       ...empresa,
-                      address: {
-                        ...empresa.address,
-                        reference: e.target.value,
-                      },
+
+                      reference: e.target.value,
                     })
                   }
                 />
@@ -301,17 +516,20 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
                   <input
                     type="text"
                     name="contactsname"
-                    // defaultValue={
-                    //   dataSelected &&
-                    //   dataSelected.corporation.contacts &&
-                    //   dataSelected.corporation.contacts
-                    //     ? dataSelected.corporation.contacts[0].name
-                    //     : ""
-                    // }
+                    required
+                    defaultValue={
+                      dataSelected &&
+                      dataSelected.corporation &&
+                      dataSelected.corporation.contacts &&
+                      dataSelected.corporation.contacts[0] &&
+                      dataSelected.corporation.contacts[0].name
+                        ? dataSelected.corporation.contacts[0].name
+                        : ""
+                    }
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        contacts: { ...empresa.contacts, name: e.target.value },
+                        name: e.target.value,
                       })
                     }
                   />
@@ -319,22 +537,23 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
                 <div>
                   <label>Teléfono:</label>
                   <input
-                    type="text"
+                    type="number"
                     name="contactsphone"
-                    // defaultValue={
-                    //   dataSelected &&
-                    //   dataSelected.corporation.contacts &&
-                    //   dataSelected.corporation.contacts[0].phone
-                    //     ? dataSelected.corporation.contacts[0].phone
-                    //     : ""
-                    // }
+                    required
+                    defaultValue={
+                      dataSelected &&
+                      dataSelected.corporation &&
+                      dataSelected.corporation.contacts &&
+                      dataSelected.corporation.contacts[0] &&
+                      dataSelected.corporation.contacts[0].phone
+                        ? dataSelected.corporation.contacts[0].phone
+                        : ""
+                    }
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        contacts: {
-                          ...empresa.contacts,
-                          phone: e.target.value,
-                        },
+
+                        phone: e.target.value,
                       })
                     }
                   />
@@ -342,22 +561,22 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
                 <div>
                   <label>Correo:</label>
                   <input
-                    type="text"
+                    type="email"
                     name="contactsemail"
-                    // defaultValue={
-                    //   dataSelected &&
-                    //   dataSelected.corporation.contacts &&
-                    //   dataSelected.corporation.contacts[0].email
-                    //     ? dataSelected.corporation.contacts[0].email
-                    //     : ""
-                    // }
+                    required
+                    defaultValue={
+                      dataSelected &&
+                      dataSelected.corporation &&
+                      dataSelected.corporation.contacts &&
+                      dataSelected.corporation.contacts[0] &&
+                      dataSelected.corporation.contacts[0].email
+                        ? dataSelected.corporation.contacts[0].email
+                        : ""
+                    }
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        contacts: {
-                          ...empresa.contacts,
-                          email: e.target.value,
-                        },
+                        email: e.target.value,
                       })
                     }
                   />
@@ -371,20 +590,20 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
                   <label>Responsable:</label>
                   <input
                     type="text"
-                    // defaultValue={
-                    //   dataSelected &&
-                    //   dataSelected.corporation.contacts &&
-                    //   dataSelected.corporation.contacts[1].name
-                    //     ? dataSelected.corporation.contacts[1].name
-                    //     : ""
-                    // }
+                    defaultValue={
+                      dataSelected &&
+                      dataSelected.corporation &&
+                      dataSelected.corporation.contacts &&
+                      dataSelected.corporation.contacts[1] &&
+                      dataSelected.corporation.contacts[1].name
+                        ? dataSelected.corporation.contacts[1].name
+                        : ""
+                    }
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        contacts: {
-                          ...empresa.contacts,
-                          name1: e.target.value,
-                        },
+
+                        name1: e.target.value,
                       })
                     }
                   />
@@ -392,21 +611,21 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
                 <div>
                   <label>Teléfono:</label>
                   <input
-                    type="text"
-                    // defaultValue={
-                    //   dataSelected &&
-                    //   dataSelected.corporation.contacts &&
-                    //   dataSelected.corporation.contacts[1].phone
-                    //     ? dataSelected.corporation.contacts[1].phone
-                    //     : ""
-                    // }
+                    type="number"
+                    defaultValue={
+                      dataSelected &&
+                      dataSelected.corporation &&
+                      dataSelected.corporation.contacts &&
+                      dataSelected.corporation.contacts[1] &&
+                      dataSelected.corporation.contacts[1].phone
+                        ? dataSelected.corporation.contacts[1].phone
+                        : ""
+                    }
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        contacts: {
-                          ...empresa.contacts,
-                          phone1: e.target.value,
-                        },
+
+                        phone1: e.target.value,
                       })
                     }
                   />
@@ -414,21 +633,21 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
                 <div>
                   <label>Correo:</label>
                   <input
-                    type="text"
-                    // defaultValue={
-                    //   dataSelected &&
-                    //   dataSelected.corporation.contacts &&
-                    //   dataSelected.corporation.contacts[1].email
-                    //     ? dataSelected.corporation.contacts[1].email
-                    //     : ""
-                    // }
+                    type="email"
+                    defaultValue={
+                      dataSelected &&
+                      dataSelected.corporation &&
+                      dataSelected.corporation.contacts &&
+                      dataSelected.corporation.contacts[1] &&
+                      dataSelected.corporation.contacts[1].email
+                        ? dataSelected.corporation.contacts[1].email
+                        : ""
+                    }
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        contacts: {
-                          ...empresa.contacts,
-                          email1: e.target.value,
-                        },
+
+                        email1: e.target.value,
                       })
                     }
                   />
@@ -442,7 +661,12 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
                 Logo <span>(.jpg, .jpeg, .jpg)</span>
               </p>
               <div>
-                <UploadAvatar avatar={avatar} setAvatar={setAvatar} />
+                <UploadAvatar
+                  avatar={avatar}
+                  setAvatar={setAvatar}
+                  dataSelected={dataSelected}
+                  editar={editar}
+                />
               </div>
             </div>
             <div className="mregistro__facturacion">
@@ -453,14 +677,16 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
                   <input
                     type="number"
                     defaultValue={
-                      dataSelected && dataSelected.billing
+                      dataSelected &&
+                      dataSelected.billing &&
+                      dataSelected.billing.before
                         ? dataSelected.billing.before
                         : ""
                     }
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        billing: { ...empresa.billing, before: e.target.value },
+                        before: e.target.value,
                       })
                     }
                   />
@@ -470,14 +696,16 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
                   <input
                     type="number"
                     defaultValue={
-                      dataSelected && dataSelected.billing
+                      dataSelected &&
+                      dataSelected.billing &&
+                      dataSelected.billing.credit
                         ? dataSelected.billing.credit
                         : ""
                     }
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        billing: { ...empresa.billing, credit: e.target.value },
+                        credit: e.target.value,
                       })
                     }
                   />
@@ -491,13 +719,17 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
                   <label>Tipo de servicio</label>
                   <select
                     aria-label="Default select example"
+                    defaultValue={
+                      dataSelected &&
+                      dataSelected.services &&
+                      dataSelected.services[0] &&
+                      dataSelected.services[0].services_category_id
+                    }
                     onChange={(e) =>
                       setEmpresa({
                         ...empresa,
-                        services: {
-                          ...empresa.services,
-                          service_id: e.target.value,
-                        },
+
+                        service_id: e.target.value,
                       })
                     }
                   >
@@ -505,67 +737,111 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
                     <option value="1">Covid 19</option>
                   </select>
                 </div>
-                <div >
-                  <label>Plan de atención</label>
-                  {/* <div class="form-check" >
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                  <label class="form-check-label" for="flexCheckDefault">
-                  Antígeno
-                  </label>
-                  </div>
-                  <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-                  <label class="form-check-label" for="flexCheckDefault">
-                  Electroquimioluminiscencia
-                  </label>
-                  </div>
-                  <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-                  <label class="form-check-label" for="flexCheckDefault">
-                  RT-PCR
-                  </label>
-                  </div>
-                  <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-                  <label class="form-check-label" for="flexCheckDefault">
-                  Inmunocromatografia
-                  </label>
-                  </div> */}
+                <div>
+                  <label style={{ width: "50%" }}>Plan de atención</label>
+                  <div className="mselect">
+                    <div className="mselect__item">
+                      {servicios &&
+                        servicios[0] &&
+                        servicios[0].services &&
+                        servicios[0].services.map((data, i) => (
+                          <>
+                            <input
+                              key={i}
+                              type="checkbox"
+                              className="w-auto"
+                              defaultChecked={
+                                dataSelected &&
+                                dataSelected.services &&
+                                dataSelected.services[i]
+                                  ? true
+                                  : false
+                              }
+                              onChange={(e) =>
+                                setEmpresa({
+                                  ...empresa,
+                                  [`service_id${data.id}`]: e.target.checked
+                                    ? data.id
+                                    : "",
+                                })
+                              }
+                            />
+                            <label key={data.id}>{data.name}</label>
+                          </>
+                        ))}
+                    </div>
+                    {/* <div className="mselect__item">
+                      <input
+                        type="checkbox"
+                        className="w-auto"
+                        defaultChecked={
+                          dataSelected &&
+                          dataSelected.services &&
+                          dataSelected.services[1]
+                            ? true
+                            : false
+                        }
+                        onChange={(e) =>
+                          setEmpresa({
+                            ...empresa,
+                            service_id2: e.target.checked ?servicios && servicios .services && servicios.servicios[1] &&  servicios.services[1].id : "",
+                          })
+                        }
+                      />
+                      <label>Eclia</label>
+                    </div>
+                    <div className="mselect__item">
+                      <input
+                        type="checkbox"
+                        className="w-auto"
+                        defaultChecked={
+                          dataSelected &&
+                          dataSelected.services &&
+                          dataSelected.services[2]
+                            ? true
+                            : false
+                        }
+                        onChange={(e) =>
+                          setEmpresa({
+                            ...empresa,
 
-                  <select
-                    aria-label="Default select example"
-                    multiple = "multiple option"
-                    onChange={(e) =>
-                      setEmpresa({
-                        ...empresa,
-                        services: {
-                          ...empresa.services,
-                          service_id: e.target.value,
-                        },
-                      })
-                    }
-                  >
-                    <option value="">Seleccione</option>
-                    <option value="1">Antígeno</option>
-                    <option value="2">Electroquimioluminiscencia</option>
-                    <option value="3">RT-PCR</option>
-                    <option value="3">Inmunocromatografia</option>
-                  </select>
+                            service_id3: e.target.checked ?servicios && servicios .services && servicios.servicios[2] &&  servicios.services[2].id : "",
+                          })
+                        }
+                      />
+                      <label>Molecular</label>
+                    </div>
+                    <div className="mselect__item">
+                      <input
+                        type="checkbox"
+                        className="w-auto"
+                        defaultChecked={
+                          dataSelected &&
+                          dataSelected.services &&
+                          dataSelected.services[3]
+                            ? true
+                            : false
+                        }
+                        onChange={(e) =>
+                          setEmpresa({
+                            ...empresa,
+
+                            service_id4: e.target.checked ?servicios && servicios .services && servicios.servicios[3] && servicios.services[3].id : "",
+                          })
+                        }
+                      />
+                      <label>Rapida</label>
+                    </div> */}
+                  </div>
                 </div>
               </div>
               <div className="list-botones">
                 {editar === true ? (
-                  <button
-                    className="botones mregistro__botones"
-                    onClick={(e) => putCorporation(e)}
-                  >
+                  <button className="botones mregistro__botones" type="submit">
                     Editar
                   </button>
                 ) : (
-                  <button
-                    className="botones mregistro__botones"
-                    onClick={postCorporation}
-                  >
+                  <button className="botones mregistro__botones" type="submit">
                     Aceptar
                   </button>
                 )}
@@ -578,7 +854,7 @@ const MRegistrarEmpresa = ({ openModal, setOpenModal, dataSelected, editar, getC
               </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </Modal>
     // </div>
