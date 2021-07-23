@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import Modal from 'react-modal';
-import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
-import { customStyles } from '../../helpers/tablaOpciones';
+import React, { useEffect, useState } from "react";
+import Modal from "react-modal";
+import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
+import { customStyles } from "../../helpers/tablaOpciones";
+import Swal from "sweetalert2";
 
-const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen }) => {
+const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, data }) => {
   const [asignation, setAsignation] = useState([]);
   const [listclinica, setListclinica] = useState([]);
+  const [prueba, setPrueba] = useState({});
   const [formValues, setFormValues] = useState({
     date_attention: null,
     time_attention: Date.now(),
@@ -14,11 +16,24 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen }) => {
     persons: [
       {
         person_id: null,
-        codebar: '',
+        codebar: "",
       },
     ],
   });
 
+  const filterData = () => {
+    let Result = data.map((data) => ({
+      person_id: data.person_id,
+      codebar: data.person.dni,
+    }));
+    setPrueba(Result);
+  };
+
+  useEffect(() => {
+    filterData();
+  }, [data]);
+
+  console.log(prueba);
   // const [arraPersonas, setArraPersonas] = useState({});
   // const listaPersonas = () => {
   //   employees.map((data, index) => {
@@ -40,7 +55,7 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen }) => {
   console.log(formValues);
 
   const pruebasignacion = () => {
-    fetchGETPOSTPUTDELETEJSON('services')
+    fetchGETPOSTPUTDELETEJSON("services")
       .then((data) => data.json())
       .then((datos) => setAsignation(datos.data[0].services));
   };
@@ -50,7 +65,7 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen }) => {
   }, []);
 
   const clinicalist = () => {
-    fetchGETPOSTPUTDELETEJSON('clinics')
+    fetchGETPOSTPUTDELETEJSON("clinics")
       .then((data) => data.json())
       .then((datos) => setListclinica(datos.data));
   };
@@ -64,9 +79,47 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen }) => {
   };
 
   const envioPost = (data) => {
-    // fetchGETPOSTPUTDELETEJSON('services', data, 'POST').then((data) =>
-    //   data.json()
-    // );
+    const dataEmpresa = {
+      date_attention: formValues.date_attention,
+      time_attention: Date.now(),
+      service_id: formValues.service_id,
+      clinic_id: 1,
+      persons: prueba,
+    };
+
+    fetchGETPOSTPUTDELETEJSON(
+      "company_employees/attentions",
+      dataEmpresa,
+      "POST"
+    ).then((data) => {
+      console.log(data);
+
+      if (data.status === 200) {
+        closeModal();
+
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se generaron las atenciones correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+          }
+        });
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
+      }
+    });
   };
 
   return (

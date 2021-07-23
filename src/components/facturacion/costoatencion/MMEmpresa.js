@@ -52,6 +52,7 @@ const MMEmpresa = ({
       amount: total,
       igv: igv,
       attentions: array,
+      company_id:""
     };
     postLiquidacion(liquidacion);
     closeModal();
