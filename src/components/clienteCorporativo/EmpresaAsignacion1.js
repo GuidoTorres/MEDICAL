@@ -1,19 +1,15 @@
 import { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
-import { useHistory } from 'react-router-dom';
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
 import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 import EmpresaAsignacion4 from './EmpresaAsignacion4';
 
 const EmpresaAsignacion = () => {
-  const history = useHistory();
   const [busqueda, setBusqueda] = useState('');
   const [asignation, setAsignation] = useState([]);
-  const [seleccionar, setSeleccionar] = useState({});
+  // const [seleccionar, setSeleccionar] = useState({});
   const [modaesCorporativo, setModaesCorporativo] = useState(false);
-
-  const { seleccionado } = seleccionar;
-
+  const [stateCustomer, setCustomerState] = useState([]);
   const getAsignacion = () => {
     fetchGETPOSTPUTDELETE('company_employees')
       .then((res) => res.json())
@@ -24,23 +20,43 @@ const EmpresaAsignacion = () => {
     getAsignacion();
   }, []);
 
-  console.log(seleccionar);
+  // console.log(seleccionar);
+  // const seleccionJSON = (e) => {
+  //   console.log(e);
+  // };
+  // const seleccionCheckbox = (e) => {
+  //   let arrayids = [];
+  //   stateCustomer.forEach((d) => {
+  //     if (d.select) {
+  //       arrayids.push(d.id);
+  //     }
+  //   });
+  //   console.log(arrayids);
+  // };
 
   const columnas = [
-    {
-      name: 'Seleccionar',
-      button: true,
-      // cell: (e) => (
-      //   <input
-      //     className="form-check-input"
-      //     type="checkbox"
-      //     name="seleccionado"
-      //     checked={seleccionado}
-      //     onChange={provandoCambios}
-      //     id="flexCheckDefault"
-      //   />
-      // ),
-    },
+    // {
+    //   name: 'Seleccionar',
+    //   button: true,
+    //   cell: (e) => (
+    //     <input
+    //       className="form-check-input"
+    //       type="checkbox"
+    //       name={e.person.name}
+    //       // onClick={seleccionCheckbox}
+    //       onChange={(e) => {
+    //         let value = e.target.checked;
+    //         setCustomerState(
+    //           stateCustomer.map((d) => {
+    //             d.select = value;
+    //             return d;
+    //           })
+    //         );
+    //       }}
+    //       id="flexCheckDefault"
+    //     />
+    //   ),
+    // },
 
     {
       name: 'Tipo de documento',
@@ -112,9 +128,7 @@ const EmpresaAsignacion = () => {
     {
       name: 'Fecha de Nacimiento',
       selector: (row) =>
-        row.fecha_nacimiento && row.fecha_nacimiento
-          ? row.fecha_nacimiento
-          : '',
+        row.person.birthday && row.person.birthday ? row.person.birthday : '',
       sortable: true,
       style: {
         color: '#8f9196',
@@ -139,10 +153,11 @@ const EmpresaAsignacion = () => {
   const modales = () => {
     setModaesCorporativo(!modaesCorporativo);
   };
+
   return (
     <div className="container">
+      <h3 className="title__modals">Asignar pruebas</h3>
       <div className="row">
-        <h3 className="titulo">Asignar pruebas</h3>
         <div className=" table-responsive">
           <div className="adminregistro__option">
             <div>
@@ -171,9 +186,10 @@ const EmpresaAsignacion = () => {
             fixedHeaderScrollHeight="100%"
             noDataComponent={<i className="fas fa-inbox table__icono"></i>}
             striped
-            selectableRows
             highlightOnHover
-            selectableRowsHighlight
+            selectableRows
+            // selectableRowSelected
+            // selectableRowsComponentProps={prueba}
           />
         </div>
       </div>

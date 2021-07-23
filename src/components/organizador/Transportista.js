@@ -9,7 +9,7 @@ const Transportista = () => {
   const [listRegistro, setListRegistro] = useState([]);
 
   const getTransportista = () => {
-    fetchGETPOSTPUTDELETEJSON('carriers')
+    fetchGETPOSTPUTDELETEJSON('transportistas_asignados')
       .then((data) => data.json())
       .then((result) => console.log(result));
   };
@@ -106,7 +106,7 @@ const Transportista = () => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="500px"
+            fixedHeaderScrollHeight="100%"
             noDataComponent={<i className="fas fa-inbox table__icono"></i>}
           />
         </div>

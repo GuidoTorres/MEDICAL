@@ -146,6 +146,7 @@ const EmpresaAsignacion4 = ({ setModaesCorporativo, modaesCorporativo }) => {
               fixedHeaderScrollHeight="100%"
               noDataComponent={<i className="fas fa-inbox table__icono"></i>}
               striped
+              highlightOnHover
             />
           </div>
           <div className="list-botones">

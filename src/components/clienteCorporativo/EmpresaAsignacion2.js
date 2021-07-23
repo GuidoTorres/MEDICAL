@@ -11,9 +11,9 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, employees }) => {
 
   const [asignation, setAsignation] = useState([]);
   const [listclinica, setListclinica] = useState([]);
-  const [valoresInput, setValoresInput] = useState({
-    date_attention: '',
-    time_attention: '',
+  const [formValues, setFormValues] = useState({
+    date_attention: null,
+    time_attention: Date.now(),
     service_id: null,
     clinic_id: null,
     persons: [
@@ -24,6 +24,26 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, employees }) => {
     ],
   });
 
+  const [arraPersonas, setArraPersonas] = useState({});
+  // const listaPersonas = () => {
+  //   employees.map((data, index) => {
+  //     // console.log(index);
+  //     return setArraPersonas([data]);
+  //   });
+  // };
+  // useEffect(() => {
+  //   listaPersonas();
+  // }, []);
+
+  const handleOnChange = (e) => {
+    setFormValues({
+      ...formValues,
+      [e.target.name]: e.target.value,
+    });
+    // }
+  };
+  console.log(formValues);
+  setArraPersonas({});
   const pruebasignacion = () => {
     fetchGETPOSTPUTDELETEJSON('services')
       .then((data) => data.json())
@@ -47,13 +67,13 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, employees }) => {
   const closeModal = () => {
     setIsOpen(false);
   };
-  console.log(asignation);
 
-  const obtenerData = (e) => {
-    setValoresInput({ ...valoresInput, [e.target.name]: e.target.value });
+  const envioPost = (data) => {
+    // fetchGETPOSTPUTDELETEJSON('services', data, 'POST').then((data) =>
+    //   data.json()
+    // );
   };
 
-  console.log(valoresInput);
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -65,26 +85,25 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, employees }) => {
       preventScroll={true}
       ariaHideApp={false}
     >
-      <h3 className="titulo">Asignación de pruebas:</h3>
+      <h3 className="title__modal">Asignación de pruebas:</h3>
       <div className="asignacion2 container">
         <div>
           <div className=" mt-3">
-            <label className="mt-3">
-              2. Seleccione las pruebas a realizar{' '}
-            </label>
+            <label className="mt-3">2. Seleccione las pruebas a realizar</label>
             <div>
               <div className="">
                 <label>Tipo de prueba </label>
 
                 <select
-                  class="form-select mt-2"
+                  className="form-select mt-2"
                   aria-label="Default select example"
-                  name="tipoprueba"
-                  onChange={obtenerData}
+                  name="service_id"
+                  onChange={handleOnChange}
                 >
+                  <option>Seleccione</option>
                   {asignation.map((data, index) => {
                     return (
-                      <option key={index} value={data.name}>
+                      <option key={index} value={data.id}>
                         {data.name}
                       </option>
                     );
@@ -92,11 +111,19 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, employees }) => {
                 </select>
               </div>
             </div>
+            <div className="mt-4">
+              <label>Fecha</label>
+              <input
+                type="date"
+                onChange={handleOnChange}
+                name="date_attention"
+              />
+            </div>
           </div>
 
           <div className="divider"></div>
           <div className="mt-3">
-            <table class="table">
+            <table className="table">
               <thead>
                 <tr>
                   <th scope="col">Nombre</th>
@@ -112,13 +139,14 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, employees }) => {
                       <td>{data.corporation.contacts[0].name}</td>
                       <td>{data.corporation.address.address}</td>
                       <td>
-                        <i class="fas fa-map-marked-alt"></i>
+                        <i className="fas fa-map-marked-alt"></i>
                       </td>
                       <td>
                         <input
                           type="checkbox"
-                          name="tipocheckbox"
-                          onChange={obtenerData}
+                          name="clinic_id"
+                          value={data.clinic_type_id}
+                          onChange={handleOnChange}
                         />
                       </td>
                     </tr>
@@ -131,8 +159,9 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, employees }) => {
         <div className="containerBtn">
           <button
             type="button"
-            class="botones"
-            onClick={(e) => history.push('/empresa/asignacion3')}
+            className="botones"
+            // onClick={(e) => history.push('/empresa/asignacion3')}
+            onClick={envioPost}
           >
             Siguiente
           </button>
