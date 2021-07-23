@@ -4,13 +4,14 @@ import { customStyles } from "../../../helpers/tablaOpciones";
 import MMAParticulares from "./MMAParticulares";
 import { fetchGETPOSTPUTDELETEJSON } from "../../../helpers/fetch";
 
-const MMParticulares = ({
+const MMEmpresa = ({
   openModalParticular,
   setOpenModalParticular,
   data,
-  dataParticular,
+  dataEmpresa,
+  setOpenModalEmpresa,
 }) => {
-  const [openModalCrear, setOpenModalCrear] = useState(false);
+  //   const [openModalCrear, setOpenModalCrear] = useState(false);
   const [subtotal, setSubTotal] = useState(0);
   const [igv, setIgv] = useState(0);
   const [total, setTotal] = useState(0);
@@ -34,9 +35,27 @@ const MMParticulares = ({
     setFechaActual(ano + "-" + mes + "-" + dia);
   };
 
+  const postLiquidacion = (body) => {
+    fetchGETPOSTPUTDELETEJSON("settlement", body, "POST")
+      .then((info) => info.json())
+      .then((info) => console.log(info));
+  };
+
   const handleLiquidarEmpresa = () => {
+    const array = [];
+    data.map((d) => array.push({ attention_id: d.id }));
+
+    const liquidacion = {
+      code: null,
+      observation: observacion,
+      subtotal: subtotal,
+      amount: total,
+      igv: igv,
+      attentions: array,
+    };
+    postLiquidacion(liquidacion);
     closeModal();
-    setOpenModalParticular(false);
+    setOpenModalEmpresa(false);
   };
 
   useEffect(() => {
@@ -68,19 +87,11 @@ const MMParticulares = ({
             <div>
               <div className="fmparticular__tipo group-input__label">
                 <label>Razón social</label>
-                <input
-                  type="text"
-                  readOnly
-                  defaultValue={dataParticular.nombre}
-                />
+                <input type="text" readOnly defaultValue={dataEmpresa.nombre} />
               </div>
               <div className="fmparticular__tipo group-input__label">
                 <label>Ruc</label>
-                <input
-                  type="text"
-                  readOnly
-                  defaultValue={dataParticular.apellido}
-                />
+                <input type="text" readOnly defaultValue={dataEmpresa.ruc} />
               </div>
               <div className="fmparticular__tipo group-input__label">
                 <label>Fecha de emisión</label>
@@ -146,12 +157,12 @@ const MMParticulares = ({
             </div>
           </div>
         </div>
-        {openModalCrear && (
+        {/* {openModalCrear && (
           <MMAParticulares
             openModalCrear={openModalCrear}
             setOpenModalCrear={setOpenModalCrear}
           />
-        )}
+        )} */}
         <div className="list-botones">
           <button className="botones" onClick={closeModal}>
             Retroceder
@@ -165,4 +176,4 @@ const MMParticulares = ({
   );
 };
 
-export default MMParticulares;
+export default MMEmpresa;
