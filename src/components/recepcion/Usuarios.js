@@ -38,6 +38,7 @@ const Usuarios = ({ history }) => {
     getAttention();
   }, []);
 
+  console.log(getDateAttention);
 
   const columnas = [
     {
