@@ -17,7 +17,7 @@ const Empresa = () => {
   // facuturacion empresa modal usar company discount
 
   const getCorporations = () => {
-    fetchGETPOSTPUTDELETE("company")
+    fetchGETPOSTPUTDELETE('company')
       .then((info) => info.json())
       .then((info) => setCorporations(info.data));
   };
@@ -30,13 +30,8 @@ const Empresa = () => {
 
   const columnas = [
     {
-<<<<<<< HEAD
       name: 'Item',
       selector: 'id',
-=======
-      name: "Ítem",
-      selector: "id",
->>>>>>> cc02a692c62d569359c038b0d15125d0271a0660
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -44,13 +39,8 @@ const Empresa = () => {
       },
     },
     {
-<<<<<<< HEAD
       name: 'Razón social',
       // selector: row=> row.corporation.business_name ? row.corporation.business_name : "",
-=======
-      name: "Razón social",
-      selector: (row) => (row.corporation ? row.corporation.business_name : ""),
->>>>>>> cc02a692c62d569359c038b0d15125d0271a0660
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -58,13 +48,8 @@ const Empresa = () => {
       },
     },
     {
-<<<<<<< HEAD
       name: 'RUC',
       // selector: row=> row.corporation.ruc ? row.corporation.ruc : "",
-=======
-      name: "RUC",
-      selector: (row) => (row.corporation ? row.corporation.ruc : ""),
->>>>>>> cc02a692c62d569359c038b0d15125d0271a0660
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -72,16 +57,8 @@ const Empresa = () => {
       },
     },
     {
-<<<<<<< HEAD
       name: 'Responsable',
       // selector: row=> row.corporation.contacts[0].name ? row.corporation.contacts[0].name : "",
-=======
-      name: "Responsable",
-      selector: (row) =>
-        row.corporation.contacts.length > 0
-          ? row.corporation.contacts[0].name
-          : "",
->>>>>>> cc02a692c62d569359c038b0d15125d0271a0660
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -89,16 +66,8 @@ const Empresa = () => {
       },
     },
     {
-<<<<<<< HEAD
       name: 'Telefono',
       // selector: row=> row.corporation.contacts[0].phone ? row.corporation.contacts[0].phone : "",
-=======
-      name: "Telefono",
-      selector: (row) =>
-        row.corporation.contacts.length > 0
-          ? row.corporation.contacts[0].phone
-          : "",
->>>>>>> cc02a692c62d569359c038b0d15125d0271a0660
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -106,16 +75,8 @@ const Empresa = () => {
       },
     },
     {
-<<<<<<< HEAD
       name: 'Correo',
       // selector: row=> row.corporation.contacts[0].email ? row.corporation.contacts[0].email : "",
-=======
-      name: "Correo",
-      selector: (row) =>
-        row.corporation.contacts.length > 0
-          ? row.corporation.contacts[0].email
-          : "",
->>>>>>> cc02a692c62d569359c038b0d15125d0271a0660
       sortable: true,
       style: {
         borderBotton: 'none',
