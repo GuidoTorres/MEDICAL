@@ -39,7 +39,7 @@ const Servicio = () => {
   // console.log(getServicio);
   const columnas = [
     {
-      name: 'Item',
+      name: 'Ítem',
       selector: 'id',
       sortable: true,
       style: {
@@ -48,7 +48,7 @@ const Servicio = () => {
       },
     },
     {
-      name: 'Categoria',
+      name: 'Categoría',
       selector: 'name',
       sortable: true,
       style: {
@@ -57,7 +57,7 @@ const Servicio = () => {
       },
     },
     {
-      name: 'Sub-categorias',
+      name: 'Subcategorías',
       button: true,
       cell: (e) => (
         <button

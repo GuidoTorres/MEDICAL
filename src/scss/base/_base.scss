@@ -333,6 +333,13 @@ input[type="checkbox"] {
   max-width: 400px;
 }
 
+.mventas__empresa {
+  height: 85%;
+  width: 85%;
+  max-height: 855px;
+  max-width: 1320px;
+}
+
 // TODO MODAL FACTURACION EMPRESA
 .mfacturacion__empresa {
   max-height: 45%;
@@ -364,6 +371,13 @@ input[type="checkbox"] {
 .mlaboratorio_subir-rapida {
   height: 71%;
   width: 75%;
+}
+
+.mlaboratorio__historial {
+  // height: 27%;
+  // width: 35%;
+  max-height: 240px;
+  max-width: 350px;
 }
 @media screen and (min-width: 700px) {
   .mlaboratorio_subir {

@@ -13,7 +13,7 @@ const LaboratoristaRouter = () => {
         url1={'/laboratorio/subir'}
         titulo2={'Historial'}
         url2={'/laboratorio/historial'}
-        titulo3={'Estadisticas'}
+        titulo3={'Estadísticas'}
         url3={'/laboratorio/estadisticas'}
         titulo4={''}
         url4={''}

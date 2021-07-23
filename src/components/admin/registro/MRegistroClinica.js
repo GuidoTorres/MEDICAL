@@ -36,7 +36,7 @@ const MRegistroClinica = ({
       .then((res) => setRuc(res));
   };
 
-  console.log(data);
+  console.log(dataSelected);
 
   const postClinics = (e) => {
     const formData = new FormData();
@@ -208,7 +208,14 @@ const MRegistroClinica = ({
         ? dataSelected.corporation.commercial_name
         : ""
     );
-    formData.set("logo", avatar ? avatar.file : "");
+    formData.set(
+      "logo",
+      avatar
+        ? avatar.file
+        : dataSelected &&
+            dataSelected.corporation &&
+            dataSelected.corporation.logo
+    );
     formData.set(
       "address",
       data.address
@@ -251,7 +258,7 @@ const MRegistroClinica = ({
         : ""
     );
     formData.set(
-      "map_length]",
+      "map_length",
       dataMapa
         ? dataMapa.lng
         : dataSelected &&
@@ -840,7 +847,7 @@ const MRegistroClinica = ({
                   />
                 </div>
                 <div>
-                  <label>Horario final de atenciónes</label>
+                  <label>Horario final de atención</label>
                   <input
                     type="time"
                     name="closing"

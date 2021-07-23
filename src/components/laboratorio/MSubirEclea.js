@@ -26,8 +26,9 @@ const MSubirEclea = ({
   const postResults = () => {
     const formData = new FormData();
 
-    formData.set("id", 8);
-    formData.set("result", "0");
+    formData.set("id", dataSelected.id || "");
+    formData.set("result_igm", result.result_igm || "");
+    formData.set("result_igg", result.result_igg || "");
 
     fetchGETPOSTPUTDELETE(`result`, formData, "POST").then((data) => {
       console.log(data);
@@ -71,7 +72,7 @@ const MSubirEclea = ({
       preventScroll={true}
       ariaHideApp={false}
     >
-      <h3 className="title__modal mb-3">Cargar resultado</h3>
+      <h3 className="title__modal mb-3">Cargar resultadooooo</h3>
       <div className="container">
         <div className="row">
           <div className="col-12 mlaboratorio_cargar">
@@ -114,11 +115,23 @@ const MSubirEclea = ({
                 <label className="mb-3">El resultado de la prueba es:</label>
                 <div>
                   <label>Resultado IgM:</label>
-                  <input type="text" name="resultIgm" />
+                  <input
+                    type="text"
+                    name="resultIgm"
+                    onChange={(e) =>
+                      setResult({ ...result, result_igm: e.target.value })
+                    }
+                  />
                 </div>
                 <div>
                   <label>Resultado IgG:</label>
-                  <input type="text" name="resultIgg" />
+                  <input
+                    type="text"
+                    name="resultIgg"
+                    onChange={(e) =>
+                      setResult({ ...result, result_igg: e.target.value })
+                    }
+                  />
                 </div>
               </div>
             </div>
@@ -126,7 +139,6 @@ const MSubirEclea = ({
               <button className="botones" onClick={closeModal}>
                 Cancelar
               </button>
-              <button className="botones">Visualizar</button>
               <button className="botones" onClick={postResults}>
                 Enviar
               </button>

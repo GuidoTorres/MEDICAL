@@ -10,16 +10,19 @@ const Estadisticas = () => {
   const data = {
     labels: [
       estadisticas && estadisticas.labels && estadisticas.labels[0]
-        ? "eclea"
+        ? "Eclia"
         : "",
       estadisticas && estadisticas.labels && estadisticas.labels[1]
-        ? "rapida"
+        ? "Rápida"
         : "",
       estadisticas && estadisticas.labels && estadisticas.labels[2]
-        ? "molecular"
+        ? "Molecular"
         : "",
       estadisticas && estadisticas.labels && estadisticas.labels[3]
-        ? "antígeno"
+        ? "Antígeno"
+        : "",
+      estadisticas && estadisticas.labels && estadisticas.labels[3]
+        ? "RT-PCR"
         : "",
     ],
     datasets: [
@@ -29,9 +32,9 @@ const Estadisticas = () => {
         fill: true,
         backgroundColor: [
           "rgba(75,192,192,0.2)",
-          "rgb(255, 99, 132)",
-          "rgb(54, 162, 235)",
-          "rgb(255, 205, 86)",
+          "rgba(75,192,192,0.2)",
+          "rgba(75,192,192,0.2)",
+          "rgba(75,192,192,0.2)",
         ],
         borderColor: "rgba(75,192,192,1)",
       },

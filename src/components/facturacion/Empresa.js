@@ -30,7 +30,7 @@ const Empresa = () => {
 
   const columnas = [
     {
-      name: "Item",
+      name: "Ítem",
       selector: "id",
       sortable: true,
       style: {

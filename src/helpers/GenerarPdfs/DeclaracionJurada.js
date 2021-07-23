@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import jsPDF from "jspdf";
 import image from "../../assets/pdf Imagen/sintomas.png";
+=======
+import jsPDF from 'jspdf';
+import image from '../../assets/pdf Imagen/Sintomas.png';
+>>>>>>> 7b8c6a09146eb1f05f545d32a136440585ffcb89
 
 const getFecha = () => {
   let newDate = new Date();
@@ -30,7 +35,7 @@ const generarDeclaracionJurada = () => {
   });
   doc.setFontSize(10);
 
-  doc.addImage(image, "PNG", 70, 20, 450, 800);
+  doc.addImage(image, 'PNG', 15, 20, 600, 800);
 
   //sintomas
   // doc.text(125, 115, `${data.nombre}`);
