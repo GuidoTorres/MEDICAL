@@ -27,12 +27,14 @@ const Solicitud = () => {
       .then((resultados) => setListRegistro(resultados));
     // dispatch(lista(123456));
     // console.log(dispatch);
-    // setModalList(true);
+    setModalList(true);
   };
 
   useEffect(() => {
     getSolicitudes();
   }, []);
+
+  console.log(oranizadorxd);
 
   const columnas = [
     {
