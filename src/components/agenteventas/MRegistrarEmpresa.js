@@ -20,7 +20,6 @@ const MRegistrarEmpresa = ({
 
   const closeModal = () => {
     setOpenModal(false);
-    console.log("cerrar modal");
   };
 
   const getCorporationTypes = () => {

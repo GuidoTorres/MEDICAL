@@ -25,7 +25,6 @@ const Registro = () => {
     getCorporations();
   }, []);
 
-  console.log(corporations);
 
   const columnas = [
     {

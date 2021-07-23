@@ -15,11 +15,10 @@ const MEmpresa = ({
   getParticularDiscount,
   getServicio,
 }) => {
-  const [discount, setDiscount] = useState({
-    id: dataSelected.id,
-  });
-  const [billing, setBilling] = useState({});
+  const [discount, setDiscount] = useState({});
   const [filterServices, setFilterServices] = useState({});
+  const [total, setTotal] = useState();
+  const [descuento, setDescuento] = useState();
   const closeModal = () => {
     setOpenModal(false);
     setEditar(false);
@@ -27,8 +26,13 @@ const MEmpresa = ({
   };
 
   const crearCompanyDiscount = () => {
-    fetchGETPOSTPUTDELETEJSON("company_discount", discount, "POST").then(
-      (res) => console.log(res)
+    const data = {
+      company_id: dataSelected.id,
+      services: Object.values(discount),
+    };
+    console.log(data);
+    fetchGETPOSTPUTDELETEJSON("company_discount", data, "POST").then((res) =>
+      console.log(res)
     );
   };
 
@@ -39,11 +43,13 @@ const MEmpresa = ({
       dataSelected.services.filter((data) => data);
     setFilterServices(data);
   };
+
+  const handleChange = () => {};
+
   useEffect(() => {
     filtrarServicios();
   }, [dataSelected]);
 
-  console.log(dataSelected)
   console.log(discount);
   return (
     <Modal
@@ -193,29 +199,71 @@ const MEmpresa = ({
                             value={data.service_id}
                             id="flexCheckDefault"
                             onChange={(e) =>
-                              setDiscount({
+                              setDiscount((discount) => ({
                                 ...discount,
-                                services: {
-                                  ...discount.services,
-                                  [`services[${i}][service_id]`]: data.id,
-                                  [`services[${i}][state]`]: e.target.checked
-                                    ? 1
-                                    : 0,
+                                [i]: {
+                                  service_id: data.id,
+                                  state: e.target.checked ? 1 : 0,
                                 },
-                              })
+                              }))
                             }
                           />
                         </div>
                       </td>
 
                       <td>
-                        {data.last_discount && data.last_discount.amount
-                          ? data.last_discount.amount
-                          : ""}
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder=""
+                          aria-label=""
+                          defaultValue={
+                            data.last_discount && data.last_discount.percent
+                              ? data.last_discount.percent
+                              : 0
+                          }
+                          onChange={(e) =>
+                            setDiscount((discount) => [
+                              {
+                                ...discount,
+
+                                [i]: {
+                                  ...discount[i],
+                                  percent: e.target.value,
+                                },
+                              },
+                            ])
+                          }
+                          aria-describedby="basic-addon1"
+                        />
                       </td>
-                      <td>{data.last_discount && data.last_discount.amount
-                          ? data.last_discount.amount
-                          : ""}</td>
+                      <td>
+                        <div class="input-group mb-3">
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder=""
+                            aria-label=""
+                            defaultValue={
+                              data.last_discount && data.last_discount.amount
+                                ? data.last_discount.amount
+                                : ""
+                            }
+                            onChange={(e) =>
+                              setDiscount((discount) => [
+                                {
+                                  ...discount,
+                                  [i]: {
+                                    ...discount[i],
+                                    amount: e.target.value,
+                                  },
+                                },
+                              ])
+                            }
+                            aria-describedby="basic-addon1"
+                          />
+                        </div>
+                      </td>
                     </tr>
                   ))}
               </tbody>
@@ -232,9 +280,9 @@ const MEmpresa = ({
                 placeholder=""
                 aria-label=""
                 aria-describedby="basic-addon1"
-                onChange={(e) =>
-                  setDiscount({ ...discount, before: e.target.value })
-                }
+                // onChange={(e) =>
+                //   setDiscount({ ...discount, before: e.target.value })
+                // }
               />
             </div>
 
@@ -246,9 +294,9 @@ const MEmpresa = ({
                 placeholder=""
                 aria-label=""
                 aria-describedby="basic-addon1"
-                onChange={(e) =>
-                  setDiscount({ ...discount, credit: e.target.value })
-                }
+                // onChange={(e) =>
+                //   setDiscount({ ...discount, credit: e.target.value })
+                // }
               />
             </div>
             <div className="btnContainer">
