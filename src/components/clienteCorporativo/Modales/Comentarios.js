@@ -12,21 +12,24 @@ const Comentarios = ({ modalIsOpen, setIsOpen, comentarios }) => {
       onRequestClose={closeModal}
       style={customStyles}
       contentLabel="Example Modal"
+      overlayClassName="modal-fondo"
       ariaHideApp={false}
     >
       <div className="container">
         <h3 className="title__modal">Comentarios</h3>
         <div>
           <div>
-            <textarea rows="10" cols="40" disabled>
+            <textarea
+              rows="10"
+              cols="40"
+              disabled
+              value={comentarios.observation}
+            >
               {comentarios.observation}
             </textarea>
             <div className="lista__botones">
               <button type="button" className="botones" onClick={closeModal}>
-                Cancelar
-              </button>
-              <button type="button" className="botones">
-                Guardar
+                Cerrar
               </button>
             </div>
           </div>

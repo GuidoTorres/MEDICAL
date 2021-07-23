@@ -209,12 +209,6 @@ const EmpresaRegistro = () => {
             <div className="">
               <input type="file" onClick={subidaExcel} />
             </div>
-            {/* <div>
-              <label>
-                Carga trabajadores
-                <i className="fas fa-upload"></i>
-              </label>
-            </div> */}
           </div>
           <DataTable
             className="dataTable"

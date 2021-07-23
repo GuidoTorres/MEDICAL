@@ -7,9 +7,9 @@ import EmpresaAsignacion4 from './EmpresaAsignacion4';
 const EmpresaAsignacion = () => {
   const [busqueda, setBusqueda] = useState('');
   const [asignation, setAsignation] = useState([]);
-  // const [seleccionar, setSeleccionar] = useState({});
   const [modaesCorporativo, setModaesCorporativo] = useState(false);
-  const [stateCustomer, setCustomerState] = useState([]);
+  const [data, setData] = useState([]);
+
   const getAsignacion = () => {
     fetchGETPOSTPUTDELETE('company_employees')
       .then((res) => res.json())
@@ -33,31 +33,8 @@ const EmpresaAsignacion = () => {
   //   });
   //   console.log(arrayids);
   // };
-
+  console.log(data);
   const columnas = [
-    // {
-    //   name: 'Seleccionar',
-    //   button: true,
-    //   cell: (e) => (
-    //     <input
-    //       className="form-check-input"
-    //       type="checkbox"
-    //       name={e.person.name}
-    //       // onClick={seleccionCheckbox}
-    //       onChange={(e) => {
-    //         let value = e.target.checked;
-    //         setCustomerState(
-    //           stateCustomer.map((d) => {
-    //             d.select = value;
-    //             return d;
-    //           })
-    //         );
-    //       }}
-    //       id="flexCheckDefault"
-    //     />
-    //   ),
-    // },
-
     {
       name: 'Tipo de documento',
       selector: (row) =>
@@ -188,8 +165,7 @@ const EmpresaAsignacion = () => {
             striped
             highlightOnHover
             selectableRows
-            // selectableRowSelected
-            // selectableRowsComponentProps={prueba}
+            onSelectedRowsChange={(e) => setData(e.selectedRows)}
           />
         </div>
       </div>
@@ -197,6 +173,7 @@ const EmpresaAsignacion = () => {
         <EmpresaAsignacion4
           setModaesCorporativo={setModaesCorporativo}
           modaesCorporativo={modaesCorporativo}
+          data={data}
         />
       )}
     </div>

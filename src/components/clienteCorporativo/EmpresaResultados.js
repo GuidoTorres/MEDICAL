@@ -6,6 +6,7 @@ import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 const EmpresaResultados = () => {
   const [busqueda, setBusqueda] = useState('');
   const [clinica, setClinica] = useState([]);
+  const [data, setData] = useState([]);
 
   const getResultado = () => {
     fetchGETPOSTPUTDELETEJSON('resultados/compania', {}, 'POST')
@@ -131,6 +132,8 @@ const EmpresaResultados = () => {
             fixedHeader
             fixedHeaderScrollHeight="100%"
             noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            selectableRows
+            onSelectedRowsChange={(e) => setData(e.selectedRows)}
           />
         </div>
       </div>

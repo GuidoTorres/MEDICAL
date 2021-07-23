@@ -1,26 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import DataTable from 'react-data-table-component';
-
 import Modal from 'react-modal';
-
-import { useHistory } from 'react-router-dom';
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 import { customStyles, paginacionOpciones } from '../../helpers/tablaOpciones';
 import EmpresaAsignacion2 from './EmpresaAsignacion2';
 
-const EmpresaAsignacion4 = ({ setModaesCorporativo, modaesCorporativo }) => {
-  // let history = useHistory();
-  const [employees, setEmployees] = useState([]);
+const EmpresaAsignacion4 = ({
+  setModaesCorporativo,
+  modaesCorporativo,
+  data,
+}) => {
   const [modalIsOpen, setIsOpen] = useState(false);
-
-  const getEmployees = () => {
-    fetchGETPOSTPUTDELETE('company_employees')
-      .then((res) => res.json())
-      .then((res) => setEmployees(res));
-  };
-  useEffect(() => {
-    getEmployees();
-  }, []);
 
   function closeModal() {
     setModaesCorporativo(false);
@@ -130,8 +119,9 @@ const EmpresaAsignacion4 = ({ setModaesCorporativo, modaesCorporativo }) => {
       closeTimeoutMS={200}
       preventScroll={true}
       ariaHideApp={false}
+      scrollHeight
     >
-      {/* <h3 className="title__modal">Editar Usuario</h3> */}
+      <h3 className="title__modal">Usuario seleccionados</h3>
       <div className="container">
         <div className="row mt-3">
           <div className="col-12">
@@ -139,7 +129,7 @@ const EmpresaAsignacion4 = ({ setModaesCorporativo, modaesCorporativo }) => {
               className="dataTable"
               id="table"
               columns={columnas}
-              data={employees}
+              data={data}
               pagination
               paginationComponentOptions={paginacionOpciones}
               fixedHeader
@@ -150,7 +140,9 @@ const EmpresaAsignacion4 = ({ setModaesCorporativo, modaesCorporativo }) => {
             />
           </div>
           <div className="list-botones">
-            <button className="botones">Cancelar</button>
+            <button className="botones" onClick={closeModal}>
+              Cancelar
+            </button>
             <button className="botones" onClick={asignacion}>
               Siguiente
             </button>
@@ -161,7 +153,7 @@ const EmpresaAsignacion4 = ({ setModaesCorporativo, modaesCorporativo }) => {
         <EmpresaAsignacion2
           modalIsOpen={modalIsOpen}
           setIsOpen={setIsOpen}
-          employees={employees}
+          // employees={employees}
         />
       )}
     </Modal>

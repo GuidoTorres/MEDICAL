@@ -63,10 +63,7 @@ const EmpresaFacturacion = () => {
       name: 'Detalle',
       button: true,
       cell: (e) => (
-        <button
-          onClick={() => handleDelete()}
-          className="table__tablebutton eliminar"
-        >
+        <button className="table__tablebutton eliminar">
           <i className="far fa-file-pdf"></i>
         </button>
       ),
@@ -75,19 +72,12 @@ const EmpresaFacturacion = () => {
       name: 'Factura',
       button: true,
       cell: (e) => (
-        <button
-          onClick={() => handleDelete(e)}
-          className="table__tablebutton eliminar"
-        >
+        <button className="table__tablebutton eliminar">
           <i className="far fa-file-pdf"></i>
         </button>
       ),
     },
   ];
-
-  const handleDelete = (e) => {
-    console.log('eliminado', e);
-  };
 
   const handleOnChange = (e) => {
     setBusqueda(([e.target.name] = e.target.value));

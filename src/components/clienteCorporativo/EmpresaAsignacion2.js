@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react';
-// import mapa from '../../assets/images/icon_mapa.png'
 import Modal from 'react-modal';
-
-import { useHistory } from 'react-router-dom';
 import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 import { customStyles } from '../../helpers/tablaOpciones';
 
-const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, employees }) => {
-  let history = useHistory();
-
+const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen }) => {
   const [asignation, setAsignation] = useState([]);
   const [listclinica, setListclinica] = useState([]);
   const [formValues, setFormValues] = useState({
@@ -24,7 +19,7 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, employees }) => {
     ],
   });
 
-  const [arraPersonas, setArraPersonas] = useState({});
+  // const [arraPersonas, setArraPersonas] = useState({});
   // const listaPersonas = () => {
   //   employees.map((data, index) => {
   //     // console.log(index);
@@ -43,7 +38,7 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, employees }) => {
     // }
   };
   console.log(formValues);
-  setArraPersonas({});
+
   const pruebasignacion = () => {
     fetchGETPOSTPUTDELETEJSON('services')
       .then((data) => data.json())
@@ -156,13 +151,11 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, employees }) => {
             </table>
           </div>
         </div>
-        <div className="containerBtn">
-          <button
-            type="button"
-            className="botones"
-            // onClick={(e) => history.push('/empresa/asignacion3')}
-            onClick={envioPost}
-          >
+        <div className="list-botones">
+          <button type="button" className="botones" onClick={closeModal}>
+            Cancelar
+          </button>
+          <button type="button" className="botones" onClick={envioPost}>
             Siguiente
           </button>
         </div>
