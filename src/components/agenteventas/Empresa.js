@@ -7,11 +7,13 @@ import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 // import { servicio } from '../../data/AVServicio';
 import { paginacionOpciones } from "../../helpers/tablaOpciones";
 import MEmpresa from "./MEmpresa";
+import MMostrarPreciosEmpresa from "./MMostrarPreciosEmpresa";
 
 const Empresa = ({ getServicio }) => {
   const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [listaPrecios, setListaPrecios] = useState(false);
   const [metGetClinic, setMetGetClinic] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
   const [editar, setEditar] = useState(false);
@@ -50,39 +52,15 @@ const Empresa = ({ getServicio }) => {
         color: "#555555",
       },
     },
+
     {
-      name: "Tipo de prueba",
-      selector: (row) =>
-        row.services && row.services[0].name ? row.services[0].name : "",
-      sortable: true,
-      style: {
-        borderBotton: "none",
-        color: "#555555",
-      },
-    },
-    {
-      name: "Descuento",
-      selector: (row) =>
-        row.services && row.services[0].last_discount
-          ? row.services[0].last_discount.percent
-          : "",
-      sortable: true,
-      style: {
-        borderBotton: "none",
-        color: "#555555",
-      },
-    },
-    {
-      name: "Total",
-      selector: (row) =>
-        row.services && row.services[0].last_discount
-          ? row.services[0].last_discount.amount
-          : "",
-      sortable: true,
-      style: {
-        borderBotton: "none",
-        color: "#555555",
-      },
+      name: "Lista de precios",
+      button: true,
+      cell: (e) => (
+        <button onClick={() => handlePrecios(e)} className="table__tablebutton">
+          <i class="fas fa-eye"></i>
+        </button>
+      ),
     },
     {
       name: "Editar",
@@ -149,6 +127,11 @@ const Empresa = ({ getServicio }) => {
     setEditar(true);
   };
 
+  const handlePrecios = (e) => {
+    setListaPrecios(true);
+    setDataSelected(e);
+  };
+
   return (
     <div className="container mt-4">
       <div className="row">
@@ -178,7 +161,14 @@ const Empresa = ({ getServicio }) => {
           />
         </div>
       </div>
-
+      {listaPrecios && (
+        <MMostrarPreciosEmpresa
+        listaPrecios={listaPrecios}
+          setListaPrecios={setListaPrecios}
+          dataSelected={dataSelected}
+          setDataSelected={setDataSelected}
+        />
+      )}
       {openModal && (
         <MEmpresa
           setOpenModal={setOpenModal}

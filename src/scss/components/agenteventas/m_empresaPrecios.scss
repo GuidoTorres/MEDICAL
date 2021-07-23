@@ -48,6 +48,15 @@
         }
       }
     }
+    .btnContainer {
+      display: flex;
+      justify-content: flex-end;
+
+      button:nth-child(1) {
+        margin-top: 10px;
+        margin-right: 10px;
+      }
+    }
   }
 }
 

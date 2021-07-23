@@ -28,8 +28,6 @@ const Persona = () => {
     getParticularDiscount();
   }, []);
 
-  console.log(particular);
-
   const columnas = [
     {
       name: "Item",
@@ -38,6 +36,7 @@ const Persona = () => {
       style: {
         borderBotton: "none",
         color: "#555555",
+        // maxWidth: "40px",
       },
     },
     {
@@ -50,13 +49,17 @@ const Persona = () => {
       style: {
         borderBotton: "none",
         color: "#555555",
+        // maxWidth: "80px",
       },
     },
     {
-      name: "Nombre",
+      name: "Nombres y apellidos",
       selector: (row) =>
-        row.user && row.user.person && row.user.person.name
-          ? row.user.person.name
+        row.user &&
+        row.user.person &&
+        row.user.person.name &&
+        row.user.person.pat_lastname
+          ? row.user.person.name + " " + row.user.person.pat_lastname
           : "",
       sortable: true,
       style: {
@@ -64,18 +67,7 @@ const Persona = () => {
         color: "#555555",
       },
     },
-    {
-      name: "Apellido",
-      selector: (row) =>
-        row.user && row.user.person && row.user.person.pat_lastname
-          ? row.user.person.pat_lastname
-          : "",
-      sortable: true,
-      style: {
-        borderBotton: "none",
-        color: "#555555",
-      },
-    },
+
     {
       name: "Tipo de prueba",
       selector: (row) =>

@@ -22,8 +22,6 @@ const Servicio = () => {
     // getParticularDiscount()
   }, []);
 
-  console.log(getServicio);
-
   return (
     <div className="container">
       <div className="row">
@@ -99,7 +97,7 @@ const Servicio = () => {
                   aria-labelledby="headingTwo"
                   data-bs-parent="#accordionExample"
                 >
-                  <Empresa getServicio ={getServicio}/>
+                  <Empresa getServicio={getServicio} />
                 </div>
               </div>
             </div>

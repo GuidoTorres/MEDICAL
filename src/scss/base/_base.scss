@@ -340,6 +340,14 @@ input[type="checkbox"] {
   max-width: 1320px;
 }
 
+.mventas__precios {
+  height: 85%;
+  width: 85%;
+  max-height: 340px;
+  max-width: 600px;
+  overflow: hidden;
+}
+
 // TODO MODAL FACTURACION EMPRESA
 .mfacturacion__empresa {
   max-height: 45%;
@@ -379,6 +387,7 @@ input[type="checkbox"] {
   max-height: 240px;
   max-width: 350px;
 }
+
 @media screen and (min-width: 700px) {
   .mlaboratorio_subir {
     height: 51%;
