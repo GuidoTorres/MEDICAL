@@ -7,7 +7,7 @@ const MEmpresa = ({ openModal, setOpenModal, datos }) => {
     setOpenModal(false);
   };
 
-  console.log(datos);
+  // console.log(datos);
   return (
     <Modal
       isOpen={openModal}
@@ -39,9 +39,7 @@ const MEmpresa = ({ openModal, setOpenModal, datos }) => {
                   {datos &&
                     datos.services.map((data, i) => (
                       <tr key={i}>
-                        <td>
-                          {data.name}
-                        </td>
+                        <td>{data.name}</td>
                         <td>{data.last_discount.percent} %</td>
                         <td>{data.last_discount.amount}</td>
                       </tr>
@@ -54,11 +52,19 @@ const MEmpresa = ({ openModal, setOpenModal, datos }) => {
             <div>
               <div>
                 <label>Facturación (días):</label>
-                <input type="text" defaultValue={datos.billing.before}/>
+                <input
+                  type="text"
+                  defaultValue={datos.billing.before}
+                  readOnly
+                />
               </div>
               <div>
                 <label>Crédito (días):</label>
-                <input type="text" defaultValue={datos.billing.credit}/>
+                <input
+                  type="text"
+                  defaultValue={datos.billing.credit}
+                  readOnly
+                />
               </div>
             </div>
           </div>

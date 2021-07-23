@@ -11,3 +11,96 @@
     }
   }
 }
+
+.liquidacion__title {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  gap: 15px;
+
+  div {
+    display: grid;
+    grid-template-columns: 50% 50%;
+  }
+}
+
+.liquidacion__detalle {
+  border: 1px solid #000;
+  margin: 20px 0;
+  height: 275px;
+}
+
+.liquidacion__buttons {
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  justify-content: space-between;
+
+  .group-1 {
+    display: flex;
+    justify-content: flex-start;
+
+    button {
+      margin: 0 15px;
+    }
+  }
+  .group-2 {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.icon-excel,
+.icon-pdf {
+  background-color: transparent;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+
+  i {
+    font-size: 32px;
+  }
+}
+
+.icon-excel {
+  color: green;
+}
+.icon-pdf {
+  color: red;
+}
+
+.empresa__info {
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (min-width: 640px) {
+    align-items: center;
+    flex-direction: row;
+  }
+
+  input {
+    width: 164px;
+
+    @media screen and (min-width: 640px) {
+      margin: 0 5px;
+    }
+  }
+}
+
+.group-input__label {
+  display: grid;
+  grid-template-columns: 100%;
+
+  @media screen and (min-width: 450px) {
+    grid-template-columns: 100px 200px;
+  }
+}
+
+.table {
+  th,
+  td {
+    border: 0.5px solid rgba(0, 0, 0, 0.2);
+  }
+}

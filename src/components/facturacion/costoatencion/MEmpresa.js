@@ -6,13 +6,15 @@ import {
   customStyles,
   paginacionOpciones,
 } from "../../../helpers/tablaOpciones";
-import { fmparticular } from "../../../data/FMParticular";
-import MMParticulares from "./MMParticulares";
+import MMEmpresa from "./MMEmpresa";
 
-const MParticulares = ({ openModal, setOpenModal }) => {
+const MEmpresa = ({ openModalEmpresa, setOpenModalEmpresa, dataEmpresa }) => {
   const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [openModalParticular, setOpenModalParticular] = useState(false);
+  const [data, setData] = useState([]);
+
+  // console.log(dataEmpresa);
 
   const columnas = [
     {
@@ -35,7 +37,7 @@ const MParticulares = ({ openModal, setOpenModal }) => {
     },
     {
       name: "Fecha Hora",
-      selector: "fecha",
+      selector: "fecha_atencion",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -43,17 +45,8 @@ const MParticulares = ({ openModal, setOpenModal }) => {
       },
     },
     {
-      name: "Nombre",
-      selector: "nombre",
-      sortable: true,
-      style: {
-        borderBotton: "none",
-        color: "#555555",
-      },
-    },
-    {
-      name: "Apellido",
-      selector: "apellido",
+      name: "Nombre y apellido",
+      selector: "paciente",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -62,7 +55,7 @@ const MParticulares = ({ openModal, setOpenModal }) => {
     },
     {
       name: "Tipo de servicio",
-      selector: "tipo",
+      selector: "categoria",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -71,7 +64,7 @@ const MParticulares = ({ openModal, setOpenModal }) => {
     },
     {
       name: "Plan de atención",
-      selector: "atencion",
+      selector: "servicio",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -91,37 +84,32 @@ const MParticulares = ({ openModal, setOpenModal }) => {
 
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = fmparticular.filter((data) => {
+      const search = dataEmpresa.attenciones.filter((data) => {
         return (
-          data.nombre
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+          data.dni
+            // .normalize("NFD")
+            // .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
-          data.apellido
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+          data.fecha_atencion
+            // .normalize("NFD")
+            // .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
-          data.dni.toString().includes(busqueda) ||
-          data.fecha
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+          data.paciente.toString().includes(busqueda) ||
+          data.categoria
+            // .normalize("NFD")
+            // .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
-          data.tipo
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+          data.servicio
+            // .normalize("NFD")
+            // .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
-          data.atencion
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.subtotal.toString().includes(busqueda) ||
-          data.impuesto.toString().includes(busqueda) ||
-          data.total.toString().includes(busqueda)
+          data.subtotal.toString().includes(busqueda)
+          // data.impuesto.toString().includes(busqueda) ||
+          // data.total.toString().includes(busqueda)
         );
       });
       setListRegistro(search);
@@ -136,11 +124,11 @@ const MParticulares = ({ openModal, setOpenModal }) => {
     setOpenModalParticular(true);
   };
   const closeModal = () => {
-    setOpenModal(false);
+    setOpenModalEmpresa(false);
   };
   return (
     <Modal
-      isOpen={openModal}
+      isOpen={openModalEmpresa}
       onRequestClose={closeModal}
       style={customStyles}
       className="modal  mfacturacion__particular"
@@ -153,9 +141,11 @@ const MParticulares = ({ openModal, setOpenModal }) => {
       <div className="container">
         <div className="row">
           <div className="col-12 fmparticular">
-            <div className="fmparticular__tipo">
-              <label>Tipo de usuario</label>
-              <input type="text" />
+            <div className="fmparticular__tipo empresa__info">
+              <label>Razón social</label>
+              <input type="text" readOnly value={dataEmpresa.nombre} />
+              <label>Ruc</label>
+              <input type="text" readOnly value={dataEmpresa.ruc} />
             </div>
             <div className="table-responsive">
               <div className="adminregistro__option">
@@ -172,21 +162,25 @@ const MParticulares = ({ openModal, setOpenModal }) => {
 
               <DataTable
                 columns={columnas}
-                data={listRegistro}
+                data={dataEmpresa.attenciones}
                 pagination
                 paginationComponentOptions={paginacionOpciones}
                 fixedHeader
                 fixedHeaderScrollHeight="500px"
                 noDataComponent={<i className="fas fa-inbox table__icono"></i>}
                 selectableRows
+                onSelectedRowsChange={(e) => setData(e.selectedRows)}
               />
             </div>
           </div>
         </div>
         {openModalParticular && (
-          <MMParticulares
+          <MMEmpresa
             openModalParticular={openModalParticular}
             setOpenModalParticular={setOpenModalParticular}
+            data={data}
+            dataEmpresa={dataEmpresa}
+            setOpenModalEmpresa={setOpenModalEmpresa}
           />
         )}
         <div className="list-botones">
@@ -202,4 +196,4 @@ const MParticulares = ({ openModal, setOpenModal }) => {
   );
 };
 
-export default MParticulares;
+export default MEmpresa;

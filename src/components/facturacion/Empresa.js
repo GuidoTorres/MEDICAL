@@ -26,7 +26,7 @@ const Empresa = () => {
     getCorporations();
   }, []);
 
-  console.log(corporations);
+  // console.log(corporations);
 
   const columnas = [
     {
@@ -40,8 +40,7 @@ const Empresa = () => {
     },
     {
       name: "Razón social",
-      selector: (row) =>
-        row.corporation.business_name ? row.corporation.business_name : "",
+      selector: (row) => (row.corporation ? row.corporation.business_name : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -50,7 +49,7 @@ const Empresa = () => {
     },
     {
       name: "RUC",
-      selector: (row) => (row.corporation.ruc ? row.corporation.ruc : ""),
+      selector: (row) => (row.corporation ? row.corporation.ruc : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -60,10 +59,7 @@ const Empresa = () => {
     {
       name: "Responsable",
       selector: (row) =>
-        row.corporation &&
-        row.corporation &&
-        row.corporation.contacts[0] &&
-        row.corporation.contacts[0].name
+        row.corporation.contacts.length > 0
           ? row.corporation.contacts[0].name
           : "",
       sortable: true,
@@ -73,12 +69,9 @@ const Empresa = () => {
       },
     },
     {
-      name: "Teléfono",
+      name: "Telefono",
       selector: (row) =>
-        row.corporation &&
-        row.corporation &&
-        row.corporation.contacts[0] &&
-        row.corporation.contacts[0].phone
+        row.corporation.contacts.length > 0
           ? row.corporation.contacts[0].phone
           : "",
       sortable: true,
@@ -90,10 +83,7 @@ const Empresa = () => {
     {
       name: "Correo",
       selector: (row) =>
-        row.corporation &&
-        row.corporation &&
-        row.corporation.contacts[0] &&
-        row.corporation.contacts[0].email
+        row.corporation.contacts.length > 0
           ? row.corporation.contacts[0].email
           : "",
       sortable: true,
