@@ -171,7 +171,7 @@ const Historial = () => {
         328,
         135,
         `${
-          e && e.person && e.person.gender_id === 1 ? "Masculino" : "Femenino"
+          e && e.genero  ? e.genero : ""
         }`
       );
       doc.text(90, 136, `${e.nro_atencion ? e.nro_atencion : ""}`);
@@ -215,7 +215,7 @@ const Historial = () => {
         328,
         141,
         `${
-          e && e.person && e.person.gender_id === 1 ? "Masculino" : "Femenino"
+          e && e.genero  ? e.genero : ""
         }`
       );
 
@@ -229,7 +229,7 @@ const Historial = () => {
         328,
         141,
         `${
-          e && e.person && e.person.gender_id === 1 ? "Masculino" : "Femenino"
+          e && e.genero  ? e.genero : ""
         }`
       );
       doc.text(55, 163, `${e && e.person && e.person.dni ? e.person.dni : ""}`);

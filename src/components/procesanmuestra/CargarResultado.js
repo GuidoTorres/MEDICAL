@@ -29,6 +29,8 @@ const CargarResultado = () => {
     getResult();
   }, []);
 
+  console.log(result);
+
   const columnas = [
     {
       name: "Item",

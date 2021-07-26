@@ -32,6 +32,8 @@ const Atencion = () => {
 
   }, []);
 
+  console.log(attention);
+
   const columnas = [
     {
       name: "Ítem",

@@ -28,7 +28,7 @@ const Historial = () => {
   }, []);
 
   
-
+  console.log(getDateAttention);
   const columnas = [
     {
       name: "Item",

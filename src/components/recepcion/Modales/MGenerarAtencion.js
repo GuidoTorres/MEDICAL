@@ -38,6 +38,8 @@ const MGenerarAtencion = ({
       .then((res) => setClinics(res.data));
   };
 
+  console.log(dataSelected);
+
   useEffect(() => {
     getServices();
     getClinics();

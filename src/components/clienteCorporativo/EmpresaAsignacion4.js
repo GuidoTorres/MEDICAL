@@ -121,7 +121,7 @@ const EmpresaAsignacion4 = ({
       ariaHideApp={false}
       scrollHeight
     >
-      <h3 className="title__modal">Usuario seleccionados</h3>
+      <h3 className="title__modal">Usuarios seleccionados</h3>
       <div className="container">
         <div className="row mt-3">
           <div className="col-12">
@@ -153,6 +153,7 @@ const EmpresaAsignacion4 = ({
         <EmpresaAsignacion2
           modalIsOpen={modalIsOpen}
           setIsOpen={setIsOpen}
+          data={data}
           // employees={employees}
         />
       )}

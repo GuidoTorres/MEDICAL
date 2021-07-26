@@ -187,7 +187,7 @@ const RegistroClinica = () => {
       confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetchGETPOSTPUTDELETE(`clinics/delete/${e.id}`, {}, "DELETE").then(
+        fetchGETPOSTPUTDELETE(`clinics/delete/${e.id}`,).then(
           (result) => {
             if (result.status === 204) {
               Swal.fire(
