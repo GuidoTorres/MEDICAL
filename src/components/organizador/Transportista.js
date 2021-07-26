@@ -18,7 +18,7 @@ const Transportista = () => {
     getTransportista();
   }, []);
 
-  // console.log(listTransportista);
+  console.log(listTransportista);
 
   const columnas = [
     {
@@ -32,7 +32,8 @@ const Transportista = () => {
     },
     {
       name: 'Nombre Apellido',
-      selector: 'nombre',
+      // selector: (row) =>
+      //   row && row.person.username ? row.person.username : '',
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -41,7 +42,8 @@ const Transportista = () => {
     },
     {
       name: 'Tipo vehículo',
-      selector: 'tipo',
+      selector: (row) =>
+        row.vehicle && row.vehicle.name ? row.vehicle.name : '',
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -50,7 +52,10 @@ const Transportista = () => {
     },
     {
       name: 'Placa',
-      selector: 'placa',
+      selector: (row) =>
+        row.vehicle && row.vehicle.license_plate
+          ? row.vehicle.license_plate
+          : '',
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -61,25 +66,25 @@ const Transportista = () => {
   //
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = transportista.filter((data) => {
+      const search = listTransportista.filter((data) => {
         return (
-          data.nombre
+          // data.person.username
+          //   .normalize('NFD')
+          //   .replace(/[\u0300-\u036f]/g, '')
+          //   .toLocaleLowerCase()
+          //   .includes(busqueda) ||
+          data.vehicle.name
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda) ||
-          data.tipo
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.placa.toString().includes(busqueda)
+          data.vehicle.user_id.toString().includes(busqueda)
         );
       });
       setListRegistro(search);
     };
     filtrarElemento();
-  }, [busqueda]);
+  }, [busqueda, listTransportista]);
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -109,6 +114,8 @@ const Transportista = () => {
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
+            highlightOnHover
+            striped
             fixedHeaderScrollHeight="100%"
             noDataComponent={<i className="fas fa-inbox table__icono"></i>}
           />
