@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import DataTable from 'react-data-table-component';
-import { fempresa } from '../../data/FEmpresa';
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
+import DataTable from "react-data-table-component";
+import { fempresa } from "../../data/FEmpresa";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
-import MEmpresa from './MEmpresa';
+import { paginacionOpciones } from "../../helpers/tablaOpciones";
+import MEmpresa from "./MEmpresa";
 
 const Empresa = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [datos, setDatos] = useState({});
@@ -17,7 +17,7 @@ const Empresa = () => {
   // facuturacion empresa modal usar company discount
 
   const getCorporations = () => {
-    fetchGETPOSTPUTDELETE('company')
+    fetchGETPOSTPUTDELETE("company")
       .then((info) => info.json())
       .then((info) => setCorporations(info.data));
   };
@@ -30,61 +30,70 @@ const Empresa = () => {
 
   const columnas = [
     {
-      name: 'Item',
-      selector: 'id',
+      name: "Item",
+      selector: "id",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Razón social',
-      // selector: row=> row.corporation.business_name ? row.corporation.business_name : "",
+      name: "Razón social",
+      selector: (row) => (row.corporation ? row.corporation.business_name : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'RUC',
-      // selector: row=> row.corporation.ruc ? row.corporation.ruc : "",
+      name: "RUC",
+      selector: (row) => (row.corporation ? row.corporation.ruc : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Responsable',
-      // selector: row=> row.corporation.contacts[0].name ? row.corporation.contacts[0].name : "",
+      name: "Responsable",
+      selector: (row) =>
+        row.corporation.contacts.length > 0
+          ? row.corporation.contacts[0].name
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Telefono',
-      // selector: row=> row.corporation.contacts[0].phone ? row.corporation.contacts[0].phone : "",
+      name: "Telefono",
+      selector: (row) =>
+        row.corporation.contacts.length > 0
+          ? row.corporation.contacts[0].phone
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Correo',
-      // selector: row=> row.corporation.contacts[0].email ? row.corporation.contacts[0].email : "",
+      name: "Correo",
+      selector: (row) =>
+        row.corporation.contacts.length > 0
+          ? row.corporation.contacts[0].email
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Detalles',
+      name: "Detalles",
       button: true,
       cell: (e) => (
         <button
@@ -102,20 +111,20 @@ const Empresa = () => {
       const search = fempresa.filter((data) => {
         return (
           data.razon
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.ruc.toString().includes(busqueda) ||
           data.responsable
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.telefono.toString().includes(busqueda) ||
           data.correo
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
             .toLocaleLowerCase()
             .includes(busqueda)
         );
