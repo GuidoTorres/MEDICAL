@@ -82,6 +82,10 @@ input[type="checkbox"] {
     background-color: darken($color: $color-primary, $amount: 3);
     transition: background-color 0.5 ease;
   }
+
+  @media print {
+    display: none;
+  }
 }
 
 // TODO DATA TABLE
@@ -194,6 +198,10 @@ input[type="checkbox"] {
   font-size: 1.5rem;
   padding: 7px;
   text-align: center;
+
+  @media print {
+    display: none;
+  }
 }
 
 .modal {

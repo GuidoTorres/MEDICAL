@@ -20,7 +20,7 @@
     .buttonNav {
       outline: none;
       border: none;
-      width: 10%;
+      width: 50px;
       font-size: 20px;
       border-radius: 5px;
       background-color: rgba(0, 212, 255, 1);
@@ -147,5 +147,19 @@
       display: flex;
       font-size: 12px;
     }
+  }
+}
+
+.nombredeltitulo {
+  color: white;
+  padding: 7px 0px;
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
+@media (max-width: 991px) {
+  .nombredeltitulo {
+    background-color: orange;
+    display: none !important;
   }
 }

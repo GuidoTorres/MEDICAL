@@ -1,36 +1,36 @@
-import jsPDF from "jspdf";
-import image from "../../assets/pdf Imagen/sintomas.png"
+import jsPDF from 'jspdf';
+import image from '../../assets/pdf Imagen/sintomas.png';
 
 const getFecha = () => {
   let newDate = new Date();
   let date = newDate.getDate();
-  let month = newDate.toLocaleString("default", { month: "long" });
+  let month = newDate.toLocaleString('default', { month: 'long' });
   let year = newDate.getFullYear();
   // no mover los espacios del return
-  return `${date}${"            "}${month}`;
+  return `${date}${'            '}${month}`;
 };
 
 const generarDeclaracionJurada = () => {
   const data = {
-    nombre: "Hector Torres Durand",
-    dni: "72798529",
-    tipo: "Prueba Molecular",
-    tecnica: "Tecnica nr 1000",
+    nombre: 'Hector Torres Durand',
+    dni: '72798529',
+    tipo: 'Prueba Molecular',
+    tecnica: 'Tecnica nr 1000',
     edad: 100,
-    puesto: "programador",
-    empresa: "GetByte",
+    puesto: 'programador',
+    empresa: 'GetByte',
     sintomasi: true,
     sintomano: false,
     sintomasi1: false,
     sintomano1: true,
   };
-  const doc = new jsPDF("p", "pt");
+  const doc = new jsPDF('p', 'pt');
   doc.setProperties({
-    title: "Declaración jurada",
+    title: 'Declaración jurada',
   });
   doc.setFontSize(10);
 
-  doc.addImage(image, "PNG", 15, 20, 600, 800);
+  doc.addImage(image, 'PNG', 15, 20, 600, 800);
 
   //sintomas
   // doc.text(125, 115, `${data.nombre}`);
@@ -174,7 +174,7 @@ const generarDeclaracionJurada = () => {
   // );
   // doc.text(172, 690, `${getFecha()}`);
 
-  window.open(doc.output("bloburl"), "_blank");
+  window.open(doc.output('bloburl'), '_blank');
 };
 
 export { generarDeclaracionJurada };

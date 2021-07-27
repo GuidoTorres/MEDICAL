@@ -18,7 +18,7 @@ const Liquidacion = () => {
   const getLiquidacion = () => {
     fetchGETPOSTPUTDELETE("settlement")
       .then((info) => info.json())
-      .then((info) => setLiquidacion(info));
+      .then((info) => setLiquidacion(info.data));
   };
 
   useEffect(() => {
@@ -39,7 +39,9 @@ const Liquidacion = () => {
     },
     {
       name: "Razón social",
-      selector: "razon_social",
+
+      selector: (row) =>
+        row.company ? row.company.corporation.business_name : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -48,7 +50,8 @@ const Liquidacion = () => {
     },
     {
       name: "RUC",
-      selector: "ruc",
+      selector: (row) => (row.company ? row.company.corporation.ruc : ""),
+
       sortable: true,
       style: {
         borderBotton: "none",
@@ -57,7 +60,7 @@ const Liquidacion = () => {
     },
     {
       name: "Fecha",
-      selector: "fecha",
+      selector: "date_issue",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -75,7 +78,7 @@ const Liquidacion = () => {
     },
     {
       name: "Impuesto",
-      selector: "impuesto",
+      selector: "igv",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -84,7 +87,7 @@ const Liquidacion = () => {
     },
     {
       name: "Total",
-      selector: "total",
+      selector: "amount",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -103,50 +106,33 @@ const Liquidacion = () => {
         </button>
       ),
     },
-    // {
-    //   name: "Cargar Información",
-    //   button: true,
-    //   cell: (e) => (
-    //     <button
-    //       // onClick={() => handleDetalles(e)}
-    //       className="table__tablebutton"
-    //     >
-    //       <i class="fas fa-folder-open"></i>
-    //     </button>
-    //   ),
-    // },
+    {
+      name: "Cargar Información",
+      button: true,
+      cell: (e) => (
+        <button
+          // onClick={() => handleDetalles(e)}
+          className="table__tablebutton"
+        >
+          <i className="fas fa-folder-open"></i>
+        </button>
+      ),
+    },
   ];
 
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = fempresa2.filter((data) => {
+      const search = liquidacion.filter((data) => {
         return (
-          data.razon_social
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
+          data.id.toString().includes(busqueda) ||
+          data.company.corporation.business_name
+            .toString()
             .includes(busqueda) ||
-          data.ruc.toString().includes(busqueda) ||
-          data.fecha
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.subtotal
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.impuesto
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.total
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda)
+          data.company.corporation.ruc.toString().includes(busqueda) ||
+          data.date_issue.toString().includes(busqueda) ||
+          data.subtotal.toString().includes(busqueda) ||
+          data.igv.toString().includes(busqueda) ||
+          data.amount.toString().includes(busqueda)
         );
       });
       setListRegistro(search);
@@ -158,6 +144,7 @@ const Liquidacion = () => {
     // console.log(e);
     setOpenModal(true);
     setDatos(e);
+    console.log(e);
   };
 
   const handleSearch = (e) => {
@@ -181,7 +168,7 @@ const Liquidacion = () => {
 
           <DataTable
             columns={columnas}
-            data={listRegistro}
+            data={liquidacion}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
