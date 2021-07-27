@@ -9,23 +9,29 @@ import MEmpresa from "./MEmpresa";
 import MLiquidacion from "./MLiquidacion";
 
 const Liquidacion = () => {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState(null);
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [datos, setDatos] = useState({});
   const [liquidacion, setLiquidacion] = useState([]);
 
   const getLiquidacion = () => {
+    // console.log("a");
     fetchGETPOSTPUTDELETE("settlement")
       .then((info) => info.json())
-      .then((info) => setLiquidacion(info));
+      .then((info) => {
+        // console.log(info);
+        setLiquidacion(info.data);
+        setBusqueda("");
+      });
   };
 
+  // console.log(liquidacion);
   useEffect(() => {
     getLiquidacion();
   }, []);
 
-  console.log(liquidacion);
+  // console.log(liquidacion);
 
   const columnas = [
     {
@@ -39,7 +45,9 @@ const Liquidacion = () => {
     },
     {
       name: "Razón social",
-      selector: "razon_social",
+
+      selector: (row) =>
+        row.company ? row.company.corporation.business_name : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -48,7 +56,8 @@ const Liquidacion = () => {
     },
     {
       name: "RUC",
-      selector: "ruc",
+      selector: (row) => (row.company ? row.company.corporation.ruc : ""),
+
       sortable: true,
       style: {
         borderBotton: "none",
@@ -57,7 +66,7 @@ const Liquidacion = () => {
     },
     {
       name: "Fecha",
-      selector: "fecha",
+      selector: "date_issue",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -75,7 +84,7 @@ const Liquidacion = () => {
     },
     {
       name: "Impuesto",
-      selector: "impuesto",
+      selector: "igv",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -84,7 +93,7 @@ const Liquidacion = () => {
     },
     {
       name: "Total",
-      selector: "total",
+      selector: "amount",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -103,61 +112,59 @@ const Liquidacion = () => {
         </button>
       ),
     },
-    // {
-    //   name: "Cargar Información",
-    //   button: true,
-    //   cell: (e) => (
-    //     <button
-    //       // onClick={() => handleDetalles(e)}
-    //       className="table__tablebutton"
-    //     >
-    //       <i class="fas fa-folder-open"></i>
-    //     </button>
-    //   ),
-    // },
+    {
+      name: "Cargar Información",
+      button: true,
+      cell: (e) => (
+        <button
+          // onClick={() => handleDetalles(e)}
+          className="table__tablebutton"
+        >
+          <i className="fas fa-folder-open"></i>
+        </button>
+      ),
+    },
   ];
 
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = fempresa2.filter((data) => {
-        return (
-          data.razon_social
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.ruc.toString().includes(busqueda) ||
-          data.fecha
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.subtotal
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.impuesto
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.total
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda)
-        );
-      });
-      setListRegistro(search);
+      if (busqueda !== "" && busqueda !== null) {
+        const search = liquidacion.filter((data) => {
+          return (
+            data.id.toString().includes(busqueda) ||
+            (data.company
+              ? data.company.corporation.business_name
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "") ||
+            (data.company
+              ? data.company.corporation.ruc.toString().includes(busqueda)
+              : "") ||
+            (data.date_issue
+              ? data.date_issue.toString().includes(busqueda)
+              : "") ||
+            (data.subtotal
+              ? data.subtotal.toString().includes(busqueda)
+              : "") ||
+            (data.igv ? data.igv.toString().includes(busqueda) : "") ||
+            (data.amount ? data.amount.toString().includes(busqueda) : "")
+          );
+        });
+        setListRegistro(search);
+      } else {
+        setListRegistro(liquidacion);
+      }
     };
     filtrarElemento();
+    return () => setListRegistro([]);
   }, [busqueda]);
   //
   const handleDetalles = (e) => {
     // console.log(e);
     setOpenModal(true);
     setDatos(e);
+    console.log(e);
   };
 
   const handleSearch = (e) => {
@@ -195,6 +202,8 @@ const Liquidacion = () => {
           openModal={openModal}
           setOpenModal={setOpenModal}
           datos={datos}
+          getLiquidacion={getLiquidacion}
+          setBusqueda={setBusqueda}
         />
       )}
     </div>

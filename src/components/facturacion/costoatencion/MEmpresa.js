@@ -8,8 +8,14 @@ import {
 } from "../../../helpers/tablaOpciones";
 import MMEmpresa from "./MMEmpresa";
 
-const MEmpresa = ({ openModalEmpresa, setOpenModalEmpresa, dataEmpresa }) => {
-  const [busqueda, setBusqueda] = useState("");
+const MEmpresa = ({
+  openModalEmpresa,
+  setOpenModalEmpresa,
+  dataEmpresa,
+  setBusqueda,
+  getEmpresas,
+}) => {
+  const [busquedaMEmpresa, setBusquedaMEmpresa] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [openModalParticular, setOpenModalParticular] = useState(false);
   const [data, setData] = useState([]);
@@ -84,41 +90,37 @@ const MEmpresa = ({ openModalEmpresa, setOpenModalEmpresa, dataEmpresa }) => {
 
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = dataEmpresa.attenciones.filter((data) => {
-        return (
-          data.dni
-            // .normalize("NFD")
-            // .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.fecha_atencion
-            // .normalize("NFD")
-            // .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.paciente.toString().includes(busqueda) ||
-          data.categoria
-            // .normalize("NFD")
-            // .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.servicio
-            // .normalize("NFD")
-            // .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.subtotal.toString().includes(busqueda)
-          // data.impuesto.toString().includes(busqueda) ||
-          // data.total.toString().includes(busqueda)
-        );
-      });
-      setListRegistro(search);
+      if (busquedaMEmpresa !== "" && busquedaMEmpresa !== null) {
+        const search = dataEmpresa.attenciones.filter((data) => {
+          return (
+            data.id.toString().includes(busquedaMEmpresa) ||
+            data.dni.toString().includes(busquedaMEmpresa) ||
+            data.fecha_atencion.toString().includes(busquedaMEmpresa) ||
+            data.paciente
+              .toString()
+              .toLowerCase()
+              .includes(busquedaMEmpresa.toLowerCase()) ||
+            data.categoria
+              .toString()
+              .toLowerCase()
+              .includes(busquedaMEmpresa.toLowerCase()) ||
+            data.servicio
+              .toString()
+              .toLowerCase()
+              .includes(busquedaMEmpresa.toLowerCase()) ||
+            data.subtotal.toString().includes(busquedaMEmpresa)
+          );
+        });
+        setListRegistro(search);
+      } else {
+        setListRegistro(dataEmpresa.attenciones);
+      }
     };
     filtrarElemento();
-  }, [busqueda]);
+  }, [busquedaMEmpresa]);
 
   const handleSearch = (e) => {
-    setBusqueda(([e.target.name] = e.target.value));
+    setBusquedaMEmpresa(([e.target.name] = e.target.value));
   };
   const handleLiquidar = () => {
     setOpenModalParticular(true);
@@ -154,7 +156,7 @@ const MEmpresa = ({ openModalEmpresa, setOpenModalEmpresa, dataEmpresa }) => {
                     type="text"
                     placeholder="Buscar"
                     name="busqueda"
-                    value={busqueda}
+                    value={busquedaMEmpresa}
                     onChange={handleSearch}
                   />
                 </div>
@@ -162,7 +164,7 @@ const MEmpresa = ({ openModalEmpresa, setOpenModalEmpresa, dataEmpresa }) => {
 
               <DataTable
                 columns={columnas}
-                data={dataEmpresa.attenciones}
+                data={listRegistro}
                 pagination
                 paginationComponentOptions={paginacionOpciones}
                 fixedHeader
@@ -181,6 +183,8 @@ const MEmpresa = ({ openModalEmpresa, setOpenModalEmpresa, dataEmpresa }) => {
             data={data}
             dataEmpresa={dataEmpresa}
             setOpenModalEmpresa={setOpenModalEmpresa}
+            setBusqueda={setBusqueda}
+            getEmpresas={getEmpresas}
           />
         )}
         <div className="list-botones">

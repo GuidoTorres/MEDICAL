@@ -10,8 +10,9 @@ import MParticulares from "./MParticulares";
 import MEmpresa from "./MEmpresa";
 
 const Particulares = () => {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState(null);
   const [listRegistro, setListRegistro] = useState([]);
+  const [listRegistroEmpresas, setListRegistroEmpresas] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [openModalEmpresa, setOpenModalEmpresa] = useState(false);
 
@@ -21,7 +22,10 @@ const Particulares = () => {
   const getEmpresas = () => {
     fetchGETPOSTPUTDELETE("liquidacion/empresas")
       .then((info) => info.json())
-      .then((info) => setEmpresas(info));
+      .then((info) => {
+        setEmpresas(info);
+        setBusqueda("");
+      });
   };
 
   useEffect(() => {
@@ -215,41 +219,71 @@ const Particulares = () => {
 
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = fparticular.filter((data) => {
-        return (
-          data.nombre
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.apellido
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.dni.toString().includes(busqueda) ||
-          data.fecha
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.tipo
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.atencion
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.subtotal.toString().includes(busqueda) ||
-          data.impuesto.toString().includes(busqueda) ||
-          data.total.toString().includes(busqueda)
-        );
-      });
-      setListRegistro(search);
+      if (busqueda !== "" && busqueda !== null) {
+        const search = fparticular.filter((data) => {
+          return (
+            data.id.toString().includes(busqueda) ||
+            data.nombre
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .toLocaleLowerCase()
+              .includes(busqueda) ||
+            data.apellido
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .toLocaleLowerCase()
+              .includes(busqueda) ||
+            data.dni.toString().includes(busqueda) ||
+            data.fecha
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .toLocaleLowerCase()
+              .includes(busqueda) ||
+            data.tipo
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .toLocaleLowerCase()
+              .includes(busqueda) ||
+            data.atencion
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .toLocaleLowerCase()
+              .includes(busqueda) ||
+            data.subtotal.toString().includes(busqueda) ||
+            data.impuesto.toString().includes(busqueda) ||
+            data.total.toString().includes(busqueda)
+          );
+        });
+        setListRegistro(search);
+
+        /* Filtro para empresas*/
+        const searchEmpresas = empresas.filter((data) => {
+          return (
+            data.id.toString().includes(busqueda) ||
+            (data.nombre
+              ? data.nombre
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "") ||
+            (data.ruc ? data.ruc.toString().includes(busqueda) : "") ||
+            (data.cant_atenciones
+              ? data.cant_atenciones.toString().includes(busqueda)
+              : "") ||
+            (data.sub_total
+              ? data.sub_total.toString().includes(busqueda)
+              : "") ||
+            (data.igv ? data.igv.toString().includes(busqueda) : "") ||
+            (data.total ? data.total.toString().includes(busqueda) : "")
+          );
+        });
+        setListRegistroEmpresas(searchEmpresas);
+      } else {
+        setListRegistro(fparticular);
+        setListRegistroEmpresas(empresas);
+      }
     };
+
     filtrarElemento();
   }, [busqueda]);
 
@@ -337,7 +371,7 @@ const Particulares = () => {
               >
                 <DataTable
                   columns={columnasEmpresa}
-                  data={empresas}
+                  data={listRegistroEmpresas}
                   pagination
                   paginationComponentOptions={paginacionOpciones}
                   fixedHeader
@@ -360,6 +394,8 @@ const Particulares = () => {
           openModalEmpresa={openModalEmpresa}
           setOpenModalEmpresa={setOpenModalEmpresa}
           dataEmpresa={dataEmpresa}
+          setBusqueda={setBusqueda}
+          getEmpresas={getEmpresas}
         />
       )}
     </div>
