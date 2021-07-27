@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { customStyles } from "../../../helpers/tablaOpciones";
-import MMAParticulares from "./MMAParticulares";
+// import MMAParticulares from "./MMAParticulares";
 import { fetchGETPOSTPUTDELETEJSON } from "../../../helpers/fetch";
 
 const MMEmpresa = ({
@@ -17,6 +17,7 @@ const MMEmpresa = ({
   const [total, setTotal] = useState(0);
   const [fechaActual, setFechaActual] = useState("");
   const [observacion, setObservacion] = useState("");
+  const [codigo, setCodigo] = useState("");
 
   // const handleAgregarCliente = () => {
   //   setOpenModalCrear(true);
@@ -44,16 +45,18 @@ const MMEmpresa = ({
   const handleLiquidarEmpresa = () => {
     const array = [];
     data.map((d) => array.push({ attention_id: d.id }));
-
+    // console.log(data);
+    // console.log(dataEmpresa);
     const liquidacion = {
-      code: null,
+      code: codigo,
       observation: observacion,
       subtotal: subtotal,
       amount: total,
       igv: igv,
       attentions: array,
-      company_id:""
+      company_id: dataEmpresa.id,
     };
+    // console.log(liquidacion);
     postLiquidacion(liquidacion);
     closeModal();
     setOpenModalEmpresa(false);
@@ -97,6 +100,15 @@ const MMEmpresa = ({
               <div className="fmparticular__tipo group-input__label">
                 <label>Fecha de emisión</label>
                 <input type="date" value={fechaActual} readOnly />
+              </div>
+              <div className="fmparticular__tipo group-input__label">
+                <label>Factura</label>
+                <input
+                  type="text"
+                  value={codigo}
+                  onChange={(e) => setCodigo(e.target.value)}
+                  placeholder="Ingrese código de factura"
+                />
               </div>
             </div>
             {/* <div>
