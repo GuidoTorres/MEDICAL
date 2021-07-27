@@ -1,5 +1,5 @@
 import jsPDF from "jspdf";
-import image from "../../assets/pdf Imagen/Sintomas.png";
+import image from "../../assets/pdf Imagen/sintomas.png"
 
 const getFecha = () => {
   let newDate = new Date();

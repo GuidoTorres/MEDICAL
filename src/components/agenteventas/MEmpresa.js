@@ -15,10 +15,11 @@ const MEmpresa = ({
   getParticularDiscount,
   getServicio,
 }) => {
-  const [discount, setDiscount] = useState({});
+  const [discount, setDiscount] = useState({
+    services: [],
+  });
   const [filterServices, setFilterServices] = useState({});
   const [total, setTotal] = useState();
-  const [descuento, setDescuento] = useState();
   const closeModal = () => {
     setOpenModal(false);
     setEditar(false);
@@ -31,24 +32,35 @@ const MEmpresa = ({
       services: Object.values(discount),
     };
 
-    const dataEstatica = {
-      company_id: dataSelected.id,
-      credit: 12,
-      before: 12,
-      services: [
-        {
-          amount: "600",
-          state: 1,
-          percent: 50,
-          service_id: 5,
-        },
-      ],
-    };
+    const descuento =
+      discount &&
+      [discount].map((data, i) => ({
+        service_id: data.service_id,
+        state: data.state,
+        percent: data.percent,
+        amount: data.amount,
+      }));
 
-    console.log(data);
-    fetchGETPOSTPUTDELETEJSON("company_discount", dataEstatica, "POST").then(
-      (res) => console.log(res)
-    );
+    console.log(descuento);
+
+    // const dataEstatica = {
+    //   company_id: dataSelected.id,
+    //   credit: 12,
+    //   before: 12,
+    //   services: [
+    //     {
+    //       amount: "600",
+    //       state: 1,
+    //       percent: 50,
+    //       service_id: 5,
+    //     },
+    //   ],
+    // };
+
+    // console.log(data);
+    // fetchGETPOSTPUTDELETEJSON("company_discount", dataEstatica, "POST").then(
+    //   (res) => console.log(res)
+    // );
   };
 
   const filtrarServicios = () => {
@@ -59,19 +71,27 @@ const MEmpresa = ({
     setFilterServices(data);
   };
 
-  const handleChange = (e, data, i) => {
-    setDiscount({
-      ...discount,
-      [i++]: {
-        [e.target.name]: data.id,
-        status: e.target.checked ? 1 : 0,
-      },
-      [e.target.percent]: e.target.value,
-      [e.target.amount]: e.target.value,
-    });
-  };
+  const handleChange = (e, data, index) => {
+    if (e.target.checked) {
+      setDiscount((discount) => ({
+        ...discount,
+        services: [
+          ...discount.services,
+          {
+            service_id: data.id,
+            state: e.target.checked ? 1 : 0,
+            percent: discount.percent || data.last_discount.percent,
+            amount: data.last_discount.amount,
+          },
+        ],
+      }));
+      console.log(discount);
+    } else if (e.target.checked === false) {
+      setDiscount((data) => data.services.filter((data) => console.log(data)));
+    }
 
-  console.log(discount);
+    // console.log(i);
+  };
 
   useEffect(() => {
     filtrarServicios();
@@ -203,7 +223,7 @@ const MEmpresa = ({
               <strong>Servicios de la empresa</strong>
             </label>
 
-            <table class="table">
+            <table className="table">
               <thead>
                 <tr>
                   <th scope="col">Tipos de prueba</th>
@@ -214,8 +234,8 @@ const MEmpresa = ({
               </thead>
               <tbody>
                 {filterServices.length > 0 &&
-                  filterServices.map((data, i) => (
-                    <tr key={i}>
+                  filterServices.map((data, index) => (
+                    <tr key={index}>
                       <td>{data.name}</td>
                       <td>
                         <div className="form-check">
@@ -225,16 +245,9 @@ const MEmpresa = ({
                             name="services"
                             value={data.service_id}
                             id="flexCheckDefault"
-                            // onChange={(e) =>
-                            //   setDiscount((discount) => ({
-                            //     ...discount,
-                            //     [i]: {
-                            //       service_id: data.id,
-                            //       state: e.target.checked ? 1 : 0,
-                            //     },
-                            //   }))
-                            // }
-                            onChange={(e) => handleChange(e, data, i)}
+                            onChange={(e) => {
+                              handleChange(e, data, index);
+                            }}
                           />
                         </div>
                       </td>
@@ -251,20 +264,22 @@ const MEmpresa = ({
                               ? data.last_discount.percent
                               : 0
                           }
-                          // onChange={(e) =>
-                          //   setDescuento((descuento) => [
-                          //     {
-                          //       ...descuento,
-
-                          //       [i]: {
-                          //         ...discount[i],
-                          //         percent: e.target.value,
-                          //       },
-                          //     },
-                          //   ])
-                          // }
-
-                          onChange={handleChange}
+                          onChange={(e) =>
+                            setDiscount((discount) =>
+                              [data].map((info, i) =>
+                                i === index
+                                  ? {
+                                      services: [
+                                        {
+                                          percent: e.target.value,
+                                        },
+                                        ...discount.services,
+                                      ],
+                                    }
+                                  : [{ ...discount }]
+                              )
+                            )
+                          }
                           aria-describedby="basic-addon1"
                         />
                       </td>
@@ -281,17 +296,6 @@ const MEmpresa = ({
                                 ? data.last_discount.amount
                                 : ""
                             }
-                            // onChange={(e) =>
-                            //   setDiscount((discount) => [
-                            //     {
-                            //       ...discount,
-                            //       [i]: {
-                            //         ...discount[i],
-                            //         amount: e.target.value,
-                            //       },
-                            //     },
-                            //   ])
-                            // }
                             onChange={handleChange}
                             aria-describedby="basic-addon1"
                           />
@@ -313,9 +317,9 @@ const MEmpresa = ({
                 placeholder=""
                 aria-label=""
                 aria-describedby="basic-addon1"
-                // onChange={(e) =>
-                //   setDiscount({ ...discount, before: e.target.value })
-                // }
+                onChange={(e) =>
+                  setDiscount({ ...discount, before: e.target.value })
+                }
               />
             </div>
 
@@ -327,9 +331,9 @@ const MEmpresa = ({
                 placeholder=""
                 aria-label=""
                 aria-describedby="basic-addon1"
-                // onChange={(e) =>
-                //   setDiscount({ ...discount, credit: e.target.value })
-                // }
+                onChange={(e) =>
+                  setDiscount({ ...discount, credit: e.target.value })
+                }
               />
             </div>
             <div className="btnContainer">

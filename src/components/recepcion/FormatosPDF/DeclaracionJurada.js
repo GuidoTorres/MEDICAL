@@ -6,6 +6,38 @@ const DeclaracionJurada = ({
   condicion,
   setCondicion,
 }) => {
+  const handleChange = (e) => {
+    setDeclaracion((declaracion) => ({
+      answers: [
+        { answer: e.target.checked ? "Si" : "No" },
+        ...[declaracion.answers],
+      ],
+    }));
+
+    let array = [];
+
+    for (let i = 0; i < declaracion.length; i++) {
+      array.push(
+        ...array,
+        {
+          question_id: i++,
+          answer: e.target.checked ? "Si" : "No",
+        },
+      );
+    }
+
+    console.log(array);
+
+    // setDeclaracion((declaracion) =>
+    //   [declaracion].map((item, i) => ({
+    //     answers: [
+    //       { question_id: i, answer: e.target.checked ? "Si" : "No" },
+    //       ...[item.answer],
+    //     ],
+    //   }))
+    // );
+  };
+
   return (
     <>
       <div className="sintomas  mb-2" style={{ width: "40%" }}>
@@ -19,17 +51,14 @@ const DeclaracionJurada = ({
             <input
               className="sintoma form-check-input"
               type="checkbox"
-              value=""
+              value="sintomas"
               id="flexCheckDefault"
               onChange={(e) => {
-                setDeclaracion({
-                  ...declaracion,
-                  sintomaSi: e.target.checked,
-                });
-                let check = document.querySelector(".sintoma1");
-                e.target.checked === true
-                  ? (check.disabled = true)
-                  : (check.disabled = false);
+                handleChange(e);
+                // let check = document.querySelector(".sintomas");
+                // e.target.checked === true
+                //   ? (check.disabled = true)
+                //   : (check.disabled = false);
               }}
             />
 
@@ -42,18 +71,14 @@ const DeclaracionJurada = ({
             <input
               className="sintoma1 form-check-input"
               type="checkbox"
-              value=""
+              value="sintomas1"
               id="flexCheckDefault"
               onChange={(e) => {
-                setDeclaracion({
-                  ...declaracion,
-                  sintomaNo: e.target.checked,
-                });
-
-                let check = document.querySelector(".sintoma");
-                e.target.checked === true
-                  ? (check.disabled = true)
-                  : (check.disabled = false);
+                handleChange(e);
+                // let check = document.querySelector(".sintomas1");
+                // e.target.checked === true
+                //   ? (check.disabled = true)
+                //   : (check.disabled = false);
               }}
             />
 
@@ -72,14 +97,11 @@ const DeclaracionJurada = ({
               value=""
               id="flexCheckDefault"
               onChange={(e) => {
-                setDeclaracion({
-                  ...declaracion,
-                  fiebre: e.target.checked,
-                });
-                let check = document.querySelector(".fiebre1");
-                e.target.checked === true
-                  ? (check.disabled = true)
-                  : (check.disabled = false);
+                handleChange(e);
+                // let check = document.querySelector(".fiebre1");
+                // e.target.checked === true
+                //   ? (check.disabled = true)
+                //   : (check.disabled = false);
               }}
             />
             <label className="form-check-label" for="flexCheckDefault">

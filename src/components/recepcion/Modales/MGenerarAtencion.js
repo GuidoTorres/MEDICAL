@@ -26,7 +26,6 @@ const MGenerarAtencion = ({
   const [clinics, setClinics] = useState({});
   const [departamentos, setDepartamentos] = useState({});
 
-
   const getServices = () => {
     fetchGETPOSTPUTDELETE("services")
       .then((res) => res.json())
@@ -38,8 +37,6 @@ const MGenerarAtencion = ({
       .then((res) => setClinics(res.data));
   };
 
-  console.log(dataSelected);
-
   useEffect(() => {
     getServices();
     getClinics();
@@ -48,10 +45,12 @@ const MGenerarAtencion = ({
   const getFecha = () => {
     let newDate = new Date();
     let date = newDate.getDate();
-    let month = newDate.getMonth()+1;
+    let month = newDate.getMonth() + 1;
     let year = newDate.getFullYear();
 
-    return `${year}${"-"}${month > 9 ? month : "0" + month}${"-"}${date >0 ? date : "0" + date}`;
+    return `${year}${"-"}${month > 9 ? month : "0" + month}${"-"}${
+      date > 0 ? date : "0" + date
+    }`;
   };
 
   const getHora = () => {
@@ -64,7 +63,6 @@ const MGenerarAtencion = ({
     }`;
   };
 
-
   const crearAtencion = () => {
     const formData = new FormData();
     formData.set("date_attention", getFecha() || "");
@@ -72,8 +70,26 @@ const MGenerarAtencion = ({
     formData.set("people_id", dataSelected.id || "");
     formData.set("service_id", datos.service_id || "");
     formData.set("clinic_id", 1 || "");
-    formData.set("codebar", dataSelected.id);
+    formData.set(
+      "codebar",
+      dataSelected.dni + " " + getFecha() + " " + getHora()
+    );
 
+    const atencion = {
+      date_attention: getFecha() || "",
+      time_attention: getHora() || "",
+      people_id: dataSelected.id,
+      service_id: datos.service_id,
+      clinic_id: 1,
+      codebar: dataSelected.id,
+      forms: [
+        {
+          date_emision: getFecha,
+          form_type_id: 1,
+          answers: [],
+        },
+      ],
+    };
 
     fetchGETPOSTPUTDELETE("attention", formData, "POST").then((res) => {
       console.log(res);
@@ -144,8 +160,6 @@ const MGenerarAtencion = ({
     ficha.display = "block";
     ficha.visibility = "visible";
   };
-
-  console.log(datos);
 
   return (
     <Modal

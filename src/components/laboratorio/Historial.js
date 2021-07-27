@@ -251,7 +251,7 @@ const Historial = () => {
     }
 
     window.open(doc.output("bloburl"), "_blank");
-    var blob = doc.output("blob");
+    // var blob = doc.output("blob");
   };
 
   const handleSearch = (e) => {

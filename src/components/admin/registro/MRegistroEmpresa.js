@@ -16,6 +16,7 @@ const MRegistroEmpresa = ({
 }) => {
   const [avatar, setAvatar] = useState(null);
   const [empresa, setEmpresa] = useState({});
+  const [service, setService] = useState();
   const [types, setTypes] = useState([]);
   const [ruc, setRuc] = useState({});
   const [servicios, setServicios] = useState({});
@@ -26,6 +27,8 @@ const MRegistroEmpresa = ({
     setDataSelected(null);
   };
 
+  console.log(service);
+
   const getCorporationTypes = () => {
     fetchGETPOSTPUTDELETE("corporation_types")
       .then((data) => data.json())
@@ -33,7 +36,6 @@ const MRegistroEmpresa = ({
         setTypes(datos.types);
       });
   };
-  // const [servicios, setServicios] = useState({});
 
   const getServices = () => {
     fetchGETPOSTPUTDELETE("services")
@@ -53,7 +55,7 @@ const MRegistroEmpresa = ({
     if (empresa && empresa.ruc && empresa.ruc.length === 11) {
       getRuc();
     }
-  }, [empresa.ruc]);
+  }, [empresa]);
 
   const postCorporation = (e) => {
     const formData = new FormData();
@@ -82,14 +84,11 @@ const MRegistroEmpresa = ({
     formData.set("before", empresa.before || "");
     formData.set("credit", empresa.credit || "");
 
-    formData.set("services[0][service_id]", empresa.service_id5 || "");
-    // formData.set("services[0][state]", 0);
-    formData.set("services[1][service_id]", empresa.service_id6 || "");
-    // formData.set("services[0][state]", 0);
-    formData.set("services[2][service_id]", empresa.service_id7 || "");
-    // formData.set("services[0][state]", 0);
-    formData.set("services[3][service_id]", empresa.service_id8 || "");
-    // formData.set("services[0][state]", 0);
+    if (service) {
+      for (var [i, value] of Object.entries(service)) {
+        formData.set(`${i}[service_id]`, value.service_id);
+      }
+    }
 
     fetchGETPOSTPUTDELETE("company", formData, "POST").then((resp) => {
       console.log(resp);
@@ -383,7 +382,6 @@ const MRegistroEmpresa = ({
                 <input
                   type="number"
                   name="ruc"
-                  required
                   disabled={editar ? true : false}
                   defaultValue={
                     dataSelected &&
@@ -402,7 +400,6 @@ const MRegistroEmpresa = ({
                 <input
                   type="text"
                   name="business_name"
-                  required
                   defaultValue={
                     editar
                       ? dataSelected &&
@@ -516,7 +513,6 @@ const MRegistroEmpresa = ({
                   <input
                     type="text"
                     name="contactsname"
-                    required
                     defaultValue={
                       dataSelected &&
                       dataSelected.corporation &&
@@ -539,7 +535,6 @@ const MRegistroEmpresa = ({
                   <input
                     type="number"
                     name="contactsphone"
-                    required
                     defaultValue={
                       dataSelected &&
                       dataSelected.corporation &&
@@ -563,7 +558,6 @@ const MRegistroEmpresa = ({
                   <input
                     type="email"
                     name="contactsemail"
-                    required
                     defaultValue={
                       dataSelected &&
                       dataSelected.corporation &&
@@ -758,80 +752,20 @@ const MRegistroEmpresa = ({
                                   : false
                               }
                               onChange={(e) =>
-                                setEmpresa({
-                                  ...empresa,
-                                  [`service_id${data.id}`]: e.target.checked
-                                    ? data.id
-                                    : "",
+                                setService({
+                                  ...service,
+                                  [`services[${i}]`]: {
+                                    id: i,
+                                    service_id: e.target.checked ? data.id : "",
+                                    status: e.target.checked ? 1 : 0,
+                                  },
                                 })
                               }
                             />
-                            <label key={data.id}>{data.name}</label>
+                            <label>{data.name}</label>
                           </>
                         ))}
                     </div>
-                    {/* <div className="mselect__item">
-                      <input
-                        type="checkbox"
-                        className="w-auto"
-                        defaultChecked={
-                          dataSelected &&
-                          dataSelected.services &&
-                          dataSelected.services[1]
-                            ? true
-                            : false
-                        }
-                        onChange={(e) =>
-                          setEmpresa({
-                            ...empresa,
-                            service_id2: e.target.checked ?servicios && servicios .services && servicios.servicios[1] &&  servicios.services[1].id : "",
-                          })
-                        }
-                      />
-                      <label>Eclia</label>
-                    </div>
-                    <div className="mselect__item">
-                      <input
-                        type="checkbox"
-                        className="w-auto"
-                        defaultChecked={
-                          dataSelected &&
-                          dataSelected.services &&
-                          dataSelected.services[2]
-                            ? true
-                            : false
-                        }
-                        onChange={(e) =>
-                          setEmpresa({
-                            ...empresa,
-
-                            service_id3: e.target.checked ?servicios && servicios .services && servicios.servicios[2] &&  servicios.services[2].id : "",
-                          })
-                        }
-                      />
-                      <label>Molecular</label>
-                    </div>
-                    <div className="mselect__item">
-                      <input
-                        type="checkbox"
-                        className="w-auto"
-                        defaultChecked={
-                          dataSelected &&
-                          dataSelected.services &&
-                          dataSelected.services[3]
-                            ? true
-                            : false
-                        }
-                        onChange={(e) =>
-                          setEmpresa({
-                            ...empresa,
-
-                            service_id4: e.target.checked ?servicios && servicios .services && servicios.servicios[3] && servicios.services[3].id : "",
-                          })
-                        }
-                      />
-                      <label>Rapida</label>
-                    </div> */}
                   </div>
                 </div>
               </div>
