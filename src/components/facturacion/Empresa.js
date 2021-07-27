@@ -8,7 +8,7 @@ import { paginacionOpciones } from "../../helpers/tablaOpciones";
 import MEmpresa from "./MEmpresa";
 
 const Empresa = () => {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState(null);
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [datos, setDatos] = useState({});
@@ -19,7 +19,10 @@ const Empresa = () => {
   const getCorporations = () => {
     fetchGETPOSTPUTDELETE("company")
       .then((info) => info.json())
-      .then((info) => setCorporations(info.data));
+      .then((info) => {
+        setCorporations(info.data);
+        setBusqueda("");
+      });
   };
 
   useEffect(() => {
@@ -108,28 +111,26 @@ const Empresa = () => {
 
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = fempresa.filter((data) => {
-        return (
-          data.razon
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.ruc.toString().includes(busqueda) ||
-          data.responsable
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.telefono.toString().includes(busqueda) ||
-          data.correo
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda)
-        );
-      });
-      setListRegistro(search);
+      if (busqueda !== "") {
+        const search = corporations.filter((data) => {
+          return (
+            data.id.toString().includes(busqueda) ||
+            data.corporation.business_name
+              .toString()
+              .toLowerCase()
+              .includes(busqueda.toLowerCase()) ||
+            data.corporation.ruc.toString().includes(busqueda)
+          );
+          // ||
+          // data.corporation.contacts.length > 0
+          // ? data.corporation.contacts[0].name.toString().includes(busqueda)
+          // : "";
+        });
+        setListRegistro(search);
+      } else {
+        setListRegistro(corporations);
+      }
+      console.log(listRegistro);
     };
     filtrarElemento();
   }, [busqueda]);
@@ -161,7 +162,7 @@ const Empresa = () => {
 
           <DataTable
             columns={columnas}
-            data={corporations}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader

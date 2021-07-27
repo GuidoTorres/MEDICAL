@@ -1,10 +1,23 @@
 import React from "react";
 import Modal from "react-modal";
 import { customStyles } from "../../helpers/tablaOpciones";
+import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 
 const MLiquidacion = ({ openModal, setOpenModal, datos }) => {
   const closeModal = () => {
     setOpenModal(false);
+  };
+
+  console.log(datos);
+
+  const deleteLiquidacion = () => {
+    fetchGETPOSTPUTDELETEJSON(`settlement/${datos.id}`, {}, "DELETE")
+      .then((info) => info.json())
+      .then((info) => console.log(info));
+  };
+
+  const handleEliminar = () => {
+    deleteLiquidacion();
   };
 
   const openPdf = () => {
@@ -28,19 +41,29 @@ const MLiquidacion = ({ openModal, setOpenModal, datos }) => {
       <div className="liquidacion__title">
         <div>
           <label>Razón social</label>
-          <input readOnly value="Empresa 1" />
+          <input
+            readOnly
+            value={datos.company ? datos.company.corporation.business_name : ""}
+          />
         </div>
         <div>
           <label>Fecha emisión</label>
-          <input type="date" readOnly value="2020-07-22" />
+          <input
+            type="date"
+            readOnly
+            value={datos.date_issue ? datos.date_issue : ""}
+          />
         </div>
         <div>
           <label>Ruc</label>
-          <input readOnly value="44444444444" />
+          <input
+            readOnly
+            value={datos.company ? datos.company.corporation.ruc : ""}
+          />
         </div>
         <div>
-          <label>Razón social</label>
-          <input readOnly value="02020202" />
+          <label>Factura</label>
+          <input readOnly value={datos.code ? datos.code : ""} />
         </div>
       </div>
       <div className="col-12 fmparticular">
@@ -60,40 +83,40 @@ const MLiquidacion = ({ openModal, setOpenModal, datos }) => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                </tr>
+                {datos.detail.length > 0
+                  ? datos.detail.map((data, index) => (
+                      <tr key={index}>
+                        <td>{data.attention.person.id}</td>
+                        <td>{data.attention.person.dni}</td>
+                        <td>{data.attention.date_attention}</td>
+                        <td>{data.attention.person.name}</td>
+                        <td>{data.attention.person.pat_lastname}</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        <td>{data.attention.amount}</td>
+                      </tr>
+                    ))
+                  : ""}
                 <tr>
                   <td colSpan="7">Obvervación</td>
                   <td>Sub Total</td>
-                  <td>133</td>
+                  <td>{datos.subtotal ? datos.subtotal : ""}</td>
                 </tr>
                 <tr>
-                  <td colspan="7">Factura F000000</td>
+                  <td colspan="7">
+                    {" "}
+                    <textarea
+                      defaultValue={datos.observation ? datos.observation : ""}
+                      readOnly
+                    ></textarea>
+                  </td>
                   <td>IGV</td>
-                  <td>133</td>
+                  <td>{datos.igv ? datos.igv : ""}</td>
                 </tr>
                 <tr>
                   <td colspan="7"></td>
                   <td>Total</td>
-                  <td>266</td>
+                  <td>{datos.amount ? datos.amount : ""}</td>
                 </tr>
               </tbody>
             </table>
@@ -114,9 +137,11 @@ const MLiquidacion = ({ openModal, setOpenModal, datos }) => {
         </div>
         <div className="group-2">
           <button className="botones me-1" onClick={closeModal}>
-            Cancelar
+            Retroceder
           </button>
-          <button className="botones">Guardar</button>
+          <button className="botones" onClick={handleEliminar}>
+            Dar de baja
+          </button>
         </div>
       </div>
     </Modal>
