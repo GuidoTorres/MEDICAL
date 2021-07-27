@@ -26,6 +26,10 @@ const Liquidacion = () => {
       });
   };
 
+  const handleSubirArchivo = (e) => {
+    console.log(e);
+  };
+
   // console.log(liquidacion);
   useEffect(() => {
     getLiquidacion();
@@ -101,14 +105,14 @@ const Liquidacion = () => {
       },
     },
     {
-      name: "Editar",
+      name: "Eliminar",
       button: true,
       cell: (e) => (
         <button
           onClick={() => handleDetalles(e)}
           className="table__tablebutton"
         >
-          <i className="fas fa-pencil-alt"></i>{" "}
+          <i className="far fa-trash-alt"></i>{" "}
         </button>
       ),
     },
@@ -117,7 +121,7 @@ const Liquidacion = () => {
       button: true,
       cell: (e) => (
         <button
-          // onClick={() => handleDetalles(e)}
+          onClick={() => handleSubirArchivo(e)}
           className="table__tablebutton"
         >
           <i className="fas fa-folder-open"></i>
