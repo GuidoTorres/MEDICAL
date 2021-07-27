@@ -27,6 +27,7 @@ const EmpresaFacturacion = () => {
     setComentarios(e);
     setIsOpen(true);
   };
+  console.log(listFact);
 
   const columnas = [
     {
@@ -41,6 +42,34 @@ const EmpresaFacturacion = () => {
     {
       name: 'Nº de factura',
       selector: (row) => (row && row.id ? row.id : ''),
+      sortable: true,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+    {
+      name: 'Sub total',
+      selector: (row) => (row && row.subtotal ? row.subtotal : ''),
+      sortable: true,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+    {
+      name: 'IGV',
+      selector: (row) => (row && row.igv ? row.igv : ''),
+      sortable: true,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+
+    {
+      name: 'Monto',
+      selector: (row) => (row && row.amount ? row.amount : ''),
       sortable: true,
       style: {
         color: '#8f9196',

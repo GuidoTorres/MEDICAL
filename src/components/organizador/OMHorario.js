@@ -1,12 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
-import DateTimePicker from 'react-datetime-picker';
+import { useSelector } from 'react-redux';
+import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
+// import DateTimePicker from 'react-datetime-picker';
 import { customStyles } from '../../helpers/tablaOpciones';
 
-const OMHorario = ({ MHorario, setMHorario }) => {
+const OMHorario = ({ MHorario, setMHorario, nTranspor }) => {
+  const { selectionId } = useSelector((state) => state.organizador);
+  const { id } = selectionId;
+  const [listHorario, setListHorario] = useState({
+    user_id: parseInt(nTranspor.transportista),
+    attention_date: '',
+    attention_time: null,
+    attention_time_end: null,
+    comments: '',
+  });
+  // console.log(parseInt(nTranspor.transportista));
+  const { attention_date, attention_time, attention_time_end, comments } =
+    listHorario;
+
   const closeModal = () => {
     setMHorario(false);
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // console.log(id);
+    fetchGETPOSTPUTDELETEJSON(
+      `reservation/asignar/${id}`,
+      listHorario,
+      'POST'
+    ).then((data) => data.json());
+  };
+
+  const handleOnChange = (e) => {
+    setListHorario({ ...listHorario, [e.target.name]: e.target.value });
+  };
+
   return (
     <Modal
       isOpen={MHorario}
@@ -18,26 +48,38 @@ const OMHorario = ({ MHorario, setMHorario }) => {
       ariaHideApp={false}
     >
       <h3 className="title__modal">Evento</h3>
-      <form className="">
+      <form className="" onSubmit={handleSubmit}>
         <div className="form-group mt-3">
-          <label>Fecha y hora inicio</label>
-          <DateTimePicker
-            // onChange={handleStartDateChange}
-            // value={dateStart}
+          <label>Fecha</label>
+          <input
+            type="date"
+            name="attention_date"
+            value={attention_date}
+            onChange={handleOnChange}
             className="form-control"
           />
         </div>
 
         <div className="form-group mt-3">
-          <label>Fecha y hora fin</label>
-          <DateTimePicker
-            // onChange={handleEndDateChange}
-            // value={dateEnd}
-            // minDate={dateStart}
+          <label>Hora inicio</label>
+          <input
+            type="time"
+            name="attention_time"
+            value={attention_time}
+            onChange={handleOnChange}
             className="form-control"
           />
         </div>
-
+        <div className="form-group mt-3">
+          <label>Hora fin</label>
+          <input
+            type="time"
+            name="attention_time_end"
+            value={attention_time_end}
+            onChange={handleOnChange}
+            className="form-control"
+          />
+        </div>
         <div className="form-group mt-3">
           <label>Enviar un comentario</label>
           <textarea
@@ -45,9 +87,9 @@ const OMHorario = ({ MHorario, setMHorario }) => {
             className="form-control"
             placeholder="Notas"
             rows="5"
-            name="notes"
-            // value={notes}
-            // onChange={handleInputChange}
+            name="comments"
+            value={comments}
+            onChange={handleOnChange}
           ></textarea>
         </div>
         <div className="mt-3">
@@ -57,7 +99,6 @@ const OMHorario = ({ MHorario, setMHorario }) => {
           </button>
         </div>
       </form>
-      {/*  */}
     </Modal>
   );
 };

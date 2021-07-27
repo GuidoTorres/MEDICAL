@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
-import DataTable from "react-data-table-component";
-import CodigoBarrasHistorial from "./Modales/CodigoBarrasHistorial";
-import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
-import { generarDeclaracionJurada } from "../../helpers/GenerarPdfs/DeclaracionJurada";
-import { generarConsentimientoInformado } from "../../helpers/GenerarPdfs/ConsentimientoInformado";
-import { generarFichaCovid } from "../../helpers/GenerarPdfs/FichaCovid";
+import React, { useEffect, useState } from 'react';
+import { ToastContainer } from 'react-toastify';
+import DataTable from 'react-data-table-component';
+import CodigoBarrasHistorial from './Modales/CodigoBarrasHistorial';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
+import { generarDeclaracionJurada } from '../../helpers/GenerarPdfs/DeclaracionJurada';
+import { generarConsentimientoInformado } from '../../helpers/GenerarPdfs/ConsentimientoInformado';
+import { generarFichaCovid } from '../../helpers/GenerarPdfs/FichaCovid';
 
 const Historial = () => {
-  const [busqueda, setBusqueda] = useState("");
-  const [addRegistro, setAddRegistro] = useState(false);
+  const [busqueda, setBusqueda] = useState('');
+  // const [addRegistro, setAddRegistro] = useState(false);
   const [codigoHistorial, setCodigoHistorial] = useState(false);
   const [attention, setAttention] = useState({});
   const [dataBarCode, setDataBarCode] = useState({});
 
   const getAttention = () => {
     //falta servicio
-    fetchGETPOSTPUTDELETE("attention")
+    fetchGETPOSTPUTDELETE('attention')
       .then((data) => data.json())
       .then((datos) => setAttention(datos.data));
   };
@@ -31,66 +31,66 @@ const Historial = () => {
     setDataBarCode(e);
   }
 
-  const handleAddRegistro = () => {
-    setAddRegistro(true);
-  };
+  // const handleAddRegistro = () => {
+  //   setAddRegistro(true);
+  // };
 
   const paginacionOpciones = {
-    rowsPerPageText: "Fila por pagina",
-    rangerSeparatorText: "de",
+    rowsPerPageText: 'Fila por pagina',
+    rangerSeparatorText: 'de',
     selectAllRowsItem: true,
-    selectAllRowsItemText: "Todos",
+    selectAllRowsItemText: 'Todos',
   };
 
   const columnas = [
     {
-      name: "Ítem",
-      selector: "id",
+      name: 'Ítem',
+      selector: 'id',
       sortable: true,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     {
-      name: "Nombres y apellidos",
-      selector: (row) => (row.person && row.person.name ? row.person.name : ""),
+      name: 'Nombres y apellidos',
+      selector: (row) => (row.person && row.person.name ? row.person.name : ''),
       sortable: true,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     {
-      name: "Nº de documento",
-      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
+      name: 'Nº de documento',
+      selector: (row) => (row.person && row.person.dni ? row.person.dni : ''),
       sortable: true,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     {
-      name: "Estado",
-      selector: (row) => (row.status === 1 ? "Particular" : "Empresa"),
+      name: 'Estado',
+      selector: (row) => (row.status === 1 ? 'Particular' : 'Empresa'),
       sortable: true,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     {
-      name: "Tipo de atención",
+      name: 'Tipo de atención',
       selector: (row) =>
-        row.service && row.service.name ? row.service.name : "",
+        row.service && row.service.name ? row.service.name : '',
       sortable: true,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     {
-      name: "Código de barras",
+      name: 'Código de barras',
       button: true,
       cell: (e) => (
         <button className="table__tablebutton editar">
@@ -99,7 +99,7 @@ const Historial = () => {
       ),
     },
     {
-      name: "Declaración jurada",
+      name: 'Declaración jurada',
       button: true,
       cell: (e) => (
         <button className="table__tablebutton editar">
@@ -108,12 +108,12 @@ const Historial = () => {
             onClick={() => {
               generarDeclaracionJurada();
             }}
-          ></i>{" "}
+          ></i>{' '}
         </button>
       ),
     },
     {
-      name: "Consentimiento informado",
+      name: 'Consentimiento informado',
       button: true,
       cell: (e) => (
         <button className="table__tablebutton editar">
@@ -122,12 +122,12 @@ const Historial = () => {
             onClick={() => {
               generarConsentimientoInformado();
             }}
-          ></i>{" "}
+          ></i>{' '}
         </button>
       ),
     },
     {
-      name: "Ficha COVID19",
+      name: 'Ficha COVID19',
       button: true,
       cell: (e) => (
         <button className="table__tablebutton editar">
@@ -137,19 +137,19 @@ const Historial = () => {
               generarFichaCovid();
               // generarFichaCovid();
             }}
-          ></i>{" "}
+          ></i>{' '}
         </button>
       ),
     },
   ];
 
-  const handleDelete = (e) => {
-    console.log("eliminado", e);
-  };
+  // const handleDelete = (e) => {
+  //   console.log('eliminado', e);
+  // };
 
-  const handleEditar = (e) => {
-    console.log("editar", e);
-  };
+  // const handleEditar = (e) => {
+  //   console.log('editar', e);
+  // };
 
   useEffect(() => {
     // const filtrarElemento = () => {
@@ -226,7 +226,7 @@ const Historial = () => {
               noDataComponent={
                 <div className="spinner">
                   <i className="fas fa-inbox table__icono"></i>
-                  <p style={{ color: "grey" }}>No hay datos</p>
+                  <p style={{ color: 'grey' }}>No hay datos</p>
                 </div>
               }
             />

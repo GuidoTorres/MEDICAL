@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
-import { transportista } from '../../data/OTransportista';
 import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
 
@@ -18,8 +17,6 @@ const Transportista = () => {
     getTransportista();
   }, []);
 
-  console.log(listTransportista);
-
   const columnas = [
     {
       name: 'Item',
@@ -32,8 +29,7 @@ const Transportista = () => {
     },
     {
       name: 'Nombre Apellido',
-      // selector: (row) =>
-      //   row && row.person.username ? row.person.username : '',
+      selector: (row) => (row && row.person.name ? row.person.name : ''),
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -63,22 +59,26 @@ const Transportista = () => {
       },
     },
   ];
-  //
+
   useEffect(() => {
     const filtrarElemento = () => {
       const search = listTransportista.filter((data) => {
         return (
-          // data.person.username
-          //   .normalize('NFD')
-          //   .replace(/[\u0300-\u036f]/g, '')
-          //   .toLocaleLowerCase()
-          //   .includes(busqueda) ||
+          data.person.name
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLocaleLowerCase()
+            .includes(busqueda) ||
           data.vehicle.name
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda) ||
-          data.vehicle.user_id.toString().includes(busqueda)
+          data.vehicle.license_plate
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLocaleLowerCase()
+            .includes(busqueda)
         );
       });
       setListRegistro(search);
@@ -93,8 +93,7 @@ const Transportista = () => {
   return (
     <div className="container">
       <div className="row">
-        {/* <h3>Horarios disponibles</h3> */}
-
+        <h3>Lista de transportista</h3>
         <div className="table-responsive">
           <div className="adminregistro__option">
             <div>

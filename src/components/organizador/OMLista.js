@@ -1,17 +1,12 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { useHistory } from 'react-router-dom';
 import { customStyles } from '../../helpers/tablaOpciones';
 
-const OMLista = ({ modalList, setModalList, listRegistro }) => {
-  const history = useHistory();
-  console.log(listRegistro);
+const OMLista = ({ modalList, setModalList }) => {
   const closeModal = () => {
     setModalList(false);
   };
-  const siguiente = () => {
-    history.push('/organizador/calendario');
-  };
+
   return (
     <Modal
       isOpen={modalList}
@@ -25,7 +20,6 @@ const OMLista = ({ modalList, setModalList, listRegistro }) => {
       <div className="container">
         <h3 className="title__modal">Visulizar</h3>
         <div className="row">
-          {/* {JSON.stringify(listRegistro)} */}
           <div className="col-12">
             <div>
               <label>Tipo de servicio</label>
@@ -40,9 +34,6 @@ const OMLista = ({ modalList, setModalList, listRegistro }) => {
           <div className="list-botones">
             <button className="botones" onClick={closeModal}>
               cancelar
-            </button>
-            <button className="botones" onClick={siguiente}>
-              Siguiente
             </button>
           </div>
         </div>

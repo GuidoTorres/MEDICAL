@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
-
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
 import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
+import { listaPacient } from '../../actions/organizador';
+
 import OMLista from './OMLista';
-import { useDispatch, useSelector } from 'react-redux';
-import { lista, listarOrganizador } from '../../actions/organizador';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 const Solicitud = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState({});
   const [oranizadorxd, setOranizadorxd] = useState([]);
@@ -15,26 +18,24 @@ const Solicitud = () => {
   const [search, setSearch] = useState([]);
 
   const getSolicitudes = () => {
-    // const dispatch = useDispatch()
     fetchGETPOSTPUTDELETEJSON('reservation/organizer')
       .then((data) => data.json())
       .then((datos) => setOranizadorxd(datos.data));
-  };
-  // console.log(listOrganizador);
-  const abrirModal = (e) => {
-    fetchGETPOSTPUTDELETEJSON(`reservation/get/${e.id}`)
-      .then((data) => data.json())
-      .then((resultados) => setListRegistro(resultados));
-    // dispatch(lista(123456));
-    // console.log(dispatch);
-    setModalList(true);
   };
 
   useEffect(() => {
     getSolicitudes();
   }, []);
 
-  console.log(oranizadorxd);
+  const abrirModal = (e) => {
+    setListRegistro(e);
+    setModalList(true);
+  };
+  // console.log(listRegistro);
+  const ventanaIr = (e) => {
+    dispatch(listaPacient(e));
+    history.push('/organizador/calendario');
+  };
 
   const columnas = [
     {
@@ -83,16 +84,25 @@ const Solicitud = () => {
       },
     },
     {
-      name: 'Atención',
+      name: 'Ver',
       button: true,
       cell: (e) => (
         <button onClick={() => abrirModal(e)} className="table__tablebutton">
+          <i className="far fa-eye"></i>
+        </button>
+      ),
+    },
+    {
+      name: 'Atención',
+      button: true,
+      cell: (e) => (
+        <button onClick={() => ventanaIr(e)} className="table__tablebutton">
           <i className="fas fa-angle-right"></i>
         </button>
       ),
     },
   ];
-  //
+
   useEffect(() => {
     const filtrarElemento = () => {
       const search = oranizadorxd.filter((data) => {
@@ -110,7 +120,7 @@ const Solicitud = () => {
     };
     filtrarElemento();
   }, [busqueda, oranizadorxd]);
-  console.log(oranizadorxd);
+
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
