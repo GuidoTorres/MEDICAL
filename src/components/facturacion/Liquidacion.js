@@ -9,23 +9,29 @@ import MEmpresa from "./MEmpresa";
 import MLiquidacion from "./MLiquidacion";
 
 const Liquidacion = () => {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState(null);
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [datos, setDatos] = useState({});
   const [liquidacion, setLiquidacion] = useState([]);
 
   const getLiquidacion = () => {
+    // console.log("a");
     fetchGETPOSTPUTDELETE("settlement")
       .then((info) => info.json())
-      .then((info) => setLiquidacion(info.data));
+      .then((info) => {
+        // console.log(info);
+        setLiquidacion(info.data);
+        setBusqueda("");
+      });
   };
 
+  // console.log(liquidacion);
   useEffect(() => {
     getLiquidacion();
   }, []);
 
-  console.log(liquidacion);
+  // console.log(liquidacion);
 
   const columnas = [
     {
@@ -122,22 +128,36 @@ const Liquidacion = () => {
 
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = liquidacion.filter((data) => {
-        return (
-          data.id.toString().includes(busqueda) ||
-          data.company.corporation.business_name
-            .toString()
-            .includes(busqueda) ||
-          data.company.corporation.ruc.toString().includes(busqueda) ||
-          data.date_issue.toString().includes(busqueda) ||
-          data.subtotal.toString().includes(busqueda) ||
-          data.igv.toString().includes(busqueda) ||
-          data.amount.toString().includes(busqueda)
-        );
-      });
-      setListRegistro(search);
+      if (busqueda !== "" && busqueda !== null) {
+        const search = liquidacion.filter((data) => {
+          return (
+            data.id.toString().includes(busqueda) ||
+            (data.company
+              ? data.company.corporation.business_name
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "") ||
+            (data.company
+              ? data.company.corporation.ruc.toString().includes(busqueda)
+              : "") ||
+            (data.date_issue
+              ? data.date_issue.toString().includes(busqueda)
+              : "") ||
+            (data.subtotal
+              ? data.subtotal.toString().includes(busqueda)
+              : "") ||
+            (data.igv ? data.igv.toString().includes(busqueda) : "") ||
+            (data.amount ? data.amount.toString().includes(busqueda) : "")
+          );
+        });
+        setListRegistro(search);
+      } else {
+        setListRegistro(liquidacion);
+      }
     };
     filtrarElemento();
+    return () => setListRegistro([]);
   }, [busqueda]);
   //
   const handleDetalles = (e) => {
@@ -168,7 +188,7 @@ const Liquidacion = () => {
 
           <DataTable
             columns={columnas}
-            data={liquidacion}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
@@ -182,6 +202,8 @@ const Liquidacion = () => {
           openModal={openModal}
           setOpenModal={setOpenModal}
           datos={datos}
+          getLiquidacion={getLiquidacion}
+          setBusqueda={setBusqueda}
         />
       )}
     </div>

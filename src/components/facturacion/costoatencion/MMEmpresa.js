@@ -10,7 +10,16 @@ const MMEmpresa = ({
   data,
   dataEmpresa,
   setOpenModalEmpresa,
+  setBusqueda,
+  getEmpresas,
 }) => {
+  useEffect(() => {
+    setBusqueda(null);
+    return () => {
+      setBusqueda(null);
+    };
+  }, []);
+
   //   const [openModalCrear, setOpenModalCrear] = useState(false);
   const [subtotal, setSubTotal] = useState(0);
   const [igv, setIgv] = useState(0);
@@ -39,7 +48,10 @@ const MMEmpresa = ({
   const postLiquidacion = (body) => {
     fetchGETPOSTPUTDELETEJSON("settlement", body, "POST")
       .then((info) => info.json())
-      .then((info) => console.log(info));
+      .then((info) => {
+        getEmpresas();
+      });
+    // .then((info) => console.log(info));
   };
 
   const handleLiquidarEmpresa = () => {
@@ -88,7 +100,7 @@ const MMEmpresa = ({
       <div className="container">
         <div className="row">
           <div className="col-12 fmparticular">
-            <div>
+            <div className="box-grid">
               <div className="fmparticular__tipo group-input__label">
                 <label>Razón social</label>
                 <input type="text" readOnly defaultValue={dataEmpresa.nombre} />

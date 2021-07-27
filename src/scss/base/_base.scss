@@ -361,21 +361,25 @@ input[type="checkbox"] {
 
 // TODO MODAL FACTURACION EMPRESA
 .mfacturacion__empresa {
-  max-height: 45%;
-  max-width: 45%;
+  height: auto;
+  max-height: 55%;
+  max-width: 650px;
 }
 
 // TODO MODAL FACTURACION PARTICULAR
 .mfacturacion__particular {
+  height: auto;
   max-height: 83%;
   max-width: 80%;
+  max-width: 1000px;
 }
 
 //MODAL FACTURACION LIQUIDACION
 .mfacturacion__liquidacion {
   height: auto;
   max-height: 80%;
-  max-width: 80%;
+  width: 80%;
+  max-width: 1000px;
 }
 
 // TODO MODAL LABORATORIO SUBIRLABORATORIO
@@ -570,6 +574,14 @@ input[type="checkbox"] {
     width: 100%;
   }
 }
+.box-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+
+  @media screen and (min-width: 800px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
 
 @media (max-width: 1024px) {
   .mfacturacion__empresa {
@@ -584,6 +596,7 @@ input[type="checkbox"] {
   }
   .mfacturacion__empresa {
     max-width: 85%;
+    max-height: 75%;
   }
 }
 
