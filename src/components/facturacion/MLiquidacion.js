@@ -35,10 +35,18 @@ const MLiquidacion = ({
   };
 
   const openPdf = () => {
-    // window.open("./assets-liquidacion/liquidacion5110.pdf", "_blank");
+    window.open(
+      "https://diver-recicla.com/medicalRoma/public/liquidacion5110.pdf"
+    );
   };
-  const dowloandPdf = () => {};
-  const dowloandExcel = () => {};
+  const dowloandPdf = () => {
+    console.log("descargando...");
+  };
+  const dowloandExcel = () => {
+    window.open(
+      "https://diver-recicla.com/medicalRoma/public/Liquidacion5110.xlsx"
+    );
+  };
 
   return (
     <Modal
