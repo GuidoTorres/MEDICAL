@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
+import Swal from "sweetalert2";
 import DataTable from "react-data-table-component";
 
 import {
@@ -123,7 +124,11 @@ const MEmpresa = ({
     setBusquedaMEmpresa(([e.target.name] = e.target.value));
   };
   const handleLiquidar = () => {
-    setOpenModalParticular(true);
+    if (data.length > 0) {
+      setOpenModalParticular(true);
+    } else {
+      console.log("Seleccione pacientes");
+    }
   };
   const closeModal = () => {
     setOpenModalEmpresa(false);
