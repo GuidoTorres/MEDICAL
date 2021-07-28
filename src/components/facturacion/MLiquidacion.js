@@ -41,6 +41,9 @@ const MLiquidacion = ({
   };
   const dowloandPdf = () => {
     console.log("descargando...");
+    window.open(
+      "https://diver-recicla.com/medicalRoma/public/liquidacion5110.pdf"
+    );
   };
   const dowloandExcel = () => {
     window.open(
