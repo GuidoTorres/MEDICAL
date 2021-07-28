@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 
 import DataTable from "react-data-table-component";
-import { fempresa2 } from "../../data/FEmpresa";
 import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 
 import { paginacionOpciones } from "../../helpers/tablaOpciones";
-import MEmpresa from "./MEmpresa";
+import MCargarInformacion from "./MCargarInformacion";
 import MLiquidacion from "./MLiquidacion";
 
 const Liquidacion = () => {
   const [busqueda, setBusqueda] = useState(null);
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [openModalCargarInfo, setOpenModalCargarInfo] = useState(false);
   const [datos, setDatos] = useState({});
   const [liquidacion, setLiquidacion] = useState([]);
 
@@ -26,8 +26,9 @@ const Liquidacion = () => {
       });
   };
 
-  const handleSubirArchivo = (e) => {
-    console.log(e);
+  const handleCargarInfo = (e) => {
+    setDatos(e);
+    setOpenModalCargarInfo(true);
   };
 
   // console.log(liquidacion);
@@ -121,7 +122,7 @@ const Liquidacion = () => {
       button: true,
       cell: (e) => (
         <button
-          onClick={() => handleSubirArchivo(e)}
+          onClick={() => handleCargarInfo(e)}
           className="table__tablebutton"
         >
           <i className="fas fa-folder-open"></i>
@@ -208,6 +209,13 @@ const Liquidacion = () => {
           datos={datos}
           getLiquidacion={getLiquidacion}
           setBusqueda={setBusqueda}
+        />
+      )}
+      {openModalCargarInfo && (
+        <MCargarInformacion
+          openModalCargarInfo={openModalCargarInfo}
+          setOpenModalCargarInfo={setOpenModalCargarInfo}
+          datos={datos}
         />
       )}
     </div>
