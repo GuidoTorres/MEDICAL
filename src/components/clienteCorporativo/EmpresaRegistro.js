@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import Swal from 'sweetalert2';
 import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
@@ -18,24 +18,25 @@ const EmpresaRegistro = () => {
   };
 
   useEffect(() => {
-    const importarExcel = () => {
-      const formData = new FormData();
-      formData.set('file', loadExcel);
-      fetchGETPOSTPUTDELETE('company_employees/import', formData, 'POST').then(
-        (data) => {
-          data.json();
-        }
-      );
-    };
-    importarExcel();
     getEmployees();
-  }, [loadExcel]);
+  }, []);
+
+  const importarExcel = () => {
+    const formData = new FormData();
+    formData.set('file', loadExcel);
+    fetchGETPOSTPUTDELETE('company_employees/import', formData, 'POST').then(
+      (data) => {
+        data.json();
+      }
+    );
+    getEmployees();
+  };
 
   const subidaExcel = (e) => {
     const file = e.target.files[0];
     setLoadExcel(file);
   };
-  console.log(employees);
+
   const columnas = [
     {
       name: 'Tipo de documento',
@@ -108,7 +109,11 @@ const EmpresaRegistro = () => {
     {
       name: 'Sexo',
       selector: (row) =>
-        row.person && row.person.gender_id === 1 ? 'Masculino' : 'Femenino',
+        row.person && row.person.gender_id === 1
+          ? 'Masculino'
+          : row.person.gender_id === 2
+          ? 'Femenino'
+          : '',
       sortable: true,
       style: {
         color: '#8f9196',
@@ -120,6 +125,7 @@ const EmpresaRegistro = () => {
       selector: (row) =>
         row.person && row.person.birthday ? row.person.birthday : '',
       sortable: true,
+      grow: 2,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -135,15 +141,6 @@ const EmpresaRegistro = () => {
         borderBotton: 'none',
       },
     },
-    // {
-    //   name: 'Editar',
-    //   button: true,
-    //   cell: (e) => (
-    //     <button onClick={() => handleEditar(e)} className="table__tablebutton">
-    //       <i className="fas fa-pencil-alt"></i>
-    //     </button>
-    //   ),
-    // },
     {
       name: 'Eliminar',
       button: true,
@@ -158,14 +155,10 @@ const EmpresaRegistro = () => {
     },
   ];
 
-  // const handleEditar = (e) => {
-  //   setIsOpen(true);
-  // };
   const handleEliminar = (e) => {
-    console.log(e);
     Swal.fire({
       title: '¿Desea eliminar?',
-      text: `${e.dni}`,
+      text: `${e.person.name}`,
       icon: 'info',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -218,12 +211,17 @@ const EmpresaRegistro = () => {
               />
             </div>
             <div className="">
-              <input type="file" onClick={subidaExcel} />
-            </div>
-            <div>
-              <label>
-                Cargar <i className="fas fa-upload"></i>
-              </label>
+              {/* <label>
+                <i
+                  className="fas fa-upload"
+                  // onClick={() => importarExcel()}
+                ></i>
+              </label> */}
+              <input
+                type="file"
+                onClick={(e) => subidaExcel(e)}
+                onChange={importarExcel}
+              />
             </div>
           </div>
           <DataTable

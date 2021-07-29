@@ -7,9 +7,9 @@ const EmpresaResultados = () => {
   const [busqueda, setBusqueda] = useState('');
   const [clinica, setClinica] = useState([]);
   const [data, setData] = useState([]);
-  const [envioEmail, setEnvioEmail] = useState([]);
-
-  const { atenciones } = setEnvioEmail;
+  const [envioEmail, setEnvioEmail] = useState({});
+  const [obtenidoData, setObtenidoData] = useState([]);
+  // const { atenciones } = setEnvioEmail;
 
   const getResultado = () => {
     fetchGETPOSTPUTDELETEJSON('resultados/compania', {}, 'POST')
@@ -22,24 +22,26 @@ const EmpresaResultados = () => {
     getResultado();
   }, []);
 
-  useEffect(() => {
-    // const datosNumero = () => {
-    // data.map((datos) => {
-    // return setEnvioEmail([...envioEmail, datos.nro_atencion]);
-    // fetchGETPOSTPUTDELETEJSON(
-    //   'enviar-resultados/corporativo',
-    //   [datos.nro_atencion],
-    //   'POST'
-    // ).then((data) => data.json());
-    // console.log(datos);
-    // });
-    //   // datosNumero();
-  }, [data, envioEmail]);
-
-  // console.log(envioEmail);
+  // console.log(clinica);
+  // useEffect(() => {
+  //   const activeList = () => {
+  //     data.map((datos, index) => {
+  //       let dates = datos.nro_atencion;
+  //       return setEnvioEmail({ ...envioEmail, [index]: dates });
+  //       // console.log(datos);
+  //       // console.log(index);
+  //     });
+  //   };
+  //   activeList();
+  // }, [data]);
 
   // console.log(data);
+
   const enviarEmail = () => {
+    // data.map((datos, index) => {
+    //   let dates = datos.nro_atencion;
+    //   return setEnvioEmail({ ...envioEmail, [datos.nro_atencion]: dates });
+    // });
     // data.map((datos) => {
     // return setEnvioEmail([...envioEmail, datos.nro_atencion]);
     // fetchGETPOSTPUTDELETEJSON(
@@ -48,9 +50,18 @@ const EmpresaResultados = () => {
     //   'POST'
     // ).then((data) => data.json());
     // });
-
-    console.log(envioEmail);
   };
+
+  // useEffect(() => {
+  //   const obtenerNA = () => {
+  //     data.map((datos) => {
+  //       setObtenidoData([...obtenidoData, datos]);
+  //     });
+  //   };
+  //   obtenerNA();
+  // }, [data]);
+
+  // console.log(envioEmail);
 
   const columnas = [
     {
