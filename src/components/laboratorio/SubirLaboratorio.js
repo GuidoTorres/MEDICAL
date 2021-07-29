@@ -159,7 +159,7 @@ const SubirLaboratorio = () => {
 
   const handleModal = (tipoPrueba, e) => {
     setDataSelected(e);
-
+    console.log(e);
     if (tipoPrueba.prueba === 5) {
       setOpenModal(true);
     } else if (tipoPrueba.prueba === 6) {
@@ -170,9 +170,11 @@ const SubirLaboratorio = () => {
       setOpenModal4(true);
     } else if (tipoPrueba.prueba === 9) {
       setOpenModal5(true);
-      console.log(openModal5);
+    } else {
+      console.log("no funciona");
     }
   };
+  console.log(openModal4);
 
   const filtrarTabla = () => {
     const result = Object.values(attention).filter(
@@ -190,7 +192,6 @@ const SubirLaboratorio = () => {
     setBusqueda(([e.target.name] = e.target.value));
   };
 
-  console.log(servicios);
   return (
     <div className="container">
       <div className="row">
@@ -290,7 +291,7 @@ const SubirLaboratorio = () => {
           />
         )}
         {openModal3 && (
-          <MSubirRapida
+          <MAnticuerpos
             openModal={openModal3}
             setOpenModal={setOpenModal3}
             dataSelected={dataSelected}
@@ -299,7 +300,7 @@ const SubirLaboratorio = () => {
           />
         )}
         {openModal4 && (
-          <MSubirEclea
+          <MSubirRapida
             openModal={openModal4}
             setOpenModal={setOpenModal4}
             dataSelected={dataSelected}
@@ -307,15 +308,15 @@ const SubirLaboratorio = () => {
             getAtencion={getAtencion}
           />
         )}
-        {openModal5 && (
-          <MAnticuerpos
-            openModal={openModal5}
-            setOpenModal={setOpenModal5}
+        {/* {openModal5 && (
+          <MSubirEclea
+            openModal={openModal4}
+            setOpenModal={setOpenModal4}
             dataSelected={dataSelected}
             tipoPrueba={tipoPrueba}
             getAtencion={getAtencion}
           />
-        )}
+        )} */}
       </div>
     </div>
   );

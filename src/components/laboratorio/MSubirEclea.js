@@ -17,47 +17,61 @@ const MSubirEclea = ({
 }) => {
   const [result, setResult] = useState({
     id: dataSelected.id,
+    result_igg: "",
+    result_igm: "",
   });
   const closeModal = () => {
     setOpenModal(false);
   };
-  console.log(result);
 
   const postResults = () => {
+    if (result.result_igg === "" || null) {
+      document.getElementById("igg").style = "border:1px solid red !important";
+    }
+    if (result.result_igm === "" || null) {
+      document.getElementById("igm").style = "border:1px solid red !important";
+    }
+
     const formData = new FormData();
 
     formData.set("id", dataSelected.id || "");
     formData.set("result_igm", result.result_igm || "");
     formData.set("result_igg", result.result_igg || "");
 
-    fetchGETPOSTPUTDELETE(`result`, formData, "POST").then((data) => {
-      console.log(data);
-      if (data.status === 200) {
-        closeModal();
-        Swal.fire({
-          icon: "success",
-          title: "Éxito",
-          text: "Se cargo el resultado correctamente.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getAtencion();
-          }
-        });
-      } else {
-        closeModal();
-        Swal.fire({
-          icon: "error",
-          title: "!Ups¡",
-          text: "Algo salió mal.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Cerrar",
-        });
-      }
-    });
+    if (
+      result.result_igg !== "" ||
+      (null && result.result_igm !== "") ||
+      null
+    ) {
+      fetchGETPOSTPUTDELETE(`result`, formData, "POST").then((data) => {
+        console.log(data);
+        if (data.status === 200) {
+          closeModal();
+          Swal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Se cargo el resultado correctamente.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Aceptar",
+          }).then((resp) => {
+            if (resp.isConfirmed) {
+              getAtencion();
+            }
+          });
+        } else {
+          closeModal();
+          Swal.fire({
+            icon: "error",
+            title: "!Ups¡",
+            text: "Algo salió mal.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cerrar",
+          });
+        }
+      });
+    }
   };
 
   console.log(dataSelected);
@@ -72,7 +86,7 @@ const MSubirEclea = ({
       preventScroll={true}
       ariaHideApp={false}
     >
-      <h3 className="title__modal mb-3">Cargar resultadooooo</h3>
+      <h3 className="title__modal mb-3">Cargar resultado</h3>
       <div className="container">
         <div className="row">
           <div className="col-12 mlaboratorio_cargar">
@@ -118,6 +132,7 @@ const MSubirEclea = ({
                   <input
                     type="text"
                     name="resultIgm"
+                    id="igm"
                     onChange={(e) =>
                       setResult({ ...result, result_igm: e.target.value })
                     }
@@ -128,6 +143,7 @@ const MSubirEclea = ({
                   <input
                     type="text"
                     name="resultIgg"
+                    id="igg"
                     onChange={(e) =>
                       setResult({ ...result, result_igg: e.target.value })
                     }

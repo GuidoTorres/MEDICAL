@@ -15,9 +15,7 @@ const MEmpresa = ({
   getParticularDiscount,
   getServicio,
 }) => {
-  const [discount, setDiscount] = useState({
-    services: [],
-  });
+  const [discount, setDiscount] = useState([]);
   const [filterServices, setFilterServices] = useState({});
   const [total, setTotal] = useState();
   const closeModal = () => {
@@ -27,40 +25,39 @@ const MEmpresa = ({
   };
 
   const crearCompanyDiscount = () => {
-    const data = {
-      company_id: dataSelected.id,
-      services: Object.values(discount),
-    };
-
-    const descuento =
-      discount &&
-      [discount].map((data, i) => ({
-        service_id: data.service_id,
-        state: data.state,
-        percent: data.percent,
-        amount: data.amount,
-      }));
-
-    console.log(descuento);
-
-    // const dataEstatica = {
+    // const data = {
     //   company_id: dataSelected.id,
-    //   credit: 12,
-    //   before: 12,
-    //   services: [
-    //     {
-    //       amount: "600",
-    //       state: 1,
-    //       percent: 50,
-    //       service_id: 5,
-    //     },
-    //   ],
+    //   services: Object.values(discount),
     // };
 
-    // console.log(data);
-    // fetchGETPOSTPUTDELETEJSON("company_discount", dataEstatica, "POST").then(
-    //   (res) => console.log(res)
-    // );
+    // const descuento =
+    //   discount &&
+    //   [discount].map((data, i) => ({
+    //     service_id: data.service_id,
+    //     state: data.state,
+    //     percent: data.percent,
+    //     amount: data.amount,
+    //   }));
+
+    // console.log(descuento);
+
+    const dataEstatica = {
+      company_id: dataSelected.id,
+      credit: 12,
+      before: 12,
+      services: [
+        {
+          amount: "600",
+          state: 1,
+          percent: 50,
+          service_id: 5,
+        },
+      ],
+    };
+
+    fetchGETPOSTPUTDELETEJSON("company_discount", dataEstatica, "POST").then(
+      (res) => console.log(res)
+    );
   };
 
   const filtrarServicios = () => {
@@ -68,36 +65,45 @@ const MEmpresa = ({
       dataSelected &&
       dataSelected.services &&
       dataSelected.services.filter((data) => data);
+
     setFilterServices(data);
+    console.log(data);
   };
 
-  const handleChange = (e, data, index) => {
+  const handleChange = (e, data) => {
     if (e.target.checked) {
-      setDiscount((discount) => ({
+      setDiscount((discount) => [
         ...discount,
-        services: [
-          ...discount.services,
-          {
-            service_id: data.id,
-            state: e.target.checked ? 1 : 0,
-            percent: discount.percent || data.last_discount.percent,
-            amount: data.last_discount.amount,
-          },
-        ],
-      }));
-      console.log(discount);
-    } else if (e.target.checked === false) {
-      setDiscount((data) => data.services.filter((data) => console.log(data)));
-    }
 
-    // console.log(i);
+        {
+          service_id: data.id,
+          state: 1,
+          percent: data.last_discount.percent,
+          amount: data.last_discount.amount,
+        },
+      ]);
+      document.getElementById(`percent-${data.id}`).disabled = false
+    } else {
+      if (discount.length > 1) {
+        let position = discount.findIndex(
+          (arreglo) => arreglo.service_id == data.id
+        );
+        const arreglos = [...discount];
+
+        arreglos.splice(position, 1);
+        setDiscount([...arreglos]);
+      } else {
+        setDiscount([]);
+      }
+      // console.log(position);
+    }
   };
+  console.log(discount);
 
   useEffect(() => {
     filtrarServicios();
   }, [dataSelected]);
 
-  console.log(discount);
   return (
     <Modal
       isOpen={openModal}
@@ -255,31 +261,18 @@ const MEmpresa = ({
                       <td>
                         <input
                           type="text"
-                          class="form-control"
+                          className="form-input"
+                          id={`percent-${data.id}`}
                           placeholder=""
                           aria-label=""
                           name="percent"
+                          disabled
                           defaultValue={
-                            data.last_discount && data.last_discount.percent
+                            data.last_discount 
                               ? data.last_discount.percent
                               : 0
                           }
-                          onChange={(e) =>
-                            setDiscount((discount) =>
-                              [data].map((info, i) =>
-                                i === index
-                                  ? {
-                                      services: [
-                                        {
-                                          percent: e.target.value,
-                                        },
-                                        ...discount.services,
-                                      ],
-                                    }
-                                  : [{ ...discount }]
-                              )
-                            )
-                          }
+                          onChange={(e) => handleChange(e)}
                           aria-describedby="basic-addon1"
                         />
                       </td>
@@ -287,10 +280,11 @@ const MEmpresa = ({
                         <div class="input-group mb-3">
                           <input
                             type="text"
-                            class="form-control"
+                            id={`amount-${data.id}`}
                             placeholder=""
                             aria-label=""
                             name="amount"
+                            disabled
                             defaultValue={
                               data.last_discount && data.last_discount.amount
                                 ? data.last_discount.amount

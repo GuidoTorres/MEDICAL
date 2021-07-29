@@ -21,7 +21,15 @@ const MRegistroClinica = ({
     lat: 0,
     lng: 0,
   });
-  const [data, setData] = useState({});
+  const [workday, setWorkday] = useState([]);
+  const [data, setData] = useState({
+    ruc: "",
+    business_name: "",
+    name: "",
+    phone: "",
+    email: "",
+  });
+  const [error, setError] = useState(false);
   const [ruc, setRuc] = useState({});
 
   const closeModal = () => {
@@ -30,13 +38,33 @@ const MRegistroClinica = ({
     setDataSelected(null);
   };
 
-  console.log(dataSelected);
-
   const handleChange = (e) => {
     setData({
       ...data,
       [e.target.name]: e.target.value,
     });
+  };
+  const handleWorkday = (e, nro) => {
+    if (e.target.checked) {
+      setWorkday((workday) => [
+        ...workday,
+        {
+          day: nro,
+        },
+      ]);
+    } else {
+      if (workday.length > 1) {
+        let position = workday.findIndex(
+          (arreglo) => arreglo.day === workday.length
+        );
+
+        const arreglos = [...workday];
+        arreglos.splice(position, 1);
+        setWorkday([...arreglos]);
+      } else {
+        setWorkday([]);
+      }
+    }
   };
 
   const getRuc = () => {
@@ -49,23 +77,14 @@ const MRegistroClinica = ({
     if (data && data.ruc && data.ruc.length === 11) {
       getRuc();
     }
-  }, [data]);
-
-  console.log(data);
-
-  const validarCampos = () => {
-    if (data.ruc === null && "") {
-      document.getElementById("ruc").style.borderColor = "red";
-    }
-  };
+  }, [data.ruc]);
 
   const postClinics = (e) => {
-    validarCampos()
     const formData = new FormData();
 
     formData.set("ruc", data.ruc || "");
     formData.set("business_name", ruc.razonSocial || data.business_name || "");
-    formData.set("commercial_name", data.business_name || "");
+    formData.set("commercial_name", ruc.razonSocial || data.business_name || "");
     formData.set("logo", avatar && avatar.file ? avatar.file : "");
     formData.set("address", ruc.direccion || data.address || "");
     formData.set("reference", data.reference || "");
@@ -76,79 +95,79 @@ const MRegistroClinica = ({
     formData.set("contacts[0][name]", data.name || "");
     formData.set("contacts[0][phone]", data.phone || "");
     formData.set("contacts[0][email]", data.email || "");
-    formData.set("contacts[0][contact_type]", 1);
+    formData.set("contacts[0][contact_type]", 0);
 
-    if (data.workday) {
-      for (var [value] of Object.entries(data.workday)) {
-        formData.set(`work_days[${value - 1}][day_id]`, value);
-      }
-      if (data.apertura) {
-        for (var [key2, value2] of Object.entries(data.apertura)) {
-          formData.set(`work_days[${value - 1}][${key2}]`, value2);
+    if (workday) {
+      for (var [value] of Object.entries(workday)) {
+        formData.set(`work_days[${value}][day_id]`, Number(value) + 1);
+        if (data.apertura) {
+          for (var [key2, value2] of Object.entries(data.apertura)) {
+            formData.set(`work_days[${value}][${key2}]`, value2);
+          }
         }
       }
     }
 
-    // fetchGETPOSTPUTDELETE("clinics", formData, "POST").then((resp) => {
-    //   if (resp.status === 200) {
-    //     closeModal();
-    //     Swal.fire({
-    //       icon: "success",
-    //       title: "Éxito",
-    //       text: "Se ha creado la clínica correctamente.",
-    //       confirmButtonColor: "#3085d6",
-    //       cancelButtonColor: "#d33",
-    //       confirmButtonText: "Aceptar",
-    //     }).then((resp) => {
-    //       if (resp.isConfirmed) {
-    //         getClinica();
-    //       }
-    //     });
-    //   } else {
-    //     closeModal();
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: "!Ups¡",
-    //       text: "Algo salió mal.",
-    //       confirmButtonColor: "#3085d6",
-    //       cancelButtonColor: "#d33",
-    //       confirmButtonText: "Cerrar",
-    //     });
-    //   }
-    // });
+    fetchGETPOSTPUTDELETE("clinics", formData, "POST").then((resp) => {
+      if (resp.status === 200) {
+        closeModal();
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se ha creado la clínica correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getClinica();
+          }
+        });
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
+      }
+    });
   };
 
   const putClinics = (e) => {
     const formData = new FormData();
 
-    // formData.set("corporation_id", 1);
-    // formData.set(
-    //   "ruc",
-    //   dataSelected && dataSelected.corporation.ruc
-    //     ? dataSelected.corporation.ruc
-    //     : ""
-    // );
-    // formData.set(
-    //   "business_name",
-    //   data.business_name
-    //     ? data.business_name
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.business_name
-    //     ? dataSelected.corporation.business_name
-    //     : ""
-    // );
-    // formData.set(
-    //   "commercial_name",
-    //   data.business_name
-    //     ? data.business_name
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.commercial_name
-    //     ? dataSelected.corporation.commercial_name
-    //     : ""
-    // );
-    formData.set("logo", avatar ? avatar.file : dataSelected.corporation.logo);
+    formData.set("corporation_id", 1);
+    formData.set(
+      "ruc",
+      dataSelected && dataSelected.corporation.ruc
+        ? dataSelected.corporation.ruc
+        : ""
+    );
+    formData.set(
+      "business_name",
+      data.business_name
+        ? data.business_name
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.business_name
+        ? dataSelected.corporation.business_name
+        : ""
+    );
+    formData.set(
+      "commercial_name",
+      data.business_name
+        ? data.business_name
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.commercial_name
+        ? dataSelected.corporation.commercial_name
+        : ""
+    );
+    formData.set("logo", avatar ? avatar.file : null);
     formData.set(
       "address",
       data.address
@@ -160,25 +179,25 @@ const MRegistroClinica = ({
         ? dataSelected.corporation.address.address
         : ""
     );
-    // formData.set(
-    //   "reference",
-    //   data.reference
-    //     ? data.reference
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.address &&
-    //       dataSelected.corporation.address.reference
-    //     ? dataSelected.corporation.address.reference
-    //     : ""
-    // );
-    // formData.set(
-    //   "clinic_type_id",
-    //   data.clinic_type_id
-    //     ? data.clinic_type_id
-    //     : dataSelected && dataSelected.clinic_type_id
-    //     ? dataSelected.clinic_type_id
-    //     : ""
-    // );
+    formData.set(
+      "reference",
+      data.reference
+        ? data.reference
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.address &&
+          dataSelected.corporation.address.reference
+        ? dataSelected.corporation.address.reference
+        : ""
+    );
+    formData.set(
+      "clinic_type_id",
+      data.clinic_type_id
+        ? data.clinic_type_id
+        : dataSelected && dataSelected.clinic_type_id
+        ? dataSelected.clinic_type_id
+        : ""
+    );
     formData.set(
       "map_latitude",
       dataMapa
@@ -202,384 +221,145 @@ const MRegistroClinica = ({
         : ""
     );
 
-    // formData.set(
-    //   "contacts[0][name]",
-    //   data.name
-    //     ? data.name
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.contacts &&
-    //       dataSelected.corporation.contacts[0] &&
-    //       dataSelected.corporation.contacts[0].name
-    //     ? dataSelected.corporation.contacts[0].name
-    //     : ""
-    // );
-    // formData.set(
-    //   "contacts[0][phone]",
-    //   data.phone
-    //     ? data.phone
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.contacts &&
-    //       dataSelected.corporation.contacts[0] &&
-    //       dataSelected.corporation.contacts[0].phone
-    //     ? dataSelected.corporation.contacts[0].phone
-    //     : ""
-    // );
-    // formData.set(
-    //   "contacts[0][email]",
-    //   data.email
-    //     ? data.email
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.contacts &&
-    //       dataSelected.corporation.contacts[0] &&
-    //       dataSelected.corporation.contacts[0].email
-    //     ? dataSelected.corporation.contacts[0].email
-    //     : ""
-    // );
-    // formData.set("contacts[0][contact_type]", 1);
-    if (data.workday) {
-      for (var [value] of Object.entries(data.workday)) {
-        formData.set(
-          `work_days[${value - 1}][day_id]`,
-          value ||
-            (dataSelected &&
-              dataSelected.corporation &&
-              dataSelected.corporation.work_day &&
-              dataSelected.corporation.work_day[value - 1] &&
-              dataSelected.corporation.work_day[value - 1].hours &&
-              dataSelected.corporation.work_day[value - 1].hours.day_id) ||
-            ""
-        );
+    formData.set(
+      "contacts[0][name]",
+      data.name
+        ? data.name
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[0] &&
+          dataSelected.corporation.contacts[0].name
+        ? dataSelected.corporation.contacts[0].name
+        : ""
+    );
+    formData.set(
+      "contacts[0][phone]",
+      data.phone
+        ? data.phone
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[0] &&
+          dataSelected.corporation.contacts[0].phone
+        ? dataSelected.corporation.contacts[0].phone
+        : ""
+    );
+    formData.set(
+      "contacts[0][email]",
+      data.email
+        ? data.email
+        : dataSelected &&
+          dataSelected.corporation &&
+          dataSelected.corporation.contacts &&
+          dataSelected.corporation.contacts[0] &&
+          dataSelected.corporation.contacts[0].email
+        ? dataSelected.corporation.contacts[0].email
+        : ""
+    );
+    formData.set("contacts[0][contact_type]", 0);
+
+    if (workday) {
+      for (var [value] of Object.entries(workday)) {
+        formData.set(`work_days[${value}][day_id]`, Number(value) + 1);
         if (data.apertura) {
           for (var [key2, value2] of Object.entries(data.apertura)) {
-            formData.set(`work_days[${value - 1}][${key2}]`, value2);
+            formData.set(`work_days[${value}][${key2}]`, value2);
           }
         }
       }
     }
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
-
-    // formData.set(
-    //   "work_days[0][day_id]",
-    //   data && data.workday && data.workday.monday
-    //     ? data.workday.monday
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[0] &&
-    //       dataSelected.corporation.work_day[0].hours &&
-    //       dataSelected.corporation.work_day[0].hours.day_id
-    //     ? dataSelected.corporation.work_day[0].hours.day_id
-    //     : ""
-    // );
-    // formData.set(
-    //   "work_days[0][opening]",
-    //   data && data.workday && data.apertura.opening
-    //     ? data.apertura.opening
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[0] &&
-    //       dataSelected.corporation.work_day[0].hours &&
-    //       dataSelected.corporation.work_day[0].hours.opening
-    //     ? dataSelected.corporation.work_day[0].hours.opening
-    //     : ""
-    // );
-    // formData.set(
-    //   "work_days[0][closing]",
-    //   data && data.workday && data.apertura.closing
-    //     ? data.apertura.closing
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[0] &&
-    //       dataSelected.corporation.work_day[0].hours &&
-    //       dataSelected.corporation.work_day[0].hours.closing
-    //     ? dataSelected.corporation.work_day[0].hours.closing
-    //     : ""
-    // );
-
-    // formData.set(
-    //   "work_days[1][day_id]",
-    //   data && data.workday && data.workday.tuesday
-    //     ? data.workday.tuesday
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[1] &&
-    //       dataSelected.corporation.work_day[1].hours &&
-    //       dataSelected.corporation.work_day[1].hours.day_id
-    //     ? dataSelected.corporation.work_day[1].hours.day_id
-    //     : ""
-    // );
-    // formData.set(
-    //   "work_days[1][opening]",
-    //   data && data.workday && data.apertura.opening
-    //     ? data.apertura.opening
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[1] &&
-    //       dataSelected.corporation.work_day[1].hours &&
-    //       dataSelected.corporation.work_day[1].hours.opening
-    //     ? dataSelected.corporation.work_day[1].hours.opening
-    //     : ""
-    // );
-    // formData.set(
-    //   "work_days[1][closing]",
-    //   data && data.workday && data.apertura.closing
-    //     ? data.apertura.closing
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[2] &&
-    //       dataSelected.corporation.work_day[2].hours &&
-    //       dataSelected.corporation.work_day[2].hours.closing
-    //     ? dataSelected.corporation.work_day[2].hours.closing
-    //     : ""
-    // );
-
-    // formData.set(
-    //   "work_days[2][day_id]",
-    //   data && data.workday && data.workday.wednesday
-    //     ? data.workday.wednesday
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[2] &&
-    //       dataSelected.corporation.work_day[2].hours &&
-    //       dataSelected.corporation.work_day[2].hours.day_id
-    //     ? dataSelected.corporation.work_day[2].hours.day_id
-    //     : ""
-    // );
-    // formData.set(
-    //   "work_days[2][opening]",
-    //   data && data.workday && data.apertura.opening
-    //     ? data.apertura.opening
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[2] &&
-    //       dataSelected.corporation.work_day[2].hours &&
-    //       dataSelected.corporation.work_day[2].hours.opening
-    //     ? dataSelected.corporation.work_day[2].hours.opening
-    //     : ""
-    // );
-    // formData.set(
-    //   "work_days[2][closing]",
-    //   data && data.workday && data.apertura.closing
-    //     ? data.apertura.closing
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[2] &&
-    //       dataSelected.corporation.work_day[2].hours &&
-    //       dataSelected.corporation.work_day[2].hours.closing
-    //     ? dataSelected.corporation.work_day[2].hours.closing
-    //     : ""
-    // );
-
-    // formData.set(
-    //   "work_days[3][day_id]",
-    //   data && data.workday && data.workday.thursday
-    //     ? data.workday.thursday
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[3] &&
-    //       dataSelected.corporation.work_day[3].hours &&
-    //       dataSelected.corporation.work_day[3].hours.day_id
-    //     ? dataSelected.corporation.work_day[3].hours.day_id
-    //     : ""
-    // );
-    // formData.set(
-    //   "work_days[3][opening]",
-    //   data && data.workday && data.apertura.opening
-    //     ? data.apertura.opening
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[3] &&
-    //       dataSelected.corporation.work_day[3].hours &&
-    //       dataSelected.corporation.work_day[3].hours.opening
-    //     ? dataSelected.corporation.work_day[3].hours.opening
-    //     : ""
-    // );
-    // formData.set(
-    //   "work_days[3][closing]",
-    //   data && data.workday && data.apertura.closing
-    //     ? data.apertura.closing
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[3] &&
-    //       dataSelected.corporation.work_day[3].hours &&
-    //       dataSelected.corporation.work_day[3].hours.closing
-    //     ? dataSelected.corporation.work_day[3].hours.closing
-    //     : ""
-    // );
-
-    // formData.set(
-    //   "work_days[4][day_id]",
-    //   data && data.workday && data.workday.friday
-    //     ? data.workday.friday
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[4] &&
-    //       dataSelected.corporation.work_day[4].hours &&
-    //       dataSelected.corporation.work_day[4].hours.day_id
-    //     ? dataSelected.corporation.work_day[4].hours.day_id
-    //     : ""
-    // );
-    // formData.set(
-    //   "work_days[4][opening]",
-    //   data && data.workday && data.apertura.opening
-    //     ? data.apertura.opening
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[4] &&
-    //       dataSelected.corporation.work_day[4].hours &&
-    //       dataSelected.corporation.work_day[4].hours.opening
-    //     ? dataSelected.corporation.work_day[4].hours.opening
-    //     : ""
-    // );
-    // formData.set(
-    //   "work_days[4][closing]",
-    //   data && data.workday && data.apertura.closing
-    //     ? data.apertura.closing
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[4] &&
-    //       dataSelected.corporation.work_day[4].hours &&
-    //       dataSelected.corporation.work_day[4].hours.closing
-    //     ? dataSelected.corporation.work_day[4].hours.closing
-    //     : ""
-    // );
-
-    // formData.set(
-    //   "work_days[5][day_id]",
-    //   data && data.workday && data.workday.saturday
-    //     ? data.workday.saturday
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[5] &&
-    //       dataSelected.corporation.work_day[5].hours &&
-    //       dataSelected.corporation.work_day[5].hours.day_id
-    //     ? dataSelected.corporation.work_day[5].hours.day_id
-    //     : ""
-    // );
-    // formData.set(
-    //   "work_days[5][opening]",
-    //   data && data.workday && data.apertura.opening
-    //     ? data.apertura.opening
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[5] &&
-    //       dataSelected.corporation.work_day[5].hours &&
-    //       dataSelected.corporation.work_day[5].hours.opening
-    //     ? dataSelected.corporation.work_day[5].hours.opening
-    //     : ""
-    // );
-    // formData.set(
-    //   "work_days[5][closing]",
-    //   data && data.workday && data.apertura.closing
-    //     ? data.apertura.closing
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[5] &&
-    //       dataSelected.corporation.work_day[5].hours &&
-    //       dataSelected.corporation.work_day[5].hours.closing
-    //     ? dataSelected.corporation.work_day[5].hours.closing
-    //     : ""
-    // );
-
-    // formData.set(
-    //   "work_days[6][day_id]",
-    //   data && data.workday && data.workday.sunday
-    //     ? data.workday.sunday
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[6] &&
-    //       dataSelected.corporation.work_day[6].hours &&
-    //       dataSelected.corporation.work_day[6].hours.day_id
-    //     ? dataSelected.corporation.work_day[6].hours.day_id
-    //     : ""
-    // );
-    // formData.set(
-    //   "work_days[6][opening]",
-    //   data && data.workday && data.apertura.opening
-    //     ? data.apertura.opening
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[6] &&
-    //       dataSelected.corporation.work_day[6].hours &&
-    //       dataSelected.corporation.work_day[6].hours.opening
-    //     ? dataSelected.corporation.work_day[6].hours.opening
-    //     : ""
-    // );
-    // formData.set(
-    //   "work_days[6][closing]",
-    //   data && data.workday && data.apertura.closing
-    //     ? data.apertura.closing
-    //     : dataSelected &&
-    //       dataSelected.corporation &&
-    //       dataSelected.corporation.work_day &&
-    //       dataSelected.corporation.work_day[6] &&
-    //       dataSelected.corporation.work_day[6].hours &&
-    //       dataSelected.corporation.work_day[6].hours.closing
-    //     ? dataSelected.corporation.work_day[6].hours.closing
-    //     : ""
-    // );
-
-    // fetchGETPOSTPUTDELETE(
-    //   `clinics/update/${dataSelected.id}`,
-    //   formData,
-    //   "POST"
-    // ).then((resp) => {
-    //   // console.log(resp);
-    //   if (resp.status === 200) {
-    //     closeModal();
-    //     Swal.fire({
-    //       icon: "success",
-    //       title: "Éxito",
-    //       text: "Se actualizo la clínica correctamente.",
-    //       confirmButtonColor: "#3085d6",
-    //       cancelButtonColor: "#d33",
-    //       confirmButtonText: "Aceptar",
-    //     }).then((resp) => {
-    //       if (resp.isConfirmed) {
-    //         getClinica();
-    //       }
-    //     });
-    //   } else {
-    //     closeModal();
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: "!Ups¡",
-    //       text: "Algo salió mal.",
-    //       confirmButtonColor: "#3085d6",
-    //       cancelButtonColor: "#d33",
-    //       confirmButtonText: "Cerrar",
-    //     });
-    //   }
-    // });
+    fetchGETPOSTPUTDELETE(
+      `clinics/update/${dataSelected.id}`,
+      formData,
+      "POST"
+    ).then((resp) => {
+      // console.log(resp);
+      if (resp.status === 200) {
+        closeModal();
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se actualizo la clínica correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getClinica();
+          }
+        });
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
+      }
+    });
   };
 
   const submit = (e) => {
     e.preventDefault();
-    editar ? putClinics() : postClinics();
+
+    if (data) {
+      if (data.ruc.trim() === "" || null) {
+        setError(true);
+
+        document.getElementById("ruc").style =
+          "border:1px solid red !important";
+      }
+
+      if (data.business_name.trim() === "" || null) {
+        setError(true);
+
+        document.getElementById("business_name").style =
+          "border:1px solid red !important";
+      }
+
+      if (data.name.trim() === "" || null) {
+        setError(true);
+
+        document.getElementById("name").style =
+          "border:1px solid red !important";
+      }
+
+      if (data.phone.trim() === "" || null) {
+        setError(true);
+
+        document.getElementById("phone").style =
+          "border:1px solid red !important";
+      }
+
+      if (data.email.trim() === "" || null) {
+        setError(true);
+
+        document.getElementById("email").style =
+          "border:1px solid red !important";
+      }
+    }
+    if (
+      (data.ruc !== "" || null,
+      data.business_name !== "" || null,
+      data.name !== "" || null,
+      data.phone !== "" || null,
+      data.email !== "" || null)
+    ) {
+      postClinics();
+    }
+
+    if (editar) {
+      document.getElementById("ruc").style = "border:none";
+      document.getElementById("business_name").style = "border:none";
+      document.getElementById("name").style = "border:none";
+      document.getElementById("phone").style = "border:none";
+      document.getElementById("email").style = "border:none";
+      putClinics();
+    }
   };
 
   return (
@@ -596,15 +376,16 @@ const MRegistroClinica = ({
       >
         <h3 className="title__modal">{"Registrar Clínica"}</h3>
         <div className="container">
-          <form className="row mt-3" onSubmit={(e) => submit(e)}>
+          <form className="row mt-3 " onSubmit={(e) => submit(e)}>
             <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6  mregistro__cliente mb-3">
               <div className="mregistro__clinica">
                 <div>
-                  <label>RUC:</label>
+                  <label for="validationCustom01">RUC:</label>
                   <input
                     type="number"
                     name="ruc"
                     id="ruc"
+                    style={{ border: "1px solid red !important" }}
                     disabled={editar ? true : false}
                     defaultValue={
                       dataSelected && dataSelected.corporation.ruc
@@ -613,6 +394,7 @@ const MRegistroClinica = ({
                     }
                     onChange={(e) => handleChange(e)}
                   />
+                  {/* {error ? <p style={{color:'red'}}>Campo obligatorio</p> : null} */}
                 </div>
                 <div>
                   <label>Razón social:</label>
@@ -724,7 +506,7 @@ const MRegistroClinica = ({
                       type="checkbox"
                       className="form-check-input"
                       name="clinic_type_id"
-                      disabled={data.clinic_type_id === 2 ? true : false}
+                      // disabled={data.clinic_type_id === 2 ? true : false}
                       defaultChecked={
                         dataSelected && dataSelected.clinic_type_id === 1
                           ? true
@@ -743,7 +525,7 @@ const MRegistroClinica = ({
                       type="checkbox"
                       className="form-check-input"
                       name="clinic_type_id"
-                      disabled={data.clinic_type_id === 1 ? true : false}
+                      // disabled={data.clinic_type_id === 1 ? true : false}
                       defaultChecked={
                         dataSelected && dataSelected.clinic_type_id === 2
                           ? true
@@ -821,15 +603,7 @@ const MRegistroClinica = ({
                           ? true
                           : false
                       }
-                      onChange={(e) =>
-                        setData({
-                          ...data,
-                          workday: {
-                            ...data.workday,
-                            monday: e.target.checked === true ? 1 : 0,
-                          },
-                        })
-                      }
+                      onChange={(e) => handleWorkday(e, 0)}
                     />
                     <label>L</label>
                   </div>
@@ -846,15 +620,7 @@ const MRegistroClinica = ({
                           ? true
                           : false
                       }
-                      onChange={(e) =>
-                        setData({
-                          ...data,
-                          workday: {
-                            ...data.workday,
-                            tuesday: e.target.checked === true ? 2 : 0,
-                          },
-                        })
-                      }
+                      onChange={(e) => handleWorkday(e, 1)}
                     />
                     <label>M</label>
                   </div>
@@ -870,15 +636,7 @@ const MRegistroClinica = ({
                           ? true
                           : false
                       }
-                      onChange={(e) =>
-                        setData({
-                          ...data,
-                          workday: {
-                            ...data.workday,
-                            wednesday: e.target.checked === true ? 3 : 0,
-                          },
-                        })
-                      }
+                      onChange={(e) => handleWorkday(e, 2)}
                     />
                     <label>M</label>
                   </div>
@@ -895,15 +653,7 @@ const MRegistroClinica = ({
                           ? true
                           : false
                       }
-                      onChange={(e) =>
-                        setData({
-                          ...data,
-                          workday: {
-                            ...data.workday,
-                            thursday: e.target.checked === true ? 4 : 0,
-                          },
-                        })
-                      }
+                      onChange={(e) => handleWorkday(e, 3)}
                     />
                     <label>J</label>
                   </div>
@@ -920,15 +670,7 @@ const MRegistroClinica = ({
                           ? true
                           : false
                       }
-                      onChange={(e) =>
-                        setData({
-                          ...data,
-                          workday: {
-                            ...data.workday,
-                            friday: e.target.checked === true ? 5 : 0,
-                          },
-                        })
-                      }
+                      onChange={(e) => handleWorkday(e, 4)}
                     />
                     <label>V</label>
                   </div>
@@ -945,15 +687,7 @@ const MRegistroClinica = ({
                           ? true
                           : false
                       }
-                      onChange={(e) =>
-                        setData({
-                          ...data,
-                          workday: {
-                            ...data.workday,
-                            saturday: e.target.checked === true ? 6 : 0,
-                          },
-                        })
-                      }
+                      onChange={(e) => handleWorkday(e, 5)}
                     />
                     <label>S</label>
                   </div>
@@ -970,15 +704,7 @@ const MRegistroClinica = ({
                           ? true
                           : false
                       }
-                      onChange={(e) =>
-                        setData({
-                          ...data,
-                          workday: {
-                            ...data.workday,
-                            sunday: e.target.checked === true ? 7 : 0,
-                          },
-                        })
-                      }
+                      onChange={(e) => handleWorkday(e, 6)}
                     />
                     <label>D</label>
                   </div>

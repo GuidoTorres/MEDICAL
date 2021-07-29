@@ -9,9 +9,11 @@ import MSubirLaboratorio from "./MSubirLaboratorio";
 
 import jsPDF from "jspdf";
 import eclia from "../../assets/pdf Imagen/eclia.png";
-import antigeno from "../../assets/pdf Imagen/antigeno.png";
+import antigenosi from "../../assets/pdf Imagen/antigenoSi.png";
+import antigenono from "../../assets/pdf Imagen/antigenoNo.png";
 import molecular from "../../assets/pdf Imagen/molecular.png";
 import rapida from "../../assets/pdf Imagen/rapida.png";
+import anticuerpos from "../../assets/pdf Imagen/anticuerpos.png";
 
 const Historial = () => {
   const [busqueda, setBusqueda] = useState("");
@@ -146,11 +148,13 @@ const Historial = () => {
   const handleDetalles = (e) => {
     console.log(e);
     if (e.servicio_id == 5) {
-      generarPDF(e, antigeno, "Formato Antígeno");
+      e.resultado.result === 0
+        ? generarPDF(e, antigenono, "Formato Antígeno")
+        : generarPDF(e, antigenosi, "Formato Antígeno");
     } else if (e.servicio_id === 6) {
       generarPDF(e, eclia, "Formato Eclia");
     } else if (e.servicio_id === 7) {
-      generarPDF(e, molecular, "Formato Molecular");
+      generarPDF(e, anticuerpos, "Formato Anticuerpos");
     } else if (e.servicio_id === 8) {
       generarPDF(e, rapida, "Formato Rapida");
     }
@@ -164,24 +168,21 @@ const Historial = () => {
     });
     doc.setFontSize(10);
 
-    doc.addImage(imagen, "PNG", 5, 20, 580, 800, "", "FAST");
+    doc.addImage(imagen, "PNG", 6, 20, 580, 800, "", "FAST");
 
     if (e.servicio_id === 5) {
-      doc.text(
-        328,
-        135,
-        `${
-          e && e.genero  ? e.genero : ""
-        }`
-      );
+      doc.text(328, 135, `${e && e.genero ? e.genero : ""}`);
+      doc.text(328, 135, `${e && e.genero === null ? "Masculino" : ""}`);
+
       doc.text(90, 136, `${e.nro_atencion ? e.nro_atencion : ""}`);
       doc.text(60, 158, `${e.dni ? e.dni : ""}`);
       doc.text(428, 157, `${e.fecha_atencion ? e.fecha_atencion : ""}`);
 
-      doc.text(90, 180, `${e.paciente ? e.paciente : ""}`);
+      doc.text(85, 180, `${e.paciente ? e.paciente : ""}`);
+      doc.text(312, 180, "20");
 
       doc.text(
-        280,
+        284,
         268,
         `${
           e.resultado && e.resultado.result === 0 ? "No detectado" : "Detectado"
@@ -199,7 +200,9 @@ const Historial = () => {
       doc.text(55, 141, `${e.dni ? e.dni : ""}`);
       doc.text(428, 141, `${e.fecha_atencion ? e.fecha_atencion : ""}`);
 
-      doc.text(85, 163, `${e.paciente ? e.paciente : ""}`);
+      doc.text(80, 163, `${e.paciente ? e.paciente : ""}`);
+      doc.text(313, 164, "20");
+
       doc.text(
         195,
         268,
@@ -211,43 +214,32 @@ const Historial = () => {
         `${e.resultado && e.resultado.result_igg ? e.resultado.result_igg : ""}`
       );
     } else if (e.servicio_id == 7) {
+      doc.text(328, 124, `${e && e.genero === null ? "Masculino" : ""}`);
+
+      doc.text(83, 124, `${e.nro_atencion ? e.nro_atencion : ""}`);
+      doc.text(55, 146, `${e.dni ? e.dni : ""}`);
+      doc.text(428, 146, `${e.fecha_atencion ? e.fecha_atencion : ""}`);
+
+      doc.text(78, 167, `${e.paciente ? e.paciente : ""}`);
+
+      doc.text(310, 167, "20");
+
       doc.text(
-        328,
-        141,
+        180,
+        265,
         `${
-          e && e.genero  ? e.genero : ""
+          e.resultado && e.resultado.result === 0 ? "No detectado" : "Detectado"
         }`
       );
-
-      doc.text(85, 140, `${e.nro_atencion ? e.nro_atencion : ""}`);
-      doc.text(55, 163, `${e.dni ? e.dni : ""}`);
-      doc.text(428, 163, `${e.fecha_atencion ? e.fecha_atencion : ""}`);
-
-      doc.text(85, 185, `${e.paciente ? e.paciente : ""}`);
     } else if (e.servicio_id == 8) {
-      doc.text(
-        328,
-        141,
-        `${
-          e && e.genero  ? e.genero : ""
-        }`
-      );
-      doc.text(55, 163, `${e && e.person && e.person.dni ? e.person.dni : ""}`);
-      doc.text(
-        428,
-        163,
-        `${e && e.result && e.result.date ? e.result.date : ""}`
-      );
+      doc.text(84, 142, `${e.nro_atencion ? e.nro_atencion : ""}`);
 
-      doc.text(
-        85,
-        185,
-        `${
-          e && e.person && e.person.name && e.person.pat_lastname
-            ? e.person.name + " " + e.person.pat_lastname
-            : ""
-        }`
-      );
+      doc.text(328, 141, `${e && e.genero ? e.genero : ""}`);
+      doc.text(55, 163, `${e && e.dni ? e.dni : ""}`);
+      doc.text(428, 163, `${e && e.fecha_atencion ? e.fecha_atencion : ""}`);
+
+      doc.text(80, 184, `${e.paciente ? e.paciente : ""}`);
+      doc.text(310, 185, "20");
     }
 
     window.open(doc.output("bloburl"), "_blank");

@@ -1,16 +1,29 @@
-import React from 'react';
-import { Bar } from 'react-chartjs-2';
+import React, { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
 
-const GraficoBarra = () => {
+const GraficoBarra = ({ estadistica, tipoPrueba }) => {
+  const [result, setResult] = useState();
+  const getEstadistica = () => {
+    const prueba =
+      estadistica.length > 0 && estadistica.map((data, i) => data.atenciones);
+
+    setResult(prueba);
+  };
+  console.log(result);
+
+  useEffect(() => {
+    getEstadistica();
+  }, [tipoPrueba]);
+
   return (
-    <div style={{ width: '100%', height: '50%' }}>
+    <div style={{ width: "100%", height: "50%" }}>
       <Bar
         data={{
-          labels: ['Antígeno', 'Eclea', 'Rápida', 'Molecular', 'RT-PCR'],
+          labels: ["Antígeno", "Eclia", "Rápida", "Molecular", "RT-PCR"],
           datasets: [
             {
-              label: 'Número de evaluaciones por periodo de tiempo',
-              data: [12, 19, 3, 5, 2, 3],
+              label: "Número de evaluaciones por período de tiempo",
+              data: result,
               // backgroundColor: [
               //   '#ff4c4c',
               //   '#0099e5',

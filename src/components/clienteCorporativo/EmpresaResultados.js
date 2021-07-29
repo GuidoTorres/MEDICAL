@@ -4,7 +4,7 @@ import { paginacionOpciones } from "../../helpers/tablaOpciones";
 import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 import jsPDF from "jspdf";
 import eclia from "../../assets/pdf Imagen/eclia.png";
-import antigeno from "../../assets/pdf Imagen/antigeno.png";
+import antigeno from "../../assets/pdf Imagen/antigenoSi.png";
 import molecular from "../../assets/pdf Imagen/molecular.png";
 import rapida from "../../assets/pdf Imagen/rapida.png";
 

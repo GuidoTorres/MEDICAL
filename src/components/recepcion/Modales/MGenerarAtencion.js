@@ -13,6 +13,7 @@ const MGenerarAtencion = ({
   setGenerarAtencion,
   dataSelected,
   getAttention,
+  formulario,
 }) => {
   const closeModal = () => {
     setGenerarAtencion(false);
@@ -20,8 +21,8 @@ const MGenerarAtencion = ({
   const [datos, setDatos] = useState({});
   const [condicion, setCondicion] = useState({});
 
-  const [declaracion, setDeclaracion] = useState({});
-  const [ficha, setFicha] = useState({});
+  const [declaracion, setDeclaracion] = useState([]);
+  const [ficha, setFicha] = useState([]);
   const [services, setServices] = useState({});
   const [clinics, setClinics] = useState({});
   const [departamentos, setDepartamentos] = useState({});
@@ -41,6 +42,8 @@ const MGenerarAtencion = ({
     getServices();
     getClinics();
   }, []);
+
+  console.log(formulario[0]);
 
   const getFecha = () => {
     let newDate = new Date();
@@ -86,7 +89,12 @@ const MGenerarAtencion = ({
         {
           date_emision: getFecha,
           form_type_id: 1,
-          answers: [],
+          answers: [declaracion],
+        },
+        {
+          date_emision: getFecha,
+          form_type_id: 2,
+          answers: [ficha],
         },
       ],
     };
@@ -273,6 +281,7 @@ const MGenerarAtencion = ({
                 setDeclaracion={setDeclaracion}
                 condicion={condicion}
                 setCondicion={setCondicion}
+                formulario={formulario}
               />
             </div>
 
@@ -280,11 +289,16 @@ const MGenerarAtencion = ({
               <ConsentimientoInformado
                 dataSelected={dataSelected}
                 datos={datos}
+                formulario={formulario}
               />
             </div>
 
             <div className="containerPDF2">
-              <FichaCovid19 ficha={ficha} setFicha={setFicha} />
+              <FichaCovid19
+                ficha={ficha}
+                setFicha={setFicha}
+                formulario={formulario}
+              />
             </div>
           </div>
         </div>

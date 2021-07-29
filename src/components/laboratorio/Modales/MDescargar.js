@@ -21,7 +21,7 @@ const MDescargar = ({ openDescarga, setOpenDescarga, dataSelected }) => {
   };
 
   const descargarResultados = () => {
-    fetchGETPOSTPUTDELETEJSON("resultados/mi-clinica/todos", descargar, "POST")
+    fetchGETPOSTPUTDELETEJSON("resultados/mi-clinica/excel", descargar, "POST")
       .then((res) => res.json())
       .then((res) => setHistorial(res));
   };

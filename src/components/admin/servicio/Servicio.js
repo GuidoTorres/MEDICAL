@@ -24,6 +24,7 @@ const Servicio = () => {
   const [subCategoria, setSubCategoria] = useState([]);
   const [openHModal, setOpenHModal] = useState(false);
   const [openServicio, setOpenServicio] = useState(false);
+  const [editar, setEditar] = useState(false)
   // const [servicios, setServicios] = useState({});
 
   const getServices = () => {
@@ -104,6 +105,7 @@ const Servicio = () => {
     },
   ];
 
+
   useEffect(() => {
     const filtrarElemento = () => {
       const search = getServicio.filter((data) => {
@@ -122,6 +124,7 @@ const Servicio = () => {
   const handleEditar = (e) => {
     setOpenModal(true);
     setDataSelected(e);
+    setEditar(true)
   };
 
   const handleEliminar = (e) => {
@@ -243,6 +246,7 @@ const Servicio = () => {
           setOpenModal={setOpenModal}
           dataSelected={dataSelected}
           getServices={getServices}
+          editar = {editar}
         />
       )}
       {openServicio && (

@@ -17,6 +17,7 @@ const MRegistrarEmpresa = ({
   const [types, setTypes] = useState([]);
   const [ruc, setRuc] = useState({});
   const [servicios, setServicios] = useState({});
+  const [service, setService] = useState([]);
 
   const closeModal = () => {
     setOpenModal(false);
@@ -55,6 +56,30 @@ const MRegistrarEmpresa = ({
     getCorporationTypes();
   }, []);
 
+  const handleService = (e, data) => {
+    if (e.target.checked) {
+      setService((service) => [
+        ...service,
+        {
+          service_id: e.target.checked ? data.id : "",
+          status: e.target.checked ? 1 : 0,
+        },
+      ]);
+    } else {
+      if (service.length > 1) {
+        let position = service.findIndex(
+          (arreglo) => arreglo.service_id === data.id
+        );
+        console.log(position);
+        const arreglos = [...service];
+        arreglos.splice(position, 1);
+        setService([...arreglos]);
+      } else {
+        setService([]);
+      }
+    }
+  };
+
   const postCorporation = (e) => {
     const formData = new FormData();
 
@@ -82,43 +107,44 @@ const MRegistrarEmpresa = ({
     formData.set("before", empresa.before || "");
     formData.set("credit", empresa.credit || "");
 
-    formData.set("services[0][service_id]", empresa.service_id5 || "");
-    // formData.set("services[0][state]", 0);
-    formData.set("services[1][service_id]", empresa.service_id6 || "");
-    // formData.set("services[0][state]", 0);
-    formData.set("services[2][service_id]", empresa.service_id7 || "");
-    // formData.set("services[0][state]", 0);
-    formData.set("services[3][service_id]", empresa.service_id8 || "");
-    // formData.set("services[0][state]", 0);
-
-    fetchGETPOSTPUTDELETE("company", formData, "POST").then((resp) => {
-      console.log(resp);
-      if (resp.status === 200) {
-        closeModal();
-        Swal.fire({
-          icon: "success",
-          title: "Éxito",
-          text: "Se ha creado la empresa correctamente.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getCorporations();
-          }
-        });
-      } else {
-        closeModal();
-        Swal.fire({
-          icon: "error",
-          title: "!Ups¡",
-          text: "Algo salió mal.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Cerrar",
-        });
+    if (service) {
+      for (var [i, value] of Object.entries(service)) {
+        formData.set(`services[${i}][service_id]`, value.service_id);
       }
-    });
+    }
+
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
+
+    // fetchGETPOSTPUTDELETE("company", formData, "POST").then((resp) => {
+    //   console.log(resp);
+    //   if (resp.status === 200) {
+    //     closeModal();
+    //     Swal.fire({
+    //       icon: "success",
+    //       title: "Éxito",
+    //       text: "Se ha creado la empresa correctamente.",
+    //       confirmButtonColor: "#3085d6",
+    //       cancelButtonColor: "#d33",
+    //       confirmButtonText: "Aceptar",
+    //     }).then((resp) => {
+    //       if (resp.isConfirmed) {
+    //         getCorporations();
+    //       }
+    //     });
+    //   } else {
+    //     closeModal();
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "!Ups¡",
+    //       text: "Algo salió mal.",
+    //       confirmButtonColor: "#3085d6",
+    //       cancelButtonColor: "#d33",
+    //       confirmButtonText: "Cerrar",
+    //     });
+    //   }
+    // });
   };
 
   const putCorporation = (e) => {
@@ -268,57 +294,16 @@ const MRegistrarEmpresa = ({
         : ""
     );
 
-    formData.set(
-      "services[0][service_id]",
-      empresa && empresa.service_id5
-        ? empresa.service_id5
-        : dataSelected &&
-          dataSelected.services &&
-          dataSelected.services[0] &&
-          dataSelected.services[0].id
-        ? dataSelected.services[0].id
-        : ""
-    );
-    formData.set("services[0][state]", 1);
+    if (service) {
+      for (var [i, value] of Object.entries(service)) {
+        formData.set(`services[${i}][service_id]`, value.service_id);
+        formData.set(`services[${i}][state]`, value.status);
+      }
+    }
 
-    formData.set(
-      "services[1][service_id]",
-      empresa && empresa.service_id6
-        ? empresa.service_id6
-        : dataSelected &&
-          dataSelected.services &&
-          dataSelected.services[1] &&
-          dataSelected.services[1].id
-        ? dataSelected.services[1].id
-        : ""
-    );
-    formData.set("services[1][state]", 1);
-
-    formData.set(
-      "services[2][service_id]",
-      empresa && empresa.service_id7
-        ? empresa.service_id7
-        : dataSelected &&
-          dataSelected.services &&
-          dataSelected.services[2] &&
-          dataSelected.services[2].id
-        ? dataSelected.services[2].id
-        : ""
-    );
-    formData.set("services[2][state]", 1);
-
-    formData.set(
-      "services[3][service_id]",
-      empresa && empresa.service_id8
-        ? empresa.service_id8
-        : dataSelected &&
-          dataSelected.services &&
-          dataSelected.services[3] &&
-          dataSelected.services[3].id
-        ? dataSelected.services[3].id
-        : ""
-    );
-    formData.set("services[3][state]", 1);
+    // for (var pair of formData.entries()) {
+    //   console.log(pair[0] + ", " + pair[1]);
+    // }
 
     fetchGETPOSTPUTDELETE(
       `company/update/${dataSelected.id}`,
@@ -757,83 +742,14 @@ const MRegistrarEmpresa = ({
                                   ? true
                                   : false
                               }
-                              onChange={(e) =>
-                                setEmpresa({
-                                  ...empresa,
-                                  [`service_id${data.id}`]: e.target.checked
-                                    ? data.id
-                                    : "",
-                                })
-                              }
+                              onChange={(e) => handleService(e, data)}
                             />
-                            <label key={data.id}>{data.name}</label>
+                            <label>{data.name}</label>
                           </>
                         ))}
                     </div>
-                    {/* <div className="mselect__item">
-                      <input
-                        type="checkbox"
-                        className="w-auto"
-                        defaultChecked={
-                          dataSelected &&
-                          dataSelected.services &&
-                          dataSelected.services[1]
-                            ? true
-                            : false
-                        }
-                        onChange={(e) =>
-                          setEmpresa({
-                            ...empresa,
-                            service_id2: e.target.checked ?servicios && servicios .services && servicios.servicios[1] &&  servicios.services[1].id : "",
-                          })
-                        }
-                      />
-                      <label>Eclia</label>
-                    </div>
-                    <div className="mselect__item">
-                      <input
-                        type="checkbox"
-                        className="w-auto"
-                        defaultChecked={
-                          dataSelected &&
-                          dataSelected.services &&
-                          dataSelected.services[2]
-                            ? true
-                            : false
-                        }
-                        onChange={(e) =>
-                          setEmpresa({
-                            ...empresa,
-
-                            service_id3: e.target.checked ?servicios && servicios .services && servicios.servicios[2] &&  servicios.services[2].id : "",
-                          })
-                        }
-                      />
-                      <label>Molecular</label>
-                    </div>
-                    <div className="mselect__item">
-                      <input
-                        type="checkbox"
-                        className="w-auto"
-                        defaultChecked={
-                          dataSelected &&
-                          dataSelected.services &&
-                          dataSelected.services[3]
-                            ? true
-                            : false
-                        }
-                        onChange={(e) =>
-                          setEmpresa({
-                            ...empresa,
-
-                            service_id4: e.target.checked ?servicios && servicios .services && servicios.servicios[3] && servicios.services[3].id : "",
-                          })
-                        }
-                      />
-                      <label>Rapida</label>
-                    </div> */}
                   </div>
-                </div>
+                </div>{" "}
               </div>
               <div className="list-botones">
                 {editar === true ? (
