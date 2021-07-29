@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { useSelector } from 'react-redux';
 import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
-// import DateTimePicker from 'react-datetime-picker';
 import { customStyles } from '../../helpers/tablaOpciones';
 
 const OMHorario = ({ MHorario, setMHorario, nTranspor }) => {
@@ -15,7 +14,7 @@ const OMHorario = ({ MHorario, setMHorario, nTranspor }) => {
     attention_time_end: null,
     comments: '',
   });
-  // console.log(parseInt(nTranspor.transportista));
+
   const { attention_date, attention_time, attention_time_end, comments } =
     listHorario;
 
@@ -25,12 +24,12 @@ const OMHorario = ({ MHorario, setMHorario, nTranspor }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(id);
     fetchGETPOSTPUTDELETEJSON(
       `reservation/asignar/${id}`,
       listHorario,
       'POST'
     ).then((data) => data.json());
+    closeModal();
   };
 
   const handleOnChange = (e) => {

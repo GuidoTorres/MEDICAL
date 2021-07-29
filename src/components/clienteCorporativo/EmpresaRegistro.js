@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import Swal from 'sweetalert2';
 import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
@@ -35,7 +35,7 @@ const EmpresaRegistro = () => {
     const file = e.target.files[0];
     setLoadExcel(file);
   };
-
+  console.log(employees);
   const columnas = [
     {
       name: 'Tipo de documento',
@@ -95,6 +95,17 @@ const EmpresaRegistro = () => {
       },
     },
     {
+      name: 'Correo',
+      selector: (row) =>
+        row.person && row.person.email ? row.person.email : '',
+      sortable: true,
+      grow: 3,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+    {
       name: 'Sexo',
       selector: (row) =>
         row.person && row.person.gender_id === 1 ? 'Masculino' : 'Femenino',
@@ -124,15 +135,15 @@ const EmpresaRegistro = () => {
         borderBotton: 'none',
       },
     },
-    {
-      name: 'Editar',
-      button: true,
-      cell: (e) => (
-        <button onClick={() => handleEditar(e)} className="table__tablebutton">
-          <i className="fas fa-pencil-alt"></i>
-        </button>
-      ),
-    },
+    // {
+    //   name: 'Editar',
+    //   button: true,
+    //   cell: (e) => (
+    //     <button onClick={() => handleEditar(e)} className="table__tablebutton">
+    //       <i className="fas fa-pencil-alt"></i>
+    //     </button>
+    //   ),
+    // },
     {
       name: 'Eliminar',
       button: true,
@@ -147,11 +158,11 @@ const EmpresaRegistro = () => {
     },
   ];
 
-  const handleEditar = (e) => {
-    setIsOpen(true);
-  };
+  // const handleEditar = (e) => {
+  //   setIsOpen(true);
+  // };
   const handleEliminar = (e) => {
-    // console.log(e);
+    console.log(e);
     Swal.fire({
       title: '¿Desea eliminar?',
       text: `${e.dni}`,
@@ -162,28 +173,28 @@ const EmpresaRegistro = () => {
       confirmButtonText: 'Eliminar',
     }).then((result) => {
       if (result.isConfirmed) {
-        // fetchGETPOSTPUTDELETE(`users/${e.id}`, {}, 'DELETE').then((result) => {
-        //   if (result.status === 204) {
-        //     Swal.fire(
-        //       'Eliminado!',
-        //       'Se ha eliminado correctamente.',
-        //       'success'
-        //     ).then((response) => {
-        //       if (response.isConfirmed) {
-        //         resp();
-        //       }
-        //     });
-        //   } else {
-        //     Swal.fire({
-        //       icon: 'error',
-        //       title: '!Ups¡',
-        //       text: 'Algo salió mal.',
-        //       confirmButtonColor: '#3085d6',
-        //       cancelButtonColor: '#d33',
-        //       confirmButtonText: 'Cerrar',
-        //     });
-        //   }
-        // });
+        fetchGETPOSTPUTDELETE(`users/${e.id}`, {}, 'DELETE').then((result) => {
+          if (result.status === 204) {
+            Swal.fire(
+              'Eliminado!',
+              'Se ha eliminado correctamente.',
+              'success'
+            ).then((response) => {
+              if (response.isConfirmed) {
+                getEmployees();
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: '!Ups¡',
+              text: 'Algo salió mal.',
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Cerrar',
+            });
+          }
+        });
       }
     });
   };
@@ -208,6 +219,11 @@ const EmpresaRegistro = () => {
             </div>
             <div className="">
               <input type="file" onClick={subidaExcel} />
+            </div>
+            <div>
+              <label>
+                Cargar <i className="fas fa-upload"></i>
+              </label>
             </div>
           </div>
           <DataTable

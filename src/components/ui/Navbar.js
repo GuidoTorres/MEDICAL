@@ -178,7 +178,7 @@ const Navbar = ({
               />
             </Link>
           </div>
-          <h3 className="nombreSubTitulo">Bienvenido {nombre}</h3>
+          <h3 className="nombreSubTitulo"> {nombre}</h3>
           <ul className="navUl navbar-nav mr-auto">
             <li className="nav-item">
               <NavLink

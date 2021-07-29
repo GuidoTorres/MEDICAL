@@ -31,7 +31,7 @@ const Solicitud = () => {
     setListRegistro(e);
     setModalList(true);
   };
-  // console.log(listRegistro);
+
   const ventanaIr = (e) => {
     dispatch(listaPacient(e));
     history.push('/organizador/calendario');

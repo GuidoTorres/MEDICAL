@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
+import { useSelector } from 'react-redux';
 import moment from 'moment';
 import OMHorario from './OMHorario';
 import OMPaciente from './OMPaciente';
-
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment/locale/es';
-import { useSelector } from 'react-redux';
 import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 
 moment.locale('es');
@@ -18,6 +17,8 @@ const Calendario = () => {
   const [MPaciente, setMPaciente] = useState(false);
   const [MHorario, setMHorario] = useState(false);
   const [listRegistro, setListRegistro] = useState([]);
+  const [listCalendario, setListCalendario] = useState({});
+  // const [eventosList, setEventosList] = useState([]);
   const [nTranspor, setNTranspor] = useState('');
 
   const { users, address, sample } = selectionId;
@@ -31,6 +32,8 @@ const Calendario = () => {
   const { dni, name: personanombre, pat_lastname, mom_lastname } = person;
   const { name: nombreservicio } = category;
 
+  // const {events} = eventosList
+
   useEffect(() => {
     const listaTransportista = () => {
       fetchGETPOSTPUTDELETEJSON('transportistas_asignados')
@@ -39,15 +42,28 @@ const Calendario = () => {
     };
     listaTransportista();
   }, []);
-  // console.log(listRegistro);
-  const events = [
-    {
-      title: 'Juan',
-      start: moment().toDate(),
-      end: moment().add(15, 'minutes').toDate(),
-      backgroundColor: 'red',
-    },
-  ];
+
+  useEffect(() => {
+    const listFecha = () => {
+      fetchGETPOSTPUTDELETEJSON('timetable')
+        .then((data) => data.json())
+        .then((datos) => setListCalendario(datos));
+    };
+    listFecha();
+  }, []);
+
+  // setEventosList(listCalendario);
+  console.log(listCalendario);
+
+  // console.log(listCalendario);
+
+  // const now = moment().minutes(0).seconds(0).add(1, 'hours');
+  // const nowPlus = now.clone().add(1, 'hours');
+
+  const events = listRegistro;
+  // console.log(events);
+  // 3=> acpetado
+  // 2=> falta cancelar
 
   const handlePacienteUbicacion = () => {
     setMPaciente(true);
@@ -55,14 +71,14 @@ const Calendario = () => {
   const hanleMHorario = () => {
     setMHorario(true);
   };
-  // console.log(listRegistro);
+
   const handleOnChange = (e) => {
     setNTranspor({
       ...nTranspor,
       [e.target.name]: e.target.value,
     });
   };
-  console.log(nTranspor);
+
   return (
     <div className="container">
       <div className="row">
@@ -206,7 +222,7 @@ const Calendario = () => {
           <div className="barra">
             <Calendar
               localizer={localizer}
-              events={events}
+              events={listRegistro}
               startAccessor="start"
               endAccessor="end"
               // messages={messages}

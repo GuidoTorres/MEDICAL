@@ -7,6 +7,9 @@ const EmpresaResultados = () => {
   const [busqueda, setBusqueda] = useState('');
   const [clinica, setClinica] = useState([]);
   const [data, setData] = useState([]);
+  const [envioEmail, setEnvioEmail] = useState([]);
+
+  const { atenciones } = setEnvioEmail;
 
   const getResultado = () => {
     fetchGETPOSTPUTDELETEJSON('resultados/compania', {}, 'POST')
@@ -18,6 +21,36 @@ const EmpresaResultados = () => {
   useEffect(() => {
     getResultado();
   }, []);
+
+  useEffect(() => {
+    // const datosNumero = () => {
+    // data.map((datos) => {
+    // return setEnvioEmail([...envioEmail, datos.nro_atencion]);
+    // fetchGETPOSTPUTDELETEJSON(
+    //   'enviar-resultados/corporativo',
+    //   [datos.nro_atencion],
+    //   'POST'
+    // ).then((data) => data.json());
+    // console.log(datos);
+    // });
+    //   // datosNumero();
+  }, [data, envioEmail]);
+
+  // console.log(envioEmail);
+
+  // console.log(data);
+  const enviarEmail = () => {
+    // data.map((datos) => {
+    // return setEnvioEmail([...envioEmail, datos.nro_atencion]);
+    // fetchGETPOSTPUTDELETEJSON(
+    //   'enviar-resultados/corporativo',
+    //   [datos.nro_atencion],
+    //   'POST'
+    // ).then((data) => data.json());
+    // });
+
+    console.log(envioEmail);
+  };
 
   const columnas = [
     {
@@ -62,7 +95,6 @@ const EmpresaResultados = () => {
       name: 'Teléfono',
       selector: (row) => (row && row.telefono ? row.telefono : ''),
       sortable: true,
-      right: true,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -72,7 +104,6 @@ const EmpresaResultados = () => {
       name: 'Correo',
       selector: (row) => (row && row.email ? row.email : ''),
       sortable: true,
-      right: true,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -120,7 +151,9 @@ const EmpresaResultados = () => {
               />
             </div>
             <div>
-              <button className="botones">Enviar</button>
+              <button className="botones" onClick={enviarEmail}>
+                Enviar
+              </button>
             </div>
           </div>
           <DataTable

@@ -103,12 +103,13 @@
 @media (max-width: 992px) {
   .organizador__datostransportistas {
     flex-direction: column;
+    display: flex;
     div {
-      align-items: center;
       display: flex;
-      justify-content: space-between;
       margin-bottom: 5px;
-      width: 100%;
+      input {
+        width: 100%;
+      }
     }
   }
 }
