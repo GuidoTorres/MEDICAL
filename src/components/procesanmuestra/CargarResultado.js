@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import jsPDF from "jspdf";
 import eclia from "../../assets/pdf Imagen/eclia.png";
-import antigeno from "../../assets/pdf Imagen/antigeno.png";
+import antigenosi from "../../assets/pdf Imagen/antigenoSi.png";
 import molecular from "../../assets/pdf Imagen/molecular.png";
 import rapida from "../../assets/pdf Imagen/rapida.png";
 import Swal from "sweetalert2";
-
 
 // import { historial } from '../../data/PHistorial';
 import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
@@ -42,22 +41,22 @@ const CargarResultado = () => {
         color: "#555555",
       },
     },
-    {
-      name: "Tipo de documento",
-      selector: (row) =>
-        row.person && row.person.document_type_id === 3
-          ? "Carné de extranjería"
-          : row.person && row.person.document_type_id === 2
-          ? "Pasaporte"
-          : row.person && row.person.document_type_id === 1
-          ? "DNI"
-          : "",
-      sortable: true,
-      style: {
-        borderBotton: "none",
-        color: "#555555",
-      },
-    },
+    // {
+    //   name: "Tipo de documento",
+    //   selector: (row) =>
+    //     row.person && row.person.document_type_id === 3
+    //       ? "Carné de extranjería"
+    //       : row.person && row.person.document_type_id === 2
+    //       ? "Pasaporte"
+    //       : row.person && row.person.document_type_id === 1
+    //       ? "DNI"
+    //       : "",
+    //   sortable: true,
+    //   style: {
+    //     borderBotton: "none",
+    //     color: "#555555",
+    //   },
+    // },
     {
       name: "Nº documento",
       selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
@@ -69,24 +68,17 @@ const CargarResultado = () => {
     },
     {
       name: "Nombre",
-      selector: (row) => (row.person && row.person.name ? row.person.name : ""),
-      sortable: true,
-      style: {
-        borderBotton: "none",
-        color: "#555555",
-      },
-    },
-    {
-      name: "Apellido",
       selector: (row) =>
-        row.person && row.person.pat_lastname ? row.person.pat_lastname : "",
-
+        row.person && row.person.name && row.person.pat_lastname
+          ? row.person.name + " " + row.person.pat_lastname
+          : "",
       sortable: true,
       style: {
         borderBotton: "none",
         color: "#555555",
       },
     },
+
     {
       name: "Tipo prueba",
       selector: (row) =>
@@ -113,26 +105,14 @@ const CargarResultado = () => {
       cell: (e) =>
         e.result.pdf === null ? (
           <button
-            disabled
             onClick={() => handleDetalles(e)}
             className="table__tablebutton"
           >
-            {e.result.pdf === null ? (
-              <i className="far fa-file-pdf"></i>
-            ) : (
-              <i className="far fa-file-pdf" style={{ color: "grey" }}></i>
-            )}
+            <i className="far fa-file-pdf" style={{ color: "grey" }}></i>
           </button>
         ) : (
-          <button
-            onClick={() => handleDetalles(e)}
-            className="table__tablebutton"
-          >
-            {e.result.pdf === null ? (
-              <i className="far fa-file-pdf"></i>
-            ) : (
-              <i className="far fa-file-pdf" style={{ color: "grey" }}></i>
-            )}
+          <button disabled className="table__tablebutton">
+            <i className="far fa-file-pdf" style={{ color: "red" }}></i>
           </button>
         ),
     },
@@ -176,7 +156,7 @@ const CargarResultado = () => {
   };
   const handleDetalles = (e) => {
     if (e.service.id == 5) {
-      generarPDF(e, antigeno, "Formato Antígeno");
+      generarPDF(e, antigenosi, "Formato Antígeno");
     } else if (e.service.id === 6) {
       generarPDF(e, eclia, "Formato Eclia");
     } else if (e.service.id === 7) {
@@ -338,7 +318,7 @@ const CargarResultado = () => {
       }
     });
   };
-  //
+
   return (
     <div className="container">
       <div className="row">

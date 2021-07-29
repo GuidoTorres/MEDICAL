@@ -10,7 +10,7 @@ const Historial = () => {
   const [dataHistorial, setDataHistorial] = useState([]);
 
   const getHistorial = () => {
-    fetchGETPOSTPUTDELETE(`resultados/clinica`, {}, "POST")
+    fetchGETPOSTPUTDELETE(`attention`)
       .then((data) => data.json())
       .then((datos) => setDataHistorial(datos));
   };
@@ -24,7 +24,7 @@ const Historial = () => {
   const columnas = [
     {
       name: "Item",
-      selector: (row) => (row.nro_atencion ? row.nro_atencion : ""),
+      selector: "id",
       sortable: true,
       style: {
         borderBotton: "none",

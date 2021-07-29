@@ -10,8 +10,11 @@ import { customStyles } from "../../../helpers/tablaOpciones";
 const MCrearServicio = ({ openServicio, setOpenServicio, getServices }) => {
   const [avatar, setAvatar] = useState(null);
   const [crearServicio, setCrearServicio] = useState({
-    service_category_id: 1,
+    service_category_id: "",
+    name: "",
+    amount: "",
   });
+  const [error, setError] = useState(false);
 
   const closeModal = () => {
     setOpenServicio(false);
@@ -28,6 +31,25 @@ const MCrearServicio = ({ openServicio, setOpenServicio, getServices }) => {
   console.log(crearServicio);
 
   const createService = () => {
+    if (crearServicio.service_category_id.trim() === "" || null) {
+      setError(true);
+
+      document.getElementById("categoria").style =
+        "border:1px solid red !important";
+      document.getElementById("categoria").style.width = "50%";
+    }
+    if (crearServicio.name.trim() === "" || null) {
+      setError(true);
+
+      document.getElementById("name").style = "border:1px solid red !important";
+    }
+
+    if (crearServicio.amount.trim() === "" || null) {
+      setError(true);
+
+      document.getElementById("amount").style =
+        "border:1px solid red !important";
+    }
     const formData = new FormData();
     formData.set("name", crearServicio.name || "");
     formData.set("abbreviation", crearServicio.abbreviation || "");
@@ -41,34 +63,42 @@ const MCrearServicio = ({ openServicio, setOpenServicio, getServices }) => {
     formData.set("stock", crearServicio.stock || "");
     formData.set("amount", crearServicio.amount || "");
 
-    fetchGETPOSTPUTDELETE("services", formData, "POST").then((resp) => {
-      if (resp.status === 200) {
-        closeModal();
-        Swal.fire({
-          icon: "success",
-          title: "Éxito",
-          text: "Se ha creado el servicio correctamente.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getServices();
-          }
-        });
-      } else {
-        closeModal();
-        Swal.fire({
-          icon: "error",
-          title: "!Ups¡",
-          text: "Algo salió mal.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Cerrar",
-        });
-      }
-    });
+    if (
+      crearServicio.service_category_id.trim() !== "" ||
+      (null && crearServicio.name.trim() !== "") ||
+      (null && crearServicio.amount.trim() !== "") ||
+      null
+    ) {
+      fetchGETPOSTPUTDELETE("services", formData, "POST").then((resp) => {
+        if (resp.status === 200) {
+          closeModal();
+          Swal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Se ha creado el servicio correctamente.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Aceptar",
+          }).then((resp) => {
+            if (resp.isConfirmed) {
+              getServices();
+            }
+          });
+        } else {
+          closeModal();
+          Swal.fire({
+            icon: "error",
+            title: "!Ups¡",
+            text: "Algo salió mal.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cerrar",
+          });
+        }
+      });
+    }
   };
+
   return (
     <Modal
       isOpen={openServicio}
@@ -89,6 +119,7 @@ const MCrearServicio = ({ openServicio, setOpenServicio, getServices }) => {
                 <label> Categoria:</label>
                 <select
                   className="form-select"
+                  id="categoria"
                   aria-label="Default select example"
                   style={{ width: "50%" }}
                   name="service_category_id"
@@ -103,6 +134,7 @@ const MCrearServicio = ({ openServicio, setOpenServicio, getServices }) => {
                 <input
                   type="text"
                   name="name"
+                  id="name"
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -120,6 +152,7 @@ const MCrearServicio = ({ openServicio, setOpenServicio, getServices }) => {
                 <input
                   type="text"
                   name="amount"
+                  id="amount"
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -141,21 +174,23 @@ const MCrearServicio = ({ openServicio, setOpenServicio, getServices }) => {
               </div>
               <div>
                 <label> Descripcion:</label>
-                <input
+
+                <textarea
                   type="text"
                   name="description"
+                  style={{width:'50%'}}
                   onChange={(e) => handleChange(e)}
-                />
+                ></textarea>
               </div>
-                {/* <label> Imagen:</label> */}
-                <div style={{display:"flex", flexDirection:'column'}}>
-                  <p>
-                    Imagen <span>(.jpg, .jpeg, .jpg)</span>
-                  </p>
-                  <div style={{width:'100%'}}>
-                    <UploadAvatar avatar={avatar} setAvatar={setAvatar} />
-                  </div>
+              {/* <label> Imagen:</label> */}
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <p>
+                  Imagen <span>(.jpg, .jpeg, .jpg)</span>
+                </p>
+                <div style={{ width: "100%" }}>
+                  <UploadAvatar avatar={avatar} setAvatar={setAvatar} />
                 </div>
+              </div>
             </div>
             <div className="list-botones">
               <button className="botones " onClick={closeModal}>

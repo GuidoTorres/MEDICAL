@@ -21,9 +21,17 @@ const MTrabajador = ({
   setDataSelected,
 }) => {
   const [avatar, setAvatar] = useState(null);
-  const [trabajador, setTrabajador] = useState({});
-  const [editarTrabajador, setEditarTrabajador] = useState(null);
+  const [trabajador, setTrabajador] = useState({
+    dni: "",
+    name: "",
+    mom_lastname: "",
+    pat_lastname: "",
+    email: "",
+    cellphone: "",
+    role_id: ""
+  });
   const [dni, setDni] = useState({});
+  const [error, setError] = useState(false);
 
   const closeModal = () => {
     setOpenModal(false);
@@ -48,6 +56,49 @@ const MTrabajador = ({
   console.log(dni);
 
   const postEmployee = () => {
+    if (trabajador.dni === "" || null) {
+      setError(true);
+
+      document.getElementById("dni").style = "border:1px solid red !important";
+    }
+    if (trabajador.name === "" || null) {
+      setError(true);
+
+      document.getElementById("name").style = "border:1px solid red !important";
+    }
+
+    if (trabajador.pat_lastname === "" || null) {
+      setError(true);
+
+      document.getElementById("apellido1").style =
+        "border:1px solid red !important";
+    }
+    if (trabajador.mom_lastname === "" || null) {
+      setError(true);
+
+      document.getElementById("apellido2").style =
+        "border:1px solid red !important";
+    }
+    if (trabajador.email === "" || null) {
+      setError(true);
+
+      document.getElementById("email").style =
+        "border:1px solid red !important";
+    }
+    if (trabajador.cellphone === "" || null) {
+      setError(true);
+
+      document.getElementById("cell").style =
+        "border:1px solid red !important";
+    }
+
+    if (trabajador.role_id === "" || null) {
+      setError(true);
+
+      document.getElementById("role").style =
+        "border:1px solid red !important";
+    }
+
     const formData = new FormData();
     formData.set("dni", trabajador.dni || "");
     formData.set("name", dni.nombres || trabajador.name || "");
@@ -69,33 +120,35 @@ const MTrabajador = ({
       formData.set("license_plate", trabajador.license_plate || "");
     }
 
-    fetchGETPOSTPUTDELETE("employees", formData, "POST").then((resp) => {
-      if (resp.status === 201) {
-        closeModal();
-        Swal.fire({
-          icon: "success",
-          title: "Éxito",
-          text: "Se ha creado el trabajador correctamente.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getEmployee();
-          }
-        });
-      } else {
-        closeModal();
-        Swal.fire({
-          icon: "error",
-          title: "Ups¡",
-          text: "Algo salió mal.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Cerrar",
-        });
-      }
-    });
+    if (trabajador.dni !== "" || null) {
+      fetchGETPOSTPUTDELETE("employees", formData, "POST").then((resp) => {
+        if (resp.status === 201) {
+          closeModal();
+          Swal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Se ha creado el trabajador correctamente.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Aceptar",
+          }).then((resp) => {
+            if (resp.isConfirmed) {
+              getEmployee();
+            }
+          });
+        } else {
+          closeModal();
+          Swal.fire({
+            icon: "error",
+            title: "Ups¡",
+            text: "Algo salió mal.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cerrar",
+          });
+        }
+      });
+    }
   };
 
   const putEmployee = () => {
@@ -186,6 +239,7 @@ const MTrabajador = ({
                 <input
                   type="text"
                   name="dni"
+                  id="dni"
                   disabled={editar ? true : false}
                   defaultValue={
                     dataSelected && dataSelected.dni ? dataSelected.dni : ""
@@ -198,6 +252,7 @@ const MTrabajador = ({
                 <input
                   type="text"
                   name="name"
+                  id="name"
                   defaultValue={
                     editar
                       ? dataSelected && dataSelected.name
@@ -213,6 +268,7 @@ const MTrabajador = ({
                 <input
                   type="text"
                   name="pat_lastname"
+                  id="apellido1"
                   defaultValue={
                     editar
                       ? dataSelected && dataSelected.pat_lastname
@@ -228,6 +284,7 @@ const MTrabajador = ({
                 <input
                   type="text"
                   name="mom_lastname"
+                  id="apellido2"
                   defaultValue={
                     editar
                       ? dataSelected && dataSelected.mom_lastname
@@ -243,6 +300,7 @@ const MTrabajador = ({
                 <input
                   type="text"
                   name="email"
+                  id="email"
                   defaultValue={
                     dataSelected && dataSelected.email ? dataSelected.email : ""
                   }
@@ -254,6 +312,7 @@ const MTrabajador = ({
                 <input
                   type="text"
                   name="cellphone"
+                  id="cell"
                   defaultValue={
                     dataSelected && dataSelected.cellphone
                       ? dataSelected.cellphone
@@ -268,6 +327,7 @@ const MTrabajador = ({
                   className="form-select"
                   aria-label="Default select example"
                   name="role_id"
+                  id="role"
                   onChange={handleOnChange}
                 >
                   <option value="">Seleccionar</option>

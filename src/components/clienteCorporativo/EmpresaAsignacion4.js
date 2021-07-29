@@ -154,6 +154,7 @@ const EmpresaAsignacion4 = ({
           modalIsOpen={modalIsOpen}
           setIsOpen={setIsOpen}
           data={data}
+          modal1={closeModal}
           // employees={employees}
         />
       )}

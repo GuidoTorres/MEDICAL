@@ -101,7 +101,7 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
     });
   };
 
- console.log(crearServicio);
+  console.log(dataSelected);
 
   return (
     <Modal
@@ -135,7 +135,9 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
               <div>
                 <label> Sub-Categoria:</label>
                 <select
-                  disabled={crearServicio.service_category_id === "1"? false : true}
+                  disabled={
+                    crearServicio.service_category_id === "1" ? false : true
+                  }
                   className="form-select"
                   aria-label="Default select example"
                   style={{ width: "50%" }}
@@ -240,11 +242,14 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                   onChange={(e) => handleChange(e)}
                 />
               </div>
+              
               <div>
                 <label> Descripcion:</label>
-                <input
+
+                <textarea
                   type="text"
                   name="description"
+                  style={{ width: "50%" }}
                   defaultValue={
                     crearServicio.subCategoria &&
                     dataSelected.services &&
@@ -256,7 +261,7 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                       : ""
                   }
                   onChange={(e) => handleChange(e)}
-                />
+                ></textarea>
               </div>
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <p>

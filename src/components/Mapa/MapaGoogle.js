@@ -6,10 +6,10 @@ const mapContainerStyle = {
   height: "190px",
 };
 
-const center = {
-  lat: -12.04318,
-  lng: -77.02824,
-};
+// const center = {
+//   lat: -12.04318,
+//   lng: -77.02824,
+// };
 
 const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
   const { isLoaded } = useJsApiLoader({
@@ -17,22 +17,21 @@ const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
     googleMapsApiKey: "AIzaSyC14u7ry3uBKIHsEnEql4sA2MaebwNJWI4",
   });
 
-
   const center2 = {
     lat:
       dataSelected &&
       dataSelected.corporation &&
       dataSelected.corporation.address &&
-      dataSelected.corporation.address.map_latitude
+      dataSelected.corporation.address.map_latitude !== null
         ? Number(dataSelected.corporation.address.map_latitude)
-        : "",
+        : -12.04318,
     lng:
       dataSelected &&
       dataSelected.corporation &&
       dataSelected.corporation.address &&
-      dataSelected.corporation.address.map_length
+      dataSelected.corporation.address.map_length != null
         ? Number(dataSelected.corporation.address.map_length)
-        : "",
+        : -77.02824,
   };
 
   const position = {
@@ -45,16 +44,16 @@ const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
       dataSelected &&
       dataSelected.corporation &&
       dataSelected.corporation.address &&
-      dataSelected.corporation.address.map_latitude
+      dataSelected.corporation.address.map_latitude !== null
         ? Number(dataSelected.corporation.address.map_latitude)
-        : -12.04318,
+        : dataMapa.lat,
     lng:
       dataSelected &&
       dataSelected.corporation &&
       dataSelected.corporation.address &&
-      dataSelected.corporation.address.map_length
+      dataSelected.corporation.address.map_length !== null
         ? Number(dataSelected.corporation.address.map_length)
-        : -77.02824,
+        : dataMapa.lng,
   };
 
   // const onLoad = transitLayer => {
@@ -66,12 +65,12 @@ const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
       id="transit-example"
       mapContainerStyle={mapContainerStyle}
       zoom={14}
-      center={editar ? center2 : center}
-      onClick={(e) => setDataMapa({ lat: e.latLng.lat(), lng: e.latLng.lng() })}
+      center={center2}
+      onClick={(e) => setDataMapa({...dataMapa, lat: e.latLng.lat(), lng: e.latLng.lng() })}
     >
       <Marker
         // onLoad={onLoad}
-        position={editar ? position2 :position}
+        position={editar ? position2 : position}
       />
     </GoogleMap>
   ) : (

@@ -4,7 +4,7 @@ import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 import { customStyles } from "../../helpers/tablaOpciones";
 import Swal from "sweetalert2";
 
-const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, data }) => {
+const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, data, modal1 }) => {
   const [asignation, setAsignation] = useState([]);
   const [listclinica, setListclinica] = useState([]);
   const [prueba, setPrueba] = useState({});
@@ -96,7 +96,7 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, data }) => {
 
       if (data.status === 200) {
         closeModal();
-
+        modal1()
         Swal.fire({
           icon: "success",
           title: "Éxito",

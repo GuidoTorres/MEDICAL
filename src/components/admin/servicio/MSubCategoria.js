@@ -1,7 +1,7 @@
-import React from 'react';
-import Modal from 'react-modal';
+import React from "react";
+import Modal from "react-modal";
 
-import { customStyles } from '../../../helpers/tablaOpciones';
+import { customStyles } from "../../../helpers/tablaOpciones";
 
 const MSubCategoria = ({ setOpenSubModal, openSubModal, subCategoria }) => {
   const closeModal = () => {
@@ -27,17 +27,19 @@ const MSubCategoria = ({ setOpenSubModal, openSubModal, subCategoria }) => {
               <table className="table">
                 <thead>
                   <tr>
-                    <th scope="col"></th>
-                    <th scope="col text-center"></th>
+                    <th scope="col">Id</th>
+                    <th scope="col text-center">Subcategoria</th>
+                    <th scope="col text-center">Abreviatura</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {subCategoria.services.map((data) => {
+                  {subCategoria.services.map((data, i) => {
                     return (
                       <tr key={data.id}>
-                        <th scope="row">{data.id}</th>
+                        <th scope="row">{i + 1}</th>
                         <td className="text-center">{data.name}</td>
-                        <td className="text-center">{data.services && data.services.last_price ? data.services.last_price : ""}</td>
+
+                        <td className="text-center">{data.abbreviation}</td>
                       </tr>
                     );
                   })}

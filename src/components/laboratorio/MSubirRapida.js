@@ -6,7 +6,6 @@ import {
 } from "../../helpers/fetch";
 import Swal from "sweetalert2";
 
-
 import { customStyles } from "../../helpers/tablaOpciones";
 
 const MSubirRapida = ({
@@ -15,10 +14,11 @@ const MSubirRapida = ({
   dataSelected,
   tipoPrueba,
   getAtencion,
-
 }) => {
+  const [error, setError] = useState(false);
   const [result, setResult] = useState({
     id: dataSelected.id,
+    reactive: "",
   });
   const closeModal = () => {
     setOpenModal(false);
@@ -26,10 +26,13 @@ const MSubirRapida = ({
   console.log(result);
 
   const postResults = () => {
-    
+    if (result.reactive === "" || null) {
+      setError(true);
+    }
 
-    fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) =>
-      {console.log(data)
+    if (result.reactive !== "" || null) {
+      fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) => {
+        console.log(data);
         if (data.status === 200) {
           closeModal();
           Swal.fire({
@@ -55,12 +58,9 @@ const MSubirRapida = ({
             confirmButtonText: "Cerrar",
           });
         }
-      
-      }
-    );
+      });
+    }
   };
-
-
 
   console.log(result);
   return (
@@ -125,13 +125,24 @@ const MSubirRapida = ({
             <div className="mt-2">
               <div className="d-flex-column">
                 <label className="mb-3">El resultado de la prueba es:</label>
+                {error ? (
+                  <label className="mb-3" style={{ color: "red" }}>
+                    Seleccione una opción antes de enviar el resultado.
+                  </label>
+                ) : null}
                 <label>
                   <input
                     type="radio"
                     className="me-3"
+                    id="r1"
                     value="igm"
                     name="reactive"
-                    onChange={e => setResult({...result, reactive: e.target.checked ? 2 : ""})}
+                    onChange={(e) =>
+                      setResult({
+                        ...result,
+                        reactive: e.target.checked ? 2 : "",
+                      })
+                    }
                   />
                   Reactivo IgM
                 </label>
@@ -141,8 +152,13 @@ const MSubirRapida = ({
                     className="me-3"
                     value="igg"
                     name="reactive"
-                    onChange={e => setResult({...result, reactive: e.target.checked ? 1 : ""})}
-
+                    id="r2"
+                    onChange={(e) =>
+                      setResult({
+                        ...result,
+                        reactive: e.target.checked ? 1 : "",
+                      })
+                    }
                   />
                   Reactivo IgG
                 </label>
@@ -153,7 +169,13 @@ const MSubirRapida = ({
                     className="me-3"
                     value="igm/igg"
                     name="reactive"
-                    onChange={e => setResult({...result, reactive: e.target.checked ? 3 : ""})}
+                    id="r3"
+                    onChange={(e) =>
+                      setResult({
+                        ...result,
+                        reactive: e.target.checked ? 3 : "",
+                      })
+                    }
                   />
                   Reactivo IgM/IgG
                 </label>
@@ -163,7 +185,13 @@ const MSubirRapida = ({
                     className="me-3"
                     value="noReactivo"
                     name="reactive"
-                    onChange={e => setResult({...result, reactive: e.target.checked ? 4 : ""})}
+                    id="r4"
+                    onChange={(e) =>
+                      setResult({
+                        ...result,
+                        reactive: e.target.checked ? 4 : "",
+                      })
+                    }
                   />
                   No Reactivo
                 </label>
@@ -173,7 +201,13 @@ const MSubirRapida = ({
                     className="me-3"
                     value="invalido"
                     name="reactive"
-                    onChange={e => setResult({...result, reactive: e.target.checked ? 5 : ""})}
+                    id="r5"
+                    onChange={(e) =>
+                      setResult({
+                        ...result,
+                        reactive: e.target.checked ? 5 : "",
+                      })
+                    }
                   />
                   Inválido
                 </label>
@@ -183,7 +217,7 @@ const MSubirRapida = ({
               <button className="botones" onClick={closeModal}>
                 Cancelar
               </button>
-              <button className="botones">Visualizar</button>
+              {/* <button className="botones">Visualizar</button> */}
               <button className="botones" onClick={postResults}>
                 Enviar
               </button>
