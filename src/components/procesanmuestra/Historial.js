@@ -27,7 +27,6 @@ const Historial = () => {
     getAttention();
   }, []);
 
-  
   console.log(getDateAttention);
   const columnas = [
     {
@@ -108,19 +107,10 @@ const Historial = () => {
       name: "Detalles",
       button: true,
       cell: (e) =>
-        e.result.pdf !== null ? (
-          <a
-            href={e.result.pdf}
-            download
-            target="_blank"
-            style={{ color: "red" }}
-          >
-            {e.result.pdf !== null ? (
-              <i className="far fa-file-pdf"></i>
-            ) : (
-              <i className="far fa-file-pdf"></i>
-            )}
-          </a>
+        e.result.pdf === null ? (
+          <button className="table__tablebutton">
+            <i className="far fa-file-pdf" style={{ color: "grey" }}></i>
+          </button>
         ) : (
           <a
             href={e.result.pdf}
@@ -128,13 +118,39 @@ const Historial = () => {
             target="_blank"
             style={{ color: "grey" }}
           >
-            {e.result.pdf !== null ? (
-              <i className="far fa-file-pdf"></i>
-            ) : (
-              <i className="far fa-file-pdf"></i>
-            )}
+            <button disabled className="table__tablebutton">
+              <i className="far fa-file-pdf" style={{ color: "red" }}></i>
+            </button>
           </a>
         ),
+
+      // e.result.pdf !== null ? (
+      //   <a
+      //     href={e.result.pdf}
+      //     download
+      //     target="_blank"
+      //     style={{ color: "red" }}
+      //   >
+      //     {e.result.pdf !== null ? (
+      //       <i className="far fa-file-pdf"></i>
+      //     ) : (
+      //       <i className="far fa-file-pdf"></i>
+      //     )}
+      //   </a>
+      // ) : (
+      //   <a
+      //     href={e.result.pdf}
+      //     download
+      //     target="_blank"
+      //     style={{ color: "grey" }}
+      //   >
+      //     {e.result.pdf !== null ? (
+      //       <i className="far fa-file-pdf"></i>
+      //     ) : (
+      //       <i className="far fa-file-pdf"></i>
+      //     )}
+      //   </a>
+      // ),
     },
   ];
   //

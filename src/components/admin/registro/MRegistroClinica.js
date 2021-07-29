@@ -17,11 +17,19 @@ const MRegistroClinica = ({
   setEditar,
 }) => {
   const [avatar, setAvatar] = useState(null);
-  const [dataMapa, setDataMapa] = useState();
-
-  //hook para guardar los onchange del formulario
-  const [data, setData] = useState({});
-  //hook para obtener la data del ruc
+  const [dataMapa, setDataMapa] = useState({
+    lat: 0,
+    lng: 0,
+  });
+  const [workday, setWorkday] = useState([]);
+  const [data, setData] = useState({
+    ruc: "",
+    business_name: "",
+    name: "",
+    phone: "",
+    email: "",
+  });
+  const [error, setError] = useState(false);
   const [ruc, setRuc] = useState({});
 
   const closeModal = () => {
@@ -30,20 +38,53 @@ const MRegistroClinica = ({
     setDataSelected(null);
   };
 
+  const handleChange = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleWorkday = (e, nro) => {
+    if (e.target.checked) {
+      setWorkday((workday) => [
+        ...workday,
+        {
+          day: nro,
+        },
+      ]);
+    } else {
+      if (workday.length > 1) {
+        let position = workday.findIndex(
+          (arreglo) => arreglo.day === workday.length
+        );
+
+        const arreglos = [...workday];
+        arreglos.splice(position, 1);
+        setWorkday([...arreglos]);
+      } else {
+        setWorkday([]);
+      }
+    }
+  };
+
   const getRuc = () => {
     fetchRUC(data.ruc, "GET")
       .then((res) => res.json())
       .then((res) => setRuc(res));
   };
 
-  console.log(dataSelected);
+  useEffect(() => {
+    if (data && data.ruc && data.ruc.length === 11) {
+      getRuc();
+    }
+  }, [data.ruc]);
 
   const postClinics = (e) => {
     const formData = new FormData();
 
     formData.set("ruc", data.ruc || "");
     formData.set("business_name", ruc.razonSocial || data.business_name || "");
-    formData.set("commercial_name", data.business_name || "");
+    formData.set("commercial_name", ruc.razonSocial || data.business_name || "");
     formData.set("logo", avatar && avatar.file ? avatar.file : "");
     formData.set("address", ruc.direccion || data.address || "");
     formData.set("reference", data.reference || "");
@@ -54,100 +95,18 @@ const MRegistroClinica = ({
     formData.set("contacts[0][name]", data.name || "");
     formData.set("contacts[0][phone]", data.phone || "");
     formData.set("contacts[0][email]", data.email || "");
-    formData.set("contacts[0][contact_type]", 1);
+    formData.set("contacts[0][contact_type]", 0);
 
-    formData.set(
-      "work_days[0][day_id]",
-      data && data.workday && data.workday.monday ? data.workday.monday : ""
-    );
-    formData.set(
-      "work_days[0][opening]",
-      data && data.workday && data.workday.opening ? data.workday.opening : ""
-    );
-    formData.set(
-      "work_days[0][closing]",
-      data && data.workday && data.workday.closing ? data.workday.closing : ""
-    );
-
-    formData.set(
-      "work_days[1][day_id]",
-      data && data.workday && data.workday.tuesday ? data.workday.tuesday : ""
-    );
-    formData.set(
-      "work_days[1][opening]",
-      data && data.workday && data.workday.opening ? data.workday.opening : ""
-    );
-    formData.set(
-      "work_days[1][closing]",
-      data && data.workday && data.workday.closing ? data.workday.closing : ""
-    );
-
-    formData.set(
-      "work_days[2][day_id]",
-      data && data.workday && data.workday.wednesday
-        ? data.workday.wednesday
-        : ""
-    );
-    formData.set(
-      "work_days[2][opening]",
-      data && data.workday && data.workday.opening ? data.workday.opening : ""
-    );
-    formData.set(
-      "work_days[2][closing]",
-      data && data.workday && data.workday.closing ? data.workday.closing : ""
-    );
-
-    formData.set(
-      "work_days[3][day_id]",
-      data && data.workday && data.workday.thursday ? data.workday.thursday : ""
-    );
-    formData.set(
-      "work_days[3][opening]",
-      data && data.workday && data.workday.opening ? data.workday.opening : ""
-    );
-    formData.set(
-      "work_days[3][closing]",
-      data && data.workday && data.workday.closing ? data.workday.closing : ""
-    );
-
-    formData.set(
-      "work_days[4][day_id]",
-      data && data.workday && data.workday.friday ? data.workday.friday : ""
-    );
-    formData.set(
-      "work_days[4][opening]",
-      data && data.workday && data.workday.opening ? data.workday.opening : ""
-    );
-    formData.set(
-      "work_days[4][closing]",
-      data && data.workday && data.workday.closing ? data.workday.closing : ""
-    );
-
-    formData.set(
-      "work_days[5][day_id]",
-      data && data.workday && data.workday.saturday ? data.workday.saturday : ""
-    );
-    formData.set(
-      "work_days[5][opening]",
-      data && data.workday && data.workday.opening ? data.workday.opening : ""
-    );
-    formData.set(
-      "work_days[5][closing]",
-      data && data.workday && data.workday.closing ? data.workday.closing : ""
-    );
-
-    formData.set(
-      "work_days[6][day_id]",
-      data && data.workday && data.workday.sunday ? data.workday.sunday : ""
-    );
-    formData.set(
-      "work_days[6][opening]",
-      data && data.workday && data.workday.opening ? data.workday.opening : ""
-    );
-    formData.set(
-      "work_days[6][closing]",
-      data && data.workday && data.workday.closing ? data.workday.closing : ""
-    );
+    if (workday) {
+      for (var [value] of Object.entries(workday)) {
+        formData.set(`work_days[${value}][day_id]`, Number(value) + 1);
+        if (data.apertura) {
+          for (var [key2, value2] of Object.entries(data.apertura)) {
+            formData.set(`work_days[${value}][${key2}]`, value2);
+          }
+        }
+      }
+    }
 
     fetchGETPOSTPUTDELETE("clinics", formData, "POST").then((resp) => {
       if (resp.status === 200) {
@@ -181,7 +140,7 @@ const MRegistroClinica = ({
   const putClinics = (e) => {
     const formData = new FormData();
 
-    // formData.set("corporation_id", 1);
+    formData.set("corporation_id", 1);
     formData.set(
       "ruc",
       dataSelected && dataSelected.corporation.ruc
@@ -208,14 +167,7 @@ const MRegistroClinica = ({
         ? dataSelected.corporation.commercial_name
         : ""
     );
-    formData.set(
-      "logo",
-      avatar
-        ? avatar.file
-        : dataSelected &&
-            dataSelected.corporation &&
-            dataSelected.corporation.logo
-    );
+    formData.set("logo", avatar ? avatar.file : null);
     formData.set(
       "address",
       data.address
@@ -305,288 +257,18 @@ const MRegistroClinica = ({
         ? dataSelected.corporation.contacts[0].email
         : ""
     );
-    formData.set("contacts[0][contact_type]", 1);
+    formData.set("contacts[0][contact_type]", 0);
 
-    formData.set(
-      "work_days[0][day_id]",
-      data && data.workday && data.workday.monday
-        ? data.workday.monday
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[0] &&
-          dataSelected.corporation.work_day[0].hours &&
-          dataSelected.corporation.work_day[0].hours.day_id
-        ? dataSelected.corporation.work_day[0].hours.day_id
-        : ""
-    );
-    formData.set(
-      "work_days[0][opening]",
-      data && data.workday && data.workday.opening
-        ? data.workday.opening
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[0] &&
-          dataSelected.corporation.work_day[0].hours &&
-          dataSelected.corporation.work_day[0].hours.opening
-        ? dataSelected.corporation.work_day[0].hours.opening
-        : ""
-    );
-    formData.set(
-      "work_days[0][closing]",
-      data && data.workday && data.workday.closing
-        ? data.workday.closing
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[0] &&
-          dataSelected.corporation.work_day[0].hours &&
-          dataSelected.corporation.work_day[0].hours.closing
-        ? dataSelected.corporation.work_day[0].hours.closing
-        : ""
-    );
-
-    formData.set(
-      "work_days[1][day_id]",
-      data && data.workday && data.workday.tuesday
-        ? data.workday.tuesday
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[1] &&
-          dataSelected.corporation.work_day[1].hours &&
-          dataSelected.corporation.work_day[1].hours.day_id
-        ? dataSelected.corporation.work_day[1].hours.day_id
-        : ""
-    );
-    formData.set(
-      "work_days[1][opening]",
-      data && data.workday && data.workday.opening
-        ? data.workday.opening
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[1] &&
-          dataSelected.corporation.work_day[1].hours &&
-          dataSelected.corporation.work_day[1].hours.opening
-        ? dataSelected.corporation.work_day[1].hours.opening
-        : ""
-    );
-    formData.set(
-      "work_days[1][closing]",
-      data && data.workday && data.workday.closing
-        ? data.workday.closing
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[2] &&
-          dataSelected.corporation.work_day[2].hours &&
-          dataSelected.corporation.work_day[2].hours.closing
-        ? dataSelected.corporation.work_day[2].hours.closing
-        : ""
-    );
-
-    formData.set(
-      "work_days[2][day_id]",
-      data && data.workday && data.workday.wednesday
-        ? data.workday.wednesday
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[2] &&
-          dataSelected.corporation.work_day[2].hours &&
-          dataSelected.corporation.work_day[2].hours.day_id
-        ? dataSelected.corporation.work_day[2].hours.day_id
-        : ""
-    );
-    formData.set(
-      "work_days[2][opening]",
-      data && data.workday && data.workday.opening
-        ? data.workday.opening
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[2] &&
-          dataSelected.corporation.work_day[2].hours &&
-          dataSelected.corporation.work_day[2].hours.opening
-        ? dataSelected.corporation.work_day[2].hours.opening
-        : ""
-    );
-    formData.set(
-      "work_days[2][closing]",
-      data && data.workday && data.workday.closing
-        ? data.workday.closing
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[2] &&
-          dataSelected.corporation.work_day[2].hours &&
-          dataSelected.corporation.work_day[2].hours.closing
-        ? dataSelected.corporation.work_day[2].hours.closing
-        : ""
-    );
-
-    formData.set(
-      "work_days[3][day_id]",
-      data && data.workday && data.workday.thursday
-        ? data.workday.thursday
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[3] &&
-          dataSelected.corporation.work_day[3].hours &&
-          dataSelected.corporation.work_day[3].hours.day_id
-        ? dataSelected.corporation.work_day[3].hours.day_id
-        : ""
-    );
-    formData.set(
-      "work_days[3][opening]",
-      data && data.workday && data.workday.opening
-        ? data.workday.opening
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[3] &&
-          dataSelected.corporation.work_day[3].hours &&
-          dataSelected.corporation.work_day[3].hours.opening
-        ? dataSelected.corporation.work_day[3].hours.opening
-        : ""
-    );
-    formData.set(
-      "work_days[3][closing]",
-      data && data.workday && data.workday.closing
-        ? data.workday.closing
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[3] &&
-          dataSelected.corporation.work_day[3].hours &&
-          dataSelected.corporation.work_day[3].hours.closing
-        ? dataSelected.corporation.work_day[3].hours.closing
-        : ""
-    );
-
-    formData.set(
-      "work_days[4][day_id]",
-      data && data.workday && data.workday.friday
-        ? data.workday.friday
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[4] &&
-          dataSelected.corporation.work_day[4].hours &&
-          dataSelected.corporation.work_day[4].hours.day_id
-        ? dataSelected.corporation.work_day[4].hours.day_id
-        : ""
-    );
-    formData.set(
-      "work_days[4][opening]",
-      data && data.workday && data.workday.opening
-        ? data.workday.opening
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[4] &&
-          dataSelected.corporation.work_day[4].hours &&
-          dataSelected.corporation.work_day[4].hours.opening
-        ? dataSelected.corporation.work_day[4].hours.opening
-        : ""
-    );
-    formData.set(
-      "work_days[4][closing]",
-      data && data.workday && data.workday.closing
-        ? data.workday.closing
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[4] &&
-          dataSelected.corporation.work_day[4].hours &&
-          dataSelected.corporation.work_day[4].hours.closing
-        ? dataSelected.corporation.work_day[4].hours.closing
-        : ""
-    );
-
-    formData.set(
-      "work_days[5][day_id]",
-      data && data.workday && data.workday.saturday
-        ? data.workday.saturday
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[5] &&
-          dataSelected.corporation.work_day[5].hours &&
-          dataSelected.corporation.work_day[5].hours.day_id
-        ? dataSelected.corporation.work_day[5].hours.day_id
-        : ""
-    );
-    formData.set(
-      "work_days[5][opening]",
-      data && data.workday && data.workday.opening
-        ? data.workday.opening
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[5] &&
-          dataSelected.corporation.work_day[5].hours &&
-          dataSelected.corporation.work_day[5].hours.opening
-        ? dataSelected.corporation.work_day[5].hours.opening
-        : ""
-    );
-    formData.set(
-      "work_days[5][closing]",
-      data && data.workday && data.workday.closing
-        ? data.workday.closing
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[5] &&
-          dataSelected.corporation.work_day[5].hours &&
-          dataSelected.corporation.work_day[5].hours.closing
-        ? dataSelected.corporation.work_day[5].hours.closing
-        : ""
-    );
-
-    formData.set(
-      "work_days[6][day_id]",
-      data && data.workday && data.workday.sunday
-        ? data.workday.sunday
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[6] &&
-          dataSelected.corporation.work_day[6].hours &&
-          dataSelected.corporation.work_day[6].hours.day_id
-        ? dataSelected.corporation.work_day[6].hours.day_id
-        : ""
-    );
-    formData.set(
-      "work_days[6][opening]",
-      data && data.workday && data.workday.opening
-        ? data.workday.opening
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[6] &&
-          dataSelected.corporation.work_day[6].hours &&
-          dataSelected.corporation.work_day[6].hours.opening
-        ? dataSelected.corporation.work_day[6].hours.opening
-        : ""
-    );
-    formData.set(
-      "work_days[6][closing]",
-      data && data.workday && data.workday.closing
-        ? data.workday.closing
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.work_day &&
-          dataSelected.corporation.work_day[6] &&
-          dataSelected.corporation.work_day[6].hours &&
-          dataSelected.corporation.work_day[6].hours.closing
-        ? dataSelected.corporation.work_day[6].hours.closing
-        : ""
-    );
-
+    if (workday) {
+      for (var [value] of Object.entries(workday)) {
+        formData.set(`work_days[${value}][day_id]`, Number(value) + 1);
+        if (data.apertura) {
+          for (var [key2, value2] of Object.entries(data.apertura)) {
+            formData.set(`work_days[${value}][${key2}]`, value2);
+          }
+        }
+      }
+    }
     fetchGETPOSTPUTDELETE(
       `clinics/update/${dataSelected.id}`,
       formData,
@@ -621,25 +303,64 @@ const MRegistroClinica = ({
     });
   };
 
-  const handleChange = (e) => {
-    setData({
-      ...data,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   const submit = (e) => {
     e.preventDefault();
-    editar ? putClinics() : postClinics();
-  };
 
-  useEffect(() => {
-    if (data && data.ruc && data.ruc.length === 11) {
-      getRuc();
+    if (data) {
+      if (data.ruc.trim() === "" || null) {
+        setError(true);
+
+        document.getElementById("ruc").style =
+          "border:1px solid red !important";
+      }
+
+      if (data.business_name.trim() === "" || null) {
+        setError(true);
+
+        document.getElementById("business_name").style =
+          "border:1px solid red !important";
+      }
+
+      if (data.name.trim() === "" || null) {
+        setError(true);
+
+        document.getElementById("name").style =
+          "border:1px solid red !important";
+      }
+
+      if (data.phone.trim() === "" || null) {
+        setError(true);
+
+        document.getElementById("phone").style =
+          "border:1px solid red !important";
+      }
+
+      if (data.email.trim() === "" || null) {
+        setError(true);
+
+        document.getElementById("email").style =
+          "border:1px solid red !important";
+      }
     }
-  }, [data.ruc]);
+    if (
+      (data.ruc !== "" || null,
+      data.business_name !== "" || null,
+      data.name !== "" || null,
+      data.phone !== "" || null,
+      data.email !== "" || null)
+    ) {
+      postClinics();
+    }
 
-  console.log(ruc);
+    if (editar) {
+      document.getElementById("ruc").style = "border:none";
+      document.getElementById("business_name").style = "border:none";
+      document.getElementById("name").style = "border:none";
+      document.getElementById("phone").style = "border:none";
+      document.getElementById("email").style = "border:none";
+      putClinics();
+    }
+  };
 
   return (
     <div>
@@ -655,16 +376,16 @@ const MRegistroClinica = ({
       >
         <h3 className="title__modal">{"Registrar Clínica"}</h3>
         <div className="container">
-          <form className="row mt-3" onSubmit={(e) => submit(e)}>
+          <form className="row mt-3 " onSubmit={(e) => submit(e)}>
             <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6  mregistro__cliente mb-3">
               <div className="mregistro__clinica">
                 <div>
-                  <label>RUC:</label>
+                  <label for="validationCustom01">RUC:</label>
                   <input
                     type="number"
                     name="ruc"
                     id="ruc"
-                    required
+                    style={{ border: "1px solid red !important" }}
                     disabled={editar ? true : false}
                     defaultValue={
                       dataSelected && dataSelected.corporation.ruc
@@ -673,6 +394,7 @@ const MRegistroClinica = ({
                     }
                     onChange={(e) => handleChange(e)}
                   />
+                  {/* {error ? <p style={{color:'red'}}>Campo obligatorio</p> : null} */}
                 </div>
                 <div>
                   <label>Razón social:</label>
@@ -680,7 +402,6 @@ const MRegistroClinica = ({
                     type="text"
                     name="business_name"
                     id="business_name"
-                    required
                     defaultValue={
                       editar === true
                         ? dataSelected && dataSelected.corporation.business_name
@@ -697,7 +418,6 @@ const MRegistroClinica = ({
                     type="text"
                     name="name"
                     id="name"
-                    required
                     defaultValue={
                       dataSelected &&
                       dataSelected.corporation &&
@@ -716,7 +436,6 @@ const MRegistroClinica = ({
                     type="number"
                     name="phone"
                     id="phone"
-                    required
                     defaultValue={
                       dataSelected &&
                       dataSelected.corporation &&
@@ -735,7 +454,6 @@ const MRegistroClinica = ({
                     type="email"
                     name="email"
                     id="email"
-                    required
                     defaultValue={
                       dataSelected &&
                       dataSelected.corporation &&
@@ -788,7 +506,7 @@ const MRegistroClinica = ({
                       type="checkbox"
                       className="form-check-input"
                       name="clinic_type_id"
-                      disabled={data.clinic_type_id === 2 ? true : false}
+                      // disabled={data.clinic_type_id === 2 ? true : false}
                       defaultChecked={
                         dataSelected && dataSelected.clinic_type_id === 1
                           ? true
@@ -807,7 +525,7 @@ const MRegistroClinica = ({
                       type="checkbox"
                       className="form-check-input"
                       name="clinic_type_id"
-                      disabled={data.clinic_type_id === 1 ? true : false}
+                      // disabled={data.clinic_type_id === 1 ? true : false}
                       defaultChecked={
                         dataSelected && dataSelected.clinic_type_id === 2
                           ? true
@@ -841,7 +559,7 @@ const MRegistroClinica = ({
                     onChange={(e) =>
                       setData({
                         ...data,
-                        workday: { ...data.workday, opening: e.target.value },
+                        apertura: { ...data.apertura, opening: e.target.value },
                       })
                     }
                   />
@@ -863,7 +581,7 @@ const MRegistroClinica = ({
                     onChange={(e) =>
                       setData({
                         ...data,
-                        workday: { ...data.workday, closing: e.target.value },
+                        apertura: { ...data.apertura, closing: e.target.value },
                       })
                     }
                   />
@@ -885,15 +603,7 @@ const MRegistroClinica = ({
                           ? true
                           : false
                       }
-                      onChange={(e) =>
-                        setData({
-                          ...data,
-                          workday: {
-                            ...data.workday,
-                            monday: e.target.checked === true ? 1 : 0,
-                          },
-                        })
-                      }
+                      onChange={(e) => handleWorkday(e, 0)}
                     />
                     <label>L</label>
                   </div>
@@ -910,15 +620,7 @@ const MRegistroClinica = ({
                           ? true
                           : false
                       }
-                      onChange={(e) =>
-                        setData({
-                          ...data,
-                          workday: {
-                            ...data.workday,
-                            tuesday: e.target.checked === true ? 2 : 0,
-                          },
-                        })
-                      }
+                      onChange={(e) => handleWorkday(e, 1)}
                     />
                     <label>M</label>
                   </div>
@@ -934,15 +636,7 @@ const MRegistroClinica = ({
                           ? true
                           : false
                       }
-                      onChange={(e) =>
-                        setData({
-                          ...data,
-                          workday: {
-                            ...data.workday,
-                            wednesday: e.target.checked === true ? 3 : 0,
-                          },
-                        })
-                      }
+                      onChange={(e) => handleWorkday(e, 2)}
                     />
                     <label>M</label>
                   </div>
@@ -959,15 +653,7 @@ const MRegistroClinica = ({
                           ? true
                           : false
                       }
-                      onChange={(e) =>
-                        setData({
-                          ...data,
-                          workday: {
-                            ...data.workday,
-                            thursday: e.target.checked === true ? 4 : 0,
-                          },
-                        })
-                      }
+                      onChange={(e) => handleWorkday(e, 3)}
                     />
                     <label>J</label>
                   </div>
@@ -984,15 +670,7 @@ const MRegistroClinica = ({
                           ? true
                           : false
                       }
-                      onChange={(e) =>
-                        setData({
-                          ...data,
-                          workday: {
-                            ...data.workday,
-                            friday: e.target.checked === true ? 5 : 0,
-                          },
-                        })
-                      }
+                      onChange={(e) => handleWorkday(e, 4)}
                     />
                     <label>V</label>
                   </div>
@@ -1009,15 +687,7 @@ const MRegistroClinica = ({
                           ? true
                           : false
                       }
-                      onChange={(e) =>
-                        setData({
-                          ...data,
-                          workday: {
-                            ...data.workday,
-                            saturday: e.target.checked === true ? 6 : 0,
-                          },
-                        })
-                      }
+                      onChange={(e) => handleWorkday(e, 5)}
                     />
                     <label>S</label>
                   </div>
@@ -1034,15 +704,7 @@ const MRegistroClinica = ({
                           ? true
                           : false
                       }
-                      onChange={(e) =>
-                        setData({
-                          ...data,
-                          workday: {
-                            ...data.workday,
-                            sunday: e.target.checked === true ? 7 : 0,
-                          },
-                        })
-                      }
+                      onChange={(e) => handleWorkday(e, 6)}
                     />
                     <label>D</label>
                   </div>
@@ -1074,7 +736,6 @@ const MRegistroClinica = ({
                     setDataMapa={setDataMapa}
                     editar={editar}
                     dataSelected={dataSelected}
-                    required
                   />
                 </div>
               </div>

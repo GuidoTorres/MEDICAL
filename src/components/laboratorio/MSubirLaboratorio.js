@@ -13,6 +13,7 @@ const MSubirLaboratorio = ({
 }) => {
   const [result, setResult] = useState({
     id: dataSelected.id,
+    result: "",
   });
   const closeModal = () => {
     setOpenModal(false);
@@ -20,35 +21,42 @@ const MSubirLaboratorio = ({
   console.log(result);
 
   const postResults = () => {
-    fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) => {
-      console.log(data);
+    if (result.result === "" || null) {
+      document.getElementById("resultado").style =
+        "border:1px solid red !important";
+    }
 
-      if (data.status === 200) {
-        closeModal();
-        Swal.fire({
-          icon: "success",
-          title: "Éxito",
-          text: "Se cargo el resultado correctamente.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getAtencion();
-          }
-        });
-      } else {
-        closeModal();
-        Swal.fire({
-          icon: "error",
-          title: "!Ups¡",
-          text: "Algo salió mal.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Cerrar",
-        });
-      }
-    });
+    if (result.result !== "" || null) {
+      fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) => {
+        console.log(data);
+
+        if (data.status === 200) {
+          closeModal();
+          Swal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Se cargo el resultado correctamente.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Aceptar",
+          }).then((resp) => {
+            if (resp.isConfirmed) {
+              getAtencion();
+            }
+          });
+        } else {
+          closeModal();
+          Swal.fire({
+            icon: "error",
+            title: "!Ups¡",
+            text: "Algo salió mal.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cerrar",
+          });
+        }
+      });
+    }
   };
 
   console.log(result);
@@ -107,6 +115,7 @@ const MSubirLaboratorio = ({
                 <select
                   className="form-select"
                   aria-label="Default select example"
+                  id="resultado"
                   onChange={(e) =>
                     setResult({ ...result, result: e.target.value })
                   }

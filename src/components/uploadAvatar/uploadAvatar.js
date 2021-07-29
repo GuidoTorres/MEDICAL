@@ -14,8 +14,9 @@ const UploadAvatar = ({ setAvatar, avatar, editar, dataSelected }) => {
     noKeyboard: true,
     onDrop,
   });
+
   return (
-    <div className="image__upload" {...getRootProps()} >
+    <div className="image__upload" {...getRootProps()}>
       <input {...getInputProps()} />
       {isDragActive ? (
         <img
@@ -23,25 +24,19 @@ const UploadAvatar = ({ setAvatar, avatar, editar, dataSelected }) => {
           src=""
           alt=""
         />
-      ) : editar && dataSelected && dataSelected.corporation &&dataSelected.corporation.logo ? (
-        <img
-          className="image__avatar"
-          style={{width:'80%'}}
-          src={
-            dataSelected.corporation.logo ? dataSelected.corporation.logo : ""
-          }
-          alt=""
-        />
-      ) : editar === true ? (
-        <img
-          className="image__avatar"
-          src={dataSelected.photo ? dataSelected.photo : ""}
-          alt=""
-        />
       ) : (
         <img
+          style={{ maxHeight: "100%", maxWidth: "95%" }}
           className="image__avatar"
-          src={avatar ? avatar.preview : ""}
+          src={
+            avatar
+              ? avatar.preview
+              : dataSelected &&
+                dataSelected.corporation &&
+                dataSelected.corporation.logo
+              ? dataSelected.corporation.logo
+              : ""
+          }
           alt=""
         />
       )}

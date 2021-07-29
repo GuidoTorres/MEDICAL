@@ -1,7 +1,55 @@
-import React from 'react';
-import GraficoBarra from './GraficoBarra';
+import React, { useEffect, useState } from "react";
+import {
+  fetchGETPOSTPUTDELETEJSON,
+  fetchGETPOSTPUTDELETE,
+} from "../../helpers/fetch";
+import GraficoBarra from "./GraficoBarra";
 
 const Estadistica = () => {
+  const [estadistica, setEstadistica] = useState({});
+  const [fechas, setFecha] = useState({});
+  const [categoria, setCategoria] = useState({});
+  const [servicios, setServicios] = useState({});
+  const [tipoPrueba, setTipoPrueba] = useState({
+    servicios: [],
+  });
+  const [checks, setChecks] = useState({
+    check1: 0,
+    check2: 0,
+  });
+
+  const traerHistorial = () => {
+    const data = {
+      servicios1: tipoPrueba,
+      fecha_inicio: fechas.fecha_inicio,
+      fecha_fin: fechas.fecha_fin,
+    };
+
+    fetchGETPOSTPUTDELETEJSON(
+      "resultados/mi-clinica/estadisticas-servicios",
+      data.servicios1,
+      "POST"
+    )
+      .then((res) => res.json())
+      .then((res) => setEstadistica(res));
+  };
+
+  const getServicios = () => {
+    fetchGETPOSTPUTDELETE("services")
+      .then((data) => data.json())
+      .then((datos) => setServicios(datos.data));
+  };
+  const handleChange = (e) => {
+    setFecha({
+      ...fechas,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  useEffect(() => {
+    getServicios();
+  }, []);
+
   return (
     <div className="container mb-3">
       <div className="row">
@@ -12,95 +60,101 @@ const Estadistica = () => {
               <div>
                 <div className="">
                   <div className="">
-                    <input type="checkbox" className="form-check-input" />
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      onChange={(e) =>
+                        setChecks({
+                          ...checks,
+                          check1: e.target.checked ? 1 : 0,
+                        })
+                      }
+                    />
                     <label>Categoría</label>
                   </div>
                   <div className="adminusuario__date">
                     <select
                       className="form-select"
                       aria-label="Default select example"
+                      onChange={(e) => setCategoria({ data: e.target.value })}
                     >
                       <option>Seleccionar</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                      <option value="Covid 19">Covid 19</option>
                     </select>
                   </div>
                 </div>
-                <textarea></textarea>
+                <textarea
+                  disabled
+                  placeholder={categoria ? categoria.data : ""}
+                ></textarea>
               </div>
               <div className="">
                 <div>
                   <div className="">
-                    <input type="checkbox" className="form-check-input" />
+                    <input
+                      type="checkbox"
+                      disabled={checks.check1 === 1 ? false : true}
+                      className="form-check-input"
+                      onChange={(e) =>
+                        setChecks({
+                          ...checks,
+                          check2: e.target.checked ? 1 : 0,
+                        })
+                      }
+                    />
                     <label>Sub categoría</label>
                   </div>
                   <div className="adminusuario__date">
                     <select
                       className="form-select"
                       aria-label="Default select example"
+                      name="data"
+                      onChange={(e) =>
+                        setTipoPrueba({
+                          servicios: [
+                            ...tipoPrueba.servicios,
+                            Number(e.target.value),
+                          ],
+                        })
+                      }
                     >
-                      <option>Seleccionar</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                      <option value="">Seleccione</option>
+                      {servicios &&
+                        servicios[0] &&
+                        servicios[0].services &&
+                        servicios[0].services.map((data, i) => (
+                          <option key={i} data={data.name} value={data.id}>
+                            {data.name}
+                          </option>
+                        ))}
                     </select>
                   </div>
                 </div>
-                <textarea></textarea>
+                <textarea
+                  disabled
+                  placeholder={tipoPrueba ? tipoPrueba.servicios : ""}
+                ></textarea>
               </div>
             </div>
           </div>
           <div className=" barra">
             <p className="">Seleccionar intervalo de tiempo</p>
-            <div className="laboratorio__estadistica-intervalo">
-              <div>
-                <input type="checkbox" className="form-check-input" />
-                <label>Día</label>
-              </div>
+            <div className="laboratorio__estadistica-intervalo mt-3">
               <div className="tiempo">
                 {/* <div> */}
                 <div>
                   <label>Inicio: </label>
-                  <input type="date" />
+                  <input
+                    type="date"
+                    name="fecha_inicio"
+                    onChange={handleChange}
+                  />
                 </div>
                 <div>
                   <label>Fin: </label>
-                  <input type="date" />
+                  <input type="date" name="fecha_fin" onChange={handleChange} />
                 </div>
                 {/* </div> */}
-              </div>
-            </div>
-            <div className="laboratorio__estadistica-intervalo">
-              <div>
-                <input type="checkbox" className="form-check-input" />
-                <label>Mes</label>
-              </div>
-              <div className="tiempo">
-                <div>
-                  <label>Inicio: </label>
-                  <input type="date" />
-                </div>
-                <div>
-                  <label>Fin: </label>
-                  <input type="date" />
-                </div>
-              </div>
-            </div>
-            <div className="laboratorio__estadistica-intervalo">
-              <div>
-                <input type="checkbox" className="form-check-input" />
-                <label>Año</label>
-              </div>
-              <div className="tiempo">
-                <div>
-                  <label>Inicio</label>
-                  <input type="date" />
-                </div>
-                <div>
-                  <label>Fin</label>
-                  <input type="date" />
-                </div>
               </div>
             </div>
           </div>
@@ -108,10 +162,12 @@ const Estadistica = () => {
         <div className="col-12 col-sm-12 col-md-12 col-lg-6 ">
           <div className=" barra mb-3">
             <div className="">
-              <GraficoBarra />
+              <GraficoBarra estadistica={estadistica} tipoPrueba={tipoPrueba} />
             </div>
             <div className="list-botones">
-              <button className="mt-5 botones">Actualizar</button>
+              <button className="mt-5 botones" onClick={() => traerHistorial()}>
+                Actualizar
+              </button>
             </div>
           </div>
         </div>

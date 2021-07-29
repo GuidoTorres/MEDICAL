@@ -5,8 +5,8 @@ import Swal from "sweetalert2";
 import { customStyles } from "../../../helpers/tablaOpciones";
 
 const MAnticuerpos = ({
-  openModal5,
-  setOpenModal5,
+  openModal,
+  setOpenModal,
   dataSelected,
   tipoPrueba,
   getAtencion,
@@ -15,9 +15,8 @@ const MAnticuerpos = ({
     id: dataSelected.id,
   });
   const closeModal = () => {
-    setOpenModal5(false);
+    setOpenModal(false);
   };
-  console.log(result);
 
   const postResults = () => {
     fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) => {
@@ -53,7 +52,7 @@ const MAnticuerpos = ({
 
   return (
     <Modal
-      isOpen={openModal5}
+      isOpen={openModal}
       onRequestClose={closeModal}
       style={customStyles}
       className="modal mlaboratorio_subir"
@@ -111,8 +110,8 @@ const MAnticuerpos = ({
                   }
                 >
                   <option>Seleccione</option>
-                  <option value="0">Detectado</option>
-                  <option value="1">No Detectado</option>
+                  <option value="0">Negativo</option>
+                  <option value="1">Positivo</option>
                 </select>
               </div>
             </div>

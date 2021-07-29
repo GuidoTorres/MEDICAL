@@ -67,8 +67,7 @@ const Estadisticas = () => {
         <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 recepcion__estadistica">
           <div className="barra">
             <label htmlFor="">Seleccionar el intervalo de tiempo</label>
-            <div className="adminestadistica__fecha">
-              <label>Fecha</label>
+            <div className="adminestadistica__fecha mt-3">
               <div className="adminestadistica__subfecha">
                 <div>
                   <label>Inicio:</label>
@@ -88,19 +87,25 @@ const Estadisticas = () => {
                 </div>
               </div>
             </div>
-
-            <button
-              className="botones mt-5 "
+            <div
               style={{
-                width: "200px",
-                borderRadius: "8px",
-                marginBottom: "30px",
-                marginLeft: "120px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
-              onClick={() => getEstadisticas()}
+              className="mt-4"
             >
-              Obtener estadísticas
-            </button>
+              <button
+                className="botones"
+                style={{
+                  width: "200px",
+                  borderRadius: "8px",
+                }}
+                onClick={() => getEstadisticas()}
+              >
+                Obtener estadísticas
+              </button>
+            </div>
           </div>
         </div>
 

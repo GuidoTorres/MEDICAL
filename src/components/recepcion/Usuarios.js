@@ -16,6 +16,7 @@ const Usuarios = ({ history }) => {
   const [getDateAttention, setGetDateAttention] = useState([]);
   const [editar, setEditar] = useState(false);
   const [dataSelected, setDataSelected] = useState({});
+  const [formulario, setFormulario] = useState({});
 
   const handleAddRegistro = () => {
     setAddRegistro(true);
@@ -25,6 +26,12 @@ const Usuarios = ({ history }) => {
     setDataSelected(e);
   };
 
+  const getForms = () => {
+    fetchGETPOSTPUTDELETE("forms")
+      .then((res) => res.json())
+      .then((res) => setFormulario(res.data));
+  };
+
   const getAttention = () => {
     // fetchGETPOSTPUTDELETE("patient")
     fetchGETPOSTPUTDELETE("patient")
@@ -32,13 +39,11 @@ const Usuarios = ({ history }) => {
       .then((datos) => setGetDateAttention(datos.data));
   };
 
-
-
   useEffect(() => {
     getAttention();
+    getForms();
   }, []);
-
-  console.log(getDateAttention);
+  console.log(formulario);
 
   const columnas = [
     {
@@ -88,7 +93,7 @@ const Usuarios = ({ history }) => {
     },
     {
       name: "Teléfono",
-      selector: (row) => (row.phone ? row.phone : ""),
+      selector: (row) => (row.cellphone ? row.cellphone : ""),
       sortable: true,
       sortable: true,
       style: {
@@ -264,6 +269,7 @@ const Usuarios = ({ history }) => {
           setGenerarAtencion={setGenerarAtencion}
           dataSelected={dataSelected}
           getAttention={getAttention}
+          formulario={formulario}
         />
       )}
     </div>
