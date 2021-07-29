@@ -226,7 +226,7 @@ const Navbar = ({
                 {titulo5}
               </NavLink>
             </li>
-            {/* <li className="nav-item">
+            <li className="nav-item">
               <NavLink
                 activeClassName="activo"
                 className="navLink nav-link"
@@ -234,7 +234,7 @@ const Navbar = ({
               >
                 {titulo6}
               </NavLink>
-            </li> */}
+            </li>
             <li className="nav-item">
               <button
                 style={{

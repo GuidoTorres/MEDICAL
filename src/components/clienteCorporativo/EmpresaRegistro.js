@@ -34,7 +34,16 @@ const EmpresaRegistro = () => {
 
   const subidaExcel = (e) => {
     const file = e.target.files[0];
-    setLoadExcel(file);
+    // setLoadExcel(file);
+    // importarExcel();
+    const formData = new FormData();
+    formData.set('file', file);
+    fetchGETPOSTPUTDELETE('company_employees/import', formData, 'POST').then(
+      (data) => {
+        data.json();
+      }
+    );
+    getEmployees();
   };
 
   const columnas = [
@@ -217,11 +226,7 @@ const EmpresaRegistro = () => {
                   // onClick={() => importarExcel()}
                 ></i>
               </label> */}
-              <input
-                type="file"
-                onClick={(e) => subidaExcel(e)}
-                onChange={importarExcel}
-              />
+              <input type="file" onClick={(e) => subidaExcel(e)} />
             </div>
           </div>
           <DataTable

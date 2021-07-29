@@ -49,7 +49,7 @@ const Solicitud = () => {
     },
     {
       name: 'Usuario',
-      selector: (row) => (row ? row.users.username : ''),
+      selector: (row) => (row ? row.users[0].person.name : ''),
       sortable: true,
       style: {
         borderBotton: 'none',
