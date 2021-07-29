@@ -92,7 +92,7 @@ const Navbar = ({
           </button>
         </div>
         <div>
-          <h3 className="nombredeltitulo">{nombre}</h3>
+          <h3 className="nombredeltitulo">Bienvenido {nombre}</h3>
           <ul className=" navbar-nav mr-auto">
             <li className="nav-item">
               <NavLink
@@ -127,7 +127,7 @@ const Navbar = ({
             </li>
             <li className="nav-item">
               <NavLink
-                activeClassName=""
+                activeClassName="activo"
                 className="navLink nav-link"
                 to={url4}
                 style={{ color: 'white', fontSize: '15px' }}
@@ -137,7 +137,7 @@ const Navbar = ({
             </li>
             <li className="nav-item">
               <NavLink
-                activeClassName=""
+                activeClassName="activo"
                 className="navLink nav-link"
                 to={url5}
                 style={{ color: 'white', fontSize: '15px' }}
@@ -145,16 +145,16 @@ const Navbar = ({
                 {titulo5}
               </NavLink>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <NavLink
-                activeClassName=""
+                activeClassName="activo"
                 className="navLink nav-link"
                 to={url6}
                 style={{ color: 'white', fontSize: '15px' }}
               >
                 {titulo6}
               </NavLink>
-            </li>
+            </li> */}
             <button
               className="text-white"
               style={{
@@ -178,7 +178,7 @@ const Navbar = ({
               />
             </Link>
           </div>
-          <h1>gaaaaa</h1>
+          <h3 className="nombreSubTitulo"> {nombre}</h3>
           <ul className="navUl navbar-nav mr-auto">
             <li className="nav-item">
               <NavLink
@@ -219,14 +219,14 @@ const Navbar = ({
             </li>
             <li className="nav-item">
               <NavLink
-                activeClassName="active"
+                activeClassName="activo"
                 className="navLink nav-link"
                 to={url5}
               >
                 {titulo5}
               </NavLink>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <NavLink
                 activeClassName="activo"
                 className="navLink nav-link"
@@ -234,7 +234,7 @@ const Navbar = ({
               >
                 {titulo6}
               </NavLink>
-            </li>
+            </li> */}
             <li className="nav-item">
               <button
                 style={{

@@ -1,31 +1,42 @@
 import React, { useEffect, useState } from "react";
 
 import DataTable from "react-data-table-component";
-import { fempresa2 } from "../../data/FEmpresa";
 import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 
 import { paginacionOpciones } from "../../helpers/tablaOpciones";
-import MEmpresa from "./MEmpresa";
+import MCargarInformacion from "./MCargarInformacion";
 import MLiquidacion from "./MLiquidacion";
 
 const Liquidacion = () => {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState(null);
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [openModalCargarInfo, setOpenModalCargarInfo] = useState(false);
   const [datos, setDatos] = useState({});
   const [liquidacion, setLiquidacion] = useState([]);
 
   const getLiquidacion = () => {
+    // console.log("a");
     fetchGETPOSTPUTDELETE("settlement")
       .then((info) => info.json())
-      .then((info) => setLiquidacion(info.data));
+      .then((info) => {
+        // console.log(info);
+        setLiquidacion(info.data);
+        setBusqueda("");
+      });
   };
 
+  const handleCargarInfo = (e) => {
+    setDatos(e);
+    setOpenModalCargarInfo(true);
+  };
+
+  // console.log(liquidacion);
   useEffect(() => {
     getLiquidacion();
   }, []);
 
-  console.log(liquidacion);
+  // console.log(liquidacion);
 
   const columnas = [
     {
@@ -95,14 +106,14 @@ const Liquidacion = () => {
       },
     },
     {
-      name: "Editar",
+      name: "Eliminar",
       button: true,
       cell: (e) => (
         <button
           onClick={() => handleDetalles(e)}
           className="table__tablebutton"
         >
-          <i className="fas fa-pencil-alt"></i>{" "}
+          <i className="far fa-trash-alt"></i>{" "}
         </button>
       ),
     },
@@ -111,7 +122,7 @@ const Liquidacion = () => {
       button: true,
       cell: (e) => (
         <button
-          // onClick={() => handleDetalles(e)}
+          onClick={() => handleCargarInfo(e)}
           className="table__tablebutton"
         >
           <i className="fas fa-folder-open"></i>
@@ -122,22 +133,36 @@ const Liquidacion = () => {
 
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = liquidacion.filter((data) => {
-        return (
-          data.id.toString().includes(busqueda) ||
-          data.company.corporation.business_name
-            .toString()
-            .includes(busqueda) ||
-          data.company.corporation.ruc.toString().includes(busqueda) ||
-          data.date_issue.toString().includes(busqueda) ||
-          data.subtotal.toString().includes(busqueda) ||
-          data.igv.toString().includes(busqueda) ||
-          data.amount.toString().includes(busqueda)
-        );
-      });
-      setListRegistro(search);
+      if (busqueda !== "" && busqueda !== null) {
+        const search = liquidacion.filter((data) => {
+          return (
+            data.id.toString().includes(busqueda) ||
+            (data.company
+              ? data.company.corporation.business_name
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "") ||
+            (data.company
+              ? data.company.corporation.ruc.toString().includes(busqueda)
+              : "") ||
+            (data.date_issue
+              ? data.date_issue.toString().includes(busqueda)
+              : "") ||
+            (data.subtotal
+              ? data.subtotal.toString().includes(busqueda)
+              : "") ||
+            (data.igv ? data.igv.toString().includes(busqueda) : "") ||
+            (data.amount ? data.amount.toString().includes(busqueda) : "")
+          );
+        });
+        setListRegistro(search);
+      } else {
+        setListRegistro(liquidacion);
+      }
     };
     filtrarElemento();
+    return () => setListRegistro([]);
   }, [busqueda]);
   //
   const handleDetalles = (e) => {
@@ -168,7 +193,7 @@ const Liquidacion = () => {
 
           <DataTable
             columns={columnas}
-            data={liquidacion}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
@@ -181,6 +206,15 @@ const Liquidacion = () => {
         <MLiquidacion
           openModal={openModal}
           setOpenModal={setOpenModal}
+          datos={datos}
+          getLiquidacion={getLiquidacion}
+          setBusqueda={setBusqueda}
+        />
+      )}
+      {openModalCargarInfo && (
+        <MCargarInformacion
+          openModalCargarInfo={openModalCargarInfo}
+          setOpenModalCargarInfo={setOpenModalCargarInfo}
           datos={datos}
         />
       )}

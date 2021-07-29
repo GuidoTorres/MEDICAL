@@ -20,18 +20,7 @@ const EmpresaAsignacion = () => {
     getAsignacion();
   }, []);
 
-  // console.log(seleccionar);
-  // const seleccionJSON = (e) => {
-  //   console.log(e);
-  // };
-  // const seleccionCheckbox = (e) => {
-  //   let arrayids = [];
-  //   stateCustomer.forEach((d) => {
-  //     if (d.select) {
-  //       arrayids.push(d.id);
-  //     }
-  //   });
-  //   console.log(arrayids);
+  console.log(asignation);
   // };
   console.log(data);
   const columnas = [
@@ -87,6 +76,17 @@ const EmpresaAsignacion = () => {
         row.person && row.person.mom_lastname ? row.person.mom_lastname : '',
       sortable: true,
       grow: 2,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+    {
+      name: 'Correo',
+      selector: (row) =>
+        row.person && row.person.email ? row.person.email : '',
+      sortable: true,
+      grow: 3,
       style: {
         color: '#8f9196',
         borderBotton: 'none',

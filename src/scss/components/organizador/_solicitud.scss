@@ -54,11 +54,12 @@
   align-items: center;
   margin-top: 15px;
   margin-bottom: 25px;
+
   label {
     margin-right: 5px;
   }
   input {
-    width: 90%;
+    width: 95%;
   }
 }
 .organizador__transportista {
@@ -74,46 +75,93 @@
   }
 }
 .organizador__datostransportista {
-  display: flex;
-  label {
-    margin-right: 5px;
-  }
-  input {
-    margin-right: 5px;
+  div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 7px;
+    select,
+    input {
+      width: 50%;
+    }
   }
 }
 .organizador__datostransportistas {
+  align-items: center;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  margin-top: 7px;
   div {
-    width: 25%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    input {
+      width: 90%;
+    }
   }
 }
 
 @media (max-width: 992px) {
   .organizador__datostransportistas {
     flex-direction: column;
+    display: flex;
     div {
-      width: 100%;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
       margin-bottom: 5px;
+      input {
+        width: 100%;
+      }
     }
   }
 }
 
 @media (max-width: 768px) {
   .organizador__datos {
-    background-color: orange;
     div {
-      background-color: orangered;
+      display: flex;
+      flex-wrap: wrap;
       div {
-        background-color: orchid;
+        width: 100%;
         input {
           width: 60%;
         }
+      }
+    }
+  }
+  .organizador__detalle {
+    display: flex;
+    flex-direction: column;
+    div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 7px;
+      input {
+        width: 50%;
+      }
+    }
+  }
+  .organizador__datostransportista {
+    flex-direction: column;
+    div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 7px;
+      select,
+      input {
+        width: 60%;
+      }
+    }
+  }
+  .organizador__datostransportistas {
+    display: flex;
+    div {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      input {
+        width: 100%;
       }
     }
   }
@@ -121,9 +169,18 @@
 
 @media (max-width: 768px) {
   .organizador__transportista {
-    background-color: rgb(73, 197, 255);
     select {
       width: 50%;
+    }
+  }
+}
+@media (max-width: 335px) {
+  .organizador__datostransportista {
+    margin-top: 7px;
+    div {
+      input {
+        width: 60%;
+      }
     }
   }
 }

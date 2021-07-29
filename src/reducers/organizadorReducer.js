@@ -1,15 +1,14 @@
 import { types } from '../types/types';
 
-const initialState = {
-  listOrganizador: {},
-};
+// const initialState = {
+//   listOrganizador: {},
+// };
 
-const organizadorReducer = (state = initialState, action) => {
+const organizadorReducer = (state = {}, action) => {
   switch (action.type) {
     case types.organizador:
       return {
-        ...state,
-        ...action.payload,
+        selectionId: action.payload.selectionId,
       };
 
     default:

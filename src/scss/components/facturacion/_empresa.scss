@@ -14,9 +14,13 @@
 
 .liquidacion__title {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 1fr;
   justify-content: space-between;
   gap: 15px;
+
+  @media screen and(min-width:712px) {
+    grid-template-columns: 1fr 1fr;
+  }
 
   div {
     display: grid;
@@ -103,4 +107,19 @@
   td {
     border: 0.5px solid rgba(0, 0, 0, 0.2);
   }
+}
+
+.box__inputs {
+  display: grid;
+
+  div {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    margin: 5px 0;
+  }
+}
+
+.box__buttons {
+  display: flex;
+  justify-content: space-between;
 }

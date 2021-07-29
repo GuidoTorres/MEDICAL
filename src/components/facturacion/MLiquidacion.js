@@ -1,30 +1,55 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Modal from "react-modal";
 import { customStyles } from "../../helpers/tablaOpciones";
 import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 
-const MLiquidacion = ({ openModal, setOpenModal, datos }) => {
+const MLiquidacion = ({
+  openModal,
+  setOpenModal,
+  datos,
+  getLiquidacion,
+  setBusqueda,
+}) => {
+  useEffect(() => {
+    setBusqueda(null);
+  }, []);
+
   const closeModal = () => {
     setOpenModal(false);
   };
 
-  console.log(datos);
+  // console.log(datos);
 
   const deleteLiquidacion = () => {
     fetchGETPOSTPUTDELETEJSON(`settlement/${datos.id}`, {}, "DELETE")
       .then((info) => info.json())
-      .then((info) => console.log(info));
+      .then(() => {
+        getLiquidacion();
+      });
   };
 
   const handleEliminar = () => {
     deleteLiquidacion();
+    closeModal();
+    // setBusqueda("");
   };
 
   const openPdf = () => {
-    // window.open("./assets-liquidacion/liquidacion5110.pdf", "_blank");
+    window.open(
+      "https://diver-recicla.com/medicalRoma/public/liquidacion5110.pdf"
+    );
   };
-  const dowloandPdf = () => {};
-  const dowloandExcel = () => {};
+  const dowloandPdf = () => {
+    console.log("descargando...");
+    window.open(
+      "https://diver-recicla.com/medicalRoma/public/liquidacion5110.pdf"
+    );
+  };
+  const dowloandExcel = () => {
+    window.open(
+      "https://diver-recicla.com/medicalRoma/public/Liquidacion5110.xlsx"
+    );
+  };
 
   return (
     <Modal
@@ -69,7 +94,7 @@ const MLiquidacion = ({ openModal, setOpenModal, datos }) => {
       <div className="col-12 fmparticular">
         <div>
           <div className="table-responsive">
-            <table class="table">
+            <table className="table">
               <thead>
                 <tr>
                   <th scope="col">Item</th>
@@ -91,8 +116,8 @@ const MLiquidacion = ({ openModal, setOpenModal, datos }) => {
                         <td>{data.attention.date_attention}</td>
                         <td>{data.attention.person.name}</td>
                         <td>{data.attention.person.pat_lastname}</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <td>{data.attention.service.name}</td>
+                        <td>{data.attention.service.description}</td>
                         <td>{data.attention.amount}</td>
                       </tr>
                     ))
@@ -103,7 +128,7 @@ const MLiquidacion = ({ openModal, setOpenModal, datos }) => {
                   <td>{datos.subtotal ? datos.subtotal : ""}</td>
                 </tr>
                 <tr>
-                  <td colspan="7">
+                  <td colSpan="7">
                     {" "}
                     <textarea
                       defaultValue={datos.observation ? datos.observation : ""}
@@ -114,7 +139,7 @@ const MLiquidacion = ({ openModal, setOpenModal, datos }) => {
                   <td>{datos.igv ? datos.igv : ""}</td>
                 </tr>
                 <tr>
-                  <td colspan="7"></td>
+                  <td colSpan="7"></td>
                   <td>Total</td>
                   <td>{datos.amount ? datos.amount : ""}</td>
                 </tr>
@@ -137,10 +162,10 @@ const MLiquidacion = ({ openModal, setOpenModal, datos }) => {
         </div>
         <div className="group-2">
           <button className="botones me-1" onClick={closeModal}>
-            Retroceder
+            Cancelar
           </button>
-          <button className="botones" onClick={handleEliminar}>
-            Dar de baja
+          <button className="btn btn-danger" onClick={handleEliminar}>
+            Eliminar
           </button>
         </div>
       </div>

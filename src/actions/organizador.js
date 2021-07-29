@@ -10,14 +10,16 @@ import { types } from '../types/types';
 //   };
 // };
 
-const lista = (e) => {
+const listaPacient = (selectionId) => {
   return {
     type: types.organizador,
-    payload: e,
+    payload: {
+      selectionId,
+    },
   };
 };
 
-export { lista };
+export { listaPacient };
 // fetchGETPOSTPUTDELETEJSON(`reservation/get/${e.id}`)
 //   .then((data) => data.json())
 //   .then((resultados) => setListRegistro(resultados));
