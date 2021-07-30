@@ -237,7 +237,7 @@ const Calendario = () => {
               // onView={onViewChange}
               // view={lastView}
               // onSelectSlot={onSelectSlot}
-              // selectable={true}
+              selectable={true}
               // step={170}
               defaultView={Views.AGENDA}
               // formats={formats}

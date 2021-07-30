@@ -20,18 +20,18 @@ const Comentarios = ({ modalIsOpen, setIsOpen, comentarios }) => {
         <div>
           <div>
             <textarea
-              rows="10"
-              cols="40"
+              rows="5"
+              cols="50"
               disabled
               value={comentarios.observation}
             >
               {comentarios.observation}
             </textarea>
-            <div className="lista__botones">
-              <button type="button" className="botones" onClick={closeModal}>
-                Cerrar
-              </button>
-            </div>
+          </div>
+          <div className="list-botones">
+            <button type="button" className="botones" onClick={closeModal}>
+              Cerrar
+            </button>
           </div>
         </div>
       </div>
