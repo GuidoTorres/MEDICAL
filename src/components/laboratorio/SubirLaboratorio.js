@@ -202,7 +202,7 @@ const SubirLaboratorio = () => {
               <div>
                 <label>Categoría</label>
                 <select
-                  class="form-select"
+                  className="form-select"
                   aria-label="Default select example"
                   onChange={(e) =>
                     setTipoPrueba({ ...tipoPrueba, id: e.target.value })

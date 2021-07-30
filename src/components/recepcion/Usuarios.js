@@ -183,6 +183,7 @@ const Usuarios = ({ history }) => {
 
   useEffect(() => {
     const filtrarElemento = () => {
+      
       const search = rusuario.filter((data) => {
         return (
           data.nombre
