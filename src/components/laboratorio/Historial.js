@@ -196,15 +196,11 @@ const Historial = () => {
         284,
         268,
         `${
-<<<<<<< HEAD
           e.resultado && e.resultado.result === 0
             ? "No detectado"
             : e.resultado && e.resultado.result === 1
             ? "Detectado"
             : "Sin resultado"
-=======
-          e.resultado && e.resultado.result === 0 ? 'No detectado' : 'Detectado'
->>>>>>> 84836022f91808634913587281c9ec10e13727fc
         }`
       );
       doc.addImage(firma, "PNG", 350, 460, 80, 50, "", "FAST");
