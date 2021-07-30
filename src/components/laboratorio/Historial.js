@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { lasubir } from "../../data/LASubir";
@@ -16,24 +15,6 @@ import molecular from "../../assets/pdf Imagen/molecular.png";
 import rapida from "../../assets/pdf Imagen/rapida.png";
 import anticuerpos from "../../assets/pdf Imagen/anticuerpos.png";
 import firma from "../../assets/pdf Imagen/Firma.png";
-=======
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
-import { lasubir } from '../../data/LASubir';
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
-
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
-import MDescargar from './Modales/MDescargar';
-import MSubirLaboratorio from './MSubirLaboratorio';
-
-import jsPDF from 'jspdf';
-import eclia from '../../assets/pdf Imagen/eclia.png';
-import antigenosi from '../../assets/pdf Imagen/antigenoSi.png';
-import antigenono from '../../assets/pdf Imagen/antigenoNo.png';
-import molecular from '../../assets/pdf Imagen/molecular.png';
-import rapida from '../../assets/pdf Imagen/rapida.png';
-import anticuerpos from '../../assets/pdf Imagen/anticuerpos.png';
->>>>>>> 84836022f91808634913587281c9ec10e13727fc
 
 const Historial = () => {
   const [busqueda, setBusqueda] = useState('');
@@ -243,7 +224,6 @@ const Historial = () => {
       doc.text(
         180,
         265,
-<<<<<<< HEAD
         `${
           e.resultado && e.resultado.result === "0"
             ? "Negativo"
@@ -251,9 +231,6 @@ const Historial = () => {
             ? "Positivo"
             : "Sin resultado"
         }`
-=======
-        `${e.resultado && e.resultado.result === '0' ? 'Negativo' : 'Positivo'}`
->>>>>>> 84836022f91808634913587281c9ec10e13727fc
       );
     } else if (e.servicio_id == 8) {
       doc.text(84, 142, `${e.nro_atencion ? e.nro_atencion : ''}`);
