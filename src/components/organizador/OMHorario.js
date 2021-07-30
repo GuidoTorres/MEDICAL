@@ -11,12 +11,18 @@ const OMHorario = ({ MHorario, setMHorario, nTranspor }) => {
     user_id: parseInt(nTranspor.transportista),
     attention_date: '',
     attention_time: null,
+    attention_date_fin: '',
     attention_time_end: null,
     comments: '',
   });
 
-  const { attention_date, attention_time, attention_time_end, comments } =
-    listHorario;
+  const {
+    attention_date,
+    attention_time,
+    attention_date_fin,
+    attention_time_end,
+    comments,
+  } = listHorario;
 
   const closeModal = () => {
     setMHorario(false);
@@ -49,7 +55,7 @@ const OMHorario = ({ MHorario, setMHorario, nTranspor }) => {
       <h3 className="title__modal">Evento</h3>
       <form className="" onSubmit={handleSubmit}>
         <div className="form-group mt-3">
-          <label>Fecha</label>
+          <label>Fecha inicio</label>
           <input
             type="date"
             name="attention_date"
@@ -65,6 +71,16 @@ const OMHorario = ({ MHorario, setMHorario, nTranspor }) => {
             type="time"
             name="attention_time"
             value={attention_time}
+            onChange={handleOnChange}
+            className="form-control"
+          />
+        </div>
+        <div className="form-group mt-3">
+          <label>Fecha fin</label>
+          <input
+            type="date"
+            name="attention_date_fin"
+            value={attention_date_fin}
             onChange={handleOnChange}
             className="form-control"
           />

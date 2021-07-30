@@ -3,8 +3,11 @@ import DataTable from "react-data-table-component";
 import jsPDF from "jspdf";
 import eclia from "../../assets/pdf Imagen/eclia.png";
 import antigenosi from "../../assets/pdf Imagen/antigenoSi.png";
+import antigenono from "../../assets/pdf Imagen/antigenoNo.png";
 import molecular from "../../assets/pdf Imagen/molecular.png";
 import rapida from "../../assets/pdf Imagen/rapida.png";
+import anticuerpos from "../../assets/pdf Imagen/anticuerpos.png";
+
 import Swal from "sweetalert2";
 
 // import { historial } from '../../data/PHistorial';
@@ -27,8 +30,6 @@ const CargarResultado = () => {
   useEffect(() => {
     getResult();
   }, []);
-
-  console.log(result);
 
   const columnas = [
     {
@@ -156,51 +157,52 @@ const CargarResultado = () => {
   };
   const handleDetalles = (e) => {
     if (e.service.id == 5) {
-      generarPDF(e, antigenosi, "Formato Antígeno");
+      if (e.resultado && e.resultado.result === 0) {
+        generarPDF(e, antigenono, "Formato Antígeno");
+      } else if (e.resultado && e.resultado === 1) {
+        generarPDF(e, antigenosi, "Formato Antígeno");
+      }
     } else if (e.service.id === 6) {
       generarPDF(e, eclia, "Formato Eclia");
     } else if (e.service.id === 7) {
-      generarPDF(e, molecular, "Formato Molecular");
+      generarPDF(e, anticuerpos, "Formato Anticuerpos");
     } else if (e.service.id === 8) {
       generarPDF(e, rapida, "Formato Rapida");
     }
   };
 
   const generarPDF = (e, imagen, formato) => {
-    console.log(e);
     const doc = new jsPDF("p", "pt");
     doc.setProperties({
       title: formato,
     });
     doc.setFontSize(10);
 
-    doc.addImage(imagen, "PNG", 5, 20, 580, 800, "", "FAST");
+    doc.addImage(imagen, "PNG", 6, 20, 580, 800, "", "FAST");
 
-    if (e.service.id === 5) {
-      doc.text(
-        328,
-        135,
-        `${
-          e && e.person && e.person.gender_id === 1 ? "Masculino" : "Femenino"
-        }`
-      );
-      doc.text(60, 158, `${e && e.person && e.person.dni ? e.person.dni : ""}`);
-      doc.text(
-        428,
-        157,
-        `${e && e.result && e.result.date ? e.result.date : ""}`
-      );
+    if (e.servicio_id === 5) {
+      doc.text(328, 135, `${e && e.genero ? e.genero : ""}`);
+      doc.text(328, 135, `${e && e.genero === null ? "Masculino" : ""}`);
+
+      doc.text(90, 136, `${e.nro_atencion ? e.nro_atencion : ""}`);
+      doc.text(60, 158, `${e.dni ? e.dni : ""}`);
+      doc.text(428, 157, `${e.fecha_atencion ? e.fecha_atencion : ""}`);
+
+      doc.text(85, 180, `${e.paciente ? e.paciente : ""}`);
+      doc.text(312, 180, "20");
 
       doc.text(
-        90,
-        180,
+        284,
+        268,
         `${
-          e && e.person && e.person.name && e.person.pat_lastname
-            ? e.person.name + " " + e.person.pat_lastname
-            : ""
+          e.resultado && e.resultado.result === 0
+            ? "No detectado"
+            : e.resultado && e.resultado.result === 1
+            ? "Detectado"
+            : "Sin resultado"
         }`
       );
-    } else if (e.service.id == 6) {
+    } else if (e.servicio_id == 6) {
       doc.text(
         328,
         120,
@@ -208,115 +210,91 @@ const CargarResultado = () => {
           e && e.person && e.person.gender_id === 1 ? "Masculino" : "Femenino"
         }`
       );
-      doc.text(55, 141, `${e && e.person && e.person.dni ? e.person.dni : ""}`);
-      doc.text(
-        428,
-        141,
-        `${e && e.result && e.result.date ? e.result.date : ""}`
-      );
+      doc.text(85, 119, `${e.nro_atencion ? e.nro_atencion : ""}`);
+      doc.text(55, 141, `${e.dni ? e.dni : ""}`);
+      doc.text(428, 141, `${e.fecha_atencion ? e.fecha_atencion : ""}`);
+
+      doc.text(80, 163, `${e.paciente ? e.paciente : ""}`);
+      doc.text(313, 164, "20");
 
       doc.text(
-        85,
-        163,
-        `${
-          e && e.person && e.person.name && e.person.pat_lastname
-            ? e.person.name + " " + e.person.pat_lastname
-            : ""
-        }`
+        195,
+        268,
+        `${e.resultado && e.resultado.result_igm ? e.resultado.result_igm : ""}`
       );
-    } else if (e.service.id == 7) {
       doc.text(
-        328,
-        141,
-        `${
-          e && e.person && e.person.gender_id === 1 ? "Masculino" : "Femenino"
-        }`
+        285,
+        268,
+        `${e.resultado && e.resultado.result_igg ? e.resultado.result_igg : ""}`
       );
-      doc.text(55, 163, `${e && e.person && e.person.dni ? e.person.dni : ""}`);
-      doc.text(
-        428,
-        163,
-        `${e && e.result && e.result.date ? e.result.date : ""}`
-      );
+    } else if (e.servicio_id == 7) {
+      doc.text(328, 124, `${e && e.genero === null ? "Masculino" : ""}`);
+
+      doc.text(83, 124, `${e.nro_atencion ? e.nro_atencion : ""}`);
+      doc.text(55, 146, `${e.dni ? e.dni : ""}`);
+      doc.text(428, 146, `${e.fecha_atencion ? e.fecha_atencion : ""}`);
+
+      doc.text(78, 167, `${e.paciente ? e.paciente : ""}`);
+
+      doc.text(310, 167, "20");
 
       doc.text(
-        85,
-        185,
+        180,
+        265,
         `${
-          e && e.person && e.person.name && e.person.pat_lastname
-            ? e.person.name + " " + e.person.pat_lastname
-            : ""
+          e.resultado && e.resultado.result === "0"
+            ? "Negativo"
+            : e.resultado && e.resultado.result === "1"
+            ? "Positivo"
+            : "Sin resultado"
         }`
       );
-    } else if (e.service.id == 8) {
-      doc.text(
-        328,
-        141,
-        `${
-          e && e.person && e.person.gender_id === 1 ? "Masculino" : "Femenino"
-        }`
-      );
-      doc.text(55, 163, `${e && e.person && e.person.dni ? e.person.dni : ""}`);
-      doc.text(
-        428,
-        163,
-        `${e && e.result && e.result.date ? e.result.date : ""}`
-      );
+    } else if (e.servicio_id == 8) {
+      doc.text(84, 142, `${e.nro_atencion ? e.nro_atencion : ""}`);
 
-      doc.text(
-        85,
-        185,
-        `${
-          e && e.person && e.person.name && e.person.pat_lastname
-            ? e.person.name + " " + e.person.pat_lastname
-            : ""
-        }`
-      );
+      doc.text(328, 141, `${e && e.genero ? e.genero : ""}`);
+      doc.text(55, 163, `${e && e.dni ? e.dni : ""}`);
+      doc.text(428, 163, `${e && e.fecha_atencion ? e.fecha_atencion : ""}`);
+
+      doc.text(80, 184, `${e.paciente ? e.paciente : ""}`);
+      doc.text(310, 185, "20");
     }
 
-    // window.open(doc.output("bloburl"), "_blank");
-    // var blob = doc.output('blob');
     var file = new File([doc.output("blob")], "resultados.pdf", {
       type: "application/pdf",
     });
-    setResultado({
-      id: e.id,
-      pdf: file,
-    });
-    postResult(resultado);
-  };
 
-  const postResult = (resultado) => {
+    console.log(e.id);
     const formData = new FormData();
-    formData.set("id", resultado.id);
-    formData.set("pdf", resultado.pdf);
+    formData.set("id", e.id);
+    formData.set("pdf", file);
     console.log(resultado);
-    // fetchGETPOSTPUTDELETE("result", formData, "POST").then((info) => {
-    //   console.log(info);
-    //   if (info.status === 200) {
-    //     Swal.fire({
-    //       icon: "success",
-    //       title: "Éxito",
-    //       text: "Se ha cargo el pdf correctamente.",
-    //       confirmButtonColor: "#3085d6",
-    //       cancelButtonColor: "#d33",
-    //       confirmButtonText: "Aceptar",
-    //     }).then((resp) => {
-    //       if (resp.isConfirmed) {
-    //         getResult();
-    //       }
-    //     });
-    //   } else {
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: "!Ups¡",
-    //       text: "Algo salió mal.",
-    //       confirmButtonColor: "#3085d6",
-    //       cancelButtonColor: "#d33",
-    //       confirmButtonText: "Cerrar",
-    //     });
-    //   }
-    // });
+    fetchGETPOSTPUTDELETE("result", formData, "POST").then((info) => {
+      console.log(info);
+      if (info.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se ha cargo el pdf correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getResult();
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
+      }
+    });
   };
 
   return (

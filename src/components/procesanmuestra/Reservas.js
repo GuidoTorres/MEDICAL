@@ -26,8 +26,6 @@ const Reservas = () => {
     getAttention();
   }, []);
 
-  console.log(getDateAttention);
-
   const columnas = [
     {
       name: "Item",
