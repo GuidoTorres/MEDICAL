@@ -11,7 +11,7 @@ const OMHorario = ({ MHorario, setMHorario, nTranspor }) => {
     user_id: parseInt(nTranspor.transportista),
     attention_date: '',
     attention_time: null,
-    attention_date_fin: '',
+    // attention_date_fin: '',
     attention_time_end: null,
     comments: '',
   });
@@ -19,7 +19,7 @@ const OMHorario = ({ MHorario, setMHorario, nTranspor }) => {
   const {
     attention_date,
     attention_time,
-    attention_date_fin,
+    // attention_date_fin,
     attention_time_end,
     comments,
   } = listHorario;
@@ -75,7 +75,7 @@ const OMHorario = ({ MHorario, setMHorario, nTranspor }) => {
             className="form-control"
           />
         </div>
-        <div className="form-group mt-3">
+        {/* <div className="form-group mt-3">
           <label>Fecha fin</label>
           <input
             type="date"
@@ -84,7 +84,7 @@ const OMHorario = ({ MHorario, setMHorario, nTranspor }) => {
             onChange={handleOnChange}
             className="form-control"
           />
-        </div>
+        </div> */}
         <div className="form-group mt-3">
           <label>Hora fin</label>
           <input

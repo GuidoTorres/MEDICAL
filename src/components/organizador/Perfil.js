@@ -1,6 +1,10 @@
 import React from 'react';
 import logo from '../../assets/icons/Isotipo.png';
+import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 const Perfil = () => {
+  // const listaPersonal = () => {
+  //   fetchGETPOSTPUTDELETEJSON('');
+  // };
   return (
     <div className="container">
       <div className="row">

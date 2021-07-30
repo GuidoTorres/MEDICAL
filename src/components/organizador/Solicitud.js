@@ -4,7 +4,7 @@ import { paginacionOpciones } from '../../helpers/tablaOpciones';
 import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 import { listaPacient } from '../../actions/organizador';
 
-import OMLista from './OMLista';
+// import OMLista from './OMLista';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -12,9 +12,9 @@ const Solicitud = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [busqueda, setBusqueda] = useState('');
-  const [listRegistro, setListRegistro] = useState({});
+  // const [listRegistro, setListRegistro] = useState({});
   const [oranizadorxd, setOranizadorxd] = useState([]);
-  const [modalList, setModalList] = useState(false);
+  // const [modalList, setModalList] = useState(false);
   const [search, setSearch] = useState([]);
 
   const getSolicitudes = () => {
@@ -22,15 +22,15 @@ const Solicitud = () => {
       .then((data) => data.json())
       .then((datos) => setOranizadorxd(datos.data));
   };
-  console.log(oranizadorxd);
+  // console.log(oranizadorxd);
   useEffect(() => {
     getSolicitudes();
   }, []);
 
-  const abrirModal = (e) => {
-    setListRegistro(e);
-    setModalList(true);
-  };
+  // const abrirModal = (e) => {
+  //   setListRegistro(e);
+  //   setModalList(true);
+  // };
 
   const ventanaIr = (e) => {
     dispatch(listaPacient(e));
@@ -66,6 +66,33 @@ const Solicitud = () => {
       },
     },
     {
+      name: 'Tipo de servico ',
+      selector: (row) => (row ? row.sample[0].services[0].category.name : ''),
+      sortable: true,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
+      name: 'N Atenciones',
+      selector: (row) => (row ? row.sample[0].cantidad : ''),
+      sortable: true,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
+      name: 'Plan de atención',
+      selector: (row) => (row ? row.sample[0].services[0].name : ''),
+      sortable: true,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
       name: 'Fecha solicitada',
       selector: (row) => (row ? row.attention_date : ''),
       sortable: true,
@@ -83,15 +110,15 @@ const Solicitud = () => {
         color: '#555555',
       },
     },
-    {
-      name: 'Ver',
-      button: true,
-      cell: (e) => (
-        <button onClick={() => abrirModal(e)} className="table__tablebutton">
-          <i className="far fa-eye"></i>
-        </button>
-      ),
-    },
+    // {
+    //   name: 'Ver',
+    //   button: true,
+    //   cell: (e) => (
+    //     <button onClick={() => abrirModal(e)} className="table__tablebutton">
+    //       <i className="far fa-eye"></i>
+    //     </button>
+    //   ),
+    // },
     {
       name: 'Atención',
       button: true,
@@ -153,13 +180,13 @@ const Solicitud = () => {
           />
         </div>
       </div>
-      {modalList && (
+      {/* {modalList && (
         <OMLista
           modalList={modalList}
           setModalList={setModalList}
           listRegistro={listRegistro}
         />
-      )}
+      )} */}
     </div>
   );
 };
