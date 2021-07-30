@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import Swal from 'sweetalert2';
 import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
@@ -9,7 +9,7 @@ const EmpresaRegistro = () => {
   const [busqueda, setBusqueda] = useState('');
   const [employees, setEmployees] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [loadExcel, setLoadExcel] = useState();
+  const [listRegistro, setListRegistro] = useState('');
 
   const getEmployees = () => {
     fetchGETPOSTPUTDELETE('company_employees')
@@ -18,24 +18,26 @@ const EmpresaRegistro = () => {
   };
 
   useEffect(() => {
-    const importarExcel = () => {
-      const formData = new FormData();
-      formData.set('file', loadExcel);
-      fetchGETPOSTPUTDELETE('company_employees/import', formData, 'POST').then(
-        (data) => {
-          data.json();
-        }
-      );
-    };
-    importarExcel();
     getEmployees();
-  }, [loadExcel]);
+  }, []);
+
+  const importarExcel = (file) => {
+    const formData = new FormData();
+    formData.set('file', file);
+    fetchGETPOSTPUTDELETE('company_employees/import', formData, 'POST')
+      .then((data) => {
+        data.json();
+      })
+      .then((data) => console.log(data));
+    getEmployees();
+  };
 
   const subidaExcel = (e) => {
-    const file = e.target.files[0];
-    setLoadExcel(file);
+    if (e.target.files[0] !== undefined) {
+      importarExcel(e.target.files[0]);
+    }
   };
-  console.log(employees);
+
   const columnas = [
     {
       name: 'Tipo de documento',
@@ -49,6 +51,7 @@ const EmpresaRegistro = () => {
           : '',
 
       sortable: true,
+      grow: 2,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -58,6 +61,7 @@ const EmpresaRegistro = () => {
       name: 'Nº de documento',
       selector: (row) => (row.person && row.person.dni ? row.person.dni : ''),
       sortable: true,
+      grow: 2,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -67,6 +71,7 @@ const EmpresaRegistro = () => {
       name: 'Nombres',
       selector: (row) => (row.person && row.person.name ? row.person.name : ''),
       sortable: true,
+      grow: 2,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -108,7 +113,11 @@ const EmpresaRegistro = () => {
     {
       name: 'Sexo',
       selector: (row) =>
-        row.person && row.person.gender_id === 1 ? 'Masculino' : 'Femenino',
+        row.person && row.person.gender_id === 1
+          ? 'Masculino'
+          : row.person.gender_id === 2
+          ? 'Femenino'
+          : '',
       sortable: true,
       style: {
         color: '#8f9196',
@@ -120,6 +129,7 @@ const EmpresaRegistro = () => {
       selector: (row) =>
         row.person && row.person.birthday ? row.person.birthday : '',
       sortable: true,
+      grow: 2,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -135,15 +145,6 @@ const EmpresaRegistro = () => {
         borderBotton: 'none',
       },
     },
-    // {
-    //   name: 'Editar',
-    //   button: true,
-    //   cell: (e) => (
-    //     <button onClick={() => handleEditar(e)} className="table__tablebutton">
-    //       <i className="fas fa-pencil-alt"></i>
-    //     </button>
-    //   ),
-    // },
     {
       name: 'Eliminar',
       button: true,
@@ -158,14 +159,10 @@ const EmpresaRegistro = () => {
     },
   ];
 
-  // const handleEditar = (e) => {
-  //   setIsOpen(true);
-  // };
   const handleEliminar = (e) => {
-    console.log(e);
     Swal.fire({
       title: '¿Desea eliminar?',
-      text: `${e.dni}`,
+      text: `${e.person.name}`,
       icon: 'info',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -202,6 +199,20 @@ const EmpresaRegistro = () => {
     setBusqueda(([e.target.name] = e.target.value));
   };
 
+  useEffect(() => {
+    const filtrarElemento = () => {
+      const search = employees.filter((data) => {
+        return data.person.dni
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLocaleLowerCase()
+          .includes(busqueda);
+      });
+      setListRegistro(search);
+    };
+    filtrarElemento();
+  }, [busqueda, employees]);
+
   return (
     <div className="container">
       <div className="row">
@@ -218,19 +229,14 @@ const EmpresaRegistro = () => {
               />
             </div>
             <div className="">
-              <input type="file" onClick={subidaExcel} />
-            </div>
-            <div>
-              <label>
-                Cargar <i className="fas fa-upload"></i>
-              </label>
+              <input type="file" onChangeCapture={(e) => subidaExcel(e)} />
             </div>
           </div>
           <DataTable
             className="dataTable"
             id="table"
             columns={columnas}
-            data={employees}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader

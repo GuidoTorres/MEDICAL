@@ -53,14 +53,16 @@ const Calendario = () => {
   }, []);
 
   // setEventosList(listCalendario);
-  console.log(listCalendario);
+  // console.log(listCalendario);
 
   // console.log(listCalendario);
 
   // const now = moment().minutes(0).seconds(0).add(1, 'hours');
   // const nowPlus = now.clone().add(1, 'hours');
 
-  const events = listRegistro;
+  // const events = listRegistro;
+
+  // console.log(now);
   // console.log(events);
   // 3=> acpetado
   // 2=> falta cancelar
@@ -235,7 +237,7 @@ const Calendario = () => {
               // onView={onViewChange}
               // view={lastView}
               // onSelectSlot={onSelectSlot}
-              // selectable={true}
+              selectable={true}
               // step={170}
               defaultView={Views.AGENDA}
               // formats={formats}

@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
-import { ToastContainer } from "react-toastify";
+import React, { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component';
+import { ToastContainer } from 'react-toastify';
 
-import Comentarios from "./Modales/Comentarios";
-import { paginacionOpciones } from "../../helpers/tablaOpciones";
-import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
+import Comentarios from './Modales/Comentarios';
+import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 
 const EmpresaFacturacion = () => {
-  const [busqueda, setBusqueda] = useState("");
-  // const [clinica, setClinica] = useState([]);
+  const [busqueda, setBusqueda] = useState('');
   const [listFact, setListFact] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [comentarios, setComentarios] = useState({});
+  const [listRegistro, setListRegistro] = useState('');
 
   const facturacionList = () => {
-    fetchGETPOSTPUTDELETEJSON("settlement_empresa")
+    fetchGETPOSTPUTDELETEJSON('settlement_empresa')
       .then((data) => data.json())
       .then((datos) => setListFact(datos));
   };
@@ -27,31 +27,30 @@ const EmpresaFacturacion = () => {
     setComentarios(e);
     setIsOpen(true);
   };
-  console.log(listFact);
 
   const columnas = [
     {
-      name: "Ítem",
-      selector: "id",
-      sortable: true,
+      name: 'Ítem',
+      selector: 'id',
+      // sortable: true,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     {
-      name: "Nº de factura",
-      selector: (row) => (row && row.id ? "00" + row.id : ""),
+      name: 'Nº de factura',
+      selector: (row) => (row && row.id ? '00' + row.id : ''),
       sortable: true,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     {
       name: 'Sub total',
       selector: (row) => (row && row.subtotal ? row.subtotal : ''),
-      sortable: true,
+      // sortable: true,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -60,7 +59,7 @@ const EmpresaFacturacion = () => {
     {
       name: 'IGV',
       selector: (row) => (row && row.igv ? row.igv : ''),
-      sortable: true,
+      // sortable: true,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -70,7 +69,7 @@ const EmpresaFacturacion = () => {
     {
       name: 'Monto',
       selector: (row) => (row && row.amount ? row.amount : ''),
-      sortable: true,
+      // sortable: true,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -89,7 +88,7 @@ const EmpresaFacturacion = () => {
       ),
     },
     {
-      name: "Detalle",
+      name: 'Detalle',
       button: true,
       cell: (e) => (
         <button className="table__tablebutton eliminar">
@@ -98,7 +97,7 @@ const EmpresaFacturacion = () => {
       ),
     },
     {
-      name: "Factura",
+      name: 'Factura',
       button: true,
       cell: (e) => (
         <button className="table__tablebutton eliminar">
@@ -107,6 +106,16 @@ const EmpresaFacturacion = () => {
       ),
     },
   ];
+
+  useEffect(() => {
+    const filtrarElemento = () => {
+      const search = listFact.filter((data) => {
+        return data.id.toString().includes(busqueda);
+      });
+      setListRegistro(search);
+    };
+    filtrarElemento();
+  }, [busqueda, listFact]);
 
   const handleOnChange = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -134,7 +143,7 @@ const EmpresaFacturacion = () => {
               <DataTable
                 className="dataTable"
                 columns={columnas}
-                data={listFact}
+                data={listRegistro}
                 pagination
                 paginationComponentOptions={paginacionOpciones}
                 fixedHeader

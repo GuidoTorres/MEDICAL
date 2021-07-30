@@ -9,6 +9,7 @@ const EmpresaAsignacion = () => {
   const [asignation, setAsignation] = useState([]);
   const [modaesCorporativo, setModaesCorporativo] = useState(false);
   const [data, setData] = useState([]);
+  const [listRegistro, setListRegistro] = useState('');
 
   const getAsignacion = () => {
     fetchGETPOSTPUTDELETE('company_employees')
@@ -20,9 +21,6 @@ const EmpresaAsignacion = () => {
     getAsignacion();
   }, []);
 
-  console.log(asignation);
-  // };
-  console.log(data);
   const columnas = [
     {
       name: 'Tipo de documento',
@@ -36,6 +34,7 @@ const EmpresaAsignacion = () => {
           : '',
 
       sortable: true,
+      grow: 2,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -45,6 +44,7 @@ const EmpresaAsignacion = () => {
       name: 'Nº de documento',
       selector: (row) => (row.person && row.person.dni ? row.person.dni : ''),
       sortable: true,
+      grow: 2,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -53,6 +53,7 @@ const EmpresaAsignacion = () => {
     {
       name: 'Nombres',
       selector: (row) => (row.person && row.person.name ? row.person.name : ''),
+      grow: 2,
       sortable: true,
       style: {
         color: '#8f9196',
@@ -107,6 +108,7 @@ const EmpresaAsignacion = () => {
       selector: (row) =>
         row.person.birthday && row.person.birthday ? row.person.birthday : '',
       sortable: true,
+      grow: 2,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -123,6 +125,20 @@ const EmpresaAsignacion = () => {
       },
     },
   ];
+
+  useEffect(() => {
+    const filtrarElemento = () => {
+      const search = asignation.filter((data) => {
+        return data.person.dni
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLocaleLowerCase()
+          .includes(busqueda);
+      });
+      setListRegistro(search);
+    };
+    filtrarElemento();
+  }, [busqueda, asignation]);
 
   const handleOnChange = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -156,7 +172,7 @@ const EmpresaAsignacion = () => {
             className="dataTable"
             id="table"
             columns={columnas}
-            data={asignation}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader

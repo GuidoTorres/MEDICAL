@@ -155,7 +155,6 @@ const EmpresaAsignacion4 = ({
           setIsOpen={setIsOpen}
           data={data}
           modal1={closeModal}
-          // employees={employees}
         />
       )}
     </Modal>
