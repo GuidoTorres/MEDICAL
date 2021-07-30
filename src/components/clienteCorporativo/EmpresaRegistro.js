@@ -22,7 +22,6 @@ const EmpresaRegistro = () => {
   }, []);
 
   const importarExcel = (file) => {
-    console.log(file);
     const formData = new FormData();
     formData.set("file", file);
     fetchGETPOSTPUTDELETE("company_employees/import", formData, "POST")
