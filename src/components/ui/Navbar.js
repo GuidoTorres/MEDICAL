@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink, useHistory } from 'react-router-dom';
-import { startLogout } from '../../actions/auth';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink, useHistory } from "react-router-dom";
+import { startLogout } from "../../actions/auth";
 // import { useSelector } from 'react-redux';
-import logo from '../../assets/icons/logo.png';
-import logosxd from '../../assets/icons/Isotipo.png';
-import titles from '../../assets/icons/medical.png';
+import logo from "../../assets/icons/logo.png";
+import logosxd from "../../assets/icons/Isotipo.png";
+import titles from "../../assets/icons/medical.png";
 
 const Navbar = ({
   titulo1,
@@ -25,39 +25,39 @@ const Navbar = ({
   const history = useHistory();
   const dispatch = useDispatch();
   const { role } = useSelector((state) => state.auth);
-  const [nombre, setNombre] = useState('');
+  const [nombre, setNombre] = useState("");
 
   const handleLogout = () => {
     dispatch(startLogout());
-    history.replace('/');
+    history.replace("/");
   };
 
   const mostrarSidebar = () => {
-    const side = document.querySelector('.navBarUl').style;
+    const side = document.querySelector(".navBarUl").style;
 
-    side.display === '' ? (side.display = 'flex') : (side.display = '');
+    side.display === "" ? (side.display = "flex") : (side.display = "");
   };
 
   // const listado = () => {
   useEffect(() => {
     if (role.id === 1) {
-      return setNombre('Administrador');
+      return setNombre("Administrador");
     } else if (role.id === 2) {
-      return setNombre('Cliente corporativo');
+      return setNombre("Cliente corporativo");
     } else if (role.id === 3) {
-      return setNombre('Clinica toma muestra');
+      return setNombre("Clinica toma muestra");
     } else if (role.id === 4) {
-      return setNombre('Organizador');
+      return setNombre("Organizador");
     } else if (role.id === 8) {
-      return setNombre('Laboratorio');
+      return setNombre("Laboratorio");
     } else if (role.id === 9) {
-      return setNombre('Recepción');
+      return setNombre("Recepción");
     } else if (role.id === 10) {
-      return setNombre('Facturación');
+      return setNombre("Facturación");
     } else if (role.id === 11) {
-      return setNombre('Clinica procesa');
+      return setNombre("Clinica procesa");
     } else if (role.id === 12) {
-      return setNombre('Ventas');
+      return setNombre("Ventas");
     }
   }, [role.id]);
   // };
@@ -88,7 +88,7 @@ const Navbar = ({
             aria-label="Toggle navigation"
             onClick={(e) => mostrarSidebar()}
           >
-            <i className="fas fa-bars" style={{ color: 'white' }}></i>
+            <i className="fas fa-bars" style={{ color: "white" }}></i>
           </button>
         </div>
         <div>
@@ -100,7 +100,7 @@ const Navbar = ({
                 className="navLink nav-link"
                 aria-current="page"
                 to={url1}
-                style={{ color: 'white', fontSize: '15px' }}
+                style={{ color: "white", fontSize: "15px" }}
               >
                 {titulo1}
               </NavLink>
@@ -110,7 +110,7 @@ const Navbar = ({
                 activeClassName="activo"
                 className="navLink nav-link"
                 to={url2}
-                style={{ color: 'white', fontSize: '15px' }}
+                style={{ color: "white", fontSize: "15px" }}
               >
                 {titulo2}
               </NavLink>
@@ -120,7 +120,7 @@ const Navbar = ({
                 activeClassName="activo"
                 className="navLink nav-link"
                 to={url3}
-                style={{ color: 'white', fontSize: '15px' }}
+                style={{ color: "white", fontSize: "15px" }}
               >
                 {titulo3}
               </NavLink>
@@ -130,7 +130,7 @@ const Navbar = ({
                 activeClassName="activo"
                 className="navLink nav-link"
                 to={url4}
-                style={{ color: 'white', fontSize: '15px' }}
+                style={{ color: "white", fontSize: "15px" }}
               >
                 {titulo4}
               </NavLink>
@@ -140,7 +140,7 @@ const Navbar = ({
                 activeClassName="activo"
                 className="navLink nav-link"
                 to={url5}
-                style={{ color: 'white', fontSize: '15px' }}
+                style={{ color: "white", fontSize: "15px" }}
               >
                 {titulo5}
               </NavLink>
@@ -158,9 +158,9 @@ const Navbar = ({
             <button
               className="text-white"
               style={{
-                background: 'transparent',
-                border: 'none',
-                fontSize: '15px',
+                background: "transparent",
+                border: "none",
+                fontSize: "15px",
               }}
               onClick={handleLogout}
             >
@@ -208,24 +208,33 @@ const Navbar = ({
                 {titulo3}
               </NavLink>
             </li>
+            {url4 !== "" || (null && titulo4 !== "") || null ? (
+              <li className="nav-item">
+                <NavLink
+                  activeClassName={
+                    url5 !== "" && titulo5 !== "" ? "activo" : ""
+                  }
+                  className="navLink nav-link"
+                  to={url4}
+                >
+                  {titulo4}
+                </NavLink>
+              </li>
+            ) : null}
+
             <li className="nav-item">
               <NavLink
-                activeClassName="activo"
+                activeClassName={
+                  url5 !== null && titulo5 !== null ? "" : "activo"
+                }
                 className="navLink nav-link"
-                to={url4}
-              >
-                {titulo4}
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink
-                activeClassName="activo"
-                className="navLink nav-link"
+                id="nav5"
                 to={url5}
               >
                 {titulo5}
               </NavLink>
             </li>
+
             {/* <li className="nav-item">
               <NavLink
                 activeClassName="activo"
@@ -238,10 +247,10 @@ const Navbar = ({
             <li className="nav-item">
               <button
                 style={{
-                  background: 'transparent',
-                  border: 'none',
-                  fontSize: '15px',
-                  color: 'white',
+                  background: "transparent",
+                  border: "none",
+                  fontSize: "15px",
+                  color: "white",
                 }}
                 onClick={handleLogout}
               >

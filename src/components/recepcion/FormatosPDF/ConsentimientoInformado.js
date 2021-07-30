@@ -87,12 +87,10 @@ const ConsentimientoInformado = ({ dataSelected, datos }) => {
       <br />
       <p>Lima, {getFecha()} </p>
 
-      <div className="mt-5" style={{display:'flex', justifyContent:'flex-end'}}>
-
-        <button type="button" class="botones btn btn-primary" style={{width:'30%'}}>
-          Guardar
-        </button>
-      </div>
+      <div
+        className="mt-5"
+        style={{ display: "flex", justifyContent: "flex-end" }}
+      ></div>
     </>
   );
 };

@@ -1,8 +1,7 @@
 import React from "react";
 
-const FichaCovid19 = ({ ficha, setFicha}) => {
-
-  const data ={
+const FichaCovid19 = ({ ficha, setFicha }) => {
+  const data = {
     nombre: "Hector Torres Durand",
     dni: "72798529",
     tipo: "Prueba Molecular",
@@ -89,6 +88,19 @@ const FichaCovid19 = ({ ficha, setFicha}) => {
               type="checkbox"
               id="flexCheckDefault"
               onChange={(e) => {
+                setFicha({ ...ficha, ffaa: e.target.checked });
+              }}
+            />
+            <label class="form-check-label" for="flexCheckDefault">
+              FFAA/PNP
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="flexCheckDefault"
+              onChange={(e) => {
                 setFicha({ ...ficha, privado: e.target.checked });
               }}
             />
@@ -143,7 +155,7 @@ const FichaCovid19 = ({ ficha, setFicha}) => {
           </div>
         </div>
 
-        <label className="mt-2" htmlFor="">
+        {/* <label className="mt-2" htmlFor="">
           6. Detectado en punto de entrada:
         </label>
         <div className="div2">
@@ -213,7 +225,7 @@ const FichaCovid19 = ({ ficha, setFicha}) => {
               setFicha({ ...ficha, detectadoLugar: e.target.value });
             }}
           />
-        </div>
+        </div>*/}
       </div>
 
       <label className="mt-4" htmlFor="">
@@ -222,7 +234,18 @@ const FichaCovid19 = ({ ficha, setFicha}) => {
       <div className="paciente">
         <div className="div1 mt-2">
           <div className="mt-2">
-            <label htmlFor="">7. Apellidos y nombres</label>
+            <label htmlFor="">6. Apellidos y nombres</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Username"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+              value={data.nombre}
+            />
+          </div>
+          <div className="mt-2">
+            <label htmlFor="">7. Nº Teléfono</label>
             <input
               type="text"
               class="form-control"
@@ -302,7 +325,29 @@ const FichaCovid19 = ({ ficha, setFicha}) => {
 
         <div className="div3">
           <div>
-            <label htmlFor="">11. Nº DNI</label>
+            <label htmlFor="">11. Nº DNI/CE/PASAPORTE</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder=""
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+              onChange={(e) => setFicha({ ...ficha, dni: e.target.value })}
+            />
+          </div>
+          <div>
+            <label htmlFor="">12. Peso</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder=""
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+              onChange={(e) => setFicha({ ...ficha, dni: e.target.value })}
+            />
+          </div>
+          <div>
+            <label htmlFor="">13. Talla</label>
             <input
               type="text"
               class="form-control"
@@ -313,16 +358,223 @@ const FichaCovid19 = ({ ficha, setFicha}) => {
             />
           </div>
 
-          <div className="mt-2">
-            <label htmlFor="">12. Nº Teléfono</label>
-            <input
-              type="text"
-              class="form-control"
-              placeholder=""
-              aria-label="Username"
-              aria-describedby="basic-addon1"
-              onChange={(e) => setFicha({ ...ficha, telefono: e.target.value })}
-            />
+          <label className="mt-2" htmlFor="">
+            14. Etnia o raza
+          </label>
+          <div className="div2">
+            <div class="form-check">
+              <input
+                class="masculino form-check-input"
+                type="checkbox"
+                id="flexCheckDefault"
+                onChange={(e) => {
+                  setFicha({ ...ficha, masculino: e.target.checked });
+
+                  let check = document.querySelector(".femenino");
+                  e.target.checked === true
+                    ? (check.disabled = true)
+                    : (check.disabled = false);
+                }}
+              />
+              <label class="form-check-label" for="flexCheckDefault">
+                Mestizo
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="femenino form-check-input"
+                type="checkbox"
+                id="flexCheckDefault"
+                onChange={(e) => {
+                  setFicha({ ...ficha, femenino: e.target.checked });
+
+                  let check = document.querySelector(".masculino");
+                  e.target.checked === true
+                    ? (check.disabled = true)
+                    : (check.disabled = false);
+                }}
+              />
+              <label class="form-check-label" for="flexCheckDefault">
+                Afrodescendiente
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="femenino form-check-input"
+                type="checkbox"
+                id="flexCheckDefault"
+                onChange={(e) => {
+                  setFicha({ ...ficha, femenino: e.target.checked });
+
+                  let check = document.querySelector(".masculino");
+                  e.target.checked === true
+                    ? (check.disabled = true)
+                    : (check.disabled = false);
+                }}
+              />
+              <label class="form-check-label" for="flexCheckDefault">
+                Andino
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="femenino form-check-input"
+                type="checkbox"
+                id="flexCheckDefault"
+                onChange={(e) => {
+                  setFicha({ ...ficha, femenino: e.target.checked });
+
+                  let check = document.querySelector(".masculino");
+                  e.target.checked === true
+                    ? (check.disabled = true)
+                    : (check.disabled = false);
+                }}
+              />
+              <label class="form-check-label" for="flexCheckDefault">
+                Indigeno amazónico
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="femenino form-check-input"
+                type="checkbox"
+                id="flexCheckDefault"
+                onChange={(e) => {
+                  setFicha({ ...ficha, femenino: e.target.checked });
+
+                  let check = document.querySelector(".masculino");
+                  e.target.checked === true
+                    ? (check.disabled = true)
+                    : (check.disabled = false);
+                }}
+              />
+              <label class="form-check-label" for="flexCheckDefault">
+                Asiático descendiente
+              </label>
+            </div>
+
+            <div className="mt-2">
+              <label htmlFor="">Otro</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder=""
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+                onChange={(e) =>
+                  setFicha({ ...ficha, telefono: e.target.value })
+                }
+              />
+            </div>
+
+            <label className="mt-2" htmlFor="">
+              15. Nacionalidad
+            </label>
+            <div className="div2">
+              <div class="form-check">
+                <input
+                  class="masculino form-check-input"
+                  type="checkbox"
+                  id="flexCheckDefault"
+                  onChange={(e) => {
+                    setFicha({ ...ficha, masculino: e.target.checked });
+
+                    let check = document.querySelector(".femenino");
+                    e.target.checked === true
+                      ? (check.disabled = true)
+                      : (check.disabled = false);
+                  }}
+                />
+                <label class="form-check-label" for="flexCheckDefault">
+                  Peruano
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="femenino form-check-input"
+                  type="checkbox"
+                  id="flexCheckDefault"
+                  onChange={(e) => {
+                    setFicha({ ...ficha, femenino: e.target.checked });
+
+                    let check = document.querySelector(".masculino");
+                    e.target.checked === true
+                      ? (check.disabled = true)
+                      : (check.disabled = false);
+                  }}
+                />
+                <label class="form-check-label" for="flexCheckDefault">
+                  Extranjero
+                </label>
+              </div>
+            </div>
+            <div className="mt-2">
+              <label htmlFor="">País de nacionalidad</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder=""
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+                onChange={(e) =>
+                  setFicha({ ...ficha, telefono: e.target.value })
+                }
+              />
+            </div>
+            <label className="mt-2" htmlFor="">
+              15. Migrante
+            </label>
+            <div className="div2">
+              <div class="form-check">
+                <input
+                  class="masculino form-check-input"
+                  type="checkbox"
+                  id="flexCheckDefault"
+                  onChange={(e) => {
+                    setFicha({ ...ficha, masculino: e.target.checked });
+
+                    let check = document.querySelector(".femenino");
+                    e.target.checked === true
+                      ? (check.disabled = true)
+                      : (check.disabled = false);
+                  }}
+                />
+                <label class="form-check-label" for="flexCheckDefault">
+                  Si
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="femenino form-check-input"
+                  type="checkbox"
+                  id="flexCheckDefault"
+                  onChange={(e) => {
+                    setFicha({ ...ficha, femenino: e.target.checked });
+
+                    let check = document.querySelector(".masculino");
+                    e.target.checked === true
+                      ? (check.disabled = true)
+                      : (check.disabled = false);
+                  }}
+                />
+                <label class="form-check-label" for="flexCheckDefault">
+                  No
+                </label>
+              </div>
+            </div>
+            <div className="mt-2">
+              <label htmlFor="">País de origen</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder=""
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+                onChange={(e) =>
+                  setFicha({ ...ficha, telefono: e.target.value })
+                }
+              />
+            </div>
           </div>
         </div>
 
@@ -431,7 +683,7 @@ const FichaCovid19 = ({ ficha, setFicha}) => {
               <input
                 class="form-check-input"
                 type="checkbox"
-                  id="flexCheckDefault"
+                id="flexCheckDefault"
                 onChange={(e) =>
                   setFicha({
                     ...ficha,
@@ -448,7 +700,7 @@ const FichaCovid19 = ({ ficha, setFicha}) => {
               <input
                 class="form-check-input"
                 type="checkbox"
-                  id="flexCheckDefault"
+                id="flexCheckDefault"
                 onChange={(e) =>
                   setFicha({
                     ...ficha,
@@ -1115,8 +1367,11 @@ const FichaCovid19 = ({ ficha, setFicha}) => {
         </div>
 
         <label htmlFor="">
-        <strong> IV. Información de viaje y exposición en los 14 dias anteriores a la
-          fecha de inicio de sintomas(antes de informar si es asintomatico)</strong> 
+          <strong>
+            {" "}
+            IV. Información de viaje y exposición en los 14 dias anteriores a la
+            fecha de inicio de sintomas(antes de informar si es asintomatico)
+          </strong>
         </label>
 
         <div>

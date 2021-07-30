@@ -12,7 +12,7 @@ const Historial = () => {
   const getHistorial = () => {
     fetchGETPOSTPUTDELETE(`attention`)
       .then((data) => data.json())
-      .then((datos) => setDataHistorial(datos));
+      .then((datos) => setDataHistorial(datos.data));
   };
 
   useEffect(() => {
@@ -33,7 +33,14 @@ const Historial = () => {
     },
     {
       name: "Tipo de documento",
-      selector: (row) => (row.tipo_documento ? row.tipo_documento : ""),
+      selector: (row) =>
+        row.person && row.person.document_type_id === 3
+          ? "Carné de extranjería"
+          : row.person && row.person.document_type_id === 2
+          ? "Pasaporte"
+          : row.person && row.person.document_type_id === 1
+          ? "DNI"
+          : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -42,7 +49,7 @@ const Historial = () => {
     },
     {
       name: "Nº documento",
-      selector: (row) => (row.dni ? row.dni : ""),
+      selector: (row) => (row.person.dni ? row.person.dni : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -51,7 +58,8 @@ const Historial = () => {
     },
     {
       name: "Nombres y apellidos",
-      selector: (row) => (row.paciente ? row.paciente : ""),
+      selector: (row) =>
+        row.person.name ? row.person.name + " " + row.person.pat_lastname : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -61,7 +69,7 @@ const Historial = () => {
 
     {
       name: "Tipo de prueba",
-      selector: (row) => (row.prueba ? row.prueba : ""),
+      selector: (row) => (row.service.name ? row.service.name : ""),
 
       sortable: true,
       style: {
@@ -71,7 +79,7 @@ const Historial = () => {
     },
     {
       name: "Fecha solicitud",
-      selector: (row) => (row.fecha_solicitud ? row.fecha_solicitud : ""),
+      selector: (row) => (row.date_attention ? row.date_attention : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -80,8 +88,7 @@ const Historial = () => {
     },
     {
       name: "Fecha entrega",
-      selector: (row) =>
-        row.resultado && row.resultado.date ? row.resultado.date : "",
+      selector: (row) => (row.date_creation ? row.date_creation : ""),
       sortable: true,
       style: {
         borderBotton: "none",

@@ -17,6 +17,7 @@ const MAnticuerpos = ({
   const closeModal = () => {
     setOpenModal(false);
   };
+  console.log(result);
 
   const postResults = () => {
     fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) => {
@@ -106,7 +107,7 @@ const MAnticuerpos = ({
                   className="form-select"
                   aria-label="Default select example"
                   onChange={(e) =>
-                    setResult({ ...result, result: e.target.value })
+                    setResult({ ...result, anticuerpos: e.target.value })
                   }
                 >
                   <option>Seleccione</option>
