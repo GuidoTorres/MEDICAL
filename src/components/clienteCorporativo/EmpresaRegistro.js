@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
-import Swal from 'sweetalert2';
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
-import EditarDatosTrabajador from './Modales/EditarDatosTrabajador';
+import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import { paginacionOpciones } from "../../helpers/tablaOpciones";
+import EditarDatosTrabajador from "./Modales/EditarDatosTrabajador";
 
 const EmpresaRegistro = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [employees, setEmployees] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [loadExcel, setLoadExcel] = useState();
+  // const [loadExcel, setLoadExcel] = useState();
 
   const getEmployees = () => {
-    fetchGETPOSTPUTDELETE('company_employees')
+    fetchGETPOSTPUTDELETE("company_employees")
       .then((res) => res.json())
       .then((res) => setEmployees(res));
   };
@@ -21,137 +21,129 @@ const EmpresaRegistro = () => {
     getEmployees();
   }, []);
 
-  const importarExcel = () => {
+  const importarExcel = (file) => {
     const formData = new FormData();
-    formData.set('file', loadExcel);
-    fetchGETPOSTPUTDELETE('company_employees/import', formData, 'POST').then(
-      (data) => {
+    formData.set("file", file);
+    fetchGETPOSTPUTDELETE("company_employees/import", formData, "POST")
+      .then((data) => {
         data.json();
-      }
-    );
+      })
+      .then((data) => console.log(data));
     getEmployees();
   };
 
   const subidaExcel = (e) => {
-    const file = e.target.files[0];
-    // setLoadExcel(file);
-    // importarExcel();
-    const formData = new FormData();
-    formData.set('file', file);
-    fetchGETPOSTPUTDELETE('company_employees/import', formData, 'POST').then(
-      (data) => {
-        data.json();
-      }
-    );
-    getEmployees();
+    if (e.target.files[0] !== undefined) {
+      importarExcel(e.target.files[0]);
+    }
   };
 
   const columnas = [
     {
-      name: 'Tipo de documento',
+      name: "Tipo de documento",
       selector: (row) =>
         row.person && row.person.document_type_id === 3
-          ? 'Carné de extranjería'
+          ? "Carné de extranjería"
           : row.person && row.person.document_type_id === 2
-          ? 'Pasaporte'
+          ? "Pasaporte"
           : row.person && row.person.document_type_id === 1
-          ? 'DNI'
-          : '',
+          ? "DNI"
+          : "",
 
       sortable: true,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
     {
-      name: 'Nº de documento',
-      selector: (row) => (row.person && row.person.dni ? row.person.dni : ''),
+      name: "Nº de documento",
+      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
       sortable: true,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
     {
-      name: 'Nombres',
-      selector: (row) => (row.person && row.person.name ? row.person.name : ''),
+      name: "Nombres",
+      selector: (row) => (row.person && row.person.name ? row.person.name : ""),
       sortable: true,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
     {
-      name: 'A. Paterno',
+      name: "A. Paterno",
       selector: (row) =>
-        row.person && row.person.pat_lastname ? row.person.pat_lastname : '',
+        row.person && row.person.pat_lastname ? row.person.pat_lastname : "",
       sortable: true,
       grow: 2,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
     {
-      name: 'A. Materno',
+      name: "A. Materno",
       selector: (row) =>
-        row.person && row.person.mom_lastname ? row.person.mom_lastname : '',
+        row.person && row.person.mom_lastname ? row.person.mom_lastname : "",
       sortable: true,
       grow: 2,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
     {
-      name: 'Correo',
+      name: "Correo",
       selector: (row) =>
-        row.person && row.person.email ? row.person.email : '',
+        row.person && row.person.email ? row.person.email : "",
       sortable: true,
       grow: 3,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
     {
-      name: 'Sexo',
+      name: "Sexo",
       selector: (row) =>
         row.person && row.person.gender_id === 1
-          ? 'Masculino'
+          ? "Masculino"
           : row.person.gender_id === 2
-          ? 'Femenino'
-          : '',
+          ? "Femenino"
+          : "",
       sortable: true,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
     {
-      name: 'Fecha de Nacimiento',
+      name: "Fecha de Nacimiento",
       selector: (row) =>
-        row.person && row.person.birthday ? row.person.birthday : '',
+        row.person && row.person.birthday ? row.person.birthday : "",
       sortable: true,
       grow: 2,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
     {
-      name: 'Cargo',
+      name: "Cargo",
       selector: (row) =>
-        row.person && row.person.workstation ? row.person.workstation : '',
+        row.person && row.person.workstation ? row.person.workstation : "",
       sortable: true,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
     {
-      name: 'Eliminar',
+      name: "Eliminar",
       button: true,
       cell: (e) => (
         <button
@@ -166,21 +158,21 @@ const EmpresaRegistro = () => {
 
   const handleEliminar = (e) => {
     Swal.fire({
-      title: '¿Desea eliminar?',
+      title: "¿Desea eliminar?",
       text: `${e.person.name}`,
-      icon: 'info',
+      icon: "info",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Eliminar',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetchGETPOSTPUTDELETE(`users/${e.id}`, {}, 'DELETE').then((result) => {
+        fetchGETPOSTPUTDELETE(`users/${e.id}`, {}, "DELETE").then((result) => {
           if (result.status === 204) {
             Swal.fire(
-              'Eliminado!',
-              'Se ha eliminado correctamente.',
-              'success'
+              "Eliminado!",
+              "Se ha eliminado correctamente.",
+              "success"
             ).then((response) => {
               if (response.isConfirmed) {
                 getEmployees();
@@ -188,12 +180,12 @@ const EmpresaRegistro = () => {
             });
           } else {
             Swal.fire({
-              icon: 'error',
-              title: '!Ups¡',
-              text: 'Algo salió mal.',
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Cerrar',
+              icon: "error",
+              title: "!Ups¡",
+              text: "Algo salió mal.",
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Cerrar",
             });
           }
         });
@@ -226,7 +218,7 @@ const EmpresaRegistro = () => {
                   // onClick={() => importarExcel()}
                 ></i>
               </label> */}
-              <input type="file" onClick={(e) => subidaExcel(e)} />
+              <input type="file" onChangeCapture={(e) => subidaExcel(e)} />
             </div>
           </div>
           <DataTable

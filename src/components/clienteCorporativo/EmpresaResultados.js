@@ -55,6 +55,15 @@ const EmpresaResultados = () => {
     //   'POST'
     // ).then((data) => data.json());
     // });
+    const array = data.map((m) => m.nro_atencion);
+
+    fetchGETPOSTPUTDELETEJSON(
+      "enviar-resultados/corporativo",
+      { atenciones: array },
+      "POST"
+    )
+      .then((data) => data.json())
+      .then((data) => console.log(data));
   };
 
   // useEffect(() => {
