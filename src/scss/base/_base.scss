@@ -287,8 +287,10 @@ input[type="checkbox"] {
 .modal__tomanBarcode {
   // height: 45%;
   // width: 25%;
-  max-height: 294px;
-  max-width: 275px;
+  // max-height: 294px;
+  // max-width: 275px;
+  height: auto;
+  max-width: 315px;
 }
 
 // TODO MODAL ORGANIZADOR PACIENTE
@@ -636,7 +638,7 @@ input[type="checkbox"] {
   }
   .modal__barcode {
     height: auto;
-    max-width: 400px;
+    max-width: 315px;
   }
 }
 @media screen and (min-width: 769px) {
