@@ -198,7 +198,7 @@ const Historial = () => {
       doc.text(428, 141, `${e.fecha_atencion ? e.fecha_atencion : ''}`);
 
       doc.text(80, 163, `${e.paciente ? e.paciente : ''}`);
-      doc.text(313, 164, '20');
+      // doc.text(313, 164, '20');
 
       doc.text(
         195,
