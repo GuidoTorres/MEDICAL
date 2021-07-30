@@ -121,8 +121,8 @@ const MSubirLaboratorio = ({
                   }
                 >
                   <option>Seleccione</option>
-                  <option value="0">Detectado</option>
-                  <option value="1">No Detectado</option>
+                  <option value="0">No Detectado</option>
+                  <option value="1">Detectado</option>
                 </select>
               </div>
             </div>

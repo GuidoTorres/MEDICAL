@@ -24,7 +24,8 @@ const getFecha = () => {
   return `${date}${" de "}${month}${" "}`;
 };
 
-const generarConsentimientoInformado = () => {
+const generarConsentimientoInformado = (data) => {
+  console.log(data);
   const doc = new jsPDF("p", "pt");
   doc.setProperties({
     title: "Consentimiento Informado",
@@ -33,10 +34,20 @@ const generarConsentimientoInformado = () => {
 
   doc.addImage(consentimiento, "PNG", 15, 20, 600, 700);
 
-  // doc.text(110, 155, `${data.nombre}`);
-  // doc.text(350, 155, `${data.dni}`);
+  doc.text(120, 176, `${data && data.fullName ? data.fullName : ""}`);
+  doc.text(110, 193, `${data.DNI}`);
 
-  // doc.text(350, 318, `${getFecha()}`);
+  doc.text(388, 346, `${getFecha()}`);
+
+  doc.text(
+    200,
+    670,
+    `${
+      data && data.patient_details && data.patient_details.email
+        ? data.patient_details.email
+        : ""
+    }`
+  );
 
   window.open(doc.output("bloburl"), "_blank");
 };
