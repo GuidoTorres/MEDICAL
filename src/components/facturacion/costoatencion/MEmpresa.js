@@ -127,7 +127,11 @@ const MEmpresa = ({
     if (data.length > 0) {
       setOpenModalParticular(true);
     } else {
-      console.log("Seleccione pacientes");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Debe elegir al menos un paciente",
+      });
     }
   };
   const closeModal = () => {
@@ -139,7 +143,7 @@ const MEmpresa = ({
       onRequestClose={closeModal}
       style={customStyles}
       className="modal  mfacturacion__particular"
-      overlayClassName="modal-fondo"
+      overlayClassName="modal-fondo ReactToMessage"
       closeTimeoutMS={200}
       preventScroll={true}
       ariaHideApp={false}
