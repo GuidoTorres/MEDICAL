@@ -28,6 +28,8 @@ const CodigoBarrasHistorial = ({
     setCodigoHistorial(false);
   };
 
+  console.log(dataBarCode);
+
   const descargar = () => {
     const data = document.querySelector("#canvas");
     const pngUrl = data
@@ -42,6 +44,7 @@ const CodigoBarrasHistorial = ({
   };
 
   const cargarBarra = () => {
+    // console.log(dataBarCode);
     const canvas = document.getElementById("canvas");
     const img = document.getElementById("bar");
     const ctx = canvas.getContext("2d");
@@ -59,15 +62,13 @@ const CodigoBarrasHistorial = ({
     ctx.drawImage(img, (canvas.width - img.width) / 2, 32);
 
     let person__name =
-      dataBarCode.person !== undefined
-        ? `${dataBarCode.person.pat_lastname} ${dataBarCode.person.mom_lastname} , ${dataBarCode.person.name}`
-        : "";
+      dataBarCode.fullName !== undefined ? `${dataBarCode.fullName}` : "";
     let person__info =
-      dataBarCode.person !== undefined
-        ? `DNI: ${dataBarCode.person.dni} \t Sexo: M \t Edad: 28`
+      dataBarCode.DNI !== undefined
+        ? `DNI: ${dataBarCode.DNI} \t Sexo: M \t Edad: 28`
         : "";
     let service__abbreviation =
-      dataBarCode.service !== undefined ? dataBarCode.service.abbreviation : "";
+      dataBarCode.service_type !== undefined ? dataBarCode.service_type : "";
     let attention__date = `${dataBarCode.date_attention} \t ${dataBarCode.time_attention}`;
 
     let service__info = `Prueba : ${service__abbreviation} \t ${attention__date}`;
@@ -110,7 +111,7 @@ const CodigoBarrasHistorial = ({
       <div className="container">
         <div className="row">
           <canvas id="canvas">
-            <BarCode textobarcode={dataBarCode.codebar || ""} id="bar" />
+            <BarCode textobarcode={dataBarCode.DNI || ""} id="bar" />
           </canvas>
 
           <div className="d-flex justify-content-between mt-3">

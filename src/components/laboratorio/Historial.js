@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
-import { lasubir } from '../../data/LASubir';
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
+import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
+import { lasubir } from "../../data/LASubir";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
-import MDescargar from './Modales/MDescargar';
-import MSubirLaboratorio from './MSubirLaboratorio';
+import { paginacionOpciones } from "../../helpers/tablaOpciones";
+import MDescargar from "./Modales/MDescargar";
+import MSubirLaboratorio from "./MSubirLaboratorio";
 
-import jsPDF from 'jspdf';
-import eclia from '../../assets/pdf Imagen/eclia.png';
-import antigenosi from '../../assets/pdf Imagen/antigenoSi.png';
-import antigenono from '../../assets/pdf Imagen/antigenoNo.png';
-import molecular from '../../assets/pdf Imagen/molecular.png';
-import rapida from '../../assets/pdf Imagen/rapida.png';
-import anticuerpos from '../../assets/pdf Imagen/anticuerpos.png';
+import jsPDF from "jspdf";
+import eclia from "../../assets/pdf Imagen/eclia.png";
+import antigenosi from "../../assets/pdf Imagen/antigenoSi.png";
+import antigenono from "../../assets/pdf Imagen/antigenoNo.png";
+import molecular from "../../assets/pdf Imagen/molecular.png";
+import rapida from "../../assets/pdf Imagen/rapida.png";
+import anticuerpos from "../../assets/pdf Imagen/anticuerpos.png";
+import firma from "../../assets/pdf Imagen/Firma.png";
 
 const Historial = () => {
   const [busqueda, setBusqueda] = useState('');
@@ -92,14 +93,19 @@ const Historial = () => {
     {
       name: 'Visualización',
       button: true,
-      cell: (e) => (
-        <button
-          onClick={() => handleDetalles(e)}
-          className="table__tablebutton"
-        >
-          <i class="fas fa-file-pdf"></i>
-        </button>
-      ),
+      cell: (e) =>
+        e.resultado && e.resultado  ? (
+          <button
+            onClick={() => handleDetalles(e)}
+            className="table__tablebutton"
+          >
+            <i className="far fa-file-pdf"></i>
+          </button>
+        ) : (
+          <button disabled className="table__tablebutton">
+            <i className="far fa-file-pdf" style={{ color: "grey" }}></i>
+          </button>
+        ),
     },
   ];
 
@@ -132,9 +138,11 @@ const Historial = () => {
   const handleDetalles = (e) => {
     console.log(e);
     if (e.servicio_id == 5) {
-      e.resultado.result === 0
-        ? generarPDF(e, antigenono, 'Formato Antígeno')
-        : generarPDF(e, antigenosi, 'Formato Antígeno');
+      if (e.resultado && e.resultado.result === 0) {
+        generarPDF(e, antigenono, "Formato Antígeno");
+      } else if (e.resultado && e.resultado === 1) {
+        generarPDF(e, antigenosi, "Formato Antígeno");
+      }
     } else if (e.servicio_id === 6) {
       generarPDF(e, eclia, 'Formato Eclia');
     } else if (e.servicio_id === 7) {
@@ -169,9 +177,14 @@ const Historial = () => {
         284,
         268,
         `${
-          e.resultado && e.resultado.result === 0 ? 'No detectado' : 'Detectado'
+          e.resultado && e.resultado.result === 0
+            ? "No detectado"
+            : e.resultado && e.resultado.result === 1
+            ? "Detectado"
+            : "Sin resultado"
         }`
       );
+      doc.addImage(firma, "PNG", 350, 460, 80, 50, "", "FAST");
     } else if (e.servicio_id == 6) {
       doc.text(
         328,
@@ -185,7 +198,7 @@ const Historial = () => {
       doc.text(428, 141, `${e.fecha_atencion ? e.fecha_atencion : ''}`);
 
       doc.text(80, 163, `${e.paciente ? e.paciente : ''}`);
-      doc.text(313, 164, '20');
+      // doc.text(313, 164, '20');
 
       doc.text(
         195,
@@ -211,7 +224,13 @@ const Historial = () => {
       doc.text(
         180,
         265,
-        `${e.resultado && e.resultado.result === '0' ? 'Negativo' : 'Positivo'}`
+        `${
+          e.resultado && e.resultado.result === "0"
+            ? "Negativo"
+            : e.resultado && e.resultado.result === "1"
+            ? "Positivo"
+            : "Sin resultado"
+        }`
       );
     } else if (e.servicio_id == 8) {
       doc.text(84, 142, `${e.nro_atencion ? e.nro_atencion : ''}`);
@@ -242,7 +261,7 @@ const Historial = () => {
               <div>
                 <label>Categoría</label>
                 <select
-                  class="form-select"
+                  className="form-select"
                   aria-label="Default select example"
                   onChange={(e) =>
                     setTipoPrueba({ ...tipoPrueba, cat: e.target.value })

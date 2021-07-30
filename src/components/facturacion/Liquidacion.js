@@ -106,14 +106,14 @@ const Liquidacion = () => {
       },
     },
     {
-      name: "Eliminar",
+      name: "Detalles",
       button: true,
       cell: (e) => (
         <button
           onClick={() => handleDetalles(e)}
           className="table__tablebutton"
         >
-          <i className="far fa-trash-alt"></i>{" "}
+          <i className="fas fa-info-circle"></i>
         </button>
       ),
     },
@@ -169,7 +169,7 @@ const Liquidacion = () => {
     // console.log(e);
     setOpenModal(true);
     setDatos(e);
-    console.log(e);
+    // console.log(e);
   };
 
   const handleSearch = (e) => {

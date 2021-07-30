@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
+import Swal from "sweetalert2";
 import { customStyles } from "../../../helpers/tablaOpciones";
 // import MMAParticulares from "./MMAParticulares";
 import { fetchGETPOSTPUTDELETEJSON } from "../../../helpers/fetch";
@@ -50,28 +51,49 @@ const MMEmpresa = ({
       .then((info) => info.json())
       .then((info) => {
         getEmpresas();
+        if (info.resp === "Settlement Create") {
+          Swal.fire(
+            "Liquidación exitosa!",
+            "Se ha creado correctamente la liquidación",
+            "success"
+          );
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Ocurrió un error, inténtelo nuevamente",
+          });
+        }
       });
     // .then((info) => console.log(info));
   };
 
   const handleLiquidarEmpresa = () => {
-    const array = [];
-    data.map((d) => array.push({ attention_id: d.id }));
-    // console.log(data);
-    // console.log(dataEmpresa);
-    const liquidacion = {
-      code: codigo,
-      observation: observacion,
-      subtotal: subtotal,
-      amount: total,
-      igv: igv,
-      attentions: array,
-      company_id: dataEmpresa.id,
-    };
-    // console.log(liquidacion);
-    postLiquidacion(liquidacion);
-    closeModal();
-    setOpenModalEmpresa(false);
+    if (codigo !== null && codigo !== "") {
+      const array = [];
+      data.map((d) => array.push({ attention_id: d.id }));
+      // console.log(data);
+      // console.log(dataEmpresa);
+      const liquidacion = {
+        code: codigo,
+        observation: observacion,
+        subtotal: subtotal,
+        amount: total,
+        igv: igv,
+        attentions: array,
+        company_id: dataEmpresa.id,
+      };
+      // console.log(liquidacion);
+      postLiquidacion(liquidacion);
+      closeModal();
+      setOpenModalEmpresa(false);
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Debe ingresar código de factura",
+      });
+    }
   };
 
   useEffect(() => {
@@ -91,7 +113,7 @@ const MMEmpresa = ({
       onRequestClose={closeModal}
       style={customStyles}
       className="modal  mfacturacion__particular"
-      overlayClassName="modal-fondo"
+      overlayClassName="modal-fondo ReactToMessage"
       closeTimeoutMS={200}
       preventScroll={true}
       ariaHideApp={false}
