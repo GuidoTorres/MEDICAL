@@ -53,15 +53,28 @@ const Calendario = () => {
   }, []);
 
   // setEventosList(listCalendario);
-  // console.log(listCalendario);
+  console.log(listCalendario);
 
   // console.log(listCalendario);
 
   // const now = moment().minutes(0).seconds(0).add(1, 'hours');
   // const nowPlus = now.clone().add(1, 'hours');
 
-  // const events = listRegistro;
+  const events = listRegistro;
 
+  // const events = [
+  //   {
+  //     title: 'cumpleaños de pepe',
+  //     start: moment().toDate(),
+  //     end: moment().add(2, 'hours').toDate(),
+  //     bgcolor: '#fafafa',
+  //     notes: 'comprar pastel',
+  //     user: {
+  //       _id: '123',
+  //       name: 'pepe',
+  //     },
+  //   },
+  // ];
   // console.log(now);
   // console.log(events);
   // 3=> acpetado
@@ -224,7 +237,7 @@ const Calendario = () => {
           <div className="barra">
             <Calendar
               localizer={localizer}
-              events={listRegistro}
+              events={events}
               startAccessor="start"
               endAccessor="end"
               // messages={messages}

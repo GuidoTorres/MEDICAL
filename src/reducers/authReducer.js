@@ -4,6 +4,7 @@ const initialState = {
   checking: false,
   role: { id: 0, name: null },
   clinic_type: { id: 0, detail: '' },
+  clinic: {},
 };
 
 const authReducer = (state = initialState, action) => {

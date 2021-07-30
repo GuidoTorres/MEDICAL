@@ -126,19 +126,19 @@ const EmpresaAsignacion = () => {
     },
   ];
 
-  useEffect(() => {
-    const filtrarElemento = () => {
-      const search = asignation.filter((data) => {
-        return data.person.dni
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .toLocaleLowerCase()
-          .includes(busqueda);
-      });
-      setListRegistro(search);
-    };
-    filtrarElemento();
-  }, [busqueda, asignation]);
+  // useEffect(() => {
+  //   const filtrarElemento = () => {
+  //     const search = asignation.filter((data) => {
+  //       return data.person.dni
+  //         .normalize('NFD')
+  //         .replace(/[\u0300-\u036f]/g, '')
+  //         .toLocaleLowerCase()
+  //         .includes(busqueda);
+  //     });
+  //     setListRegistro(search);
+  //   };
+  //   filtrarElemento();
+  // }, [busqueda, asignation]);
 
   const handleOnChange = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -172,7 +172,7 @@ const EmpresaAsignacion = () => {
             className="dataTable"
             id="table"
             columns={columnas}
-            data={listRegistro}
+            data={asignation}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
