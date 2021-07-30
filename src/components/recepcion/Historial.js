@@ -16,7 +16,9 @@ const Historial = () => {
 
   const getAttention = () => {
     //falta servicio
-    fetchGETPOSTPUTDELETE('attention')
+    fetchGETPOSTPUTDELETE('attention_history')
+    // fetchGETPOSTPUTDELETE('attention')
+
       .then((data) => data.json())
       .then((datos) => setAttention(datos.data));
   };
@@ -24,6 +26,7 @@ const Historial = () => {
   useEffect(() => {
     getAttention();
   }, []);
+
 
   console.log(attention);
   function CodigoBarras(e) {

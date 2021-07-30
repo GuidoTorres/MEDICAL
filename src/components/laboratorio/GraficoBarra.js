@@ -3,27 +3,27 @@ import { Bar } from "react-chartjs-2";
 
 const GraficoBarra = ({ estadistica, tipoPrueba }) => {
   const [result, setResult] = useState();
-  const getEstadistica = () => {
-    const prueba =
-      estadistica.length > 0 && estadistica.map((data, i) => data.atenciones);
+  // const getEstadistica = () => {
+  //   const prueba =
+  //     estadistica.length > 0 && estadistica.map((data, i) => data.atenciones);
 
-    setResult(prueba);
-  };
-  console.log(result);
+  //   setResult(prueba);
+  // };
+  console.log(estadistica);
 
   useEffect(() => {
-    getEstadistica();
+    // getEstadistica();
   }, [tipoPrueba]);
 
   return (
     <div style={{ width: "100%", height: "50%" }}>
       <Bar
         data={{
-          labels: ["Antígeno", "Eclia", "Rápida", "Molecular", "RT-PCR"],
+          labels: estadistica.labels,
           datasets: [
             {
               label: "Número de evaluaciones por período de tiempo",
-              data: result,
+              data: estadistica.data,
               // backgroundColor: [
               //   '#ff4c4c',
               //   '#0099e5',

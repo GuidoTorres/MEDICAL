@@ -6,7 +6,10 @@ import Swal from "sweetalert2";
 import DeclaracionJurada from "../FormatosPDF/DeclaracionJurada";
 import ConsentimientoInformado from "../FormatosPDF/ConsentimientoInformado";
 import FichaCovid19 from "../FormatosPDF/FichaCovid19";
-import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
+import {
+  fetchGETPOSTPUTDELETE,
+  fetchGETPOSTPUTDELETEJSON,
+} from "../../../helpers/fetch";
 
 const MGenerarAtencion = ({
   generarAtencion,
@@ -42,8 +45,6 @@ const MGenerarAtencion = ({
     getServices();
     getClinics();
   }, []);
-
-  console.log(formulario[0]);
 
   const getFecha = () => {
     let newDate = new Date();
@@ -87,19 +88,19 @@ const MGenerarAtencion = ({
       codebar: dataSelected.id,
       forms: [
         {
-          date_emision: getFecha,
+          date_emision: getFecha(),
           form_type_id: 1,
-          answers: [declaracion],
+          answers: declaracion,
         },
         {
-          date_emision: getFecha,
+          date_emision: getFecha(),
           form_type_id: 2,
-          answers: [ficha],
+          answers: ficha,
         },
       ],
     };
 
-    fetchGETPOSTPUTDELETE("attention", formData, "POST").then((res) => {
+    fetchGETPOSTPUTDELETEJSON("attention", atencion, "POST").then((res) => {
       console.log(res);
       if (res.status === 200) {
         closeModal();

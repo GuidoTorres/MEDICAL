@@ -227,9 +227,7 @@ const Historial = () => {
       doc.text(
         180,
         265,
-        `${
-          e.resultado && e.resultado.result === 0 ? "No detectado" : "Detectado"
-        }`
+        `${e.resultado && e.resultado.result === "0" ? "Negativo" : "Positivo"}`
       );
     } else if (e.servicio_id == 8) {
       doc.text(84, 142, `${e.nro_atencion ? e.nro_atencion : ""}`);

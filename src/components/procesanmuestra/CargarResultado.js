@@ -283,40 +283,40 @@ const CargarResultado = () => {
       id: e.id,
       pdf: file,
     });
-    postResult(resultado.id, resultado.pdf);
+    postResult(resultado);
   };
 
-  const postResult = (id, pdf) => {
+  const postResult = (resultado) => {
     const formData = new FormData();
-    formData.set("id", id);
-    formData.set("pdf", pdf);
-
-    fetchGETPOSTPUTDELETE("result", formData, "POST").then((info) => {
-      console.log(info);
-      if (info.status === 200) {
-        Swal.fire({
-          icon: "success",
-          title: "Éxito",
-          text: "Se ha cargo el pdf correctamente.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getResult();
-          }
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "!Ups¡",
-          text: "Algo salió mal.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Cerrar",
-        });
-      }
-    });
+    formData.set("id", resultado.id);
+    formData.set("pdf", resultado.pdf);
+    console.log(resultado);
+    // fetchGETPOSTPUTDELETE("result", formData, "POST").then((info) => {
+    //   console.log(info);
+    //   if (info.status === 200) {
+    //     Swal.fire({
+    //       icon: "success",
+    //       title: "Éxito",
+    //       text: "Se ha cargo el pdf correctamente.",
+    //       confirmButtonColor: "#3085d6",
+    //       cancelButtonColor: "#d33",
+    //       confirmButtonText: "Aceptar",
+    //     }).then((resp) => {
+    //       if (resp.isConfirmed) {
+    //         getResult();
+    //       }
+    //     });
+    //   } else {
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "!Ups¡",
+    //       text: "Algo salió mal.",
+    //       confirmButtonColor: "#3085d6",
+    //       cancelButtonColor: "#d33",
+    //       confirmButtonText: "Cerrar",
+    //     });
+    //   }
+    // });
   };
 
   return (
