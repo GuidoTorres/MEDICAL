@@ -55,6 +55,7 @@ const EmpresaResultados = () => {
     //   'POST'
     // ).then((data) => data.json());
     // });
+    console.log("a");
   };
 
   // useEffect(() => {
