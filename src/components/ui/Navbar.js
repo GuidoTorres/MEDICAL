@@ -115,46 +115,86 @@ const Navbar = ({
                 {titulo2}
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink
-                activeClassName="activo"
-                className="navLink nav-link"
-                to={url3}
-                style={{ color: "white", fontSize: "15px" }}
+            {url3 === "" ? (
+              <li
+                className="nav-item"
+                style={{ border: "1px solid red ", display: "none" }}
               >
-                {titulo3}
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink
-                activeClassName="activo"
-                className="navLink nav-link"
-                to={url4}
-                style={{ color: "white", fontSize: "15px" }}
+                <NavLink
+                  activeClassName="activo"
+                  className="navLink nav-link"
+                  to={(url3 = "" ? null : url3)}
+                  style={{ color: "white", fontSize: "15px" }}
+                >
+                  {titulo3}
+                </NavLink>
+              </li>
+            ) : (
+              <li className="nav-item">
+                <NavLink
+                  activeClassName="activo"
+                  className="navLink nav-link"
+                  to={(url3 = "" ? null : url3)}
+                  style={{ color: "white", fontSize: "15px" }}
+                >
+                  {titulo3}
+                </NavLink>
+              </li>
+            )}
+            {url4 === "" ? (
+              <li
+                className="nav-item"
+                style={{ border: "1px solid red ", display: "none" }}
               >
-                {titulo4}
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink
-                activeClassName="activo"
-                className="navLink nav-link"
-                to={url5}
-                style={{ color: "white", fontSize: "15px" }}
+                <NavLink
+                  activeClassName="activo"
+                  className="navLink nav-link"
+                  to={(url4 = "" ? null : url4)}
+                  style={{ color: "white", fontSize: "15px" }}
+                >
+                  {titulo4}
+                </NavLink>
+              </li>
+            ) : (
+              <li className="nav-item">
+                <NavLink
+                  activeClassName="activo"
+                  className="navLink nav-link"
+                  to={(url4 = "" ? null : url4)}
+                  style={{ color: "white", fontSize: "15px" }}
+                >
+                  {titulo4}
+                </NavLink>
+              </li>
+            )}
+
+            {url5 === "" ? (
+              <li
+                className="nav-item"
+                style={{ border: "1px solid red ", display: "none" }}
               >
-                {titulo5}
-              </NavLink>
-            </li>
-            {/* <li className="nav-item">
-              <NavLink
-                activeClassName="activo"
-                className="navLink nav-link"
-                to={url6}
-                style={{ color: 'white', fontSize: '15px' }}
-              >
-                {titulo6}
-              </NavLink>
-            </li> */}
+                <NavLink
+                  activeClassName="activo"
+                  className="navLink nav-link"
+                  to={(url5 = "" ? null : url5)}
+                  style={{ color: "white", fontSize: "15px" }}
+                >
+                  {titulo5}
+                </NavLink>
+              </li>
+            ) : (
+              <li className="nav-item">
+                <NavLink
+                  activeClassName="activo"
+                  className="navLink nav-link"
+                  to={(url5 = "" ? null : url5)}
+                  style={{ color: "white", fontSize: "15px" }}
+                >
+                  {titulo5}
+                </NavLink>
+              </li>
+            )}
+
             <button
               className="text-white"
               style={{
@@ -208,25 +248,19 @@ const Navbar = ({
                 {titulo3}
               </NavLink>
             </li>
-            {url4 !== "" || (null && titulo4 !== "") || null ? (
-              <li className="nav-item">
-                <NavLink
-                  activeClassName={
-                    url5 !== "" && titulo5 !== "" ? "activo" : ""
-                  }
-                  className="navLink nav-link"
-                  to={url4}
-                >
-                  {titulo4}
-                </NavLink>
-              </li>
-            ) : null}
+            <li className="nav-item">
+              <NavLink
+                activeClassName={url5 === "" ? "" : "activo"}
+                className="navLink nav-link"
+                to={url4}
+              >
+                {titulo4}
+              </NavLink>
+            </li>
 
             <li className="nav-item">
               <NavLink
-                activeClassName={
-                  url5 !== null && titulo5 !== null ? "" : "activo"
-                }
+                activeClassName={"activo"}
                 className="navLink nav-link"
                 id="nav5"
                 to={url5}

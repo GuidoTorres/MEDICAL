@@ -243,25 +243,66 @@ const MCrearPaciente = ({
         ? dataSelected.mom_lastname
         : ""
     );
-    formData.set("gender_id", paciente.gender_id || "");
-    formData.set("birthday", paciente.birthday || "");
-    formData.set("religion_id", 1);
-    formData.set("department_id", paciente.department_id || "");
-    formData.set("civil_status_id", paciente.civil_status_id || "");
-    formData.set("grade_id", paciente.grade_id || "");
-    formData.set("cellphone", paciente.cellphone || "");
-    formData.set("phone", paciente.phone || "");
-    formData.set("email", paciente.email || "");
-    formData.set("emergency_phone", paciente.emergy_phone || "");
-    formData.set("contact_emergency", paciente.contact_emergency || "");
+    formData.set(
+      "gender_id",
+      paciente.gender_id || (dataSelected && dataSelected.gender_id)
+    );
+    formData.set(
+      "birthday",
+      paciente.birthday || (dataSelected && dataSelected.birthday)
+    );
+    formData.set("religion_id", 1 || dataSelected.religion_id);
+    formData.set(
+      "department_id",
+      paciente.department_id || (dataSelected && dataSelected.department_id)
+    );
+    formData.set(
+      "civil_status_id",
+      paciente.civil_status_id || (dataSelected && dataSelected.civil_status_id)
+    );
+    formData.set(
+      "grade_id",
+      paciente.grade_id || (dataSelected && dataSelected.grade_id)
+    );
+    formData.set(
+      "cellphone",
+      paciente.cellphone || (dataSelected && dataSelected.cellphone)
+    );
+    formData.set(
+      "phone",
+      paciente.phone || (dataSelected && dataSelected.phone)
+    );
+    formData.set("email", paciente.email || dataSelected.dataSelected.email);
+    formData.set(
+      "emergency_phone",
+      paciente.emergy_phone || (dataSelected && dataSelected.emergency_phone)
+    );
+    formData.set(
+      "contact_emergency",
+      paciente.contact_emergency ||
+        (dataSelected && dataSelected.contact_emergency)
+    );
     formData.set("company_id", "");
-    formData.set("workstation", paciente.workstation || "");
+    formData.set(
+      "workstation",
+      paciente.workstation || (dataSelected && dataSelected.workstation)
+    );
     formData.set("birthplace", "");
-    formData.set("address", paciente.address || "");
+    formData.set(
+      "address",
+      paciente.address || (dataSelected && dataSelected.address_id)
+    );
     formData.set("reference", paciente.reference || "");
     formData.set("district_id", paciente.district_id || "");
-    formData.set("department_id", paciente.district_id || "");
-    formData.set("user_type_id", paciente.user_type_id || "");
+    formData.set(
+      "department_id",
+      paciente.district_id || (dataSelected && dataSelected.department_id)
+    );
+    formData.set(
+      "user_type_id",
+      paciente.user_type_id ||
+        (dataSelected && dataSelected.user && dataSelected.user.user_type_id)
+    );
     // formData.set("country_id", paciente.country_id || "");
     formData.set("grade_id", "");
 
@@ -455,9 +496,7 @@ const MCrearPaciente = ({
                 <label htmlFor="">Religión:</label>
                 <select
                   name="religion_id"
-                  defaultValue={
-                    1
-                  }
+                  defaultValue={1}
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Seleccione</option>

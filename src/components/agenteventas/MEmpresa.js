@@ -17,7 +17,7 @@ const MEmpresa = ({
 }) => {
   const [discount, setDiscount] = useState([]);
   const [filterServices, setFilterServices] = useState({});
-  const [total, setTotal] = useState();
+  const [total, setTotal] = useState([]);
   const closeModal = () => {
     setOpenModal(false);
     setEditar(false);
@@ -82,7 +82,9 @@ const MEmpresa = ({
           amount: data.last_discount.amount,
         },
       ]);
-      document.getElementById(`percent-${data.id}`).disabled = false
+      const newPercent = total.percent;
+      discount.forEach((item) => (item.precio = newPercent));
+      console.log(discount);
     } else {
       if (discount.length > 1) {
         let position = discount.findIndex(
@@ -98,7 +100,17 @@ const MEmpresa = ({
       // console.log(position);
     }
   };
+
+  const editarPercent = (e) => {
+    setTotal((total) => [
+      ...total,
+
+      { [e.target.name]: e.target.value, [e.target.name]: e.target.value },
+    ]);
+  };
+
   console.log(discount);
+  console.log(total);
 
   useEffect(() => {
     filtrarServicios();
@@ -266,13 +278,10 @@ const MEmpresa = ({
                           placeholder=""
                           aria-label=""
                           name="percent"
-                          disabled
                           defaultValue={
-                            data.last_discount 
-                              ? data.last_discount.percent
-                              : 0
+                            data.last_discount ? data.last_discount.percent : 0
                           }
-                          onChange={(e) => handleChange(e)}
+                          onChange={editarPercent}
                           aria-describedby="basic-addon1"
                         />
                       </td>
@@ -290,7 +299,7 @@ const MEmpresa = ({
                                 ? data.last_discount.amount
                                 : ""
                             }
-                            onChange={handleChange}
+                            onChange={editarPercent}
                             aria-describedby="basic-addon1"
                           />
                         </div>
@@ -331,7 +340,11 @@ const MEmpresa = ({
               />
             </div>
             <div className="btnContainer">
-              <button type="button" className="botones btn btn-primary">
+              <button
+                type="button"
+                className="botones btn btn-primary"
+                onClick={closeModal}
+              >
                 Cancelar
               </button>
               <button
