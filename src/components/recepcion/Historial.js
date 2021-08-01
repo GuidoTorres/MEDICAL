@@ -27,7 +27,6 @@ const Historial = () => {
     getAttention();
   }, []);
 
-  console.log(attention);
   function CodigoBarras(e) {
     setCodigoHistorial(true);
     setDataBarCode(e);

@@ -8,26 +8,27 @@ const DeclaracionJurada = ({
   formulario,
 }) => {
   const handleChange = (e, data, resp) => {
-    if (e.target.checked) {
-      setDeclaracion((declaracion) => [
-        ...declaracion,
-        {
-          question_id: data && data.id ? data.id : "",
-          answer: resp === "si" ? "Si" : "No",
-        },
-      ]);
+    console.log(declaracion);
+
+    if (resp === "Si") {
+      let pos = declaracion.findIndex((arr) => arr.question_id === data.id);
+
+      const arrs = [...declaracion];
+      arrs[pos].answer = resp;
+      setDeclaracion([...arrs]);
     } else {
       if (declaracion.length > 1) {
-        let position = declaracion.findIndex(
-          (arreglo) => arreglo.question_id === data.id
-        );
-        const arreglos = [...declaracion];
-        arreglos.splice(position, 1);
-        setDeclaracion([...arreglos]);
-        console.log("entro al if");
-      } else {
-        setDeclaracion([]);
-        console.log("entro al else");
+        let pos = declaracion.findIndex((arr) => arr.question_id === data.id);
+
+        const arrs = [...declaracion];
+        arrs[pos].answer = resp;
+        setDeclaracion([...arrs]);
+        // let position = declaracion.findIndex(
+        //   (arreglo) => arreglo.question_id === data.id
+        // );
+        // const arreglos = [...declaracion];
+        // arreglos.splice(position, 1);
+        // setDeclaracion([...arreglos]);
       }
     }
 
@@ -43,23 +44,7 @@ const DeclaracionJurada = ({
     } else {
       document.getElementById(`si${data.id}`).disabled = false;
     }
-
-    // //Bloquear checks de condicion de riesgo
-
-    // if (document.getElementById(`${data.id}`).checked === true) {
-    //   document.getElementById(`${data.id}`).disabled = true;
-    // } else {
-    //   document.getElementById(`${data.id}`).disabled = false;
-    // }
-    // if (document.getElementById(`${data.id}`).checked === true) {
-    //   document.getElementById(`${data.id}`).disabled = true;
-    // } else {
-    //   document.getElementById(`${data.id}`).disabled = false;
-    // }
   };
-  console.log(declaracion);
-
-  console.log(declaracion);
 
   return (
     <>
@@ -69,7 +54,8 @@ const DeclaracionJurada = ({
         </label>
         <div className="mt-2 ">
           {formulario &&
-            formulario[0].questions.slice(0, 12).map((data, i) => (
+            formulario[0] &&
+            formulario[0].questions.slice(0, 13).map((data, i) => (
               <>
                 <label htmlFor="">{data.text}</label>
                 <div className="form-check">
@@ -79,7 +65,7 @@ const DeclaracionJurada = ({
                     value="sintomas"
                     id={`si${data.id}`}
                     onChange={(e) => {
-                      handleChange(e, data, "si");
+                      handleChange(e, data, "Si");
                     }}
                   />
 
@@ -95,7 +81,7 @@ const DeclaracionJurada = ({
                     value="no"
                     id={`no${data.id}`}
                     onChange={(e) => {
-                      handleChange(e, data, "no");
+                      handleChange(e, data, "No");
                     }}
                   />
 
@@ -114,43 +100,43 @@ const DeclaracionJurada = ({
         </label>
 
         <div className="mt-2">
-          {formulario[0].questions.slice(13, 25).map((data, i) => (
-            <>
-              <label htmlFor="">{data.text}</label>
-              <div className="form-check">
-                <input
-                  className="condicion form-check-input"
-                  type="checkbox"
-                  value=""
-                  id={`si${data.id}`}
-                  onChange={(e) => {
-                    handleChange(e, data, "no");
-                  }}
-                />
-                <label className="form-check-label" for="flexCheckDefault">
-                  Si
-                </label>
-              </div>
+          {formulario &&
+            formulario[0] &&
+            formulario[0].questions.slice(13, 26).map((data, i) => (
+              <>
+                <label htmlFor="">{data.text}</label>
+                <div className="form-check">
+                  <input
+                    className="condicion form-check-input"
+                    type="checkbox"
+                    value=""
+                    id={`si${data.id}`}
+                    onChange={(e) => {
+                      handleChange(e, data, "Si");
+                    }}
+                  />
+                  <label className="form-check-label" for="flexCheckDefault">
+                    Si
+                  </label>
+                </div>
 
-              <div className="form-check">
-                <input
-                  className="condicion1 form-check-input"
-                  type="checkbox"
-                  value=""
-                  id={`no${data.id}`}
-                  onChange={(e) => {
-                    handleChange(e, data, "no");
-                  }}
-                />
-                <label className="form-check-label" for="flexCheckDefault">
-                  No
-                </label>
-              </div>
-            </>
-          ))}
+                <div className="form-check">
+                  <input
+                    className="condicion1 form-check-input"
+                    type="checkbox"
+                    value=""
+                    id={`no${data.id}`}
+                    onChange={(e) => {
+                      handleChange(e, data, "No");
+                    }}
+                  />
+                  <label className="form-check-label" for="flexCheckDefault">
+                    No
+                  </label>
+                </div>
+              </>
+            ))}
         </div>
-
-
       </div>
     </>
   );
