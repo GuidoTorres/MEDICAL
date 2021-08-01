@@ -7,6 +7,8 @@ import OMPaciente from './OMPaciente';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment/locale/es';
 import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
+import { messages } from '../../helpers/calendar-spain';
+// import EventosCalendario from './EventosCalendario';
 
 moment.locale('es');
 
@@ -18,7 +20,8 @@ const Calendario = () => {
   const [MHorario, setMHorario] = useState(false);
   const [listRegistro, setListRegistro] = useState([]);
   const [listCalendario, setListCalendario] = useState({});
-  // const [eventosList, setEventosList] = useState([]);
+  const [eventosList, setEventosList] = useState([]);
+  const [condicional, setCondicional] = useState(false);
   const [nTranspor, setNTranspor] = useState('');
 
   const { users, address, sample } = selectionId;
@@ -31,8 +34,6 @@ const Calendario = () => {
   const { name: nombredistrito } = district;
   const { dni, name: personanombre, pat_lastname, mom_lastname } = person;
   const { name: nombreservicio } = category;
-
-  // const {events} = eventosList
 
   useEffect(() => {
     const listaTransportista = () => {
@@ -52,33 +53,49 @@ const Calendario = () => {
     listFecha();
   }, []);
 
-  // setEventosList(listCalendario);
-  console.log(listCalendario);
+  useEffect(() => {
+    setEventosList(listCalendario);
+  }, [listCalendario]);
 
-  // console.log(listCalendario);
+  setTimeout(() => {
+    setCondicional(true);
+  }, 1050);
 
-  // const now = moment().minutes(0).seconds(0).add(1, 'hours');
-  // const nowPlus = now.clone().add(1, 'hours');
-
-  const events = listRegistro;
-
-  // const events = [
-  //   {
-  //     title: 'cumpleaños de pepe',
-  //     start: moment().toDate(),
-  //     end: moment().add(2, 'hours').toDate(),
-  //     bgcolor: '#fafafa',
-  //     notes: 'comprar pastel',
-  //     user: {
-  //       _id: '123',
-  //       name: 'pepe',
-  //     },
-  //   },
-  // ];
-  // console.log(now);
-  // console.log(events);
-  // 3=> acpetado
-  // 2=> falta cancelar
+  // console.log(MHorario);
+  const events = [
+    {
+      title: 'cumpleaños de pepe',
+      start: moment().add(1, 'hours').toDate(),
+      end: moment().add(2, 'hours').toDate(),
+      bgcolor: '#fafafa',
+      notes: 'comprar pastel',
+      type: '1',
+    },
+    {
+      title: 'cumpleaños de pepe',
+      start: moment().add(1, 'hours').toDate(),
+      end: moment().add(2, 'hours').toDate(),
+      bgcolor: '#fafafa',
+      notes: 'comprar pastel',
+      type: '3',
+    },
+    {
+      title: 'cumpleaños de pepe',
+      start: moment().add(4, 'hours').toDate(),
+      end: moment().add(5, 'hours').toDate(),
+      bgcolor: '#fafafa',
+      notes: 'comprar pastel',
+      type: '2',
+    },
+    {
+      title: 'cumpleaños de pepe',
+      start: moment().add(7, 'hours').toDate(),
+      end: moment().add(7, 'hours').toDate(),
+      bgcolor: '#fafafa',
+      notes: 'comprar pastel',
+      type: '3',
+    },
+  ];
 
   const handlePacienteUbicacion = () => {
     setMPaciente(true);
@@ -235,26 +252,28 @@ const Calendario = () => {
       <div className="row mt-5">
         <div className="col-12">
           <div className="barra">
-            <Calendar
-              localizer={localizer}
-              events={events}
-              startAccessor="start"
-              endAccessor="end"
-              // messages={messages}
-              // eventPropGetter={eventStyleGetter}
-              // components={{
-              //   event: CalendarEvent,
-              // }}
-              // onDoubleClickEvent={onDoubleClick}
-              // onSelectEvent={onSelectEvent}
-              // onView={onViewChange}
-              // view={lastView}
-              // onSelectSlot={onSelectSlot}
-              selectable={true}
-              // step={170}
-              defaultView={Views.AGENDA}
-              // formats={formats}
-            />
+            {condicional && (
+              <Calendar
+                localizer={localizer}
+                events={eventosList}
+                startAccessor="start"
+                endAccessor="end"
+                messages={messages}
+                // eventPropGetter={eventStyleGetter}
+                // components={{
+                //   event: EventosCalendario,
+                // }}
+                // onDoubleClickEvent={onDoubleClick}
+                // onSelectEvent={onSelectEvent}
+                // onView={onViewChange}
+                // view={lastView}
+                // onSelectSlot={onSelectSlot}
+                selectable={true}
+                // step={170}
+                defaultView={Views.AGENDA}
+                // formats={formats}
+              />
+            )}
           </div>
         </div>
       </div>

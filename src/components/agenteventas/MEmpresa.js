@@ -17,7 +17,8 @@ const MEmpresa = ({
 }) => {
   const [discount, setDiscount] = useState([]);
   const [filterServices, setFilterServices] = useState({});
-  const [total, setTotal] = useState([]);
+  const [dataFacturacion, setDataFacturacion] = useState({});
+
   const closeModal = () => {
     setOpenModal(false);
     setEditar(false);
@@ -25,38 +26,17 @@ const MEmpresa = ({
   };
 
   const crearCompanyDiscount = () => {
-    // const data = {
-    //   company_id: dataSelected.id,
-    //   services: Object.values(discount),
-    // };
+    // console.log(dataSelected);
 
-    // const descuento =
-    //   discount &&
-    //   [discount].map((data, i) => ({
-    //     service_id: data.service_id,
-    //     state: data.state,
-    //     percent: data.percent,
-    //     amount: data.amount,
-    //   }));
-
-    // console.log(descuento);
-
-    const dataEstatica = {
-      company_id: dataSelected.id,
-      credit: 12,
-      before: 12,
-      services: [
-        {
-          amount: "600",
-          state: 1,
-          percent: 50,
-          service_id: 5,
-        },
-      ],
+    const data = {
+      company_id: dataSelected.corporation_id,
+      credit: dataFacturacion.credit,
+      before: dataFacturacion.before,
+      services: discount,
     };
 
-    fetchGETPOSTPUTDELETEJSON("company_discount", dataEstatica, "POST").then(
-      (res) => console.log(res)
+    fetchGETPOSTPUTDELETEJSON("company_discount", data, "POST").then((res) =>
+      console.log(res)
     );
   };
 
@@ -82,9 +62,12 @@ const MEmpresa = ({
           amount: data.last_discount.amount,
         },
       ]);
-      const newPercent = total.percent;
-      discount.forEach((item) => (item.precio = newPercent));
-      console.log(discount);
+
+      document.getElementById(`percent-${data.id}`).disabled = false;
+      document.getElementById(`percent-${data.id}`).value =
+        data.last_discount.percent;
+      document.getElementById(`amount-${data.id}`).value =
+        data.last_discount.amount;
     } else {
       if (discount.length > 1) {
         let position = discount.findIndex(
@@ -97,20 +80,40 @@ const MEmpresa = ({
       } else {
         setDiscount([]);
       }
-      // console.log(position);
+
+      document.getElementById(`percent-${data.id}`).disabled = true;
     }
   };
 
-  const editarPercent = (e) => {
-    setTotal((total) => [
-      ...total,
+  const editarPercent = (e, id) => {
+    // console.log(e);
 
-      { [e.target.name]: e.target.value, [e.target.name]: e.target.value },
-    ]);
+    const value = e.target.value || 0;
+
+    let position = discount.findIndex((arreglo) => arreglo.service_id == id);
+    const arreglos = [...discount];
+
+    let positionOriginal = filterServices.findIndex((d) => d.id == id);
+
+    const obj = arreglos[position];
+    const amountOriginal =
+      filterServices[positionOriginal].last_discount.amount;
+
+    const newAmount = Number(amountOriginal) * (1 - Number(value) / 100);
+
+    obj.percent = Number(value);
+    obj.amount = newAmount.toString();
+
+    document.getElementById(`amount-${id}`).value = Number(newAmount);
+
+    // setTotal((total) => [
+    //   ...total,
+    //   { [e.target.name]: e.target.value, [e.target.name]: e.target.value },
+    // ]);
   };
 
   console.log(discount);
-  console.log(total);
+  // console.log(total);
 
   useEffect(() => {
     filtrarServicios();
@@ -272,7 +275,7 @@ const MEmpresa = ({
 
                       <td>
                         <input
-                          type="text"
+                          type="number"
                           className="form-input"
                           id={`percent-${data.id}`}
                           placeholder=""
@@ -281,14 +284,15 @@ const MEmpresa = ({
                           defaultValue={
                             data.last_discount ? data.last_discount.percent : 0
                           }
-                          onChange={editarPercent}
+                          disabled
+                          onChange={(e) => editarPercent(e, data.id)}
                           aria-describedby="basic-addon1"
                         />
                       </td>
                       <td>
                         <div class="input-group mb-3">
                           <input
-                            type="text"
+                            type="number"
                             id={`amount-${data.id}`}
                             placeholder=""
                             aria-label=""
@@ -299,7 +303,7 @@ const MEmpresa = ({
                                 ? data.last_discount.amount
                                 : ""
                             }
-                            onChange={editarPercent}
+                            // onChange={editarPercent}
                             aria-describedby="basic-addon1"
                           />
                         </div>
@@ -321,7 +325,10 @@ const MEmpresa = ({
                 aria-label=""
                 aria-describedby="basic-addon1"
                 onChange={(e) =>
-                  setDiscount({ ...discount, before: e.target.value })
+                  setDataFacturacion({
+                    ...dataFacturacion,
+                    before: Number(e.target.value),
+                  })
                 }
               />
             </div>
@@ -335,7 +342,10 @@ const MEmpresa = ({
                 aria-label=""
                 aria-describedby="basic-addon1"
                 onChange={(e) =>
-                  setDiscount({ ...discount, credit: e.target.value })
+                  setDataFacturacion({
+                    ...dataFacturacion,
+                    credit: Number(e.target.value),
+                  })
                 }
               />
             </div>

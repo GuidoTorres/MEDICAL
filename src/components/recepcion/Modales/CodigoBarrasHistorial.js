@@ -42,6 +42,7 @@ const CodigoBarrasHistorial = ({
   };
 
   const cargarBarra = () => {
+    // console.log(dataBarCode);
     const canvas = document.getElementById("canvas");
     const img = document.getElementById("bar");
     const ctx = canvas.getContext("2d");
@@ -108,7 +109,7 @@ const CodigoBarrasHistorial = ({
       <div className="container">
         <div className="row">
           <canvas id="canvas">
-            <BarCode textobarcode={dataBarCode.codebar || ""} id="bar" />
+            <BarCode textobarcode={dataBarCode.DNI || ""} id="bar" />
           </canvas>
 
           <div className="d-flex justify-content-between mt-3">

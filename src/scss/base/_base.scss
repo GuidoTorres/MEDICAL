@@ -38,12 +38,12 @@ h6 {
 textarea,
 select,
 select.form-select,
-input[type='number'],
-input[type='text'],
-input[type='email'],
-input[type='password'],
-input[type='date'],
-input[type='time'] {
+input[type="number"],
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="time"] {
   border-radius: 3px;
   border: 1px solid $color-borde !important;
   border: none;
@@ -58,7 +58,7 @@ input[type='time'] {
   }
 }
 
-input[type='checkbox'] {
+input[type="checkbox"] {
   border: 1px solid $color-borde !important;
   box-shadow: none !important;
   font-size: 0.9rem !important;
@@ -174,6 +174,10 @@ input[type='checkbox'] {
   z-index: 5999;
 }
 
+.ReactToMessage {
+  z-index: 1060 !important;
+}
+
 .modal-fondo {
   background-color: rgba(0, 0, 0, 0.404);
   bottom: 0;
@@ -283,8 +287,10 @@ input[type='checkbox'] {
 .modal__tomanBarcode {
   // height: 45%;
   // width: 25%;
-  max-height: 294px;
-  max-width: 275px;
+  // max-height: 294px;
+  // max-width: 275px;
+  height: auto;
+  max-width: 315px;
 }
 
 // TODO MODAL ORGANIZADOR PACIENTE
@@ -306,7 +312,7 @@ input[type='checkbox'] {
   font-size: 0.9rem;
   select,
   select.form-select,
-  input[type='number'] {
+  input[type="number"] {
     border: none;
   }
   .react-datetime-picker__wrapper {
@@ -327,12 +333,12 @@ input[type='checkbox'] {
   textarea,
   select,
   select.form-select,
-  input[type='number'],
-  input[type='text'],
-  input[type='email'],
-  input[type='password'],
-  input[type='date'],
-  input[type='time'] {
+  input[type="number"],
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="date"],
+  input[type="time"] {
     border: none !important;
   }
 }
@@ -486,7 +492,7 @@ input[type='checkbox'] {
 // TODO AVATAR
 .image__upload {
   align-items: center;
-  background-image: url('../../assets/icons/upload.png');
+  background-image: url("../../assets/icons/upload.png");
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
@@ -632,7 +638,7 @@ input[type='checkbox'] {
   }
   .modal__barcode {
     height: auto;
-    max-width: 400px;
+    max-width: 315px;
   }
 }
 @media screen and (min-width: 769px) {
@@ -640,4 +646,32 @@ input[type='checkbox'] {
   .modal__hprecio {
     width: 35%;
   }
+}
+
+// !
+.rbc-day-slot .rbc-event,
+.rbc-day-slot .rbc-background-event {
+  border: none;
+  box-shadow: -1px -1px 5px 0px rgba(0, 0, 0, 0.397);
+  background-color: #f3f3f3;
+  color: rgb(50, 55, 78);
+  // margin: 5px;
+  font-weight: 600;
+  // border: 1px solid brown;
+}
+
+.colores {
+  padding: 5px;
+  border-radius: 5px;
+  font-weight: 600;
+  display: block;
+}
+.rbc-day-slot .rbc-event--1 {
+  background-color: rgb(255, 174, 0) !important;
+}
+.rbc-day-slot .rbc-event--2 {
+  background-color: rgba(255, 0, 0, 0.74) !important;
+}
+.rbc-day-slot .rbc-event--3 {
+  background-color: rgb(0, 202, 0) !important;
 }
