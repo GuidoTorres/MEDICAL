@@ -24,8 +24,8 @@ const Navbar = ({
 }) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { clinic } = useSelector((state) => state.auth);
-  const { business_name } = clinic;
+  // const { clinic } = useSelector((state) => state.auth);
+  // const { business_name } = clinic;
   const handleLogout = () => {
     dispatch(startLogout());
     history.replace('/');
@@ -67,7 +67,7 @@ const Navbar = ({
           </button>
         </div>
         <div>
-          <h3 className="nombredeltitulo">Bienvenido {business_name}</h3>
+          {/* <h3 className="nombredeltitulo">Bienvenido {business_name}</h3> */}
           <ul className=" navbar-nav mr-auto">
             <li className="nav-item">
               <NavLink
@@ -193,7 +193,7 @@ const Navbar = ({
               />
             </Link>
           </div>
-          <h3 className="nombreSubTitulo"> {business_name}</h3>
+          {/* <h3 className="nombreSubTitulo"> {business_name}</h3> */}
           <ul className="navUl navbar-nav mr-auto">
             <li className="nav-item">
               <NavLink

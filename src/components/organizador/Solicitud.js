@@ -4,43 +4,44 @@ import { paginacionOpciones } from '../../helpers/tablaOpciones';
 import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 import { listaPacient } from '../../actions/organizador';
 
-// import OMLista from './OMLista';
+import OMLista from './OMLista';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 const Solicitud = () => {
-  const history = useHistory();
   const dispatch = useDispatch();
+
+  const history = useHistory();
   const [busqueda, setBusqueda] = useState('');
-  // const [listRegistro, setListRegistro] = useState({});
   const [oranizadorxd, setOranizadorxd] = useState([]);
-  // const [modalList, setModalList] = useState(false);
+  const [modalList, setModalList] = useState(false);
   const [search, setSearch] = useState([]);
+  const [listRegistro, setListRegistro] = useState({});
 
   const getSolicitudes = () => {
     fetchGETPOSTPUTDELETEJSON('reservation/organizer')
       .then((data) => data.json())
       .then((datos) => setOranizadorxd(datos.data));
   };
-  // console.log(oranizadorxd);
+
   useEffect(() => {
     getSolicitudes();
   }, []);
-
-  // const abrirModal = (e) => {
-  //   setListRegistro(e);
-  //   setModalList(true);
-  // };
 
   const ventanaIr = (e) => {
     dispatch(listaPacient(e));
     history.push('/organizador/calendario');
   };
 
+  const abrirModal = (e) => {
+    setListRegistro(e);
+    setModalList(true);
+  };
+
   const columnas = [
     {
-      name: 'Item',
-      selector: (row) => (row ? row.id : ''),
+      name: 'Ítem',
+      selector: (row, index) => (index += 1),
       sortable: true,
       style: {
         borderBotton: 'none',
@@ -110,15 +111,15 @@ const Solicitud = () => {
         color: '#555555',
       },
     },
-    // {
-    //   name: 'Ver',
-    //   button: true,
-    //   cell: (e) => (
-    //     <button onClick={() => abrirModal(e)} className="table__tablebutton">
-    //       <i className="far fa-eye"></i>
-    //     </button>
-    //   ),
-    // },
+    {
+      name: 'Ver',
+      button: true,
+      cell: (e) => (
+        <button onClick={() => abrirModal(e)} className="table__tablebutton">
+          <i className="far fa-eye"></i>
+        </button>
+      ),
+    },
     {
       name: 'Atención',
       button: true,
@@ -180,13 +181,13 @@ const Solicitud = () => {
           />
         </div>
       </div>
-      {/* {modalList && (
+      {modalList && (
         <OMLista
           modalList={modalList}
           setModalList={setModalList}
           listRegistro={listRegistro}
         />
-      )} */}
+      )}
     </div>
   );
 };

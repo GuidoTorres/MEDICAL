@@ -8,7 +8,6 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment/locale/es';
 import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 import { messages } from '../../helpers/calendar-spain';
-// import EventosCalendario from './EventosCalendario';
 
 moment.locale('es');
 
@@ -16,14 +15,15 @@ const localizer = momentLocalizer(moment);
 
 const Calendario = () => {
   const { selectionId } = useSelector((state) => state.organizador);
+
   const [MPaciente, setMPaciente] = useState(false);
   const [MHorario, setMHorario] = useState(false);
   const [listRegistro, setListRegistro] = useState([]);
-  const [listCalendario, setListCalendario] = useState({});
+  const [listCalendario, setListCalendario] = useState([]);
   const [eventosList, setEventosList] = useState([]);
-  const [condicional, setCondicional] = useState(false);
   const [nTranspor, setNTranspor] = useState('');
-
+  const [cambioEstado, setCambioEstado] = useState(null);
+  const [condicional, setCondicional] = useState(false);
   const { users, address, sample } = selectionId;
   const { person } = users[0];
   const { services } = sample[0];
@@ -45,57 +45,19 @@ const Calendario = () => {
   }, []);
 
   useEffect(() => {
-    const listFecha = () => {
-      fetchGETPOSTPUTDELETEJSON('timetable')
-        .then((data) => data.json())
-        .then((datos) => setListCalendario(datos));
-    };
-    listFecha();
-  }, []);
+    if (!cambioEstado) {
+      const listFecha = () => {
+        fetchGETPOSTPUTDELETEJSON('timetable')
+          .then((data) => data.json())
+          .then((datos) => setListCalendario(datos));
+      };
+      listFecha();
+    }
+  }, [cambioEstado]);
 
   useEffect(() => {
     setEventosList(listCalendario);
   }, [listCalendario]);
-
-  setTimeout(() => {
-    setCondicional(true);
-  }, 1050);
-
-  // console.log(MHorario);
-  const events = [
-    {
-      title: 'cumpleaños de pepe',
-      start: moment().add(1, 'hours').toDate(),
-      end: moment().add(2, 'hours').toDate(),
-      bgcolor: '#fafafa',
-      notes: 'comprar pastel',
-      type: '1',
-    },
-    {
-      title: 'cumpleaños de pepe',
-      start: moment().add(1, 'hours').toDate(),
-      end: moment().add(2, 'hours').toDate(),
-      bgcolor: '#fafafa',
-      notes: 'comprar pastel',
-      type: '3',
-    },
-    {
-      title: 'cumpleaños de pepe',
-      start: moment().add(4, 'hours').toDate(),
-      end: moment().add(5, 'hours').toDate(),
-      bgcolor: '#fafafa',
-      notes: 'comprar pastel',
-      type: '2',
-    },
-    {
-      title: 'cumpleaños de pepe',
-      start: moment().add(7, 'hours').toDate(),
-      end: moment().add(7, 'hours').toDate(),
-      bgcolor: '#fafafa',
-      notes: 'comprar pastel',
-      type: '3',
-    },
-  ];
 
   const handlePacienteUbicacion = () => {
     setMPaciente(true);
@@ -110,6 +72,10 @@ const Calendario = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  setTimeout(() => {
+    setCondicional(true);
+  }, 1500);
 
   return (
     <div className="container">
@@ -259,19 +225,8 @@ const Calendario = () => {
                 startAccessor="start"
                 endAccessor="end"
                 messages={messages}
-                // eventPropGetter={eventStyleGetter}
-                // components={{
-                //   event: EventosCalendario,
-                // }}
-                // onDoubleClickEvent={onDoubleClick}
-                // onSelectEvent={onSelectEvent}
-                // onView={onViewChange}
-                // view={lastView}
-                // onSelectSlot={onSelectSlot}
                 selectable={true}
-                // step={170}
                 defaultView={Views.AGENDA}
-                // formats={formats}
               />
             )}
           </div>
@@ -290,6 +245,7 @@ const Calendario = () => {
           MHorario={MHorario}
           setMHorario={setMHorario}
           nTranspor={nTranspor}
+          setCambioEstado={setCambioEstado}
         />
       )}
     </div>

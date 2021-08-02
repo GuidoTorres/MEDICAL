@@ -1,28 +1,23 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import { useSelector } from 'react-redux';
-import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
+import { useDispatch, useSelector } from 'react-redux';
+import { eventStartAddNew, eventStartList } from '../../actions/calendario';
 import { customStyles } from '../../helpers/tablaOpciones';
 
-const OMHorario = ({ MHorario, setMHorario, nTranspor }) => {
+const OMHorario = ({ MHorario, setMHorario, nTranspor, setCambioEstado }) => {
+  const dispatch = useDispatch();
   const { selectionId } = useSelector((state) => state.organizador);
   const { id } = selectionId;
   const [listHorario, setListHorario] = useState({
     user_id: parseInt(nTranspor.transportista),
     attention_date: '',
     attention_time: null,
-    // attention_date_fin: '',
     attention_time_end: null,
     comments: '',
   });
 
-  const {
-    attention_date,
-    attention_time,
-    // attention_date_fin,
-    attention_time_end,
-    comments,
-  } = listHorario;
+  const { attention_date, attention_time, attention_time_end, comments } =
+    listHorario;
 
   const closeModal = () => {
     setMHorario(false);
@@ -30,11 +25,14 @@ const OMHorario = ({ MHorario, setMHorario, nTranspor }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetchGETPOSTPUTDELETEJSON(
-      `reservation/asignar/${id}`,
-      listHorario,
-      'POST'
-    ).then((data) => data.json());
+    dispatch(eventStartAddNew(listHorario, id));
+    // fetchGETPOSTPUTDELETEJSON(
+    //   `reservation/asignar/${id}`,
+    //   listHorario,
+    //   'POST'
+    // ).then((data) => data.json());
+    dispatch(eventStartList());
+    // setCambioEstado(false);
     closeModal();
   };
 
@@ -75,16 +73,6 @@ const OMHorario = ({ MHorario, setMHorario, nTranspor }) => {
             className="form-control"
           />
         </div>
-        {/* <div className="form-group mt-3">
-          <label>Fecha fin</label>
-          <input
-            type="date"
-            name="attention_date_fin"
-            value={attention_date_fin}
-            onChange={handleOnChange}
-            className="form-control"
-          />
-        </div> */}
         <div className="form-group mt-3">
           <label>Hora fin</label>
           <input
