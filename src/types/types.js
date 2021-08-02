@@ -8,6 +8,9 @@ const types = {
   authLogout: '[auth] Logout',
 
   organizador: '[@organizador] organizador',
+
+  addCalendar: '[@addCalendar] agregar',
+  listCalendar: '[@listCalendar] listar',
 };
 
 export { types };
