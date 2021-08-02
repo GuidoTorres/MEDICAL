@@ -46,7 +46,7 @@ const Historial = () => {
   const columnas = [
     {
       name: 'Ítem',
-      selector: (row) => (row.nro_atencion ? row.nro_atencion : ''),
+      selector: (row, index) => (index += 1),
       sortable: true,
       style: {
         borderBotton: 'none',

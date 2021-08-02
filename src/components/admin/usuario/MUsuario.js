@@ -95,10 +95,6 @@ const MUsuario = ({ openModal, setOpenModal, dataSelected }) => {
                   onChange={(e) => handleChange(e)}
                 />
               </div>
-              <div>
-                <label>Generar actividad</label>
-                <input type="text" />
-              </div>
             </div>
             <button className="botones" onClick={editarUsuario}>
               Editar

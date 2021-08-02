@@ -29,7 +29,7 @@ const Registro = () => {
   const columnas = [
     {
       name: "Ítem",
-      selector: "id",
+      selector: (row, index) => (index += 1),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -227,7 +227,9 @@ const Registro = () => {
           openModal={openModal}
           setOpenModal={setOpenModal}
           dataSelected={dataSelected}
+          setDataSelected={setDataSelected}
           editar={editar}
+          setEditar = {setEditar}
           getCorporations={getCorporations}
         />
       )}

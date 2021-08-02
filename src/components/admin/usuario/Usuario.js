@@ -26,12 +26,12 @@ const Usuario = () => {
     resp();
   }, []);
 
-  console.log(getUsuario);
+  console.log(dataSelected);
 
   const columnas = [
     {
       name: "Ítem",
-      selector: "id",
+      selector:  (row, index) => (index += 1),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -40,7 +40,14 @@ const Usuario = () => {
     },
     {
       name: "Tipo documento",
-      selector: (row) => row.document_type || "",
+      selector: (row) =>
+        row.person && row.person.document_type_id === 3
+          ? "Carné de extranjería"
+          : row.person && row.person.document_type_id === 2
+          ? "Pasaporte"
+          : row.person && row.person.document_type_id === 1
+          ? "DNI"
+          : "",
       sortable: true,
       style: {
         borderBotton: "none",

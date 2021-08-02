@@ -189,7 +189,7 @@ const MGenerarAtencion = ({
       contentLabel="Example Modal"
       id="modalBar"
     >
-      <h3 className="title__modal">Generar atencion</h3>
+      <h3 className="title__modal">Generar atención</h3>
       <div className="generarAtencion">
         <div className="datosPaciente">
           <label htmlFor="">

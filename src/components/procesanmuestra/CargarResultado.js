@@ -27,6 +27,8 @@ const CargarResultado = () => {
       .then((datos) => setResult(datos.data));
   };
 
+  console.log(result);
+
   useEffect(() => {
     getResult();
   }, []);
@@ -34,7 +36,7 @@ const CargarResultado = () => {
   const columnas = [
     {
       name: "Item",
-      selector: "id",
+      selector: (row, index) => (index += 1),
       sortable: true,
 
       style: {
@@ -274,7 +276,7 @@ const CargarResultado = () => {
         Swal.fire({
           icon: "success",
           title: "Éxito",
-          text: "Se ha cargo el pdf correctamente.",
+          text: "Se guardo el pdf correctamente.",
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Aceptar",
