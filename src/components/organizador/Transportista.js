@@ -19,8 +19,8 @@ const Transportista = () => {
 
   const columnas = [
     {
-      name: 'Item',
-      selector: 'id',
+      name: 'Ítem',
+      selector: (row, index) => (index += 1),
       sortable: true,
       style: {
         borderBotton: 'none',

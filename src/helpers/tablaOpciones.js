@@ -17,4 +17,10 @@ const paginacionOpciones = {
   selectAllRowsItemText: "Todos",
 };
 
-export { customStyles, paginacionOpciones };
+const mensajesTablaFacturacion = {
+  singular: "atención",
+  plural: "atenciones",
+  message: "seleccionada(s)",
+};
+
+export { customStyles, paginacionOpciones, mensajesTablaFacturacion };

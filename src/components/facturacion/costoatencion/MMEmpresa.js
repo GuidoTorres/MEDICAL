@@ -25,6 +25,7 @@ const MMEmpresa = ({
   const [subtotal, setSubTotal] = useState(0);
   const [igv, setIgv] = useState(0);
   const [total, setTotal] = useState(0);
+  const [incremento, setIncremento] = useState(0);
   const [fechaActual, setFechaActual] = useState("");
   const [observacion, setObservacion] = useState("");
   const [codigo, setCodigo] = useState("");
@@ -32,6 +33,16 @@ const MMEmpresa = ({
   // const handleAgregarCliente = () => {
   //   setOpenModalCrear(true);
   // };
+
+  const editar = () => {
+    document.getElementById("liquidacion-total").readOnly = false;
+  };
+
+  const restaurar = () => {
+    document.getElementById("liquidacion-total").readOnly = true;
+    document.getElementById("liquidacion-total").value = total;
+  };
+
   const closeModal = () => {
     setOpenModalParticular(false);
   };
@@ -78,7 +89,7 @@ const MMEmpresa = ({
         code: codigo,
         observation: observacion,
         subtotal: subtotal,
-        amount: total,
+        amount: total + incremento,
         igv: igv,
         attentions: array,
         company_id: dataEmpresa.id,
@@ -164,13 +175,13 @@ const MMEmpresa = ({
                     <th scope="col">Nombres y apellidos</th>
                     <th scope="col">Tipo de prueba</th>
                     <th scope="col">Servicio</th>
-                    <th scope="col">Sub-Total</th>
+                    <th scope="col">Costo</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((d) => (
+                  {data.map((d, index) => (
                     <tr key={d.id}>
-                      <td>{d.id}</td>
+                      <td>{(index += 1)}</td>
                       <td>{d.dni}</td>
                       <td>{d.fecha_atencion}</td>
                       <td>{d.paciente}</td>
@@ -181,29 +192,57 @@ const MMEmpresa = ({
                   ))}
 
                   <tr>
-                    <td colSpan="7">Obvervación</td>
-                    <td>Sub Total</td>
-                    <td>{subtotal}</td>
+                    <td colSpan="5">
+                      <strong>Obvervación</strong>
+                    </td>
+                    <td>
+                      <strong>Sub Total</strong>
+                    </td>
+                    <td>
+                      <strong>{subtotal}</strong>
+                    </td>
                   </tr>
                   <tr>
-                    <td colSpan="7">
+                    <td colSpan="5">
                       <textarea
                         onChange={(e) => setObservacion(e.target.value)}
                       ></textarea>
                     </td>
-                    <td>IGV</td>
-                    <td>{igv}</td>
+                    <td>
+                      <strong>IGV</strong>
+                    </td>
+                    <td>
+                      <strong>{igv}</strong>
+                    </td>
                   </tr>
                   <tr>
-                    <td colSpan="7"></td>
-                    <td>Total</td>
-                    <td>{total}</td>
+                    <td colSpan="5"></td>
+                    <td>
+                      <strong>Total</strong>
+                    </td>
+                    <td>
+                      <input
+                        id="liquidacion-total"
+                        type="number"
+                        defaultValue={total + incremento}
+                        onChange={(e) => setIncremento(e.target.value - total)}
+                        readOnly
+                        min="0"
+                      />
+                    </td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
+        <button className="liquidacion-icon" onClick={editar}>
+          <i className="fas fa-pen-square"></i> Edital total
+        </button>
+        <button className="liquidacion-icon" onClick={restaurar}>
+          <i className="fas fa-redo-alt"></i>Restaurar total
+        </button>
+
         {/* {openModalCrear && (
           <MMAParticulares
             openModalCrear={openModalCrear}

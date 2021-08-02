@@ -38,12 +38,12 @@ h6 {
 textarea,
 select,
 select.form-select,
-input[type="number"],
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="date"],
-input[type="time"] {
+input[type='number'],
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='date'],
+input[type='time'] {
   border-radius: 3px;
   border: 1px solid $color-borde !important;
   border: none;
@@ -58,7 +58,7 @@ input[type="time"] {
   }
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   border: 1px solid $color-borde !important;
   box-shadow: none !important;
   font-size: 0.9rem !important;
@@ -312,7 +312,7 @@ input[type="checkbox"] {
   font-size: 0.9rem;
   select,
   select.form-select,
-  input[type="number"] {
+  input[type='number'] {
     border: none;
   }
   .react-datetime-picker__wrapper {
@@ -333,17 +333,17 @@ input[type="checkbox"] {
   textarea,
   select,
   select.form-select,
-  input[type="number"],
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  input[type="date"],
-  input[type="time"] {
+  input[type='number'],
+  input[type='text'],
+  input[type='email'],
+  input[type='password'],
+  input[type='date'],
+  input[type='time'] {
     border: none !important;
   }
 }
 .organizador__modal {
-  max-height: 80%;
+  max-height: 400px;
   max-width: 80%;
 }
 // TODO MODAL AGENTE VENTAS PERSONA
@@ -492,7 +492,7 @@ input[type="checkbox"] {
 // TODO AVATAR
 .image__upload {
   align-items: center;
-  background-image: url("../../assets/icons/upload.png");
+  background-image: url('../../assets/icons/upload.png');
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
@@ -675,3 +675,5 @@ input[type="checkbox"] {
 .rbc-day-slot .rbc-event--3 {
   background-color: rgb(0, 202, 0) !important;
 }
+
+// !prueba

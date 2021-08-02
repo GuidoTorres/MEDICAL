@@ -2,26 +2,47 @@ import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { customStyles } from "../../../helpers/tablaOpciones";
 import MMAParticulares from "./MMAParticulares";
+import Swal from "sweetalert2";
 import { fetchGETPOSTPUTDELETEJSON } from "../../../helpers/fetch";
 
 const MMParticulares = ({
-  openModalParticular,
-  setOpenModalParticular,
-  data,
+  openModalLiquidarParticular,
+  setOpenModalLiquidarParticular,
   dataParticular,
+  setBusqueda,
+  getParticulares,
+  setClearRows,
 }) => {
+  useEffect(() => {
+    setBusqueda(null);
+    return () => {
+      setBusqueda(null);
+    };
+  }, []);
+
   const [openModalCrear, setOpenModalCrear] = useState(false);
   const [subtotal, setSubTotal] = useState(0);
   const [igv, setIgv] = useState(0);
   const [total, setTotal] = useState(0);
+  const [incremento, setIncremento] = useState(0);
   const [fechaActual, setFechaActual] = useState("");
   const [observacion, setObservacion] = useState("");
+  const [codigo, setCodigo] = useState("");
 
   // const handleAgregarCliente = () => {
   //   setOpenModalCrear(true);
   // };
+  const editar = () => {
+    document.getElementById("liquidacion-total").readOnly = false;
+  };
+
+  const restaurar = () => {
+    document.getElementById("liquidacion-total").readOnly = true;
+    document.getElementById("liquidacion-total").value = total;
+  };
+
   const closeModal = () => {
-    setOpenModalParticular(false);
+    setOpenModalLiquidarParticular(false);
   };
 
   const enviarfechaActual = () => {
@@ -34,15 +55,61 @@ const MMParticulares = ({
     setFechaActual(ano + "-" + mes + "-" + dia);
   };
 
+  const postLiquidacion = (body) => {
+    fetchGETPOSTPUTDELETEJSON("settlement", body, "POST")
+      .then((info) => info.json())
+      .then((info) => {
+        getParticulares();
+        if (info.resp === "Settlement Create") {
+          setClearRows(true);
+          setClearRows(false);
+          Swal.fire(
+            "Liquidación exitosa!",
+            "Se ha creado correctamente la liquidación",
+            "success"
+          );
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Ocurrió un error, inténtelo nuevamente",
+          });
+        }
+      });
+    // .then((info) => console.log(info));
+  };
+
   const handleLiquidarEmpresa = () => {
-    closeModal();
-    setOpenModalParticular(false);
+    if (codigo !== null && codigo !== "") {
+      const array = [];
+      dataParticular.map((d) => array.push({ attention_id: d.id }));
+      // console.log(data);
+      // console.log(dataEmpresa);
+      const liquidacion = {
+        code: codigo,
+        observation: observacion,
+        subtotal: subtotal,
+        amount: total + incremento,
+        igv: igv,
+        attentions: array,
+        // company_id: dataEmpresa.id,
+      };
+      // console.log(liquidacion);
+      postLiquidacion(liquidacion);
+      closeModal();
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Debe ingresar código de factura",
+      });
+    }
   };
 
   useEffect(() => {
     let suma = 0;
-    data.map((d) => {
-      suma += d.total;
+    dataParticular.map((d) => {
+      suma += Number(d.amount);
     });
     setSubTotal(suma);
     setIgv(Math.round(suma * 0.18));
@@ -52,11 +119,11 @@ const MMParticulares = ({
 
   return (
     <Modal
-      isOpen={openModalParticular}
+      isOpen={openModalLiquidarParticular}
       onRequestClose={closeModal}
       style={customStyles}
       className="modal  mfacturacion__particular"
-      overlayClassName="modal-fondo"
+      overlayClassName="modal-fondo ReactToMessage"
       closeTimeoutMS={200}
       preventScroll={true}
       ariaHideApp={false}
@@ -65,21 +132,22 @@ const MMParticulares = ({
       <div className="container">
         <div className="row">
           <div className="col-12 fmparticular">
-            <div>
-              <div className="fmparticular__tipo group-input__label">
+            <div className="box-grid">
+              {/* <div className="fmparticular__tipo group-input__label">
                 <label>Razón social</label>
-                <input
-                  type="text"
-                  readOnly
-                  defaultValue={dataParticular.nombre}
-                />
+                <input type="text" readOnly defaultValue={dataEmpresa.nombre} />
               </div>
               <div className="fmparticular__tipo group-input__label">
                 <label>Ruc</label>
+                <input type="text" readOnly defaultValue={dataEmpresa.ruc} />
+              </div> */}
+              <div className="fmparticular__tipo group-input__label">
+                <label>Factura</label>
                 <input
                   type="text"
-                  readOnly
-                  defaultValue={dataParticular.apellido}
+                  value={codigo}
+                  onChange={(e) => setCodigo(e.target.value)}
+                  placeholder="Ingrese código de factura"
                 />
               </div>
               <div className="fmparticular__tipo group-input__label">
@@ -106,46 +174,73 @@ const MMParticulares = ({
                     <th scope="col">Nombres y apellidos</th>
                     <th scope="col">Tipo de prueba</th>
                     <th scope="col">Servicio</th>
-                    <th scope="col">Sub-Total</th>
+                    <th scope="col">Costo</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((d) => (
+                  {dataParticular.map((d) => (
                     <tr key={d.id}>
                       <td>{d.id}</td>
-                      <td>{d.dni}</td>
-                      <td>{d.fecha_atencion}</td>
-                      <td>{d.paciente}</td>
-                      <td>{d.categoria}</td>
-                      <td>{d.servicio}</td>
-                      <td>{d.total}</td>
+                      <td>{d.person.dni}</td>
+                      <td>{d.date_attention}</td>
+                      <td>{d.person.name}</td>
+                      <td>{d.service.description}</td>
+                      <td>{d.service.name}</td>
+                      <td>{d.amount}</td>
                     </tr>
                   ))}
 
                   <tr>
-                    <td colSpan="7">Obvervación</td>
-                    <td>Sub Total</td>
-                    <td>{subtotal}</td>
+                    <td colSpan="5">
+                      <strong>Obvervación</strong>
+                    </td>
+                    <td>
+                      <strong>Sub Total</strong>
+                    </td>
+                    <td>
+                      <strong>{subtotal}</strong>
+                    </td>
                   </tr>
                   <tr>
-                    <td colSpan="7">
+                    <td colSpan="5">
                       <textarea
                         onChange={(e) => setObservacion(e.target.value)}
                       ></textarea>
                     </td>
-                    <td>IGV</td>
-                    <td>{igv}</td>
+                    <td>
+                      <strong>IGV</strong>
+                    </td>
+                    <td>
+                      <strong>{igv}</strong>
+                    </td>
                   </tr>
                   <tr>
-                    <td colSpan="7"></td>
-                    <td>Total</td>
-                    <td>{total}</td>
+                    <td colSpan="5"></td>
+                    <td>
+                      <strong>Total</strong>
+                    </td>
+                    <td>
+                      <input
+                        id="liquidacion-total"
+                        type="number"
+                        defaultValue={total + incremento}
+                        onChange={(e) => setIncremento(e.target.value - total)}
+                        readOnly
+                        min="0"
+                      />
+                    </td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
+        <button className="liquidacion-icon" onClick={editar}>
+          <i className="fas fa-pen-square"></i> Edital total
+        </button>
+        <button className="liquidacion-icon" onClick={restaurar}>
+          <i className="fas fa-redo-alt"></i>Restaurar total
+        </button>
         {openModalCrear && (
           <MMAParticulares
             openModalCrear={openModalCrear}

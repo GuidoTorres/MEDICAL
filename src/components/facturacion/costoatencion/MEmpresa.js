@@ -6,6 +6,7 @@ import DataTable from "react-data-table-component";
 import {
   customStyles,
   paginacionOpciones,
+  mensajesTablaFacturacion,
 } from "../../../helpers/tablaOpciones";
 import MMEmpresa from "./MMEmpresa";
 
@@ -26,7 +27,7 @@ const MEmpresa = ({
   const columnas = [
     {
       name: "Item",
-      selector: "id",
+      selector: (row, index) => (index += 1),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -81,6 +82,24 @@ const MEmpresa = ({
     {
       name: "SubTotal",
       selector: "subtotal",
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Impuesto",
+      selector: "igv",
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Total",
+      selector: "total",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -167,6 +186,7 @@ const MEmpresa = ({
                     name="busqueda"
                     value={busquedaMEmpresa}
                     onChange={handleSearch}
+                    className="mb-1"
                   />
                 </div>
               </div>
@@ -174,6 +194,7 @@ const MEmpresa = ({
               <DataTable
                 columns={columnas}
                 data={listRegistro}
+                contextMessage={mensajesTablaFacturacion}
                 pagination
                 paginationComponentOptions={paginacionOpciones}
                 fixedHeader
