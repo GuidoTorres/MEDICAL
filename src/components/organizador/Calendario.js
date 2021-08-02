@@ -23,7 +23,7 @@ const Calendario = () => {
   const [eventosList, setEventosList] = useState([]);
   const [nTranspor, setNTranspor] = useState('');
   const [cambioEstado, setCambioEstado] = useState(null);
-
+  const [condicional, setCondicional] = useState(false);
   const { users, address, sample } = selectionId;
   const { person } = users[0];
   const { services } = sample[0];
@@ -72,6 +72,10 @@ const Calendario = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  setTimeout(() => {
+    setCondicional(true);
+  }, 1500);
 
   return (
     <div className="container">
@@ -214,17 +218,17 @@ const Calendario = () => {
       <div className="row mt-5">
         <div className="col-12">
           <div className="barra">
-            {/* {condicional && ( */}
-            <Calendar
-              localizer={localizer}
-              events={eventosList}
-              startAccessor="start"
-              endAccessor="end"
-              messages={messages}
-              selectable={true}
-              defaultView={Views.AGENDA}
-            />
-            {/* )} */}
+            {condicional && (
+              <Calendar
+                localizer={localizer}
+                events={eventosList}
+                startAccessor="start"
+                endAccessor="end"
+                messages={messages}
+                selectable={true}
+                defaultView={Views.AGENDA}
+              />
+            )}
           </div>
         </div>
       </div>
