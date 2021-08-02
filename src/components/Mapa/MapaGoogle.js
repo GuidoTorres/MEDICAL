@@ -6,10 +6,10 @@ const mapContainerStyle = {
   height: "190px",
 };
 
-// const center = {
-//   lat: -12.04318,
-//   lng: -77.02824,
-// };
+const center = {
+  lat: -12.04318,
+  lng: -77.02824,
+};
 
 const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
   const { isLoaded } = useJsApiLoader({
@@ -41,17 +41,18 @@ const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
 
   const position2 = {
     lat:
-      dataSelected &&
-      dataSelected.corporation &&
-      dataSelected.corporation.address &&
-      dataSelected.corporation.address.map_latitude !== null
+      (dataSelected &&
+        dataSelected.corporation &&
+        dataSelected.corporation.address &&
+        dataSelected.corporation.address.map_latitude !== null) 
         ? Number(dataSelected.corporation.address.map_latitude)
         : dataMapa.lat,
     lng:
-      dataSelected &&
-      dataSelected.corporation &&
-      dataSelected.corporation.address &&
-      dataSelected.corporation.address.map_length !== null
+      (dataSelected &&
+        dataSelected.corporation &&
+        dataSelected.corporation.address &&
+        dataSelected.corporation.address.map_length !== null)
+
         ? Number(dataSelected.corporation.address.map_length)
         : dataMapa.lng,
   };
@@ -66,7 +67,9 @@ const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
       mapContainerStyle={mapContainerStyle}
       zoom={14}
       center={center2}
-      onClick={(e) => setDataMapa({...dataMapa, lat: e.latLng.lat(), lng: e.latLng.lng() })}
+      onClick={(e) =>
+        setDataMapa({ ...dataMapa, lat: e.latLng.lat(), lng: e.latLng.lng() })
+      }
     >
       <Marker
         // onLoad={onLoad}

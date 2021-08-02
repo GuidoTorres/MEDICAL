@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Modal from "react-modal";
 
 import { customStyles } from "../../helpers/tablaOpciones";
@@ -7,12 +7,13 @@ const MMostrarPreciosEmpresa = ({
   listaPrecios,
   setListaPrecios,
   dataSelected,
+  comDiscount,
 }) => {
   const closeModal = () => {
     setListaPrecios(false);
   };
 
-  console.log(dataSelected);
+    console.log(dataSelected);
   return (
     <Modal
       isOpen={listaPrecios}
@@ -38,23 +39,22 @@ const MMostrarPreciosEmpresa = ({
               </thead>
               <tbody>
                 {dataSelected &&
-                  dataSelected.services &&
                   dataSelected.services.map((data, i) => (
                     <tr>
-                      <td>{data.name && data.name ? data.name : ""}</td>
+                      <td>{data.name}</td>
                       <td>
                         {data.last_discount &&
                         data.last_discount &&
                         data.last_discount.percent
-                          ? data.last_discount.percent + " % "
-                          : ""}
+                          ? data.last_discount.percent + "% "
+                          : "0%"}
                       </td>
 
                       <td>
                         {data.last_discount &&
                         data.last_discount &&
                         data.last_discount.amount
-                          ? data.last_discount.amount 
+                          ? data.last_discount.amount
                           : ""}
                       </td>
                     </tr>

@@ -21,9 +21,43 @@ const generarDeclaracionJurada = (data) => {
   doc.addImage(image, "PNG", 15, 20, 600, 800);
 
   //sintomas
-  doc.text(125, 115, `Yo, ${data.fullName}`);
+  doc.text(125, 115, `${data.fullName}`);
   doc.text(95, 130, `${data.document_type}`);
   doc.text(200, 130, `${data.DNI}`);
+
+  doc.text(
+    415,
+    147,
+    `${
+      data.patient_details.civil_status_id === 1
+        ? "Casado"
+        : data.patient_details.civil_status_id === 2
+        ? "Soltero"
+        : data.patient_details.civil_status_id === 3
+        ? "Viudo"
+        : data.patient_details.civil_status_id === 4
+        ? "Divorciado"
+        : ""
+    }`
+  );
+
+  doc.text(
+    135,
+    163,
+    `${data.patient_details.civil_status_id === 1 ? "Masculino" : "Femenino"}`
+  );
+
+  doc.text(
+    110,
+    178,
+    `${data.patient_details.email ? data.patient_details.email : ""}`
+  );
+
+  doc.text(
+    380,
+    195,
+    `${data.patient_details.cellphone ? data.patient_details.cellphone : ""}`
+  );
   // doc.text(155, 143, `${data.puesto}`);
   // doc.text(308, 130, `${data.empresa}`);
 

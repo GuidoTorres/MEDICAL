@@ -24,6 +24,7 @@ const MEmpresa = ({
     setEditar(false);
     setDataSelected(null);
   };
+  console.log(dataSelected);
 
   const crearCompanyDiscount = () => {
     // console.log(dataSelected);
@@ -40,6 +41,7 @@ const MEmpresa = ({
     );
   };
 
+
   const filtrarServicios = () => {
     const data =
       dataSelected &&
@@ -47,7 +49,6 @@ const MEmpresa = ({
       dataSelected.services.filter((data) => data);
 
     setFilterServices(data);
-    console.log(data);
   };
 
   const handleChange = (e, data) => {
@@ -112,8 +113,6 @@ const MEmpresa = ({
     // ]);
   };
 
-  console.log(discount);
-  // console.log(total);
 
   useEffect(() => {
     filtrarServicios();
@@ -290,7 +289,7 @@ const MEmpresa = ({
                         />
                       </td>
                       <td>
-                        <div class="input-group mb-3">
+                        <div className="input-group mb-3">
                           <input
                             type="number"
                             id={`amount-${data.id}`}

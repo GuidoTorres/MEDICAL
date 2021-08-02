@@ -79,7 +79,6 @@ const MRegistroClinica = ({
   };
 
   const postClinics = (e) => {
-
     const formData = new FormData();
 
     formData.set("ruc", data.ruc || "");
@@ -140,11 +139,8 @@ const MRegistroClinica = ({
     });
   };
 
+  console.log(dataSelected);
   const putClinics = (e) => {
-    const file = new File(
-      dataSelected.corporation.logo,
-      `file`
-    );
     const formData = new FormData();
 
     formData.set("corporation_id", 1);
@@ -174,7 +170,7 @@ const MRegistroClinica = ({
         ? dataSelected.corporation.commercial_name
         : ""
     );
-    formData.set("logo", avatar && avatar.file ? avatar.file : file);
+    formData.set("logo", avatar && avatar.file ? avatar.file : "");
     formData.set(
       "address",
       data.address
