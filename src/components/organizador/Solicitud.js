@@ -40,8 +40,8 @@ const Solicitud = () => {
 
   const columnas = [
     {
-      name: 'Item',
-      selector: (row) => (row ? row.id : ''),
+      name: 'Ítem',
+      selector: (row, index) => (index += 1),
       sortable: true,
       style: {
         borderBotton: 'none',
