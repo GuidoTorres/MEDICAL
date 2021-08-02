@@ -22,13 +22,11 @@ const CodigoBarrasHistorial = ({
   setCodigoHistorial,
   dataBarCode,
 }) => {
-  console.log(dataBarCode);
   // const { dni} = dataBarCode;
   const closeModal = () => {
     setCodigoHistorial(false);
   };
 
-  console.log(dataBarCode);
 
   const descargar = () => {
     const data = document.querySelector("#canvas");

@@ -1,6 +1,6 @@
 import React from "react";
 
-const FichaCovid19 = ({ ficha, setFicha }) => {
+const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
   const data = {
     nombre: "Hector Torres Durand",
     dni: "72798529",
@@ -16,216 +16,156 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
       <div className="datosGenerales">
         <div className="div1">
           <div className="mt-2">
-            <label htmlFor="">1. Fecha notificación:</label>
-            <input
-              type="date"
-              class="form-control"
-              placeholder=""
-              aria-label="Username"
-              aria-describedby="basic-addon1"
-              onChange={(e) =>
-                setFicha({ ...ficha, fechaNoti: e.target.value })
-              }
-            />
+            {formulario[1].questions.slice(0, 1).map((data, i) => (
+              <>
+                <label key={i} htmlFor="">
+                  1. {data.text}
+                </label>
+                <input
+                  type="date"
+                  class="form-control"
+                  placeholder=""
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                  onChange={(e) =>
+                    setFicha({ ...ficha, fechaNoti: e.target.value })
+                  }
+                />
+              </>
+            ))}
           </div>
           <div className="mt-2">
-            <label htmlFor="">2. GERESA/DIRESA/DIRIS:</label>
-            <input
-              type="text"
-              class="form-control"
-              placeholder=""
-              aria-label="Username"
-              aria-describedby="basic-addon1"
-              onKeyUp={(e) => setFicha({ ...ficha, geresa: e.target.value })}
-            />
-          </div>
-        </div>
-        <div className="mt-2">
-          <label htmlFor="">3. EESS:</label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder=""
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            onKeyUp={(e) => setFicha({ ...ficha, eess: e.target.value })}
-          />
-        </div>
-
-        <label className="mt-2" htmlFor="">
-          4. Inst. Adm:
-        </label>
-        <div className="div2">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="flexCheckDefault"
-              onChange={(e) => {
-                setFicha({ ...ficha, minsa: e.target.checked });
-              }}
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              MINSA
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="flexCheckDefault"
-              onChange={(e) => {
-                setFicha({ ...ficha, essalud: e.target.checked });
-              }}
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              EsSalud
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="flexCheckDefault"
-              onChange={(e) => {
-                setFicha({ ...ficha, ffaa: e.target.checked });
-              }}
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              FFAA/PNP
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="flexCheckDefault"
-              onChange={(e) => {
-                setFicha({ ...ficha, privado: e.target.checked });
-              }}
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              Privado
-            </label>
+            {formulario[1].questions.slice(1, 3).map((data, i) => (
+              <>
+                <label key={i} htmlFor="">
+                  2. {data.text}
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder=""
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                  onKeyUp={(e) =>
+                    setFicha({ ...ficha, geresa: e.target.value })
+                  }
+                />
+              </>
+            ))}
           </div>
         </div>
 
-        <label className="mt-2" htmlFor="">
-          5. Clasificación del caso:
-        </label>
-        <div className="div2">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="flexCheckDefault"
-              onChange={(e) => {
-                setFicha({ ...ficha, confirmado: e.target.checked });
-              }}
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              Confirmado
+        {formulario[1].questions.slice(4, 5).map((data, i) => (
+          <>
+            <label className="mt-2" htmlFor="">
+              4. {data.text}
             </label>
-          </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="flexCheckDefault"
-              onChange={(e) => {
-                setFicha({ ...ficha, probable: e.target.checked });
-              }}
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              Probable
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="flexCheckDefault"
-              onChange={(e) => {
-                setFicha({ ...ficha, sospechoso: e.target.checked });
-              }}
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              Sospechoso
-            </label>
-          </div>
-        </div>
+            <div className="div2">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="flexCheckDefault"
+                  onChange={(e) => {
+                    setFicha({ ...ficha, minsa: e.target.checked });
+                  }}
+                />
 
-        {/* <label className="mt-2" htmlFor="">
-          6. Detectado en punto de entrada:
-        </label>
-        <div className="div2">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="flexCheckDefault"
-              onChange={(e) => {
-                setFicha({ ...ficha, detectadoSi: e.target.checked });
-              }}
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              Si
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="flexCheckDefault"
-              onChange={(e) => {
-                setFicha({ ...ficha, detectadoNo: e.target.checked });
-              }}
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              No
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="flexCheckDefault"
-              onChange={(e) => {
-                setFicha({ ...ficha, detectadoDes: e.target.checked });
-              }}
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              Desconocido
-            </label>
-          </div>
-        </div>
+                <label class="form-check-label" for="flexCheckDefault">
+                  MINSA
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="flexCheckDefault"
+                  onChange={(e) => {
+                    setFicha({ ...ficha, essalud: e.target.checked });
+                  }}
+                />
+                <label class="form-check-label" for="flexCheckDefault">
+                  EsSalud
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="flexCheckDefault"
+                  onChange={(e) => {
+                    setFicha({ ...ficha, ffaa: e.target.checked });
+                  }}
+                />
+                <label class="form-check-label" for="flexCheckDefault">
+                  FFAA/PNP
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="flexCheckDefault"
+                  onChange={(e) => {
+                    setFicha({ ...ficha, privado: e.target.checked });
+                  }}
+                />
+                <label class="form-check-label" for="flexCheckDefault">
+                  Privado
+                </label>
+              </div>
+            </div>
+          </>
+        ))}
 
-        <label className="mt-2" htmlFor="">
-          Si la respuesta es si, fecha:
-        </label>
-        <div className="respuesta">
-          <input
-            type="date"
-            class="form-control"
-            placeholder="Fecha"
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            onChange={(e) => {
-              setFicha({ ...ficha, detectadoFecha: e.target.value });
-            }}
-          />
-
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Lugar"
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            onChange={(e) => {
-              setFicha({ ...ficha, detectadoLugar: e.target.value });
-            }}
-          />
-        </div>*/}
+        {formulario[1].questions.slice(3, 4).map((data, i) => (
+          <>
+            <label className="mt-2" htmlFor="">
+              5. {data.text}
+            </label>
+            <div className="div2">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="flexCheckDefault"
+                  onChange={(e) => {
+                    setFicha({ ...ficha, confirmado: e.target.checked });
+                  }}
+                />
+                <label class="form-check-label" for="flexCheckDefault">
+                  Confirmado
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="flexCheckDefault"
+                  onChange={(e) => {
+                    setFicha({ ...ficha, probable: e.target.checked });
+                  }}
+                />
+                <label class="form-check-label" for="flexCheckDefault">
+                  Probable
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="flexCheckDefault"
+                  onChange={(e) => {
+                    setFicha({ ...ficha, sospechoso: e.target.checked });
+                  }}
+                />
+                <label class="form-check-label" for="flexCheckDefault">
+                  Sospechoso
+                </label>
+              </div>
+            </div>
+          </>
+        ))}
       </div>
 
       <label className="mt-4" htmlFor="">
@@ -583,44 +523,8 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
         </label>
 
         <br />
-
         <label htmlFor="" className="mt-2">
-          12. Lugar donde el caso fue diagnosticado
-        </label>
-        <div style={{ display: "flex" }} className="mt-2">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Pais"
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            onChange={(e) => setFicha({ ...ficha, lugar: e.target.value })}
-          />
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Provincia"
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            onChange={(e) => setFicha({ ...ficha, provincia: e.target.value })}
-          />
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Distrito"
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            onChange={(e) => setFicha({ ...ficha, distrito: e.target.value })}
-          />
-        </div>
-
-        <label className="titulo1 mt-3" htmlFor="">
-          Información del domicilio del paciente
-        </label>
-
-        <br />
-        <label htmlFor="" className="mt-2">
-          13. Dirección de residencia actual
+          17. Dirección de residencia actual
         </label>
         <input
           type="text"
@@ -663,11 +567,11 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
 
       <div className="cuadroClinico">
         <label className="titulo1 mt-3" htmlFor="">
-          <strong>III. CUADRO CLÍNICO</strong>
+          <strong>III. ANTECEDENTES EPIDEMIOLÓGICOS Y PATOLÓGICOS</strong>
         </label>
         <br />
         <label htmlFor="" className="mt-2">
-          14. Fecha de inicio de sintomas:
+          18. Fecha de inicio de sintomas:
         </label>
         <div className="div1">
           <input
@@ -678,44 +582,63 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
             aria-describedby="basic-addon1"
             onChange={(e) => setFicha({ ...ficha, fechaSinto: e.target.value })}
           />
-          <div className="div1 mt-2">
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="flexCheckDefault"
-                onChange={(e) =>
-                  setFicha({
-                    ...ficha,
-                    cuadroAsintomatico: e.target.checked,
-                  })
-                }
-              />
-              <label class="form-check-label" for="flexCheckDefault">
-                Asintomático
-              </label>
-            </div>
-
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="flexCheckDefault"
-                onChange={(e) =>
-                  setFicha({
-                    ...ficha,
-                    cuadroDesconocido: e.target.checked,
-                  })
-                }
-              />
-              <label class="form-check-label" for="flexCheckDefault">
-                Desconocido
-              </label>
-            </div>
-          </div>
+        </div>
+        <label htmlFor="" className="mt-2">
+          Fecha de inicio de aislamiento:
+        </label>
+        <div className="div1">
+          <input
+            type="date"
+            class="form-control"
+            placeholder=""
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+            onChange={(e) => setFicha({ ...ficha, fechaSinto: e.target.value })}
+          />
         </div>
 
-        <label htmlFor="">15. Hospitalizado:</label>
+        <label htmlFor="" className="mt-2">
+          19. Lugar probable de infección:
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          aria-label="Username"
+          aria-describedby="basic-addon1"
+          onChange={(e) => setFicha({ ...ficha, direccion: e.target.value })}
+        />
+        <div className="mt-2" style={{ display: "flex" }}>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Pais"
+            aria-label=""
+            aria-describedby="basic-addon1"
+            onChange={(e) => setFicha({ ...ficha, dirPais: e.target.value })}
+          />
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Provincia"
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+            onChange={(e) =>
+              setFicha({ ...ficha, dirProvincia: e.target.value })
+            }
+          />
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Distrito"
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+            onChange={(e) =>
+              setFicha({ ...ficha, dirDistrito: e.target.value })
+            }
+          />
+        </div>
+
+        {/* <label htmlFor="">15. Hospitalizado:</label>
         <div className="div2">
           <div class="form-check">
             <input
@@ -928,11 +851,11 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
             aria-describedby="basic-addon1"
             onChange={(e) => setFicha({ ...ficha, fechaDefun: e.target.value })}
           />
-        </div>
+        </div> */}
 
         <div>
           <label htmlFor="" className="mt-2">
-            21. Sintomas:
+            20. Sintomas:
           </label>
           <div class="form-check">
             <input
@@ -944,7 +867,7 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
               }
             />
             <label class="form-check-label" for="flexCheckDefault">
-              Fiebre/escalofrío
+              Tos
             </label>
           </div>
           <div class="form-check">
@@ -957,7 +880,7 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
               }
             />
             <label class="form-check-label" for="flexCheckDefault">
-              Malestar general
+              Dolor de garganta
             </label>
           </div>
 
@@ -971,7 +894,7 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
               }
             />
             <label class="form-check-label" for="flexCheckDefault">
-              Tos
+              Congestión nasal
             </label>
           </div>
 
@@ -985,7 +908,7 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
               }
             />
             <label class="form-check-label" for="flexCheckDefault">
-              Dolor de garganta
+              Dificultad respiratoria
             </label>
           </div>
           <div class="form-check">
@@ -998,7 +921,7 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
               }
             />
             <label class="form-check-label" for="flexCheckDefault">
-              Congestión nasal
+              Fiebre
             </label>
           </div>
           <div class="form-check">
@@ -1011,7 +934,7 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
               }
             />
             <label class="form-check-label" for="flexCheckDefault">
-              Dificultad respiratoria
+              Escalofrío
             </label>
           </div>
           <div class="form-check">
@@ -1021,6 +944,19 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
               id="flexCheckDefault"
               onChange={(e) =>
                 setFicha({ ...ficha, sintoma7: e.target.checked })
+              }
+            />
+            <label class="form-check-label" for="flexCheckDefault">
+              Malestar general
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="flexCheckDefault"
+              onChange={(e) =>
+                setFicha({ ...ficha, sintoma8: e.target.checked })
               }
             />
             <label class="form-check-label" for="flexCheckDefault">
@@ -1059,6 +995,46 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
               type="checkbox"
               id="flexCheckDefault"
               onChange={(e) =>
+                setFicha({ ...ficha, sintoma9: e.target.checked })
+              }
+            />
+            <label class="form-check-label" for="flexCheckDefault">
+              Anosmia
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="flexCheckDefault"
+              onChange={(e) =>
+                setFicha({ ...ficha, sintoma9: e.target.checked })
+              }
+            />
+            <label class="form-check-label" for="flexCheckDefault">
+              Ageusia
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="flexCheckDefault"
+              onChange={(e) =>
+                setFicha({ ...ficha, sintoma9: e.target.checked })
+              }
+            />
+            <label class="form-check-label" for="flexCheckDefault">
+              Dolor de oído
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="flexCheckDefault"
+              onChange={(e) =>
                 setFicha({ ...ficha, sintoma10: e.target.checked })
               }
             />
@@ -1075,7 +1051,7 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
             <label class="form-check-label" for="flexCheckDefault">
               Dolor
             </label>
-
+            <br></br>
             <label htmlFor="">Marque todos los que aplica:</label>
           </div>
           <div class="form-check">
@@ -1130,7 +1106,7 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
               onChange={(e) => setFicha({ ...ficha, signo1: e.target.checked })}
             />
             <label class="form-check-label" for="flexCheckDefault">
-              Exudado faringeo
+              Exudado faríngeo
             </label>
           </div>
           <div class="form-check">
@@ -1141,7 +1117,7 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
               onChange={(e) => setFicha({ ...ficha, signo2: e.target.checked })}
             />
             <label class="form-check-label" for="flexCheckDefault">
-              Inyeccion conjuntival
+              Inyección conjuntival
             </label>
           </div>
 
@@ -1156,40 +1132,30 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
               Convulsión
             </label>
           </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="flexCheckDefault"
+              onChange={(e) => setFicha({ ...ficha, signo3: e.target.checked })}
+            />
+            <label class="form-check-label" for="flexCheckDefault">
+              Disnea/taquipnea
+            </label>
+          </div>
 
           <div class="form-check">
             <input
               class="form-check-input"
               type="checkbox"
               id="flexCheckDefault"
-              onChange={(e) => setFicha({ ...ficha, signo4: e.target.checked })}
+              onChange={(e) => setFicha({ ...ficha, signo3: e.target.checked })}
             />
             <label class="form-check-label" for="flexCheckDefault">
-              Coma
+              Auscultación pulmonar anormal
             </label>
           </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="flexCheckDefault"
-              onChange={(e) => setFicha({ ...ficha, signo5: e.target.checked })}
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              Disnea/taquipnea
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="flexCheckDefault"
-              onChange={(e) => setFicha({ ...ficha, signo6: e.target.checked })}
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              Auscultacion pulmonar, anormal
-            </label>
-          </div>
+
           <div class="form-check">
             <input
               class="form-check-input"
@@ -1198,7 +1164,7 @@ const FichaCovid19 = ({ ficha, setFicha }) => {
               onChange={(e) => setFicha({ ...ficha, signo7: e.target.checked })}
             />
             <label class="form-check-label" for="flexCheckDefault">
-              Hallazgos anormales en Rx pulmonar
+              Hallazgos anormales en radiogradia
             </label>
           </div>
           <div class="form-check">

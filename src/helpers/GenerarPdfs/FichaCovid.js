@@ -5,28 +5,28 @@ import ficha2 from "../../assets/pdf Imagen/FichaCovid2.png";
 
 const generarFichaCovid = () => {
 
-  const data = {
-    nombre: "Hector Torres Durand",
-    dni: "72798529",
-    tipo: "Prueba Molecular",
-    tecnica: "Tecnica nr 1000",
-    edad: 100,
-    puesto: "programador",
-    empresa: "GetByte",
-    sintomasi: true,
-    sintomano: false,
-    sintomasi1: false,
-    sintomano1: true,
-  };
+  // const data = {
+  //   nombre: "Hector Torres Durand",
+  //   dni: "72798529",
+  //   tipo: "Prueba Molecular",
+  //   tecnica: "Tecnica nr 1000",
+  //   edad: 100,
+  //   puesto: "programador",
+  //   empresa: "GetByte",
+  //   sintomasi: true,
+  //   sintomano: false,
+  //   sintomasi1: false,
+  //   sintomano1: true,
+  // };
 
-  const getFecha = () => {
-    let newDate = new Date();
-    let date = newDate.getDate();
-    let month = newDate.toLocaleString("en-US", {hour: '2-digit', hour12: false, timeZone: "America/New_York"});
-    let year = newDate.getFullYear();
-    // no mover los espacios del return
-    return `${date}${"      "}${month}${"      "}${year}`;
-  };
+  // const getFecha = () => {
+  //   let newDate = new Date();
+  //   let date = newDate.getDate();
+  //   let month = newDate.toLocaleString("en-US", {hour: '2-digit', hour12: false, timeZone: "America/New_York"});
+  //   let year = newDate.getFullYear();
+  //   // no mover los espacios del return
+  //   return `${date}${"      "}${month}${"      "}${year}`;
+  // };
 
   const doc = new jsPDF("p", "pt");
   doc.setProperties({

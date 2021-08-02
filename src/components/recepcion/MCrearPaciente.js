@@ -633,10 +633,10 @@ const MCrearPaciente = ({
                   onChange={(e) => handleChange(e)}
                 >
                   <option selected>Seleccione</option>
-                  <option value="1">Soltero</option>
-                  <option value="2">Casado</option>
-                  <option value="3">Divorciado</option>
-                  <option value="4">Viudo</option>
+                  <option value="1">Casado</option>
+                  <option value="2">Soltero</option>
+                  <option value="3">Viudo</option>
+                  <option value="4">Divorciado</option>
                 </select>
               </div>
 
@@ -646,7 +646,9 @@ const MCrearPaciente = ({
                   <option value="">Seleccione</option>
                   <option value="1">Primaria</option>
                   <option value="2">Secundaria</option>
-                  <option value="3">Superior</option>
+                  <option value="3">Universitaria</option>
+                  <option value="3">Técnica</option>
+
                 </select>
               </div>
 

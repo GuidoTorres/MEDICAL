@@ -5,6 +5,7 @@ import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 
 const Servicio = () => {
   const [getServicio, setGetServicio] = useState([]);
+  const [comDiscount, setComDiscount] = useState({});
 
   //modal de particular particualar discount create para la tabla igual
 
@@ -17,9 +18,9 @@ const Servicio = () => {
       .then((datos) => setGetServicio(datos.data));
   };
 
+
   useEffect(() => {
     getServices();
-    // getParticularDiscount()
   }, []);
 
   return (
@@ -97,7 +98,9 @@ const Servicio = () => {
                   aria-labelledby="headingTwo"
                   data-bs-parent="#accordionExample"
                 >
-                  <Empresa getServicio={getServicio} />
+                  <Empresa
+                    getServicio={getServicio}
+                  />
                 </div>
               </div>
             </div>
