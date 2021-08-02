@@ -52,7 +52,11 @@ const Liquidacion = () => {
       name: "Razón social",
 
       selector: (row) =>
-        row.company ? row.company.corporation.business_name : "",
+        row.company
+          ? row.company.corporation.business_name
+          : row.detail.length > 0
+          ? row.detail[0].attention.person.name
+          : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -61,8 +65,12 @@ const Liquidacion = () => {
     },
     {
       name: "RUC",
-      selector: (row) => (row.company ? row.company.corporation.ruc : ""),
-
+      selector: (row) =>
+        row.company
+          ? row.company.corporation.ruc
+          : row.detail.length > 0
+          ? row.detail[0].attention.person.dni
+          : "",
       sortable: true,
       style: {
         borderBotton: "none",
