@@ -26,6 +26,8 @@ const Empresa = ({ getServicio }) => {
       });
   };
 
+  console.log(metGetClinic);
+
   useEffect(() => {
     getClinica();
   }, []);
@@ -163,7 +165,7 @@ const Empresa = ({ getServicio }) => {
       </div>
       {listaPrecios && (
         <MMostrarPreciosEmpresa
-        listaPrecios={listaPrecios}
+          listaPrecios={listaPrecios}
           setListaPrecios={setListaPrecios}
           dataSelected={dataSelected}
           setDataSelected={setDataSelected}

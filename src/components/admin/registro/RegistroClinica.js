@@ -29,7 +29,6 @@ const RegistroClinica = () => {
     getClinica();
   }, []);
 
-  // console.log(metGetClinic);
   const columnas = [
     {
       name: "Ítem",
@@ -130,8 +129,6 @@ const RegistroClinica = () => {
       ),
     },
   ];
-  console.log(metGetClinic);
-  // console.log(events);
   useEffect(() => {
     const filtrarElemento = () => {
       const search =
@@ -162,8 +159,6 @@ const RegistroClinica = () => {
     filtrarElemento();
   }, [busqueda, metGetClinic]);
 
-  // console.log(listRegistro);
-
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
@@ -176,7 +171,6 @@ const RegistroClinica = () => {
     setEditar(true);
   };
   const handleEliminar = (e) => {
-    // console.log(e.corporation.business_name);
     Swal.fire({
       title: "¿Desea eliminar?",
       text: `${e.corporation.business_name}`,
@@ -187,30 +181,28 @@ const RegistroClinica = () => {
       confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetchGETPOSTPUTDELETE(`clinics/delete/${e.id}`,).then(
-          (result) => {
-            if (result.status === 200) {
-              Swal.fire(
-                "Eliminado!",
-                "Se ha eliminado correctamente.",
-                "success"
-              ).then((resp) => {
-                if (resp.isConfirmed) {
-                  getClinica();
-                }
-              });
-            } else {
-              Swal.fire({
-                icon: "error",
-                title: "!Ups¡",
-                text: "Algo salió mal.",
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Cerrar",
-              });
-            }
+        fetchGETPOSTPUTDELETE(`clinics/delete/${e.id}`).then((result) => {
+          if (result.status === 200) {
+            Swal.fire(
+              "Eliminado!",
+              "Se ha eliminado correctamente.",
+              "success"
+            ).then((resp) => {
+              if (resp.isConfirmed) {
+                getClinica();
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "!Ups¡",
+              text: "Algo salió mal.",
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Cerrar",
+            });
           }
-        );
+        });
       }
     });
   };

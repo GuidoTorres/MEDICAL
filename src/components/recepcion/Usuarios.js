@@ -39,6 +39,8 @@ const Usuarios = ({ history }) => {
       .then((datos) => setGetDateAttention(datos.data));
   };
 
+  console.log(formulario);
+
   useEffect(() => {
     getAttention();
     getForms();

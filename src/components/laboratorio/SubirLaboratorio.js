@@ -124,19 +124,19 @@ const SubirLaboratorio = () => {
     },
   ];
 
-  useEffect(() => {
-    const filtrarElemento = () => {
-      const search = filterData.filter((data) => {
-        return data.person.dni
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .toLocaleLowerCase()
-          .includes(busqueda);
-      });
-      setListRegistro(search);
-    };
-    filtrarElemento();
-  }, [busqueda, filterData]);
+  // useEffect(() => {
+  //   const filtrarElemento = () => {
+  //     const search = filterData.filter((data) => {
+  //       return data.person.dni
+  //         .normalize('NFD')
+  //         .replace(/[\u0300-\u036f]/g, '')
+  //         .toLocaleLowerCase()
+  //         .includes(busqueda);
+  //     });
+  //     setListRegistro(search);
+  //   };
+  //   filtrarElemento();
+  // }, [busqueda, filterData]);
 
   const handleModal = (tipoPrueba, e) => {
     setDataSelected(e);

@@ -29,7 +29,6 @@ const MRegistroClinica = ({
     phone: "",
     email: "",
   });
-  const [error, setError] = useState(false);
   const [ruc, setRuc] = useState({});
 
   const closeModal = () => {
@@ -37,6 +36,18 @@ const MRegistroClinica = ({
     setEditar(false);
     setDataSelected(null);
   };
+
+  const getRuc = () => {
+    fetchRUC(data.ruc, "GET")
+      .then((res) => res.json())
+      .then((res) => setRuc(res));
+  };
+
+  useEffect(() => {
+    if (data && data.ruc && data.ruc.length === 11) {
+      getRuc();
+    }
+  }, [data.ruc]);
 
   const handleChange = (e) => {
     setData({
@@ -67,24 +78,15 @@ const MRegistroClinica = ({
     }
   };
 
-  const getRuc = () => {
-    fetchRUC(data.ruc, "GET")
-      .then((res) => res.json())
-      .then((res) => setRuc(res));
-  };
-
-  useEffect(() => {
-    if (data && data.ruc && data.ruc.length === 11) {
-      getRuc();
-    }
-  }, [data.ruc]);
-
   const postClinics = (e) => {
     const formData = new FormData();
 
     formData.set("ruc", data.ruc || "");
     formData.set("business_name", ruc.razonSocial || data.business_name || "");
-    formData.set("commercial_name", ruc.razonSocial || data.business_name || "");
+    formData.set(
+      "commercial_name",
+      ruc.razonSocial || data.business_name || ""
+    );
     formData.set("logo", avatar && avatar.file ? avatar.file : "");
     formData.set("address", ruc.direccion || data.address || "");
     formData.set("reference", data.reference || "");
@@ -137,6 +139,7 @@ const MRegistroClinica = ({
     });
   };
 
+  console.log(dataSelected);
   const putClinics = (e) => {
     const formData = new FormData();
 
@@ -167,7 +170,7 @@ const MRegistroClinica = ({
         ? dataSelected.corporation.commercial_name
         : ""
     );
-    formData.set("logo", avatar ? avatar.file : null);
+    formData.set("logo", avatar && avatar.file ? avatar.file : "");
     formData.set(
       "address",
       data.address
@@ -269,6 +272,8 @@ const MRegistroClinica = ({
         }
       }
     }
+
+    console.log(dataSelected.corporation.logo);
     fetchGETPOSTPUTDELETE(
       `clinics/update/${dataSelected.id}`,
       formData,
@@ -308,36 +313,26 @@ const MRegistroClinica = ({
 
     if (data) {
       if (data.ruc.trim() === "" || null) {
-        setError(true);
-
         document.getElementById("ruc").style =
           "border:1px solid red !important";
       }
 
       if (data.business_name.trim() === "" || null) {
-        setError(true);
-
         document.getElementById("business_name").style =
           "border:1px solid red !important";
       }
 
       if (data.name.trim() === "" || null) {
-        setError(true);
-
         document.getElementById("name").style =
           "border:1px solid red !important";
       }
 
       if (data.phone.trim() === "" || null) {
-        setError(true);
-
         document.getElementById("phone").style =
           "border:1px solid red !important";
       }
 
       if (data.email.trim() === "" || null) {
-        setError(true);
-
         document.getElementById("email").style =
           "border:1px solid red !important";
       }
@@ -380,7 +375,7 @@ const MRegistroClinica = ({
             <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6  mregistro__cliente mb-3">
               <div className="mregistro__clinica">
                 <div>
-                  <label for="validationCustom01">RUC:</label>
+                  <label htmlFor="validationCustom01">RUC:</label>
                   <input
                     type="number"
                     name="ruc"

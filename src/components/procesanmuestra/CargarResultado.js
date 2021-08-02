@@ -264,7 +264,6 @@ const CargarResultado = () => {
       type: "application/pdf",
     });
 
-    console.log(e.id);
     const formData = new FormData();
     formData.set("id", e.id);
     formData.set("pdf", file);

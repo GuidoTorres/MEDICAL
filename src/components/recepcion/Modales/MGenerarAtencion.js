@@ -24,7 +24,7 @@ const MGenerarAtencion = ({
   const [datos, setDatos] = useState({});
   const [condicion, setCondicion] = useState({});
 
-  const [declaracion, setDeclaracion] = useState([]);
+  const [declaracion, setDeclaracion] = useState();
   const [ficha, setFicha] = useState([]);
   const [services, setServices] = useState({});
   const [clinics, setClinics] = useState({});
@@ -35,6 +35,19 @@ const MGenerarAtencion = ({
       .then((res) => res.json())
       .then((res) => setServices(res.data));
   };
+
+  const generarDeclaracion = () => {
+    let arr = Array.from({ length: 26 }, () => ({
+      question_id: null,
+      answer: null,
+    }));
+
+    arr.map((item, i) => {
+      item.question_id = i + 1;
+    });
+
+    setDeclaracion(arr);
+  };
   const getClinics = () => {
     fetchGETPOSTPUTDELETE("clinics")
       .then((res) => res.json())
@@ -44,6 +57,7 @@ const MGenerarAtencion = ({
   useEffect(() => {
     getServices();
     getClinics();
+    generarDeclaracion();
   }, []);
 
   const getFecha = () => {
@@ -68,17 +82,6 @@ const MGenerarAtencion = ({
   };
 
   const crearAtencion = () => {
-    const formData = new FormData();
-    formData.set("date_attention", getFecha() || "");
-    formData.set("time_attention", getHora() || "");
-    formData.set("people_id", dataSelected.id || "");
-    formData.set("service_id", datos.service_id || "");
-    formData.set("clinic_id", 1 || "");
-    formData.set(
-      "codebar",
-      dataSelected.dni + " " + getFecha() + " " + getHora()
-    );
-
     const atencion = {
       date_attention: getFecha() || "",
       time_attention: getHora() || "",
@@ -88,11 +91,13 @@ const MGenerarAtencion = ({
       codebar: dataSelected.id,
       forms: [
         {
+          signature: null,
           date_emision: getFecha(),
           form_type_id: 1,
           answers: declaracion,
         },
         {
+          signature: null,
           date_emision: getFecha(),
           form_type_id: 2,
           answers: ficha,
@@ -133,6 +138,7 @@ const MGenerarAtencion = ({
   const handleOnChange = (e) => {
     setDatos({
       ...datos,
+
       [e.target.name]: e.target.value,
     });
   };
