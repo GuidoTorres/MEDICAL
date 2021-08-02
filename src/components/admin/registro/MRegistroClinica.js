@@ -138,6 +138,7 @@ const MRegistroClinica = ({
       }
     });
   };
+  console.log(data);
 
   console.log(dataSelected);
   const putClinics = (e) => {
@@ -272,6 +273,8 @@ const MRegistroClinica = ({
         }
       }
     }
+
+    console.log(dataMapa);
 
     console.log(dataSelected.corporation.logo);
     fetchGETPOSTPUTDELETE(

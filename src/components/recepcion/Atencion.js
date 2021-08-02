@@ -37,7 +37,7 @@ const Atencion = () => {
   const columnas = [
     {
       name: "Ítem",
-      selector: "id",
+      selector: (row, index) => (index += 1),
       sortable: true,
       style: {
         color: "#8f9196",

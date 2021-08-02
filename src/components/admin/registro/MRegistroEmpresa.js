@@ -705,8 +705,8 @@ const MRegistroEmpresa = ({
                 <UploadAvatar
                   avatar={avatar}
                   setAvatar={setAvatar}
-                  dataSelected={dataSelected}
                   editar={editar}
+                  dataSelected={dataSelected}
                 />
               </div>
             </div>

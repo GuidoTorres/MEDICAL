@@ -28,7 +28,7 @@ const Trabajador = () => {
   const columnas = [
     {
       name: "Ítem",
-      selector: "user_id",
+      selector: (row, index) => (index += 1),
       sortable: true,
       style: {
         borderBotton: "none",

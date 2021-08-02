@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
-import { lasubir } from '../../data/LASubir';
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
-import MSubirLaboratorio from './MSubirLaboratorio';
-import MSubirEclea from './MSubirEclea';
-import MSubirRapida from './MSubirRapida';
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
-import MAnticuerpos from './Modales/MAnticuerpos';
+import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
+import { lasubir } from "../../data/LASubir";
+import { paginacionOpciones } from "../../helpers/tablaOpciones";
+import MSubirLaboratorio from "./MSubirLaboratorio";
+import MSubirEclea from "./MSubirEclea";
+import MSubirRapida from "./MSubirRapida";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import MAnticuerpos from "./Modales/MAnticuerpos";
 
 const SubirLaboratorio = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [openModal2, setOpenModal2] = useState(false);
@@ -24,13 +24,13 @@ const SubirLaboratorio = () => {
   const [filterData, setFilterData] = useState({});
 
   const getAtencion = () => {
-    fetchGETPOSTPUTDELETE('result')
+    fetchGETPOSTPUTDELETE("result")
       .then((data) => data.json())
       .then((datos) => setAttention(datos.data));
   };
 
   const getServicios = () => {
-    fetchGETPOSTPUTDELETE('services')
+    fetchGETPOSTPUTDELETE("services")
       .then((data) => data.json())
       .then((datos) => setServicios(datos.data));
   };
@@ -42,73 +42,73 @@ const SubirLaboratorio = () => {
 
   const columnas = [
     {
-      name: 'Ítem',
-      selector: 'id',
+      name: "Ítem",
+      selector: (row, index) => (index += 1),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Tipo de usuario',
+      name: "Tipo de usuario",
       selector: (row) =>
         tipoPrueba.prueba === row.service.id
           ? row.people_id === 1
-            ? 'Particular'
-            : 'Empresa'
-          : '',
+            ? "Particular"
+            : "Empresa"
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Nro de documento',
+      name: "Nro de documento",
       selector: (row) =>
         tipoPrueba.prueba === row.service.id
           ? row.person && row.person.dni
             ? row.person.dni
-            : ''
-          : '',
+            : ""
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Fecha',
+      name: "Fecha",
       selector: (row) =>
         tipoPrueba.prueba === row.service.id
           ? row.date_creation
             ? row.date_creation
-            : ''
-          : '',
+            : ""
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Nombres y apellidos',
+      name: "Nombres y apellidos",
       selector: (row) =>
         tipoPrueba.prueba === row.service.id
           ? row.person && row.person.name && row.person.pat_lastname
-            ? row.person.name + ' ' + row.person.pat_lastname
-            : ''
-          : '',
+            ? row.person.name + " " + row.person.pat_lastname
+            : ""
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
 
     {
-      name: 'Acción',
+      name: "Acción",
       button: true,
       cell: (e) =>
         tipoPrueba.prueba === e.service.id ? (
@@ -119,7 +119,7 @@ const SubirLaboratorio = () => {
             <i className="fas fa-angle-right"></i>
           </button>
         ) : (
-          ''
+          ""
         ),
     },
   ];
@@ -152,7 +152,7 @@ const SubirLaboratorio = () => {
     } else if (tipoPrueba.prueba === 9) {
       setOpenModal5(true);
     } else {
-      console.log('no funciona');
+      console.log("no funciona");
     }
   };
 
@@ -246,7 +246,7 @@ const SubirLaboratorio = () => {
               noDataComponent={
                 <div className="spinner">
                   <i className="fas fa-inbox table__icono"></i>
-                  <p style={{ color: 'lightgrey' }}>No hay datos</p>
+                  <p style={{ color: "lightgrey" }}>No hay datos</p>
                 </div>
               }
             />

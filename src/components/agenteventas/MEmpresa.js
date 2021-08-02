@@ -14,6 +14,7 @@ const MEmpresa = ({
   setEditar,
   getParticularDiscount,
   getServicio,
+  getClinica
 }) => {
   const [discount, setDiscount] = useState([]);
   const [filterServices, setFilterServices] = useState({});
@@ -30,15 +31,42 @@ const MEmpresa = ({
     // console.log(dataSelected);
 
     const data = {
-      company_id: dataSelected.corporation_id,
+      company_id: dataSelected.id,
       credit: dataFacturacion.credit,
       before: dataFacturacion.before,
       services: discount,
     };
 
     fetchGETPOSTPUTDELETEJSON("company_discount", data, "POST").then((res) =>
-      console.log(res)
-    );
+    {
+      // console.log(resp);
+      if (res.status === 200) {
+        closeModal();
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se actualizo la clínica correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getClinica();
+          }
+        });
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
+      }
+    });
+    
   };
 
 

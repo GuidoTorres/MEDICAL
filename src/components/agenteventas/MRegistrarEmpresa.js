@@ -9,18 +9,29 @@ const MRegistrarEmpresa = ({
   openModal,
   setOpenModal,
   dataSelected,
+  setDataSelected,
   editar,
+  setEditar,
   getCorporations,
 }) => {
   const [avatar, setAvatar] = useState(null);
-  const [empresa, setEmpresa] = useState(null);
+  const [empresa, setEmpresa] = useState({
+    ruc: "",
+    business_name: "",
+    name: "",
+    phone: "",
+    email: "",
+  });
+  const [service, setService] = useState([]);
   const [types, setTypes] = useState([]);
   const [ruc, setRuc] = useState({});
   const [servicios, setServicios] = useState({});
-  const [service, setService] = useState([]);
+  const [error, setError] = useState(false);
 
   const closeModal = () => {
     setOpenModal(false);
+    setEditar(false);
+    setDataSelected(null);
   };
 
   const getCorporationTypes = () => {
@@ -50,7 +61,7 @@ const MRegistrarEmpresa = ({
     if (empresa && empresa.ruc && empresa.ruc.length === 11) {
       getRuc();
     }
-  }, [empresa]);
+  }, [empresa.ruc]);
 
   useEffect(() => {
     getCorporationTypes();
@@ -113,38 +124,34 @@ const MRegistrarEmpresa = ({
       }
     }
 
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
-
-    // fetchGETPOSTPUTDELETE("company", formData, "POST").then((resp) => {
-    //   console.log(resp);
-    //   if (resp.status === 200) {
-    //     closeModal();
-    //     Swal.fire({
-    //       icon: "success",
-    //       title: "Éxito",
-    //       text: "Se ha creado la empresa correctamente.",
-    //       confirmButtonColor: "#3085d6",
-    //       cancelButtonColor: "#d33",
-    //       confirmButtonText: "Aceptar",
-    //     }).then((resp) => {
-    //       if (resp.isConfirmed) {
-    //         getCorporations();
-    //       }
-    //     });
-    //   } else {
-    //     closeModal();
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: "!Ups¡",
-    //       text: "Algo salió mal.",
-    //       confirmButtonColor: "#3085d6",
-    //       cancelButtonColor: "#d33",
-    //       confirmButtonText: "Cerrar",
-    //     });
-    //   }
-    // });
+    fetchGETPOSTPUTDELETE("company", formData, "POST").then((resp) => {
+      console.log(resp);
+      if (resp.status === 200) {
+        closeModal();
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se ha creado la empresa correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getCorporations();
+          }
+        });
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
+      }
+    });
   };
 
   const putCorporation = (e) => {
@@ -340,7 +347,58 @@ const MRegistrarEmpresa = ({
 
   const submit = (e) => {
     e.preventDefault();
-    editar ? putCorporation() : postCorporation();
+
+    if (empresa.ruc.trim() === "" || null) {
+      setError(true);
+
+      document.getElementById("ruc").style = "border:1px solid red !important";
+    }
+
+    if (empresa.business_name.trim() === "" || null) {
+      setError(true);
+
+      document.getElementById("business_name").style =
+        "border:1px solid red !important";
+    }
+
+    if (empresa.name.trim() === "" || null) {
+      setError(true);
+
+      document.getElementById("name").style = "border:1px solid red !important";
+    }
+
+    if (empresa.phone.trim() === "" || null) {
+      setError(true);
+
+      document.getElementById("phone").style =
+        "border:1px solid red !important";
+    }
+
+    if (empresa.email.trim() === "" || null) {
+      setError(true);
+
+      document.getElementById("email").style =
+        "border:1px solid red !important";
+    }
+    if (
+      empresa.ruc.trim() !== null ||
+      ("" && empresa.business_name.trim() !== null) ||
+      ("" && empresa.name !== null) ||
+      ("" && empresa.phone !== null) ||
+      ("" && empresa.email !== null) ||
+      ""
+    ) {
+      postCorporation();
+    }
+    if (editar) {
+      document.getElementById("ruc").style = "border:none";
+
+      document.getElementById("business_name").style = "border:none";
+      document.getElementById("name").style = "border:none";
+      document.getElementById("phone").style = "border:none";
+      document.getElementById("email").style = "border:none";
+      putCorporation();
+    }
   };
 
   return (
@@ -368,7 +426,7 @@ const MRegistrarEmpresa = ({
                 <input
                   type="number"
                   name="ruc"
-                  required
+                  id="ruc"
                   disabled={editar ? true : false}
                   defaultValue={
                     dataSelected &&
@@ -387,7 +445,7 @@ const MRegistrarEmpresa = ({
                 <input
                   type="text"
                   name="business_name"
-                  required
+                  id="business_name"
                   defaultValue={
                     editar
                       ? dataSelected &&
@@ -469,6 +527,7 @@ const MRegistrarEmpresa = ({
                 <select
                   aria-label="Default select example"
                   name="corporation_type_id"
+                  id="corporation_type_id"
                   defaultValue={
                     dataSelected &&
                     dataSelected.corporation &&
@@ -501,7 +560,7 @@ const MRegistrarEmpresa = ({
                   <input
                     type="text"
                     name="contactsname"
-                    required
+                    id="name"
                     defaultValue={
                       dataSelected &&
                       dataSelected.corporation &&
@@ -524,7 +583,7 @@ const MRegistrarEmpresa = ({
                   <input
                     type="number"
                     name="contactsphone"
-                    required
+                    id="phone"
                     defaultValue={
                       dataSelected &&
                       dataSelected.corporation &&
@@ -548,7 +607,7 @@ const MRegistrarEmpresa = ({
                   <input
                     type="email"
                     name="contactsemail"
-                    required
+                    id="email"
                     defaultValue={
                       dataSelected &&
                       dataSelected.corporation &&
@@ -649,8 +708,8 @@ const MRegistrarEmpresa = ({
                 <UploadAvatar
                   avatar={avatar}
                   setAvatar={setAvatar}
-                  dataSelected={dataSelected}
                   editar={editar}
+                  dataSelected={dataSelected}
                 />
               </div>
             </div>
@@ -749,7 +808,7 @@ const MRegistrarEmpresa = ({
                         ))}
                     </div>
                   </div>
-                </div>{" "}
+                </div>
               </div>
               <div className="list-botones">
                 {editar === true ? (
@@ -772,8 +831,7 @@ const MRegistrarEmpresa = ({
           </div>
         </form>
       </div>
-    </Modal>
-    // </div>
+    </Modal> // </div>
   );
 };
 

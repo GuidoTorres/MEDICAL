@@ -268,7 +268,7 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                   Imagen <span>(.jpg, .jpeg, .jpg)</span>
                 </p>
                 <div style={{ width: "100%" }}>
-                  <UploadAvatar avatar={avatar} setAvatar={setAvatar} />
+                  <UploadAvatar avatar={avatar} setAvatar={setAvatar} dataSelected={dataSelected} />
                 </div>
               </div>
             </div>
