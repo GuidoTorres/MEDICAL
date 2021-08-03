@@ -25,7 +25,7 @@ const Empresa = ({ getServicio }) => {
         setMetGetClinic(datos.data);
       });
   };
-
+  //PROBANDO
   console.log(metGetClinic);
 
   useEffect(() => {
