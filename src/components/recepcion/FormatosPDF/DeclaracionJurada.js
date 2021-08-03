@@ -8,8 +8,6 @@ const DeclaracionJurada = ({
   formulario,
 }) => {
   const handleChange = (e, data, resp) => {
-    console.log(declaracion);
-
     if (resp === "Si") {
       let pos = declaracion.findIndex((arr) => arr.question_id === data.id);
 
@@ -23,22 +21,67 @@ const DeclaracionJurada = ({
         const arrs = [...declaracion];
         arrs[pos].answer = resp;
         setDeclaracion([...arrs]);
-        // let position = declaracion.findIndex(
-        //   (arreglo) => arreglo.question_id === data.id
-        // );
-        // const arreglos = [...declaracion];
-        // arreglos.splice(position, 1);
-        // setDeclaracion([...arreglos]);
       }
     }
 
-    // //Bloquear checks de condicion de sintomas
+    console.log(declaracion);
+
+    // //Bloquear checks de la parte de sintomas
+
+    const sintoma = document.querySelectorAll(".sintoma");
+    const sintoma1 = document.querySelectorAll(".sintoma1");
+
+    if (sintoma[0].checked) {
+      for (var i = 1; i < sintoma.length; i++) {
+        sintoma[i].disabled = true;
+        sintoma[i].disabled = true;
+        sintoma1[i].disabled = true;
+        sintoma1[i].disabled = true;
+        sintoma[i].checked = false;
+        sintoma[i].checked = false;
+        sintoma1[i].checked = false;
+        sintoma1[i].checked = false;
+      }
+    } else {
+      for (var i = 1; i < sintoma.length; i++) {
+        sintoma[i].disabled = false;
+        sintoma[i].disabled = false;
+        sintoma1[i].disabled = false;
+        sintoma1[i].disabled = false;
+      }
+    }
+
+    // //Bloquear checks de la parte de condicion
+
+    const cond = document.querySelectorAll(".condicion");
+    const cond1 = document.querySelectorAll(".condicion1");
+
+    if (cond[0].checked) {
+      for (var i = 1; i < cond.length; i++) {
+        cond[i].disabled = true;
+        cond[i].disabled = true;
+        cond1[i].disabled = true;
+        cond1[i].disabled = true;
+        cond[i].checked = false;
+        cond[i].checked = false;
+        cond1[i].checked = false;
+        cond1[i].checked = false;
+      }
+    } else {
+      for (var i = 1; i < cond.length; i++) {
+        cond[i].disabled = false;
+        cond[i].disabled = false;
+        cond1[i].disabled = false;
+        cond1[i].disabled = false;
+      }
+    }
 
     if (document.getElementById(`si${data.id}`).checked === true) {
       document.getElementById(`no${data.id}`).disabled = true;
     } else {
       document.getElementById(`no${data.id}`).disabled = false;
     }
+
     if (document.getElementById(`no${data.id}`).checked === true) {
       document.getElementById(`si${data.id}`).disabled = true;
     } else {
