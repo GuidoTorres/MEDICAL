@@ -39,18 +39,15 @@ const Usuarios = ({ history }) => {
       .then((datos) => setGetDateAttention(datos.data));
   };
 
-  console.log(formulario);
-
   useEffect(() => {
     getAttention();
     getForms();
   }, []);
-  console.log(formulario);
 
   const columnas = [
     {
       name: "Ítem",
-      selector: "id",
+      selector: (row, index) => (index += 1),
       sortable: true,
       style: {
         color: "#8f9196",
@@ -185,7 +182,6 @@ const Usuarios = ({ history }) => {
 
   useEffect(() => {
     const filtrarElemento = () => {
-      
       const search = rusuario.filter((data) => {
         return (
           data.nombre

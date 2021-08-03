@@ -177,7 +177,7 @@ const MCrearPaciente = ({
           Swal.fire({
             icon: "success",
             title: "Éxito",
-            text: "Se ha creado el paciente correctamente.",
+            text: "Se creó el paciente correctamente.",
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Aceptar",

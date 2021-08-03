@@ -4,13 +4,19 @@ import DataTable from "react-data-table-component";
 import { fparticular } from "../../../data/FParticular";
 import { fempresa2 } from "../../../data/FEmpresa";
 import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
+import Swal from "sweetalert2";
 
-import { paginacionOpciones } from "../../../helpers/tablaOpciones";
+import {
+  paginacionOpciones,
+  mensajesTablaFacturacion,
+} from "../../../helpers/tablaOpciones";
 import MParticulares from "./MParticulares";
 import MEmpresa from "./MEmpresa";
+import MMParticulares from "./MMParticulares";
 
 const Particulares = () => {
   const [busqueda, setBusqueda] = useState(null);
+  const [clearRows, setClearRows] = useState(false);
   const [listRegistro, setListRegistro] = useState([]);
   const [listRegistroEmpresas, setListRegistroEmpresas] = useState([]);
   const [openModal, setOpenModal] = useState(false);
@@ -18,18 +24,35 @@ const Particulares = () => {
 
   const [dataEmpresa, setDataEmpresa] = useState({});
   const [empresas, setEmpresas] = useState([]);
+  const [dataParticular, setDataParticular] = useState({});
+  const [particulares, setParticulares] = useState([]);
+
+  const [openModalLiquidarParticular, setOpenModalLiquidarParticular] =
+    useState(false);
 
   const getEmpresas = () => {
     fetchGETPOSTPUTDELETE("liquidacion/empresas")
       .then((info) => info.json())
       .then((info) => {
         setEmpresas(info);
+        setBusqueda(null);
+        setBusqueda("");
+      });
+  };
+
+  const getParticulares = () => {
+    fetchGETPOSTPUTDELETE("settlement_particular")
+      .then((info) => info.json())
+      .then((info) => {
+        setParticulares(info.data);
+        setBusqueda(null);
         setBusqueda("");
       });
   };
 
   useEffect(() => {
     getEmpresas();
+    getParticulares();
   }, []);
 
   // console.log(empresas);
@@ -37,7 +60,7 @@ const Particulares = () => {
   const columnas = [
     {
       name: "Ítem",
-      selector: "id",
+      selector: (row, index) => (index += 1),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -46,7 +69,7 @@ const Particulares = () => {
     },
     {
       name: "Nombre",
-      selector: "nombre",
+      selector: (row) => (row.person ? row.person.name : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -55,7 +78,10 @@ const Particulares = () => {
     },
     {
       name: "Apellido",
-      selector: "apellido",
+      selector: (row) =>
+        row.person
+          ? row.person.pat_lastname + " " + row.person.mom_lastname
+          : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -64,7 +90,7 @@ const Particulares = () => {
     },
     {
       name: "DNI",
-      selector: "dni",
+      selector: (row) => (row.person ? row.person.dni : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -73,7 +99,7 @@ const Particulares = () => {
     },
     {
       name: "Fecha",
-      selector: "fecha",
+      selector: (row) => (row.date_attention ? row.date_attention : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -82,7 +108,7 @@ const Particulares = () => {
     },
     {
       name: "Tipo de servicio",
-      selector: "tipo",
+      selector: (row) => (row.service ? row.service.description : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -91,7 +117,7 @@ const Particulares = () => {
     },
     {
       name: "Plan de atención",
-      selector: "atencion",
+      selector: (row) => (row.service ? row.service.abbreviation : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -118,31 +144,31 @@ const Particulares = () => {
     },
     {
       name: "Total",
-      selector: "total",
+      selector: (row) => row.amount,
       sortable: true,
       style: {
         borderBotton: "none",
         color: "#555555",
       },
     },
-    {
-      name: "Liquidar",
-      button: true,
-      cell: (e) => (
-        <button
-          onClick={() => handleDetalles(e)}
-          className="table__tablebutton"
-        >
-          <i className="far fa-folder-open"></i>
-        </button>
-      ),
-    },
+    // {
+    //   name: "Liquidar",
+    //   button: true,
+    //   cell: (e) => (
+    //     <button
+    //       onClick={() => handleDetalles(e)}
+    //       className="table__tablebutton"
+    //     >
+    //       <i className="far fa-folder-open"></i>
+    //     </button>
+    //   ),
+    // },
   ];
 
   const columnasEmpresa = [
     {
       name: "Item",
-      selector: "id",
+      selector: (row, index) => (index += 1),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -220,38 +246,46 @@ const Particulares = () => {
   useEffect(() => {
     const filtrarElemento = () => {
       if (busqueda !== "" && busqueda !== null) {
-        const search = fparticular.filter((data) => {
+        const search = particulares.filter((data) => {
           return (
             data.id.toString().includes(busqueda) ||
-            data.nombre
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .toLocaleLowerCase()
-              .includes(busqueda) ||
-            data.apellido
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .toLocaleLowerCase()
-              .includes(busqueda) ||
-            data.dni.toString().includes(busqueda) ||
-            data.fecha
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .toLocaleLowerCase()
-              .includes(busqueda) ||
-            data.tipo
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .toLocaleLowerCase()
-              .includes(busqueda) ||
-            data.atencion
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .toLocaleLowerCase()
-              .includes(busqueda) ||
-            data.subtotal.toString().includes(busqueda) ||
-            data.impuesto.toString().includes(busqueda) ||
-            data.total.toString().includes(busqueda)
+            (data.person
+              ? data.person.name
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "") ||
+            (data.person
+              ? data.person.pat_lastname
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "") ||
+            (data.person
+              ? data.person.mom_lastname
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "") ||
+            (data.person
+              ? data.person.dni.toString().includes(busqueda)
+              : "") ||
+            (data.date_attention
+              ? data.date_attention.toString().includes(busqueda)
+              : "") ||
+            (data.service
+              ? data.service.description
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "") ||
+            (data.service
+              ? data.service.abbreviation
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "") ||
+            data.amount.toString().includes(busqueda)
           );
         });
         setListRegistro(search);
@@ -279,7 +313,7 @@ const Particulares = () => {
         });
         setListRegistroEmpresas(searchEmpresas);
       } else {
-        setListRegistro(fparticular);
+        setListRegistro(particulares);
         setListRegistroEmpresas(empresas);
       }
     };
@@ -288,7 +322,18 @@ const Particulares = () => {
   }, [busqueda]);
 
   const handleDetalles = (e) => {
-    setOpenModal(true);
+    // setOpenModal(true);
+    // console.log(dataParticular);
+    if (dataParticular.length > 0) {
+      console.log(dataParticular);
+      setOpenModalLiquidarParticular(true);
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Debe elegir al menos un paciente",
+      });
+    }
   };
 
   const handleDetallesEmpresa = (e) => {
@@ -336,15 +381,27 @@ const Particulares = () => {
                 aria-labelledby="headingOne"
                 data-bs-parent="#accordionExample"
               >
+                <button className="botones mt-3 mb-1" onClick={handleDetalles}>
+                  Liquidar
+                </button>
                 <DataTable
                   columns={columnas}
                   data={listRegistro}
+                  contextMessage={mensajesTablaFacturacion}
                   pagination
+                  clearSelectedRows={clearRows}
                   paginationComponentOptions={paginacionOpciones}
                   fixedHeader
                   fixedHeaderScrollHeight="500px"
                   noDataComponent={
                     <i className="fas fa-inbox table__icono"></i>
+                  }
+                  noDataComponent={
+                    <i className="fas fa-inbox table__icono"></i>
+                  }
+                  selectableRows
+                  onSelectedRowsChange={(e) =>
+                    setDataParticular(e.selectedRows)
                   }
                   // selectableRows
                 />
@@ -396,6 +453,16 @@ const Particulares = () => {
           dataEmpresa={dataEmpresa}
           setBusqueda={setBusqueda}
           getEmpresas={getEmpresas}
+        />
+      )}
+      {openModalLiquidarParticular && (
+        <MMParticulares
+          openModalLiquidarParticular={openModalLiquidarParticular}
+          setOpenModalLiquidarParticular={setOpenModalLiquidarParticular}
+          dataParticular={dataParticular}
+          setBusqueda={setBusqueda}
+          getParticulares={getParticulares}
+          setClearRows={setClearRows}
         />
       )}
     </div>

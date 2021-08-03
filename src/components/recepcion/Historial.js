@@ -46,7 +46,7 @@ const Historial = () => {
   const columnas = [
     {
       name: "Ítem",
-      selector: (row) => (row.attention_id ? row.attention_id : ""),
+      selector: (row, index) => (index += 1),
       sortable: true,
       style: {
         color: "#8f9196",
@@ -142,8 +142,6 @@ const Historial = () => {
       ),
     },
   ];
-  
-
 
   useEffect(() => {
     // const filtrarElemento = () => {

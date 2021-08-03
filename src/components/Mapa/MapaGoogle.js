@@ -6,16 +6,18 @@ const mapContainerStyle = {
   height: "190px",
 };
 
-const center = {
-  lat: -12.04318,
-  lng: -77.02824,
-};
+// const center = {
+//   lat: -12.04318,
+//   lng: -77.02824,
+// };
 
 const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyC14u7ry3uBKIHsEnEql4sA2MaebwNJWI4",
   });
+
+  console.log(dataMapa);
 
   const center2 = {
     lat:
@@ -44,17 +46,18 @@ const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
       (dataSelected &&
         dataSelected.corporation &&
         dataSelected.corporation.address &&
-        dataSelected.corporation.address.map_latitude !== null) 
+        dataSelected.corporation.address.map_latitude !== null) ||
+      "0"
         ? Number(dataSelected.corporation.address.map_latitude)
-        : dataMapa.lat,
+        : -12.04318,
     lng:
       (dataSelected &&
         dataSelected.corporation &&
         dataSelected.corporation.address &&
-        dataSelected.corporation.address.map_length !== null)
-
+        dataSelected.corporation.address.map_length !== null) ||
+      "0"
         ? Number(dataSelected.corporation.address.map_length)
-        : dataMapa.lng,
+        : -77.02824,
   };
 
   // const onLoad = transitLayer => {

@@ -28,7 +28,6 @@ const MTrabajador = ({
     pat_lastname: "",
     email: "",
     cellphone: "",
-    role_id: ""
   });
   const [dni, setDni] = useState({});
   const [error, setError] = useState(false);
@@ -57,46 +56,30 @@ const MTrabajador = ({
 
   const postEmployee = () => {
     if (trabajador.dni === "" || null) {
-      setError(true);
-
       document.getElementById("dni").style = "border:1px solid red !important";
     }
     if (trabajador.name === "" || null) {
-      setError(true);
-
       document.getElementById("name").style = "border:1px solid red !important";
     }
 
     if (trabajador.pat_lastname === "" || null) {
-      setError(true);
-
       document.getElementById("apellido1").style =
         "border:1px solid red !important";
     }
     if (trabajador.mom_lastname === "" || null) {
-      setError(true);
-
       document.getElementById("apellido2").style =
         "border:1px solid red !important";
     }
     if (trabajador.email === "" || null) {
-      setError(true);
-
       document.getElementById("email").style =
         "border:1px solid red !important";
     }
     if (trabajador.cellphone === "" || null) {
-      setError(true);
-
-      document.getElementById("cell").style =
-        "border:1px solid red !important";
+      document.getElementById("cell").style = "border:1px solid red !important";
     }
 
     if (trabajador.role_id === "" || null) {
-      setError(true);
-
-      document.getElementById("role").style =
-        "border:1px solid red !important";
+      document.getElementById("role").style = "border:1px solid red !important";
     }
 
     const formData = new FormData();
@@ -166,7 +149,7 @@ const MTrabajador = ({
     formData.set("email", trabajador.email || dataSelected.email);
     formData.set("cellphone", trabajador.cellphone || dataSelected.cellphone);
     formData.set("photo", avatar && avatar.file ? avatar.file : "");
-    formData.set("role_id", trabajador.role_id || dataSelected.role_id);
+    formData.set("role_id", dataSelected.role_id);
     fetchGETPOSTPUTDELETEJSON(
       `employees/${dataSelected.user_id}`,
       trabajador,
