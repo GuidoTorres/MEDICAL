@@ -10,15 +10,15 @@ const startLogin = (username, password) => {
       'POST'
     );
     const body = await resp.json();
+
     if (body.access_token) {
       localStorage.setItem('token', body.access_token);
       localStorage.setItem('token-init-date', new Date().getTime());
 
       dispatch(
         login({
-          clinic_type: body.clinic_type,
           role: body.role,
-          clinic: body.clinic,
+          name: body.name,
         })
       );
     } else {
@@ -38,9 +38,8 @@ const startCkecking = () => {
 
       dispatch(
         login({
-          clinic_type: body.clinic_type,
           role: body.role,
-          clinic: body.clinic,
+          name: body.name,
         })
       );
     } else {

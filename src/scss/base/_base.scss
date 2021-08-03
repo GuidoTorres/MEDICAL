@@ -376,16 +376,16 @@ input[type="checkbox"] {
 // TODO MODAL FACTURACION EMPRESA
 .mfacturacion__empresa {
   height: auto;
-  max-height: 55%;
+  max-height: 100%;
   max-width: 650px;
 }
 
 // TODO MODAL FACTURACION PARTICULAR
 .mfacturacion__particular {
   height: auto;
-  max-height: 83%;
-  max-width: 80%;
-  max-width: 1000px;
+  max-height: 90%;
+  // max-width: 80%;
+  max-width: max-content;
 }
 
 //MODAL FACTURACION LIQUIDACION

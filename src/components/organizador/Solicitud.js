@@ -76,7 +76,7 @@ const Solicitud = () => {
       },
     },
     {
-      name: 'N Atenciones',
+      name: 'Nº Atenciones',
       selector: (row) => (row ? row.sample[0].cantidad : ''),
       sortable: true,
       style: {

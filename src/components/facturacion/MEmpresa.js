@@ -32,7 +32,7 @@ const MEmpresa = ({ openModal, setOpenModal, datos }) => {
                   <tr>
                     <th scope="col">Tipo de servicio</th>
                     <th scope="col">Descuento (%)</th>
-                    <th scope="col">Costos (S/.)</th>
+                    <th scope="col">Costo incluido IGV(S/.)</th>
                   </tr>
                 </thead>
                 <tbody>

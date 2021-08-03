@@ -3,8 +3,7 @@ import { types } from '../types/types';
 const initialState = {
   checking: false,
   role: { id: 0, name: null },
-  clinic_type: { id: 0, detail: '' },
-  clinic: {},
+  name: null,
 };
 
 const authReducer = (state = initialState, action) => {

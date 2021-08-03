@@ -285,25 +285,39 @@ const MLiquidacion = ({
                     ))
                   : ""}
                 <tr>
-                  <td colSpan="7">Obvervación</td>
-                  <td>Sub Total</td>
-                  <td>{datos.subtotal ? datos.subtotal : ""}</td>
+                  <td colSpan="6">
+                    <strong>Obvervación</strong>
+                  </td>
+                  <td>
+                    <strong>Sub Total</strong>
+                  </td>
+                  <td>
+                    {" "}
+                    <strong>{datos.subtotal ? datos.subtotal : ""}</strong>
+                  </td>
                 </tr>
                 <tr>
-                  <td colSpan="7">
-                    {" "}
+                  <td colSpan="6">
                     <textarea
                       defaultValue={datos.observation ? datos.observation : ""}
                       readOnly
                     ></textarea>
                   </td>
-                  <td>IGV</td>
-                  <td>{datos.igv ? datos.igv : ""}</td>
+                  <td>
+                    <strong>IGV</strong>
+                  </td>
+                  <td>
+                    <strong>{datos.igv ? datos.igv : ""}</strong>
+                  </td>
                 </tr>
                 <tr>
-                  <td colSpan="7"></td>
-                  <td>Total</td>
-                  <td>{datos.amount ? datos.amount : ""}</td>
+                  <td colSpan="6"></td>
+                  <td>
+                    <strong>Total</strong>
+                  </td>
+                  <td>
+                    <strong>{datos.amount ? datos.amount : ""}</strong>
+                  </td>
                 </tr>
               </tbody>
             </table>
