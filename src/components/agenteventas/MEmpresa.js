@@ -134,10 +134,6 @@ const MEmpresa = ({
     const total1 = total * 100;
     console.log(total1);
 
-    // const newAmount = Number(amountOriginal) * (Number(value) / 100);
-    // console.log(newAmount);
-    // obj.percent = Number(value);
-    // obj.percent = total1.toString();
     if (total1 < 0) {
       document.getElementById(`percent-${id}`).value = "--";
     } else {
