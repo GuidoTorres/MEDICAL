@@ -140,10 +140,10 @@ const Historial = () => {
   // console.log(filterData);
   const handleDetalles = (e) => {
     console.log(e);
-    if (e.servicio_id == 5) {
+    if (e.servicio_id === 5) {
       if (e.resultado && e.resultado.result === 0) {
         generarPDF(e, antigenono, "Formato Antígeno");
-      } else if (e.resultado && e.resultado === 1) {
+      } else if (e.resultado && e.resultado.result === 1) {
         generarPDF(e, antigenosi, "Formato Antígeno");
       }
     } else if (e.servicio_id === 6) {

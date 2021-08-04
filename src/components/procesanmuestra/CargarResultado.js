@@ -153,40 +153,43 @@ const CargarResultado = () => {
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
+
   const handleDetalles = (e) => {
     const input = document.getElementById("file-input");
 
     if (input) {
       input.click();
     }
+    const formData = new FormData()
+    formData.set("id", e.id)
+    formData.set("pdf", input.files[0])
 
-    console.log(input.target);
-    // fetchGETPOSTPUTDELETE("result", null, "POST").then((info) => {
-    //   console.log(info);
-    //   if (info.status === 200) {
-    //     Swal.fire({
-    //       icon: "success",
-    //       title: "Éxito",
-    //       text: "Se guardo el pdf correctamente.",
-    //       confirmButtonColor: "#3085d6",
-    //       cancelButtonColor: "#d33",
-    //       confirmButtonText: "Aceptar",
-    //     }).then((resp) => {
-    //       if (resp.isConfirmed) {
-    //         getResult();
-    //       }
-    //     });
-    //   } else {
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: "!Ups¡",
-    //       text: "Algo salió mal.",
-    //       confirmButtonColor: "#3085d6",
-    //       cancelButtonColor: "#d33",
-    //       confirmButtonText: "Cerrar",
-    //     });
-    //   }
-    // });
+    fetchGETPOSTPUTDELETE("result", formData, "POST").then((info) => {
+      console.log(info);
+      if (info.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se guardo el pdf correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getResult();
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
+      }
+    });
   };
 
   return (
@@ -204,7 +207,12 @@ const CargarResultado = () => {
               />
             </div>
 
-            <input type="file" id="file-input" style={{ display: "none" }} />
+            <input
+              type="file"
+              id="file-input"
+              style={{ display: "none" }}
+              onChangeCapture={(e) => handleDetalles(e)}
+            />
           </div>
 
           <DataTable
