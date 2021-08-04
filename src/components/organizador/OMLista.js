@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useState } from 'react';
 import Modal from 'react-modal';
 import { customStyles } from '../../helpers/tablaOpciones';
 
 const OMLista = ({ modalList, setModalList, listRegistro }) => {
+  const datos = listRegistro.sample;
+  const [lista, setLista] = useState([]);
   const closeModal = () => {
     setModalList(false);
   };
-  // console.log(listRegistro);
+
+  useEffect(() => {
+    setLista([datos]);
+  }, [datos]);
+
   return (
     <Modal
       isOpen={modalList}
@@ -25,27 +32,38 @@ const OMLista = ({ modalList, setModalList, listRegistro }) => {
               <table className="table">
                 <thead>
                   <tr>
-                    {/* <th scope="col"></th> */}
                     <th scope="col">Tipo servicio</th>
                     <th scope="col">Plan de atenciones</th>
-                    <th scope="col">N Atenciones</th>
+                    <th scope="col">Nº Atenciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {/* {listRegistro.sampĺe.map((datos) => {
-                    console.log(datos);
-                  })} */}
-                  {console.log(listRegistro.sample)}
-                  <tr>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
-                  {/* <tr>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                  </tr> */}
+                  {lista.map((datos, index) => {
+                    // console.log(datos);
+                    return (
+                      <tr key={index}>
+                        {datos.map((data) => {
+                          // const servicio = data.services;
+                          // console.log(servicio);
+                          // return (
+                          //   <td key={index}>{servicio.category[0].name}</td>
+                          // );
+                          // return servicio.map((datas) => {
+                          //   return <td key={index}>{datas.category.name}</td>;
+                          // });
+                        })}
+                        {datos.map((data) => {
+                          const servicio = data.services;
+                          return servicio.map((datas) => {
+                            return <td key={index}>{datas.name}</td>;
+                          });
+                        })}
+                        {datos.map((data) => {
+                          return <td key={index}>{data.cantidad}</td>;
+                        })}{' '}
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

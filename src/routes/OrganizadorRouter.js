@@ -1,4 +1,5 @@
 import { Redirect, Route, Switch } from 'react-router-dom';
+import Agenda from '../components/organizador/Agenda';
 import Calendario from '../components/organizador/Calendario';
 import Perfil from '../components/organizador/Perfil';
 import Solicitud from '../components/organizador/Solicitud';
@@ -11,12 +12,12 @@ const OrganizadorRouter = () => {
       <Navbar
         titulo1={'Solicitudes'}
         url1={'/organizador/solicitud'}
-        titulo2={'Transportistas'}
-        url2={'/organizador/transportista'}
-        titulo3={'Perfil'}
-        url3={'/organizador/perfil'}
-        titulo4={''}
-        url4={''}
+        titulo2={'Agenda'}
+        url2={'/organizador/agenda'}
+        titulo3={'Transportistas'}
+        url3={'/organizador/transportista'}
+        titulo4={'Perfil'}
+        url4={'/organizador/perfil'}
         titulo5={''}
         url5={''}
         titulo6={''}
@@ -33,6 +34,7 @@ const OrganizadorRouter = () => {
           />
           <Route exact path="/organizador/perfil" component={Perfil} />
           <Route exact path="/organizador/calendario" component={Calendario} />
+          <Route exact path="/organizador/agenda" component={Agenda} />
           <Redirect to="/organizador/solicitud" />
         </Switch>
       </div>
