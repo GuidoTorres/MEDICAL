@@ -23,6 +23,15 @@ const EmpresaAsignacion = () => {
 
   const columnas = [
     {
+      name: 'Ítem',
+      selector: (row, index) => (index += 1),
+      sortable: true,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
       name: 'Tipo de documento',
       selector: (row) =>
         row.person && row.person.document_type_id === 3

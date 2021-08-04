@@ -39,28 +39,23 @@ const OMLista = ({ modalList, setModalList, listRegistro }) => {
                 </thead>
                 <tbody>
                   {lista.map((datos, index) => {
-                    // console.log(datos);
                     return (
                       <tr key={index}>
-                        {datos.map((data) => {
-                          // const servicio = data.services;
-                          // console.log(servicio);
-                          // return (
-                          //   <td key={index}>{servicio.category[0].name}</td>
-                          // );
-                          // return servicio.map((datas) => {
-                          //   return <td key={index}>{datas.category.name}</td>;
-                          // });
-                        })}
-                        {datos.map((data) => {
-                          const servicio = data.services;
-                          return servicio.map((datas) => {
-                            return <td key={index}>{datas.name}</td>;
-                          });
-                        })}
-                        {datos.map((data) => {
-                          return <td key={index}>{data.cantidad}</td>;
-                        })}{' '}
+                        <td>hola</td>
+                        <td>
+                          {datos.map((data, index) => {
+                            const servicio = data.services;
+                            return servicio.map((datas) => {
+                              return <tr key={index}>{datas.name}</tr>;
+                            });
+                          })}
+                        </td>
+                        <td>
+                          {datos.map((data, index) => {
+                            console.log(data);
+                            return <tr key={index}>{data.cantidad}</tr>;
+                          })}
+                        </td>
                       </tr>
                     );
                   })}

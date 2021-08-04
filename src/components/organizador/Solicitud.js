@@ -22,7 +22,7 @@ const Solicitud = () => {
       .then((data) => data.json())
       .then((datos) => setOranizadorxd(datos.data));
   };
-
+  console.log(oranizadorxd);
   useEffect(() => {
     getSolicitudes();
   }, []);

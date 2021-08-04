@@ -40,6 +40,15 @@ const EmpresaRegistro = () => {
 
   const columnas = [
     {
+      name: 'Ítem',
+      selector: (row, index) => (index += 1),
+      sortable: true,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
       name: 'Tipo de documento',
       selector: (row) =>
         row.person && row.person.document_type_id === 3
@@ -104,7 +113,7 @@ const EmpresaRegistro = () => {
       selector: (row) =>
         row.person && row.person.email ? row.person.email : '',
       sortable: true,
-      grow: 3,
+      grow: 4,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
