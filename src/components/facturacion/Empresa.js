@@ -34,7 +34,7 @@ const Empresa = () => {
   const columnas = [
     {
       name: "Item",
-      selector: "id",
+      selector: (row, index) => (index += 1),
       sortable: true,
       style: {
         borderBotton: "none",
