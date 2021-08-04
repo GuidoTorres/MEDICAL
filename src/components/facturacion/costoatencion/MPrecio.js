@@ -11,6 +11,7 @@ const MPrecio = ({
   setServices,
   obtenServicios,
   calcularValores,
+  tipo = "E",
 }) => {
   const closeModal = () => {
     setOpenModalPrecio(false);
@@ -30,7 +31,6 @@ const MPrecio = ({
     services[position].total = Number(value);
 
     calcularValores();
-    // console.log(services);
   };
 
   useEffect(() => {
