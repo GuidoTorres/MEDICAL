@@ -125,14 +125,11 @@ const MEmpresa = ({
     const obj = arreglos[position];
     const amountOriginal =
       filterServices[positionOriginal].last_discount.amount;
-    console.log(value);
-    console.log(amountOriginal);
 
     const total =
       (Number(amountOriginal) - Number(value)) / Number(amountOriginal);
 
     const total1 = total * 100;
-    console.log(total1);
 
     if (total1 < 0) {
       document.getElementById(`percent-${id}`).value = "--";
@@ -140,6 +137,8 @@ const MEmpresa = ({
       document.getElementById(`percent-${id}`).value =
         Number(total1).toFixed(2);
     }
+
+    console.log(discount);
   };
 
   useEffect(() => {
@@ -331,6 +330,7 @@ const MEmpresa = ({
                             placeholder=""
                             aria-label=""
                             name="amount"
+                            disabled
                             defaultValue={
                               data.last_discount && data.last_discount.amount
                                 ? data.last_discount.amount

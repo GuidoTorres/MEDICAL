@@ -350,7 +350,9 @@ const MCrearPaciente = ({
       provinces.length > 0 &&
       provinces.map((data, i) =>
         data.provinces.map((item, j) =>
-          item.districts[i]
+          item.districts.map(
+            (a, k) => a[j]
+          )
         )
       );
 
@@ -558,11 +560,7 @@ const MCrearPaciente = ({
                 <select name="district_id" onChange={(e) => handleChange(e)}>
                   <option value="">Seleccione</option>
                   {provinces.length > 0 &&
-                    provinces.map((data, i) => (
-                      <option key={i} value={i}>
-                        {data.provinces[i].districs}
-                      </option>
-                    ))}
+                    provinces.map((data, i) => <option>{data.name}</option>)}
                 </select>
               </div>
             </div>
