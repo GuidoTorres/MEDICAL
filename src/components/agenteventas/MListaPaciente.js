@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
+
 import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 
 import { customStyles } from "../../helpers/tablaOpciones";
@@ -44,12 +45,13 @@ const MListaPaciente = ({
       <div className="row">
         <div className="col-12">
           <div className="table-responsive ">
-
-            <label>Cantidad de atenciones: {paciente.length}</label>
+            <label>
+              <strong>Cantidad de atenciones:</strong> {paciente.length}
+            </label>
             <table className="table mt-2">
               <thead>
                 <tr>
-                  <th scope="col">Id</th>
+                  <th scope="col">Ítem</th>
                   <th scope="col">Nombres y apellidos</th>
                   <th scope="col">Nº de documento</th>
                   <th scope="col">Servicio</th>

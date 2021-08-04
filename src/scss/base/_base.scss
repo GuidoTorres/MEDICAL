@@ -149,6 +149,10 @@ input[type="checkbox"] {
   color: #f0f8ff;
 }
 
+.icon-gray {
+  color: gray;
+}
+
 .table__tablebutton {
   background-color: transparent;
   border: none;
@@ -362,6 +366,13 @@ input[type="checkbox"] {
   height: 85%;
   width: 85%;
   max-height: 420px;
+  max-width: 1000px;
+}
+
+.mhistorial_empresa {
+  height: 85%;
+  width: 85%;
+  max-height: 680px;
   max-width: 1000px;
 }
 

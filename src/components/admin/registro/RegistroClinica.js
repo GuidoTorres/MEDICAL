@@ -117,6 +117,15 @@ const RegistroClinica = () => {
       ),
     },
     {
+      name: "Administrar",
+      button: true,
+      cell: (e) => (
+        <button onClick={() => handleEditar(e)} className="table__tablebutton">
+          <i className="fas fa-pencil-alt"></i>
+        </button>
+      ),
+    },
+    {
       name: "Eliminar",
       button: true,
       cell: (e) => (

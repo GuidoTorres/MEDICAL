@@ -107,34 +107,40 @@ const MGenerarAtencion = ({
       ],
     };
 
-    fetchGETPOSTPUTDELETEJSON("attention", atencion, "POST").then((res) => {
-      console.log(res);
-      if (res.status === 200) {
-        closeModal();
-        Swal.fire({
-          icon: "success",
-          title: "Éxito",
-          text: "Se genero la atención correctamente.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getAttention();
-          }
-        });
-      } else {
-        closeModal();
-        Swal.fire({
-          icon: "error",
-          title: "Ups¡",
-          text: "Algo salió mal.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Cerrar",
-        });
-      }
-    });
+    const prueba = document.getElementById("categoria").value;
+    const prueba1 = document.getElementById("subcategoria").value;
+
+    console.log(prueba);
+    console.log(prueba1);
+
+    // fetchGETPOSTPUTDELETEJSON("attention", atencion, "POST").then((res) => {
+    //   console.log(res);
+    //   if (res.status === 200) {
+    //     closeModal();
+    //     Swal.fire({
+    //       icon: "success",
+    //       title: "Éxito",
+    //       text: "Se genero la atención correctamente.",
+    //       confirmButtonColor: "#3085d6",
+    //       cancelButtonColor: "#d33",
+    //       confirmButtonText: "Aceptar",
+    //     }).then((resp) => {
+    //       if (resp.isConfirmed) {
+    //         getAttention();
+    //       }
+    //     });
+    //   } else {
+    //     closeModal();
+    //     Swal.fire({
+    //       icon: "error",
+    //       title: "Ups¡",
+    //       text: "Algo salió mal.",
+    //       confirmButtonColor: "#3085d6",
+    //       cancelButtonColor: "#d33",
+    //       confirmButtonText: "Cerrar",
+    //     });
+    //   }
+    // });
   };
 
   const handleOnChange = (e) => {
@@ -227,6 +233,7 @@ const MGenerarAtencion = ({
                 class="form-select"
                 aria-label="Default select example"
                 name="clinic_id"
+                id="categoria"
                 onChange={handleOnChange}
               >
                 <option selected>Seleccione</option>
@@ -241,6 +248,7 @@ const MGenerarAtencion = ({
                 aria-label="Default select example"
                 disabled={datos.clinic_id === "1" ? false : true}
                 name="service_id"
+                id="subcategoria"
                 onChange={(e) => {
                   handleOnChange(e);
                   console.log(e);

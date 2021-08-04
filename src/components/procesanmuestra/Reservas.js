@@ -172,7 +172,7 @@ const Reservas = () => {
           if (data.status === 200) {
             Swal.fire(
               "Éxito!",
-              "Se genero la atención correctamente.",
+              "Se generó la atención correctamente.",
               "success"
             );
 
