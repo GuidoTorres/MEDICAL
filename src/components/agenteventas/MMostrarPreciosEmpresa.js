@@ -13,7 +13,7 @@ const MMostrarPreciosEmpresa = ({
     setListaPrecios(false);
   };
 
-    console.log(dataSelected);
+  console.log(dataSelected);
   return (
     <Modal
       isOpen={listaPrecios}
@@ -39,9 +39,13 @@ const MMostrarPreciosEmpresa = ({
               </thead>
               <tbody>
                 {dataSelected &&
-                  dataSelected.services.map((data, i) => (
+                  dataSelected.company_service.map((data, i) => (
                     <tr>
-                      <td>{data.name}</td>
+                      <td>
+                        {data && data.service && data.service.abbreviation
+                          ? data.service.abbreviation
+                          : ""}
+                      </td>
                       <td>
                         {data.last_discount &&
                         data.last_discount &&

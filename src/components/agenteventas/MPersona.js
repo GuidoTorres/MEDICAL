@@ -154,7 +154,7 @@ const MPersona = ({
                   style={{ width: "163px" }}
                 >
                   <option selected>Seleccione</option>
-                  <option value="1">Dni</option>
+                  <option value="1">DNI</option>
                   <option value="2">Pasaporte</option>
                   <option value="3">Carne de extranjeria</option>
                 </select>

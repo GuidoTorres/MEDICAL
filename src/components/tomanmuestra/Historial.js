@@ -10,7 +10,7 @@ const Historial = () => {
   const [dataHistorial, setDataHistorial] = useState([]);
 
   const getHistorial = () => {
-    fetchGETPOSTPUTDELETE(`attention`)
+    fetchGETPOSTPUTDELETE(`attention_history`)
       .then((data) => data.json())
       .then((datos) => setDataHistorial(datos.data));
   };
