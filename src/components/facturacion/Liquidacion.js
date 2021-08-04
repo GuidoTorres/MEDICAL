@@ -53,7 +53,7 @@ const Liquidacion = () => {
   const columnas = [
     {
       name: "Ítem",
-      selector: "id",
+      selector: (row, index) => (index += 1),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -137,7 +137,7 @@ const Liquidacion = () => {
     },
     {
       name: "Vencimiento",
-      selector: (row) => row.date || "10 días",
+      selector: (row) => (row.isapproved === 2 ? row.date || "10 días" : "---"),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -217,6 +217,11 @@ const Liquidacion = () => {
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
+
+  const exportarArchivoExcel = () => {
+    console.log("aaa");
+  };
+
   return (
     <div className="container">
       <div className="row">

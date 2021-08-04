@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import jsPDF from "jspdf";
 import formatPdf from "../../assets/pdf Imagen/Liquidacion.png";
 import piePaginaPdf from "../../assets/pdf Imagen/piePaginaLiquidacion.png";
+import ExportarExcel from "../../helpers/ExportarExcel";
 
 const MLiquidacion = ({
   openModal,
@@ -207,10 +208,19 @@ const MLiquidacion = ({
   const dowloandPdf = () => {
     generarPDF(1);
   };
-  const dowloandExcel = () => {
-    window.open(
-      "https://diver-recicla.com/medicalRoma/public/Liquidacion5110.xlsx"
+
+  const generaDataExcel = () => {
+    // console.log(datos);
+    const persons = [];
+    datos.detail.map((d) =>
+      persons.push({
+        Nombre: `${d.attention.person.pat_lastname} ${d.attention.person.mom_lastname}, ${d.attention.person.name}`,
+        Fecha_Examen: d.attention.date_attention,
+        Importe: d.attention.amount,
+      })
     );
+    // console.log(persons);
+    return persons;
   };
 
   return (
@@ -227,10 +237,16 @@ const MLiquidacion = ({
       <h3 className="title__modal">Editar liquidación</h3>
       <div className="liquidacion__title">
         <div>
-          <label>Razón social</label>
+          <label>{datos.company ? "Razón social" : "Nombre"}</label>
           <input
             readOnly
-            value={datos.company ? datos.company.corporation.business_name : ""}
+            value={
+              datos.company
+                ? datos.company.corporation.business_name
+                : datos.detail
+                ? datos.detail[0].attention.person.name
+                : ""
+            }
           />
         </div>
         <div>
@@ -242,10 +258,16 @@ const MLiquidacion = ({
           />
         </div>
         <div>
-          <label>Ruc</label>
+          <label>{datos.company ? "Ruc" : "DNI"}</label>
           <input
             readOnly
-            value={datos.company ? datos.company.corporation.ruc : ""}
+            value={
+              datos.company
+                ? datos.company.corporation.ruc
+                : datos.detail
+                ? datos.detail[0].attention.person.dni
+                : ""
+            }
           />
         </div>
         <div>
@@ -280,7 +302,7 @@ const MLiquidacion = ({
                         <td>{data.attention.person.pat_lastname}</td>
                         <td>{data.attention.service.name}</td>
                         <td>{data.attention.service.description}</td>
-                        <td>{data.attention.amount}</td>
+                        <td>{data.attention.subtotal}</td>
                       </tr>
                     ))
                   : ""}
@@ -332,9 +354,12 @@ const MLiquidacion = ({
           <button className="me-1 icon-pdf" onClick={dowloandPdf}>
             <i className="far fa-file-pdf"></i>
           </button>
-          <button className="icon-excel" onClick={dowloandExcel}>
-            <i className="far fa-file-excel "></i>
-          </button>
+          <ExportarExcel
+            apiData={generaDataExcel()}
+            fileName={"historial"}
+            myClass={"me-1 icon-excel"}
+            title={<i className="far fa-file-excel "></i>}
+          />
         </div>
         <div className="group-2">
           <button className="botones me-1" onClick={closeModal}>
