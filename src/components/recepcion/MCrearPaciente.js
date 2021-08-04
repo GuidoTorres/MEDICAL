@@ -68,7 +68,6 @@ const MCrearPaciente = ({
       .then((res) => setReligions(res.religions));
   };
 
-  console.log(religions);
   const getCompany = () => {
     fetchGETPOSTPUTDELETE("company", null, "GET")
       .then((res) => res.json())
@@ -80,7 +79,7 @@ const MCrearPaciente = ({
     getCompany();
     getDepartments();
   }, []);
-  console.log(dataSelected);
+
   const crearPaciente = () => {
     if (paciente.document_type_id === "" || null) {
       document.getElementById("document").style =
@@ -347,10 +346,19 @@ const MCrearPaciente = ({
 
     setProvinces(provincias);
 
-    const distritos = provinces.length > 0 && provinces.map((data, i) => data);
+    const distritos =
+      provinces.length > 0 &&
+      provinces.map((data, i) =>
+        data.provinces.map((item, j) =>
+          item.districts[i]
+        )
+      );
 
     setDistricts(distritos);
   };
+  // console.log(paciente);
+  console.log(provinces);
+  console.log(districts);
 
   useEffect(() => {
     getProvinces();
@@ -376,8 +384,10 @@ const MCrearPaciente = ({
         <div className="row">
           <div className="col-md-6 mreceptcion__crearusuario">
             <div>
-              <p>Datos generales</p>
-              <div>
+              <p>
+                <strong>Datos generales:</strong>
+              </p>
+              <div className="mt-2">
                 <label htmlFor="">Tipo de documento:</label>
                 <select
                   name="document_type_id"
@@ -394,7 +404,7 @@ const MCrearPaciente = ({
                   onChange={(e) => handleChange(e)}
                 >
                   <option selected>Seleccione</option>
-                  <option value="1">Dni</option>
+                  <option value="1">DNI</option>
                   <option value="2">Pasaporte</option>
                   <option value="3">Carne de extranjeria</option>
                 </select>
@@ -457,8 +467,10 @@ const MCrearPaciente = ({
               </div>
             </div>
             <div>
-              <p>Datos de nacimiento:</p>
-              <div>
+              <p>
+                <strong>Datos de nacimiento:</strong>
+              </p>
+              <div className="mt-2">
                 <label htmlFor="">Sexo:</label>
                 <select
                   name="gender_id"
@@ -546,19 +558,19 @@ const MCrearPaciente = ({
                 <select name="district_id" onChange={(e) => handleChange(e)}>
                   <option value="">Seleccione</option>
                   {provinces.length > 0 &&
-                    provinces.map((data, i) =>
-                      data.provinces[i].districts.map((dat, i) => (
-                        <option key={i} value={i}>
-                          {dat.name}
-                        </option>
-                      ))
-                    )}
+                    provinces.map((data, i) => (
+                      <option key={i} value={i}>
+                        {data.provinces[i].districs}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
             <div>
-              <p>Datos de domicilio</p>
-              <div>
+              <p>
+                <strong>Datos de domicilio:</strong>
+              </p>
+              <div className="mt-2">
                 <label htmlFor="">País: </label>
                 <select>
                   <option selected>Seleccione</option>
@@ -625,7 +637,9 @@ const MCrearPaciente = ({
           </div>
           <div className="col-md-6 mreceptcion__crearusuario">
             <div>
-              <p>Otros datos</p>
+              <p>
+                <strong>Otros datos:</strong>
+              </p>
               <div>
                 <label htmlFor="">Estado civil:</label>
                 <select
@@ -648,7 +662,6 @@ const MCrearPaciente = ({
                   <option value="2">Secundaria</option>
                   <option value="3">Universitaria</option>
                   <option value="3">Técnica</option>
-
                 </select>
               </div>
 
@@ -711,10 +724,8 @@ const MCrearPaciente = ({
                   onChange={(e) => handleChange(e)}
                 />
               </div>
-            </div>
-            <div>
-              <p>Puesto ocupacional</p>
               <div>
+                <label htmlFor="">Puesto ocupacional:</label>
                 <input
                   type="text"
                   placeholder=""
@@ -727,7 +738,8 @@ const MCrearPaciente = ({
                   }
                 />
               </div>
-              {/*  */}
+            </div>
+            <div>
               <div>
                 <label htmlFor="">Tipo de usuario:</label>
                 <select
@@ -760,7 +772,9 @@ const MCrearPaciente = ({
             </div>
             <div>
               <div>
-                <p>Fotografía</p>
+                <p>
+                  <strong>Fotografía:</strong>
+                </p>
                 <i className="fas fa-camera" onClick={handleCambio}></i>
               </div>
               <div>

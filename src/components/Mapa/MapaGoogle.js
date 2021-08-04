@@ -10,14 +10,16 @@ const mapContainerStyle = {
 //   lat: -12.04318,
 //   lng: -77.02824,
 // };
+// const center = {
+//   lat: -12.04318,
+//   lng: -77.02824,
+// };
 
 const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyC14u7ry3uBKIHsEnEql4sA2MaebwNJWI4",
   });
-
-  console.log(dataMapa);
 
   const center2 = {
     lat:
@@ -43,21 +45,19 @@ const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
 
   const position2 = {
     lat:
-      (dataSelected &&
-        dataSelected.corporation &&
-        dataSelected.corporation.address &&
-        dataSelected.corporation.address.map_latitude !== null) ||
-      "0"
+      dataSelected &&
+      dataSelected.corporation &&
+      dataSelected.corporation.address &&
+      dataSelected.corporation.address.map_latitude !== null
         ? Number(dataSelected.corporation.address.map_latitude)
-        : -12.04318,
+        : dataMapa.lat,
     lng:
-      (dataSelected &&
-        dataSelected.corporation &&
-        dataSelected.corporation.address &&
-        dataSelected.corporation.address.map_length !== null) ||
-      "0"
+      dataSelected &&
+      dataSelected.corporation &&
+      dataSelected.corporation.address &&
+      dataSelected.corporation.address.map_length !== null
         ? Number(dataSelected.corporation.address.map_length)
-        : -77.02824,
+        : dataMapa.lng,
   };
 
   // const onLoad = transitLayer => {
@@ -70,9 +70,7 @@ const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
       mapContainerStyle={mapContainerStyle}
       zoom={14}
       center={center2}
-      onClick={(e) =>
-        setDataMapa({ ...dataMapa, lat: e.latLng.lat(), lng: e.latLng.lng() })
-      }
+      onClick={(e) => setDataMapa({...dataMapa, lat: e.latLng.lat(), lng: e.latLng.lng() })}
     >
       <Marker
         // onLoad={onLoad}

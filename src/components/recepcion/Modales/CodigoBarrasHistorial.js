@@ -27,7 +27,6 @@ const CodigoBarrasHistorial = ({
     setCodigoHistorial(false);
   };
 
-
   const descargar = () => {
     const data = document.querySelector("#canvas");
     const pngUrl = data
@@ -65,8 +64,9 @@ const CodigoBarrasHistorial = ({
       dataBarCode.DNI !== undefined
         ? `DNI: ${dataBarCode.DNI} \t Sexo: M \t Edad: 28`
         : "";
-    let service__abbreviation =
-      dataBarCode.service_type !== undefined ? dataBarCode.service_type : "";
+    let service__abbreviation = dataBarCode.service_details
+      ? dataBarCode.service_details.abbreviation
+      : "";
     let attention__date = `${dataBarCode.date_attention} \t ${dataBarCode.time_attention}`;
 
     let service__info = `Prueba : ${service__abbreviation} \t ${attention__date}`;

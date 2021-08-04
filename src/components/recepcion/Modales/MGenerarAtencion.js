@@ -60,6 +60,8 @@ const MGenerarAtencion = ({
     generarDeclaracion();
   }, []);
 
+  console.log(datos);
+
   const getFecha = () => {
     let newDate = new Date();
     let date = newDate.getDate();
@@ -207,12 +209,15 @@ const MGenerarAtencion = ({
               dataSelected.user.user_type &&
               dataSelected.user.user_type.name}
           </label>
-          <label htmlFor="">Empresa: {dataSelected.business_name}</label>
+          <label htmlFor="">
+            Empresa:{" "}
+            {dataSelected.business_name ? dataSelected.business_name : "---"}
+          </label>
         </div>
 
         <div className="container1">
           <label htmlFor="" className="mt-3">
-            Seleccionar servicio
+            <strong>Seleccionar servicio</strong>
           </label>
 
           <div className="tipoServicio mt-3">

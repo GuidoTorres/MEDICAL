@@ -43,7 +43,33 @@ const MPersona = ({
 
   const crearDescuentoParticular = () => {
     fetchGETPOSTPUTDELETEJSON("particular_discount", persona, "POST").then(
-      (res) => console.log(res)
+      (res) => {
+        if (res.status === 200) {
+          closeModal();
+          Swal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Se actualizo la empresa correctamente.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Aceptar",
+          }).then((resp) => {
+            if (resp.isConfirmed) {
+              getParticularDiscount();
+            }
+          });
+        } else {
+          closeModal();
+          Swal.fire({
+            icon: "error",
+            title: "!Ups¡",
+            text: "Algo salió mal.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cerrar",
+          });
+        }
+      }
     );
   };
 
@@ -60,7 +86,7 @@ const MPersona = ({
       percent: persona.percent || dataSelected.percent,
       quantity: persona.quantity || dataSelected.quantity,
       service_id: persona.service_id || dataSelected.service_id,
-      amount: persona.amount || dataSelected.amount
+      amount: persona.amount || dataSelected.amount,
     };
 
     fetchGETPOSTPUTDELETEJSON("particular_discount", actualizar, "POST").then(

@@ -156,9 +156,11 @@ const SubirLaboratorio = () => {
     }
   };
 
+  console.log(attention);
+
   const filtrarTabla = () => {
     const result = Object.values(attention).filter(
-      (data) => data && data.service && data.service.id === tipoPrueba.prueba
+      (data) => data && data.service_id === tipoPrueba.prueba
     );
 
     setFilterData(result);
@@ -166,7 +168,7 @@ const SubirLaboratorio = () => {
 
   useEffect(() => {
     filtrarTabla();
-  }, [tipoPrueba]);
+  }, [tipoPrueba.prueba]);
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -211,7 +213,7 @@ const SubirLaboratorio = () => {
                     servicios[0].services &&
                     servicios[0].services.map((data, i) => (
                       <option key={i} value={data.id}>
-                        {data.name}
+                        {data.abbreviation}
                       </option>
                     ))}
                 </select>
@@ -236,7 +238,7 @@ const SubirLaboratorio = () => {
 
             <DataTable
               columns={columnas}
-              data={listRegistro}
+              data={filterData}
               pagination
               paginationComponentOptions={paginacionOpciones}
               fixedHeader

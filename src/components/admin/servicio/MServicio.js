@@ -149,7 +149,7 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                   {dataSelected &&
                     dataSelected.services.map((data, i) => (
                       <option key={data.id} value={i}>
-                        {data.name}
+                        {data.abbreviation}
                       </option>
                     ))}
                 </select>

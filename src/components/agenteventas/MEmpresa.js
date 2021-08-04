@@ -14,7 +14,8 @@ const MEmpresa = ({
   setEditar,
   getParticularDiscount,
   getServicio,
-  getClinica
+  getClinica,
+  setPaciente,
 }) => {
   const [discount, setDiscount] = useState([]);
   const [filterServices, setFilterServices] = useState({});
@@ -37,15 +38,14 @@ const MEmpresa = ({
       services: discount,
     };
 
-    fetchGETPOSTPUTDELETEJSON("company_discount", data, "POST").then((res) =>
-    {
+    fetchGETPOSTPUTDELETEJSON("company_discount", data, "POST").then((res) => {
       // console.log(resp);
       if (res.status === 200) {
         closeModal();
         Swal.fire({
           icon: "success",
           title: "Éxito",
-          text: "Se actualizo la clínica correctamente.",
+          text: "Se actualizó la clínica correctamente.",
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Aceptar",
@@ -66,9 +66,7 @@ const MEmpresa = ({
         });
       }
     });
-    
   };
-
 
   const filtrarServicios = () => {
     const data =
@@ -92,7 +90,7 @@ const MEmpresa = ({
         },
       ]);
 
-      document.getElementById(`percent-${data.id}`).disabled = false;
+      document.getElementById(`amount-${data.id}`).disabled = false;
       document.getElementById(`percent-${data.id}`).value =
         data.last_discount.percent;
       document.getElementById(`amount-${data.id}`).value =
@@ -110,7 +108,7 @@ const MEmpresa = ({
         setDiscount([]);
       }
 
-      document.getElementById(`percent-${data.id}`).disabled = true;
+      document.getElementById(`amount-${data.id}`).disabled = true;
     }
   };
 
@@ -127,20 +125,22 @@ const MEmpresa = ({
     const obj = arreglos[position];
     const amountOriginal =
       filterServices[positionOriginal].last_discount.amount;
+    console.log(value);
+    console.log(amountOriginal);
 
-    const newAmount = Number(amountOriginal) * (1 - Number(value) / 100);
+    const total =
+      (Number(amountOriginal) - Number(value)) / Number(amountOriginal);
 
-    obj.percent = Number(value);
-    obj.amount = newAmount.toString();
+    const total1 = total * 100;
+    console.log(total1);
 
-    document.getElementById(`amount-${id}`).value = Number(newAmount);
-
-    // setTotal((total) => [
-    //   ...total,
-    //   { [e.target.name]: e.target.value, [e.target.name]: e.target.value },
-    // ]);
+    if (total1 < 0) {
+      document.getElementById(`percent-${id}`).value = "--";
+    } else {
+      document.getElementById(`percent-${id}`).value =
+        Number(total1).toFixed(2);
+    }
   };
-
 
   useEffect(() => {
     filtrarServicios();
@@ -196,7 +196,7 @@ const MEmpresa = ({
               />
             </div>
 
-            <div>
+            {/* <div>
               <h6 htmlFor="">Contacto:</h6>
               <input
                 type="text"
@@ -205,7 +205,7 @@ const MEmpresa = ({
                 aria-label=""
                 aria-describedby="basic-addon1"
               />
-            </div>
+            </div> */}
 
             <div>
               <h6 htmlFor="">Responsable:</h6>
@@ -215,6 +215,8 @@ const MEmpresa = ({
                 placeholder=""
                 aria-label=""
                 aria-describedby="basic-addon1"
+                defaultValue={dataSelected.corporation.responsable.name}
+                disabled
               />
             </div>
 
@@ -226,6 +228,8 @@ const MEmpresa = ({
                 placeholder=""
                 aria-label=""
                 aria-describedby="basic-addon1"
+                defaultValue={dataSelected.corporation.responsable.phone}
+                disabled
               />
             </div>
             <div>
@@ -236,6 +240,8 @@ const MEmpresa = ({
                 placeholder=""
                 aria-label=""
                 aria-describedby="basic-addon1"
+                defaultValue={dataSelected.corporation.responsable.email}
+                disabled
               />
             </div>
 
@@ -253,7 +259,9 @@ const MEmpresa = ({
                 {getServicio.length > 0 &&
                   getServicio[0].services.map((servicio, i) => (
                     <tr key={i}>
-                      <td>{servicio.name ? servicio.name : ""}</td>
+                      <td>
+                        {servicio.abbreviation ? servicio.abbreviation : ""}
+                      </td>
                       <td>
                         {servicio.last_price && servicio.last_price.amount
                           ? servicio.last_price.amount
@@ -284,7 +292,7 @@ const MEmpresa = ({
                 {filterServices.length > 0 &&
                   filterServices.map((data, index) => (
                     <tr key={index}>
-                      <td>{data.name}</td>
+                      <td>{data.abbreviation}</td>
                       <td>
                         <div className="form-check">
                           <input
@@ -308,11 +316,10 @@ const MEmpresa = ({
                           placeholder=""
                           aria-label=""
                           name="percent"
+                          disabled
                           defaultValue={
                             data.last_discount ? data.last_discount.percent : 0
                           }
-                          disabled
-                          onChange={(e) => editarPercent(e, data.id)}
                           aria-describedby="basic-addon1"
                         />
                       </td>
@@ -324,13 +331,12 @@ const MEmpresa = ({
                             placeholder=""
                             aria-label=""
                             name="amount"
-                            disabled
                             defaultValue={
                               data.last_discount && data.last_discount.amount
                                 ? data.last_discount.amount
                                 : ""
                             }
-                            // onChange={editarPercent}
+                            onChange={(e) => editarPercent(e, data.id)}
                             aria-describedby="basic-addon1"
                           />
                         </div>
