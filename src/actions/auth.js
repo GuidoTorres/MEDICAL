@@ -10,7 +10,6 @@ const startLogin = (username, password) => {
       'POST'
     );
     const body = await resp.json();
-    console.log(body);
     if (body.access_token) {
       localStorage.setItem('token', body.access_token);
       localStorage.setItem('token-init-date', new Date().getTime());

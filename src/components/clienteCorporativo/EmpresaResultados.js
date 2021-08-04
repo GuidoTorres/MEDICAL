@@ -24,7 +24,7 @@ const EmpresaResultados = () => {
   useEffect(() => {
     getResultado();
   }, []);
-
+  console.log(clinica);
   const enviarEmail = () => {
     const array = data.map((m) => m.nro_atencion);
     fetchGETPOSTPUTDELETEJSON(
@@ -39,11 +39,11 @@ const EmpresaResultados = () => {
   const columnas = [
     {
       name: 'Ítem',
-      selector: (row) => (row && row.nro_atencion ? row.nro_atencion : ''),
-      // sortable: true,
+      selector: (row, index) => (index += 1),
+      sortable: true,
       style: {
-        color: '#8f9196',
         borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
@@ -60,6 +60,7 @@ const EmpresaResultados = () => {
       name: 'Tipo de documento',
       selector: (row) => (row && row.tipo_documento ? row.tipo_documento : ''),
       sortable: true,
+      grow: 2,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
