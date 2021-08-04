@@ -34,11 +34,15 @@ const MCrearPaciente = ({
     user_type_id: "",
     reference: "",
   });
+  const [paciente2, setPaciente2] = useState({});
   const [religions, setReligions] = useState({});
   const [company, setCompany] = useState({});
   const [departamentos, setDepartamentos] = useState({});
   const [provinces, setProvinces] = useState({});
   const [districts, setDistricts] = useState();
+
+  const [provinces1, setProvinces1] = useState({});
+  const [districts1, setDistricts1] = useState({});
 
   const closeModal = () => {
     setAddRegistro(false);
@@ -349,20 +353,44 @@ const MCrearPaciente = ({
     const distritos =
       provinces.length > 0 &&
       provinces.map((data, i) =>
-        data.provinces.map((item, j) =>
-          item.districts[i]
+        data.provinces.filter((item, j) =>
+          Number(item.id) === Number(paciente.province_id) ? item.districts : ""
         )
       );
 
     setDistricts(distritos);
   };
-  // console.log(paciente);
-  console.log(provinces);
-  console.log(districts);
-
+  // console.log(dist2);
   useEffect(() => {
     getProvinces();
   }, [paciente]);
+
+  const getProvinces1 = () => {
+    //devuelve solo el objeto con el id = a department_id
+    const provincias1 =
+      departamentos.length > 0 &&
+      departamentos.filter(
+        (data) => data.id === Number(paciente2.department_id)
+      );
+
+    setProvinces1(provincias1);
+
+    const distritos1 =
+      provinces1.length > 0 &&
+      provinces1.map((data, i) =>
+        data.provinces.filter((item, j) =>
+          Number(item.id) === Number(paciente2.province_id)
+            ? item.districts
+            : ""
+        )
+      );
+    setDistricts1(distritos1);
+  };
+
+  // console.log(dist2);
+  useEffect(() => {
+    getProvinces1();
+  }, [paciente2]);
 
   return (
     <Modal
@@ -392,7 +420,7 @@ const MCrearPaciente = ({
                 <select
                   name="document_type_id"
                   id="document"
-                  defaultValue={
+                  selected={
                     dataSelected && dataSelected.document_type_id === 1
                       ? 1
                       : dataSelected && dataSelected.document_type_id === 2
@@ -508,7 +536,11 @@ const MCrearPaciente = ({
                 <label htmlFor="">Religión:</label>
                 <select
                   name="religion_id"
-                  defaultValue={1}
+                  defaultValue={
+                    dataSelected && dataSelected.religion_id
+                      ? dataSelected.religion_id
+                      : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Seleccione</option>
@@ -534,7 +566,9 @@ const MCrearPaciente = ({
 
                   {departamentos.length > 0 &&
                     departamentos.map((data, i) => (
-                      <option value={data.id}>{data.name}</option>
+                      <option key={i} value={data.id}>
+                        {data.name}
+                      </option>
                     ))}
                 </select>
               </div>
@@ -557,11 +591,11 @@ const MCrearPaciente = ({
                 <label htmlFor="">Distrito: </label>
                 <select name="district_id" onChange={(e) => handleChange(e)}>
                   <option value="">Seleccione</option>
-                  {provinces.length > 0 &&
-                    provinces.map((data, i) => (
-                      <option key={i} value={i}>
-                        {data.provinces[i].districs}
-                      </option>
+                  {districts &&
+                    districts[0] &&
+                    districts[0][0] &&
+                    districts[0][0].districts.map((data, i) => (
+                      <option key={i}>{data.name}</option>
                     ))}
                 </select>
               </div>
@@ -581,13 +615,21 @@ const MCrearPaciente = ({
               <div>
                 <label htmlFor="">Departmento:</label>
                 <select
-                // name="department_id2" onChange={(e) => handleChange(e)}
+                  // name="department_id2" onChange={(e) => handleChange(e)}
+                  onChange={(e) =>
+                    setPaciente2({
+                      ...paciente2,
+                      department_id: e.target.value,
+                    })
+                  }
                 >
                   <option value="">Seleccione</option>
 
                   {departamentos.length > 0 &&
                     departamentos.map((data, i) => (
-                      <option value={data.id}>{data.name}</option>
+                      <option key={i} value={data.id}>
+                        {data.name}
+                      </option>
                     ))}
                 </select>
               </div>
@@ -595,11 +637,14 @@ const MCrearPaciente = ({
               <div>
                 <label htmlFor="">Provincia:</label>
                 <select
-                // name="province_id" onChange={(e) => handleChange(e)}
+                  // name="province_id" onChange={(e) => handleChange(e)}
+                  onChange={(e) =>
+                    setPaciente2({ ...paciente2, province_id: e.target.value })
+                  }
                 >
                   <option value="">Seleccione</option>
-                  {provinces.length > 0 &&
-                    provinces.map((data, i) =>
+                  {provinces1.length > 0 &&
+                    provinces1.map((data, i) =>
                       data.provinces.map((prov, i) => (
                         <option key={i} value={prov.id}>
                           {prov.name}
@@ -611,16 +656,22 @@ const MCrearPaciente = ({
 
               <div>
                 <label htmlFor="">Distrito: </label>
-                <select>
-                  <option selected>Seleccione</option>
-                  {provinces.length > 0 &&
-                    provinces.map((data, i) =>
-                      data.provinces[i].districts.map((dat, i) => (
-                        <option key={i} value={i}>
-                          {dat.name}
-                        </option>
-                      ))
-                    )}
+                <select
+                  name="district_id"
+                  onChange={(e) =>
+                    setPaciente2({
+                      ...paciente2,
+                      district_id: e.target.value,
+                    })
+                  }
+                >
+                  <option value="">Seleccione</option>
+                  {districts1 &&
+                    districts1[0] &&
+                    districts1[0][0] &&
+                    districts1[0][0].districts.map((data, i) => (
+                      <option key={i}>{data.name}</option>
+                    ))}
                 </select>
               </div>
               <div>
@@ -644,6 +695,11 @@ const MCrearPaciente = ({
                 <label htmlFor="">Estado civil:</label>
                 <select
                   name="civil_status_id"
+                  defaultValue={
+                    dataSelected && dataSelected.civil_status_id
+                      ? dataSelected.civil_status_id
+                      : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 >
                   <option selected>Seleccione</option>
@@ -701,6 +757,9 @@ const MCrearPaciente = ({
                   placeholder=""
                   name="email"
                   id="email"
+                  defaultValue={
+                    dataSelected && dataSelected.email ? dataSelected.email : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 />
               </div>
@@ -745,6 +804,14 @@ const MCrearPaciente = ({
                 <select
                   name="user_type_id"
                   id="user_type"
+                  defaultValue={
+                    dataSelected &&
+                    dataSelected.user &&
+                    dataSelected.user.user_type &&
+                    dataSelected.user.user_type.id
+                      ? dataSelected.user.user_type.id
+                      : ""
+                  }
                   onChange={(e) => handleChange(e)}
                 >
                   <option value="">Seleccione</option>

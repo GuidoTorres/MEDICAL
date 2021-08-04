@@ -35,7 +35,7 @@ const MSubirLaboratorio = ({
           Swal.fire({
             icon: "success",
             title: "Éxito",
-            text: "Se cargo el resultado correctamente.",
+            text: "Se cargó el resultado correctamente.",
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Aceptar",

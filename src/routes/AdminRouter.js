@@ -20,7 +20,7 @@ const AdminRouter = ({ ...rest }) => {
         url3={'/admin/usuario'}
         titulo4={'Servicios'}
         url4={'/admin/servicios'}
-        titulo5={'Trabajadores'}
+        titulo5={'Responsables'}
         url5={'/admin/trabajadores'}
         titulo6={''}
         url6={''}

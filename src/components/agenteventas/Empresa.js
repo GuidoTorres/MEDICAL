@@ -7,6 +7,7 @@ import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 // import { servicio } from '../../data/AVServicio';
 import { paginacionOpciones } from "../../helpers/tablaOpciones";
 import MEmpresa from "./MEmpresa";
+import MHistorialPrecios from "./MHistorialPrecios";
 import MListaPaciente from "./MListaPaciente";
 import MMostrarPreciosEmpresa from "./MMostrarPreciosEmpresa";
 
@@ -21,6 +22,7 @@ const Empresa = ({ getServicio }) => {
   const [listaPacientes, setListaPacientes] = useState(false);
   const [paciente, setPaciente] = useState({});
   const [idCompania, setIdCompania] = useState({});
+  const [precios, setPrecios] = useState(false);
 
   const getClinica = () => {
     fetchGETPOSTPUTDELETE("company_discount")
@@ -33,6 +35,8 @@ const Empresa = ({ getServicio }) => {
   useEffect(() => {
     getClinica();
   }, []);
+
+  console.log(metGetClinic);
 
   const columnas = [
     {
@@ -75,6 +79,18 @@ const Empresa = ({ getServicio }) => {
           className="table__tablebutton"
         >
           <i class="fas fa-users"></i>
+        </button>
+      ),
+    },
+    {
+      name: "Historial de precios",
+      button: true,
+      cell: (e) => (
+        <button
+          onClick={() => historialPrecios(e)}
+          className="table__tablebutton"
+        >
+          <i class="fas fa-calendar-alt"></i>
         </button>
       ),
     },
@@ -153,6 +169,12 @@ const Empresa = ({ getServicio }) => {
     setIdCompania(e.id);
   };
 
+  const historialPrecios = (e) => {
+    setPrecios(true);
+    setDataSelected(e);
+    setIdCompania(e.id);
+  };
+
   return (
     <div className="container mt-4">
       <div className="row">
@@ -209,6 +231,14 @@ const Empresa = ({ getServicio }) => {
           setListaPacientes={setListaPacientes}
           dataSelected={dataSelected}
           paciente={paciente}
+          id={idCompania}
+        />
+      )}
+
+      {precios && (
+        <MHistorialPrecios
+          precios={precios}
+          setPrecios={setPrecios}
           id={idCompania}
         />
       )}

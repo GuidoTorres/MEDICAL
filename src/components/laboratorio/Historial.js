@@ -44,6 +44,8 @@ const Historial = () => {
     getServicios();
   }, []);
 
+  console.log(results);
+
   const columnas = [
     {
       name: "Ítem",

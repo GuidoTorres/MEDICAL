@@ -71,8 +71,8 @@ const MEmpresa = ({
   const filtrarServicios = () => {
     const data =
       dataSelected &&
-      dataSelected.services &&
-      dataSelected.services.filter((data) => data);
+      dataSelected.company_service &&
+      dataSelected.company_service.filter((data) => data);
 
     setFilterServices(data);
   };
@@ -113,7 +113,7 @@ const MEmpresa = ({
   };
 
   const editarPercent = (e, id) => {
-    // console.log(e);
+    console.log(id);
 
     const value = e.target.value || 0;
 
@@ -125,21 +125,20 @@ const MEmpresa = ({
     const obj = arreglos[position];
     const amountOriginal =
       filterServices[positionOriginal].last_discount.amount;
-    console.log(value);
-    console.log(amountOriginal);
 
     const total =
       (Number(amountOriginal) - Number(value)) / Number(amountOriginal);
 
     const total1 = total * 100;
-    console.log(total1);
 
     if (total1 < 0) {
       document.getElementById(`percent-${id}`).value = "--";
     } else {
       document.getElementById(`percent-${id}`).value =
-        Number(total1).toFixed(2);
+        Number(total1).toFixed() + "%";
     }
+
+    console.log(discount);
   };
 
   useEffect(() => {
@@ -292,7 +291,11 @@ const MEmpresa = ({
                 {filterServices.length > 0 &&
                   filterServices.map((data, index) => (
                     <tr key={index}>
-                      <td>{data.abbreviation}</td>
+                      <td>
+                        {data && data.service && data.service.abbreviation
+                          ? data.service.abbreviation
+                          : ""}
+                      </td>
                       <td>
                         <div className="form-check">
                           <input
@@ -331,6 +334,7 @@ const MEmpresa = ({
                             placeholder=""
                             aria-label=""
                             name="amount"
+                            disabled
                             defaultValue={
                               data.last_discount && data.last_discount.amount
                                 ? data.last_discount.amount
