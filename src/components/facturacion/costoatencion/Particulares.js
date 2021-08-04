@@ -135,7 +135,7 @@ const Particulares = () => {
     },
     {
       name: "Impuesto",
-      selector: "impuesto",
+      selector: "igv",
       sortable: true,
       style: {
         borderBotton: "none",

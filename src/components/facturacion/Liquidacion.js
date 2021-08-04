@@ -29,6 +29,18 @@ const Liquidacion = () => {
   const handleCargarInfo = (e) => {
     setDatos(e);
     setOpenModalCargarInfo(true);
+    // console.log(e);
+  };
+
+  const typeStatus = (estado) => {
+    switch (Number(estado)) {
+      case 0:
+        return "Rechazado";
+      case 1:
+        return "Pendiente";
+      case 2:
+        return "Aprobado";
+    }
   };
 
   // console.log(liquidacion);
@@ -113,6 +125,25 @@ const Liquidacion = () => {
         color: "#555555",
       },
     },
+
+    {
+      name: "Estado",
+      selector: (row) => typeStatus(row.isapproved),
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Vencimiento",
+      selector: (row) => row.date || "10 días",
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
     {
       name: "Detalles",
       button: true,
@@ -128,14 +159,17 @@ const Liquidacion = () => {
     {
       name: "Cargar Información",
       button: true,
-      cell: (e) => (
-        <button
-          onClick={() => handleCargarInfo(e)}
-          className="table__tablebutton"
-        >
-          <i className="fas fa-folder-open"></i>
-        </button>
-      ),
+      cell: (e) =>
+        e.isapproved === 2 ? (
+          <button
+            onClick={() => handleCargarInfo(e)}
+            className="table__tablebutton"
+          >
+            <i className="fas fa-folder-open"></i>
+          </button>
+        ) : (
+          <i className="fas fa-folder-open icon-gray"></i>
+        ),
     },
   ];
 
