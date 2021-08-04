@@ -383,7 +383,7 @@ const MRegistroEmpresa = ({
       ("" && empresa.name !== null) ||
       ("" && empresa.phone !== null) ||
       ("" && empresa.email !== null) ||
-      ""
+      ("" && editar === false)
     ) {
       postCorporation();
     }

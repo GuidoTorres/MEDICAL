@@ -7,6 +7,7 @@ import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 // import { servicio } from '../../data/AVServicio';
 import { paginacionOpciones } from "../../helpers/tablaOpciones";
 import MEmpresa from "./MEmpresa";
+import MListaPaciente from "./MListaPaciente";
 import MMostrarPreciosEmpresa from "./MMostrarPreciosEmpresa";
 
 const Empresa = ({ getServicio }) => {
@@ -17,6 +18,9 @@ const Empresa = ({ getServicio }) => {
   const [metGetClinic, setMetGetClinic] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
   const [editar, setEditar] = useState(false);
+  const [listaPacientes, setListaPacientes] = useState(false);
+  const [paciente, setPaciente] = useState({});
+  const [idCompania, setIdCompania] = useState({});
 
   const getClinica = () => {
     fetchGETPOSTPUTDELETE("company_discount")
@@ -25,8 +29,6 @@ const Empresa = ({ getServicio }) => {
         setMetGetClinic(datos.data);
       });
   };
-
-  console.log(metGetClinic);
 
   useEffect(() => {
     getClinica();
@@ -61,6 +63,18 @@ const Empresa = ({ getServicio }) => {
       cell: (e) => (
         <button onClick={() => handlePrecios(e)} className="table__tablebutton">
           <i class="fas fa-eye"></i>
+        </button>
+      ),
+    },
+    {
+      name: "Lista de pacientes",
+      button: true,
+      cell: (e) => (
+        <button
+          onClick={() => handlePacientes(e)}
+          className="table__tablebutton"
+        >
+          <i class="fas fa-users"></i>
         </button>
       ),
     },
@@ -133,6 +147,11 @@ const Empresa = ({ getServicio }) => {
     setListaPrecios(true);
     setDataSelected(e);
   };
+  const handlePacientes = (e) => {
+    setListaPacientes(true);
+    setDataSelected(e);
+    setIdCompania(e.id);
+  };
 
   return (
     <div className="container mt-4">
@@ -181,6 +200,16 @@ const Empresa = ({ getServicio }) => {
           setEditar={setEditar}
           getClinica={getClinica}
           getServicio={getServicio}
+          setPaciente={setPaciente}
+        />
+      )}
+      {listaPacientes && (
+        <MListaPaciente
+          listapacientes={listaPacientes}
+          setListaPacientes={setListaPacientes}
+          dataSelected={dataSelected}
+          paciente={paciente}
+          id={idCompania}
         />
       )}
     </div>

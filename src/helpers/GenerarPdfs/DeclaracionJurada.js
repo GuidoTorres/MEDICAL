@@ -19,19 +19,48 @@ const generarDeclaracionJurada = (data) => {
 
   doc.addImage(image, "PNG", 15, 20, 600, 800);
 
-  doc.setFillColor(255, 255, 255);
-  doc.rect(0, 100, 600, 135, "F");
+  // doc.setFillColor(255, 255, 255);
+  // doc.rect(0, 100, 600, 135, "F");
 
   doc.setFontSize(12);
   doc.setFont("Verdana", "normal");
   //sintomas
+  //   doc.text(
+  //     80,
+  //     115,
+  //     `Yo,    ${data.fullName}     , identificado con Tipo de Documento: ${
+  //       data.document_type}, N°:	${data.DNI},
+  // fecha de nacimiento: 08/01/2021 , dirección:  ${data.address},
+  // estado civil: ${
+  //       data.patient_details.civil_status_id === 1
+  //         ? "Casado"
+  //         : data.patient_details.civil_status_id === 2
+  //         ? "Soltero"
+  //         : data.patient_details.civil_status_id === 3
+  //         ? "Viudo"
+  //         : data.patient_details.civil_status_id === 4
+  //         ? "Divorciado"
+  //         : ""
+  //     }     , sexo:   ${
+  //       data.patient_details.civil_status_id === 1 ? "Masculino" : "Femenino"
+  //     }    , correo electrónico donde recibirá su resultado: ${
+  //       data.patient_details.email ? data.patient_details.email : ""
+  //     }	, Grado de Instrucción:  ${data.fullName}	, N° de celular: ${
+  //       data.patient_details.cellphone ? data.patient_details.cellphone : ""
+  //     }	,  declaro bajo juramento que:
+
+  // Presento los siguientes síntomas y las siguientes condiciones de riesgo de ser
+  // `,
+  //     { maxWidth: 450 }
+  //   );
+  doc.text(120, 115, `${data.fullName}`);
+  doc.text(95, 130, `${data.document_type}`);
+  doc.text(200, 130, `${data.DNI}`);
+
   doc.text(
-    80,
-    115,
-    `Yo,    ${data.fullName}     , identificado con Tipo de Documento: ${
-      data.document_type}, N°:	${data.DNI},
-fecha de nacimiento: 08/01/2021 , dirección:  ${data.address},
-estado civil: ${
+    415,
+    147,
+    `${
       data.patient_details.civil_status_id === 1
         ? "Casado"
         : data.patient_details.civil_status_id === 2
@@ -41,59 +70,29 @@ estado civil: ${
         : data.patient_details.civil_status_id === 4
         ? "Divorciado"
         : ""
-    }     , sexo:   ${
-      data.patient_details.civil_status_id === 1 ? "Masculino" : "Femenino"
-    }    , correo electrónico donde recibirá su resultado: ${
-      data.patient_details.email ? data.patient_details.email : ""
-    }	, Grado de Instrucción:  ${data.fullName}	, N° de celular: ${
-      data.patient_details.cellphone ? data.patient_details.cellphone : ""
-    }	,  declaro bajo juramento que:
-
-
-Presento los siguientes síntomas y las siguientes condiciones de riesgo de ser 
-`,
-    { maxWidth: 450 }
+    }`
   );
-  // doc.text(95, 130, `${data.document_type}`);
-  // doc.text(200, 130, `${data.DNI}`);
 
-  // doc.text(
-  //   415,
-  //   147,
-  //   `${
-  //     data.patient_details.civil_status_id === 1
-  //       ? "Casado"
-  //       : data.patient_details.civil_status_id === 2
-  //       ? "Soltero"
-  //       : data.patient_details.civil_status_id === 3
-  //       ? "Viudo"
-  //       : data.patient_details.civil_status_id === 4
-  //       ? "Divorciado"
-  //       : ""
-  //   }`
-  // );
+  doc.text(
+    135,
+    163,
+    `${data.patient_details.civil_status_id === 1 ? "Masculino" : "Femenino"}`
+  );
 
-  // doc.text(
-  //   135,
-  //   163,
-  //   `${data.patient_details.civil_status_id === 1 ? "Masculino" : "Femenino"}`
-  // );
+  doc.text(
+    110,
+    178,
+    `${data.patient_details.email ? data.patient_details.email : ""}`
+  );
 
-  // doc.text(
-  //   110,
-  //   178,
-  //   `${data.patient_details.email ? data.patient_details.email : ""}`
-  // );
+  doc.text(
+    380,
+    195,
+    `${data.patient_details.cellphone ? data.patient_details.cellphone : ""}`
+  );
+  doc.text(155, 147, `${data.address}`);
+  // doc.text(308, 130, `${data.dire}`);
 
-  // doc.text(
-  //   380,
-  //   195,
-  //   `${data.patient_details.cellphone ? data.patient_details.cellphone : ""}`
-  // );
-  // doc.text(155, 143, `${data.puesto}`);
-  // doc.text(308, 130, `${data.empresa}`);
-
-  console.log(data.declaration);
 
   if (data.declaration.length > 0) {
     if (data.declaration[0].answer === "No") {
