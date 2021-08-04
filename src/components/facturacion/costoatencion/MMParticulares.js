@@ -4,6 +4,7 @@ import { customStyles } from "../../../helpers/tablaOpciones";
 import MMAParticulares from "./MMAParticulares";
 import Swal from "sweetalert2";
 import { fetchGETPOSTPUTDELETEJSON } from "../../../helpers/fetch";
+import MPrecio from "./MPrecio";
 
 const MMParticulares = ({
   openModalLiquidarParticular,
@@ -21,24 +22,65 @@ const MMParticulares = ({
   }, []);
 
   const [openModalCrear, setOpenModalCrear] = useState(false);
+  const [openModalPrecio, setOpenModalPrecio] = useState(false);
   const [subtotal, setSubTotal] = useState(0);
   const [igv, setIgv] = useState(0);
   const [total, setTotal] = useState(0);
-  const [incremento, setIncremento] = useState(0);
   const [fechaActual, setFechaActual] = useState("");
   const [observacion, setObservacion] = useState("");
   const [codigo, setCodigo] = useState("");
+  const [estado, setEstado] = useState(2); // 1 - pediente, 2 - aprobado
+  const [services, setServices] = useState([]);
 
-  // const handleAgregarCliente = () => {
-  //   setOpenModalCrear(true);
-  // };
-  const editar = () => {
-    document.getElementById("liquidacion-total").readOnly = false;
+  const obtenServicios = () => {
+    const array = dataParticular.map((d) => ({
+      servicio: d.service ? d.service.description : "",
+      total: d.amount,
+    }));
+
+    let serviceMap = array.map((item) => {
+      return [item.servicio, item];
+    });
+    var serviceMapArr = new Map(serviceMap); // Pares de clave y valor
+
+    setServices([...serviceMapArr.values()]); // Conversión a un array
   };
 
-  const restaurar = () => {
-    document.getElementById("liquidacion-total").readOnly = true;
-    document.getElementById("liquidacion-total").value = total;
+  const calcularSubtotal = (servicio) => {
+    const { total } = services.filter((s) => s.servicio === servicio)[0];
+    const subtotal = total * 0.82;
+    return subtotal.toFixed(2);
+  };
+
+  const calcularValores = () => {
+    let suma = 0;
+    let igv = 0;
+    let totalPrecio = 0;
+    dataParticular.map((d) => {
+      if (estado === 2) {
+        suma += Number(d.subtotal) || 0;
+        igv += Number(d.igv) || 0;
+        totalPrecio += Number(d.amount);
+      } else {
+        const { total } = services.filter(
+          (s) => s.servicio === (d.service ? d.service.description : "")
+        )[0];
+        const sub = (total * 0.82).toFixed(2);
+        const calcIgv = (total * 0.18).toFixed(2);
+
+        suma += Number(sub);
+        igv += Number(calcIgv);
+        totalPrecio += Number(total);
+      }
+    });
+    setSubTotal(Number(suma.toFixed(2)));
+    setIgv(Number(igv.toFixed(2)));
+    setTotal(Number(totalPrecio.toFixed(2)));
+  };
+
+  const editar = () => {
+    setOpenModalPrecio(true);
+    // console.log(dataParticular);
   };
 
   const closeModal = () => {
@@ -88,8 +130,9 @@ const MMParticulares = ({
       const liquidacion = {
         code: codigo,
         observation: observacion,
+        isapproved: estado,
         subtotal: subtotal,
-        amount: total + incremento,
+        amount: total,
         igv: igv,
         attentions: array,
         // company_id: dataEmpresa.id,
@@ -107,14 +150,12 @@ const MMParticulares = ({
   };
 
   useEffect(() => {
-    let suma = 0;
-    dataParticular.map((d) => {
-      suma += Number(d.amount);
-    });
-    setSubTotal(suma);
-    setIgv(Math.round(suma * 0.18));
-    setTotal(Math.round(suma * 1.18));
+    calcularValores();
     enviarfechaActual();
+  }, [subtotal, igv, total, estado]);
+
+  useEffect(() => {
+    obtenServicios();
   }, []);
 
   return (
@@ -181,12 +222,18 @@ const MMParticulares = ({
                   {dataParticular.map((d) => (
                     <tr key={d.id}>
                       <td>{d.id}</td>
-                      <td>{d.person.dni}</td>
+                      <td>{d.person ? d.person.dni : ""}</td>
                       <td>{d.date_attention}</td>
-                      <td>{d.person.name}</td>
-                      <td>{d.service.description}</td>
-                      <td>{d.service.name}</td>
-                      <td>{d.amount}</td>
+                      <td>{d.person ? d.person.name : ""}</td>
+                      <td>{d.service ? d.service.description : ""}</td>
+                      <td>{d.service ? d.service.name : ""}</td>
+                      <td>
+                        {estado === 1
+                          ? calcularSubtotal(
+                              d.service ? d.service.description : ""
+                            )
+                          : d.subtotal}
+                      </td>
                     </tr>
                   ))}
 
@@ -220,14 +267,7 @@ const MMParticulares = ({
                       <strong>Total</strong>
                     </td>
                     <td>
-                      <input
-                        id="liquidacion-total"
-                        type="number"
-                        defaultValue={total + incremento}
-                        onChange={(e) => setIncremento(e.target.value - total)}
-                        readOnly
-                        min="0"
-                      />
+                      <strong>{total}</strong>
                     </td>
                   </tr>
                 </tbody>
@@ -236,10 +276,7 @@ const MMParticulares = ({
           </div>
         </div>
         <button className="liquidacion-icon" onClick={editar}>
-          <i className="fas fa-pen-square"></i> Edital total
-        </button>
-        <button className="liquidacion-icon" onClick={restaurar}>
-          <i className="fas fa-redo-alt"></i>Restaurar total
+          <i className="fas fa-pen-square"></i> Edital precio(s)
         </button>
         {openModalCrear && (
           <MMAParticulares
@@ -252,10 +289,23 @@ const MMParticulares = ({
             Retroceder
           </button>
           <button className="botones" onClick={handleLiquidarEmpresa}>
-            Aceptar
+            Liquidar
           </button>
         </div>
       </div>
+      {openModalPrecio && (
+        <MPrecio
+          openModalPrecio={openModalPrecio}
+          setOpenModalPrecio={setOpenModalPrecio}
+          data={dataParticular}
+          setEstado={setEstado}
+          services={services}
+          setServices={setServices}
+          obtenServicios={obtenServicios}
+          calcularValores={calcularValores}
+          tipo={"P"}
+        />
+      )}
     </Modal>
   );
 };
