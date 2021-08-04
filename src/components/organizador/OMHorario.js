@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { eventStartAddNew, eventStartList } from '../../actions/calendario';
+// import { eventStartAddNew, eventStartList } from '../../actions/calendario';
+import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 import { customStyles } from '../../helpers/tablaOpciones';
 
 const OMHorario = ({ MHorario, setMHorario, nTranspor, setCambioEstado }) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { selectionId } = useSelector((state) => state.organizador);
   const { id } = selectionId;
   const [listHorario, setListHorario] = useState({
@@ -25,13 +26,13 @@ const OMHorario = ({ MHorario, setMHorario, nTranspor, setCambioEstado }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(eventStartAddNew(listHorario, id));
-    // fetchGETPOSTPUTDELETEJSON(
-    //   `reservation/asignar/${id}`,
-    //   listHorario,
-    //   'POST'
-    // ).then((data) => data.json());
-    dispatch(eventStartList());
+    // dispatch(eventStartAddNew(listHorario, id));
+    fetchGETPOSTPUTDELETEJSON(
+      `reservation/asignar/${id}`,
+      listHorario,
+      'POST'
+    ).then((data) => data.json());
+    // dispatch(eventStartList());
     // setCambioEstado(false);
     closeModal();
   };

@@ -10,7 +10,6 @@ import { useDispatch } from 'react-redux';
 
 const Solicitud = () => {
   const dispatch = useDispatch();
-
   const history = useHistory();
   const [busqueda, setBusqueda] = useState('');
   const [oranizadorxd, setOranizadorxd] = useState([]);
@@ -67,33 +66,6 @@ const Solicitud = () => {
       },
     },
     {
-      name: 'Tipo de servico ',
-      selector: (row) => (row ? row.sample[0].services[0].category.name : ''),
-      sortable: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
-    },
-    {
-      name: 'Nº Atenciones',
-      selector: (row) => (row ? row.sample[0].cantidad : ''),
-      sortable: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
-    },
-    {
-      name: 'Plan de atención',
-      selector: (row) => (row ? row.sample[0].services[0].name : ''),
-      sortable: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
-    },
-    {
       name: 'Fecha solicitada',
       selector: (row) => (row ? row.attention_date : ''),
       sortable: true,
@@ -135,6 +107,11 @@ const Solicitud = () => {
     const filtrarElemento = () => {
       const search = oranizadorxd.filter((data) => {
         return (
+          data.users[0].person.name
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLocaleLowerCase()
+            .includes(busqueda) ||
           data.address.district.name
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
