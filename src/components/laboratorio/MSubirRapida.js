@@ -44,6 +44,7 @@ const MSubirRapida = ({
             confirmButtonText: "Aceptar",
           }).then((resp) => {
             if (resp.isConfirmed) {
+              console.log("entro al resp isconfirmed");
               getAtencion();
             }
           });

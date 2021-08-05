@@ -12,10 +12,8 @@ const MEmpresa = ({
   setDataSelected,
   editar,
   setEditar,
-  getParticularDiscount,
   getServicio,
   getClinica,
-  setPaciente,
 }) => {
   const [discount, setDiscount] = useState([]);
   const [filterServices, setFilterServices] = useState({});
@@ -26,7 +24,6 @@ const MEmpresa = ({
     setEditar(false);
     setDataSelected(null);
   };
-  console.log(dataSelected);
 
   const crearCompanyDiscount = () => {
     // console.log(dataSelected);
@@ -83,7 +80,7 @@ const MEmpresa = ({
         ...discount,
 
         {
-          service_id: data.id,
+          service_id: data.service.id,
           state: 1,
           percent: data.last_discount.percent,
           amount: data.last_discount.amount,
@@ -95,6 +92,8 @@ const MEmpresa = ({
         data.last_discount.percent;
       document.getElementById(`amount-${data.id}`).value =
         data.last_discount.amount;
+
+      console.log(discount);
     } else {
       if (discount.length > 1) {
         let position = discount.findIndex(
@@ -112,12 +111,14 @@ const MEmpresa = ({
     }
   };
 
-  const editarPercent = (e, id) => {
-    console.log(id);
+  const editarPercent = (e, id, idService) => {
+    console.log(e);
 
     const value = e.target.value || 0;
 
-    let position = discount.findIndex((arreglo) => arreglo.service_id == id);
+    let position = discount.findIndex(
+      (arreglo) => arreglo.service_id == idService
+    );
     const arreglos = [...discount];
 
     let positionOriginal = filterServices.findIndex((d) => d.id == id);
@@ -132,13 +133,20 @@ const MEmpresa = ({
     const total1 = total * 100;
 
     if (total1 < 0) {
-      document.getElementById(`percent-${id}`).value = "--";
-    } else {
-      document.getElementById(`percent-${id}`).value =
-        Number(total1).toFixed() + "%";
-    }
+      document.getElementById(`percent-${id}`).value = 0;
+      arreglos[position].percent = 0;
+      arreglos[position].amount = value;
+      // arreglos[position].service_id = idService;
 
-    console.log(discount);
+      setDiscount(arreglos);
+    } else if (total1 > 0) {
+      document.getElementById(`percent-${id}`).value = total1.toFixed();
+      arreglos[position].percent = total1.toFixed();
+      arreglos[position].amount = value;
+      // arreglos[position].service_id = idService;
+      console.log(arreglos);
+      setDiscount(arreglos);
+    }
   };
 
   useEffect(() => {
@@ -283,7 +291,7 @@ const MEmpresa = ({
                 <tr>
                   <th scope="col">Tipos de prueba</th>
                   <th scope="col">Seleccionar</th>
-                  <th scope="col">Descuento</th>
+                  <th scope="col">Descuento(%)</th>
                   <th scope="col">Total</th>
                 </tr>
               </thead>
@@ -340,7 +348,9 @@ const MEmpresa = ({
                                 ? data.last_discount.amount
                                 : ""
                             }
-                            onChange={(e) => editarPercent(e, data.id)}
+                            onChange={(e) =>
+                              editarPercent(e, data.id, data.service.id)
+                            }
                             aria-describedby="basic-addon1"
                           />
                         </div>

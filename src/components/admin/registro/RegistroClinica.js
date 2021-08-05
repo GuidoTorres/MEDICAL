@@ -117,7 +117,7 @@ const RegistroClinica = () => {
       ),
     },
     {
-      name: "Administrar",
+      name: "Administrar lugares",
       button: true,
       cell: (e) => (
         <button onClick={() => handleEditar(e)} className="table__tablebutton">

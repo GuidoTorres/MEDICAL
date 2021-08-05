@@ -113,34 +113,34 @@ const MGenerarAtencion = ({
     console.log(prueba);
     console.log(prueba1);
 
-    // fetchGETPOSTPUTDELETEJSON("attention", atencion, "POST").then((res) => {
-    //   console.log(res);
-    //   if (res.status === 200) {
-    //     closeModal();
-    //     Swal.fire({
-    //       icon: "success",
-    //       title: "Éxito",
-    //       text: "Se genero la atención correctamente.",
-    //       confirmButtonColor: "#3085d6",
-    //       cancelButtonColor: "#d33",
-    //       confirmButtonText: "Aceptar",
-    //     }).then((resp) => {
-    //       if (resp.isConfirmed) {
-    //         getAttention();
-    //       }
-    //     });
-    //   } else {
-    //     closeModal();
-    //     Swal.fire({
-    //       icon: "error",
-    //       title: "Ups¡",
-    //       text: "Algo salió mal.",
-    //       confirmButtonColor: "#3085d6",
-    //       cancelButtonColor: "#d33",
-    //       confirmButtonText: "Cerrar",
-    //     });
-    //   }
-    // });
+    fetchGETPOSTPUTDELETEJSON("attention", atencion, "POST").then((res) => {
+      console.log(res);
+      if (res.status === 200) {
+        closeModal();
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se generó la atención correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getAttention();
+          }
+        });
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
+      }
+    });
   };
 
   const handleOnChange = (e) => {

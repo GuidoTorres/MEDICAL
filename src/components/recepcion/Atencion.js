@@ -26,10 +26,8 @@ const Atencion = () => {
       .then((datos) => setAttention(datos.data));
   };
 
-
   useEffect(() => {
     getAttention();
-
   }, []);
 
   console.log(attention);
@@ -89,7 +87,10 @@ const Atencion = () => {
     },
     {
       name: "Tipo de prueba",
-      selector: (row) => (row.service_type ? row.service_type : ""),
+      selector: (row) =>
+        row.service_details.abbreviation
+          ? row.service_details.abbreviation
+          : "",
       sortable: true,
       style: {
         color: "#8f9196",
@@ -177,7 +178,7 @@ const Atencion = () => {
             Swal.fire({
               icon: "success",
               title: "Éxito",
-              text: "Se ha genero la atención correctamente.",
+              text: "Se ha generó la atención correctamente.",
               confirmButtonColor: "#3085d6",
               cancelButtonColor: "#d33",
               confirmButtonText: "Aceptar",

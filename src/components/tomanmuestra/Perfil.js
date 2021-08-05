@@ -61,12 +61,7 @@ const Perfil = () => {
           <div className="barra">
             <h5>Logo</h5>
             <div className="procesa__perfil-img">
-              <img
-                src=
-                  "https://diver-recicla.com/medicalRoma/public/storage/corporations/20544986831-CORPORACION LIMATAMBO S.A.C..jpg"
-                
-                alt=""
-              />
+              <img src="" alt="" />
             </div>
           </div>
         </div>

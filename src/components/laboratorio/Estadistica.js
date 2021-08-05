@@ -49,6 +49,21 @@ const Estadistica = () => {
   useEffect(() => {
     getServicios();
   }, []);
+  useEffect(() => {
+    if (checks.check1 === 1) {
+      document.getElementById("categoria").disabled = false;
+    } else {
+      document.getElementById("categoria").disabled = true;
+    }
+
+    if (checks.check2 === 1) {
+      document.getElementById("subcategoria").disabled = false;
+    } else {
+      document.getElementById("subcategoria").disabled = true;
+    }
+  }, [checks]);
+
+  console.log(tipoPrueba.servicios);
 
   return (
     <div className="container mb-3">
@@ -76,6 +91,8 @@ const Estadistica = () => {
                     <select
                       className="form-select"
                       aria-label="Default select example"
+                      id="categoria"
+                      disabled
                       onChange={(e) => setCategoria({ data: e.target.value })}
                     >
                       <option>Seleccionar</option>
@@ -93,7 +110,7 @@ const Estadistica = () => {
                   <div className="">
                     <input
                       type="checkbox"
-                      disabled={checks.check1 === 1 ? false : true}
+                      id="select1"
                       className="form-check-input"
                       onChange={(e) =>
                         setChecks({
@@ -108,6 +125,7 @@ const Estadistica = () => {
                     <select
                       className="form-select"
                       aria-label="Default select example"
+                      id="subcategoria"
                       name="data"
                       onChange={(e) =>
                         setTipoPrueba({
@@ -124,7 +142,7 @@ const Estadistica = () => {
                         servicios[0].services &&
                         servicios[0].services.map((data, i) => (
                           <option key={i} data={data.name} value={data.id}>
-                            {data.name}
+                            {data.abbreviation}
                           </option>
                         ))}
                     </select>
