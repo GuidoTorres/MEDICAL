@@ -203,6 +203,36 @@
   float: right;
   margin-top: 20px;
 }
+// !falta hacerlo responsivo urgente!!!
+.localizacion-data {
+  display: flex;
+  .textolocation {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 7px;
+    width: 50%;
+    div {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      input {
+        width: 50%;
+      }
+    }
+  }
+  .mapalocation {
+    padding-left: 7px;
+    width: 50%;
+  }
+}
+.localization-boton {
+  display: flex;
+  justify-content: flex-end;
+  margin: 20px 0px 10px 0px;
+}
 
 @media (max-width: 564px) {
   .mregistro__cliente {
