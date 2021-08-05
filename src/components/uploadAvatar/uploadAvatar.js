@@ -1,7 +1,14 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
-const UploadAvatar = ({ setAvatar, avatar, editar, dataSelected }) => {
+const UploadAvatar = ({
+  setAvatar,
+  avatar,
+  editar,
+  dataSelected,
+  idServicio,
+}) => {
+  const [imagenServicio, setImagenServicio] = useState();
   const onDrop = useCallback(
     (acceptdFiles) => {
       const file = acceptdFiles[0];
@@ -15,6 +22,20 @@ const UploadAvatar = ({ setAvatar, avatar, editar, dataSelected }) => {
     onDrop,
   });
 
+  const obtenerImagen = () => {
+    const imagen =
+      dataSelected &&
+      dataSelected.map(
+        (item) => item.services[Number(idServicio.subCategoria).imagen]
+      );
+    setImagenServicio(imagen);
+  };
+
+  console.log(imagenServicio);
+  useEffect(() => {
+    obtenerImagen();
+  }, [idServicio]);
+
   return (
     <div className="image__upload" {...getRootProps()}>
       <input {...getInputProps()} />
@@ -26,7 +47,10 @@ const UploadAvatar = ({ setAvatar, avatar, editar, dataSelected }) => {
         />
       ) : (
         <img
-          style={{ maxHeight: "100%", maxWidth: "95%" }}
+          style={{
+            maxHeight: "100%",
+            maxWidth: "95%",
+          }}
           className="image__avatar"
           src={
             avatar
@@ -35,6 +59,8 @@ const UploadAvatar = ({ setAvatar, avatar, editar, dataSelected }) => {
                 dataSelected.corporation &&
                 dataSelected.corporation.logo
               ? dataSelected.corporation.logo
+              : imagenServicio
+              ? imagenServicio
               : ""
           }
           alt=""

@@ -26,10 +26,8 @@ const Atencion = () => {
       .then((datos) => setAttention(datos.data));
   };
 
-
   useEffect(() => {
     getAttention();
-
   }, []);
 
   console.log(attention);
@@ -89,7 +87,10 @@ const Atencion = () => {
     },
     {
       name: "Tipo de prueba",
-      selector: (row) => (row.service_type ? row.service_type : ""),
+      selector: (row) =>
+        row.service_details.abbreviation
+          ? row.service_details.abbreviation
+          : "",
       sortable: true,
       style: {
         color: "#8f9196",
