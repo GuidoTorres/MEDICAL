@@ -151,6 +151,7 @@ const RegistroClinica = () => {
           return (
             data.corporation.ruc.toString().includes(busqueda) ||
             data.corporation.business_name
+<<<<<<< HEAD
               .normalize('NFD')
               .replace(/[\u0300-\u036f]/g, '')
               .toLocaleLowerCase()
@@ -166,6 +167,26 @@ const RegistroClinica = () => {
               .replace(/[\u0300-\u036f]/g, '')
               .toLocaleLowerCase()
               .includes(busqueda)
+=======
+              .toString()
+              .toLowerCase()
+              .includes(busqueda.toLowerCase()) ||
+            (data.corporation.contacts.length > 0
+              ? data.corporation.contacts[0].name
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "") ||
+            (data.corporation.contacts.length > 0
+              ? data.corporation.contacts[0].phone.toString().includes(busqueda)
+              : "") ||
+            (data.corporation.contacts.length > 0
+              ? data.corporation.contacts[0].email
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "")
+>>>>>>> fb1baced0ead7417f65da8feac67436e99d79728
           );
         });
       setListRegistro(search);

@@ -43,7 +43,7 @@ const Usuarios = ({ history }) => {
     getAttention();
     getForms();
   }, []);
-  
+
   console.log(dataSelected);
   const columnas = [
     {
