@@ -22,19 +22,19 @@ const UploadAvatar = ({
     onDrop,
   });
 
-  const obtenerImagen = () => {
-    const imagen =
-      dataSelected &&
-      dataSelected.map(
-        (item) => item.services[Number(idServicio.subCategoria).imagen]
-      );
-    setImagenServicio(imagen);
-  };
+  // const obtenerImagen = () => {
+  //   const imagen =
+  //     dataSelected &&
+  //     dataSelected.map(
+  //       (item) => item.services[Number(idServicio.subCategoria).imagen]
+  //     );
+  //   setImagenServicio(imagen);
+  // };
 
-  console.log(imagenServicio);
-  useEffect(() => {
-    obtenerImagen();
-  }, [idServicio]);
+  // console.log(imagenServicio);
+  // useEffect(() => {
+  //   obtenerImagen();
+  // }, [idServicio]);
 
   return (
     <div className="image__upload" {...getRootProps()}>
@@ -59,8 +59,7 @@ const UploadAvatar = ({
                 dataSelected.corporation &&
                 dataSelected.corporation.logo
               ? dataSelected.corporation.logo
-              : imagenServicio
-              ? imagenServicio
+
               : ""
           }
           alt=""

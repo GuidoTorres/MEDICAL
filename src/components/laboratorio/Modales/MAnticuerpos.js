@@ -20,35 +20,41 @@ const MAnticuerpos = ({
   console.log(result);
 
   const postResults = () => {
-    fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) => {
-      console.log(data);
+    if (result.anticuerpos === "-1" || null) {
+      document.getElementById("resultado").style =
+        "border:1px solid red !important";
+    }
+    if (result.anticuerpos !== "-1" || null) {
+      fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) => {
+        console.log(data);
 
-      if (data.status === 200) {
-        closeModal();
-        Swal.fire({
-          icon: "success",
-          title: "Éxito",
-          text: "Se cargó el resultado correctamente.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getAtencion();
-          }
-        });
-      } else {
-        closeModal();
-        Swal.fire({
-          icon: "error",
-          title: "!Ups¡",
-          text: "Algo salió mal.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Cerrar",
-        });
-      }
-    });
+        if (data.status === 200) {
+          closeModal();
+          Swal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Se cargó el resultado correctamente.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Aceptar",
+          }).then((resp) => {
+            if (resp.isConfirmed) {
+              getAtencion();
+            }
+          });
+        } else {
+          closeModal();
+          Swal.fire({
+            icon: "error",
+            title: "!Ups¡",
+            text: "Algo salió mal.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cerrar",
+          });
+        }
+      });
+    }
   };
 
   return (
@@ -106,11 +112,12 @@ const MAnticuerpos = ({
                 <select
                   className="form-select"
                   aria-label="Default select example"
+                  id="resultado"
                   onChange={(e) =>
                     setResult({ ...result, anticuerpos: e.target.value })
                   }
                 >
-                  <option>Seleccione</option>
+                  <option value="-1">Seleccione</option>
                   <option value="0">Negativo</option>
                   <option value="1">Positivo</option>
                 </select>

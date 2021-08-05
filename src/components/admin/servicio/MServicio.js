@@ -149,7 +149,7 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                   {dataSelected &&
                     dataSelected.services.map((data, i) => (
                       <option key={data.id} value={i}>
-                        {data.name}
+                        {data.abbreviation}
                       </option>
                     ))}
                 </select>
@@ -242,7 +242,7 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                   onChange={(e) => handleChange(e)}
                 />
               </div>
-              
+
               <div>
                 <label> Descripcion:</label>
 
@@ -268,7 +268,11 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                   Imagen <span>(.jpg, .jpeg, .jpg)</span>
                 </p>
                 <div style={{ width: "100%" }}>
-                  <UploadAvatar avatar={avatar} setAvatar={setAvatar} idServicio={crearServicio}/>
+                  <UploadAvatar
+                    avatar={avatar}
+                    setAvatar={setAvatar}
+                    idServicio={crearServicio}
+                  />
                 </div>
               </div>
             </div>
