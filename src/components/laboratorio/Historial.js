@@ -42,7 +42,7 @@ const Historial = () => {
   useEffect(() => {
     getResults();
     getServicios();
-  }, []);
+  }, [filterData]);
 
   console.log(results);
 
@@ -214,6 +214,9 @@ const Historial = () => {
         268,
         `${e.resultado && e.resultado.result_igg ? e.resultado.result_igg : ""}`
       );
+      doc.setFillColor(255, 255, 255);
+      doc.rect(335, 464, 150, 80, "F");
+      doc.addImage(firma, "PNG", 345, 485, 100, 80, "", "FAST");
     } else if (e.servicio_id == 7) {
       doc.text(328, 124, `${e && e.genero === null ? "Masculino" : ""}`);
 
@@ -236,6 +239,9 @@ const Historial = () => {
             : "Sin resultado"
         }`
       );
+      doc.setFillColor(255, 255, 255);
+      doc.rect(335, 465, 151, 81, "F");
+      doc.addImage(firma, "PNG", 345, 484, 100, 80, "", "FAST");
     } else if (e.servicio_id == 8) {
       doc.text(84, 142, `${e.nro_atencion ? e.nro_atencion : ""}`);
 
@@ -245,6 +251,31 @@ const Historial = () => {
 
       doc.text(80, 184, `${e.paciente ? e.paciente : ""}`);
       doc.text(310, 185, "20");
+
+      if (e.resultado.reactive === "1") {
+        doc.text(295, 285, "X");
+      }
+      if (e.resultado.reactive === "2") {
+        doc.text(200, 285, "X");
+      }
+      if (e.resultado.reactive === "3") {
+        doc.text(200, 285, "X");
+        doc.text(295, 285, "X");
+      }
+      if (e.resultado.reactive === "4") {
+        doc.text(180, 285, "No reactivo");
+
+        doc.text(270, 285, "No reactivo");
+      }
+      if (e.resultado.reactive === "5") {
+        doc.text(195, 285, "null");
+
+        doc.text(290, 285, "null");
+      }
+
+      doc.setFillColor(255, 255, 255);
+      doc.rect(335, 465, 151, 81, "F");
+      doc.addImage(firma, "PNG", 345, 484, 100, 80, "", "FAST");
     }
 
     window.open(doc.output("bloburl"), "_blank");

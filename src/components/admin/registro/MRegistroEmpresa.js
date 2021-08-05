@@ -26,15 +26,13 @@ const MRegistroEmpresa = ({
   const [types, setTypes] = useState([]);
   const [ruc, setRuc] = useState({});
   const [servicios, setServicios] = useState({});
-  const [error, setError] = useState(false);
+  const [error, setError] = useState([]);
 
   const closeModal = () => {
     setOpenModal(false);
     setEditar(false);
     setDataSelected(null);
   };
-
-  console.log(dataSelected);
 
   const getCorporationTypes = () => {
     fetchGETPOSTPUTDELETE("corporation_types")
@@ -65,7 +63,7 @@ const MRegistroEmpresa = ({
   }, [empresa.ruc]);
 
   const handleService = (e, data) => {
-    if (e.target.checked) {
+    if (e.target.checked && editar === false) {
       setService((service) => [
         ...service,
         {
@@ -74,19 +72,39 @@ const MRegistroEmpresa = ({
         },
       ]);
     } else {
-      if (service.length > 1) {
+      if (service.length > 0) {
         let position = service.findIndex(
           (arreglo) => arreglo.service_id === data.id
         );
-        console.log(position);
         const arreglos = [...service];
         arreglos.splice(position, 1);
+
         setService([...arreglos]);
-      } else {
-        setService([]);
       }
     }
+
+    if (editar === true && e.target.checked === false) {
+      const s = dataSelected.services.map((item) => ({
+        service_id: item.id,
+        status: 1,
+      }));
+
+      let position = s.findIndex((arreglo) => arreglo.service_id === data.id);
+      const arreglos = [...s];
+      arreglos[position].status = 0;
+      setService(arreglos);
+    } else {
+      setService((service) => [
+        ...service,
+        {
+          service_id: e.target.checked ? data.id : "",
+          status: e.target.checked ? 1 : 0,
+        },
+      ]);
+    }
   };
+
+  console.log(service);
 
   const postCorporation = (e) => {
     const formData = new FormData();
@@ -182,17 +200,19 @@ const MRegistroEmpresa = ({
     );
     formData.set("logo", avatar ? avatar.file : "");
 
-    formData.set(
-      "address",
-      empresa.address
-        ? empresa.address
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.address &&
-          dataSelected.corporation.address.address
-        ? dataSelected.corporation.address.address
-        : ""
-    );
+    if (empresa.address !== null || "") {
+      formData.set(
+        "address",
+        empresa.address
+          ? empresa.address
+          : dataSelected &&
+            dataSelected.corporation &&
+            dataSelected.corporation.address &&
+            dataSelected.corporation.address.address
+          ? dataSelected.corporation.address.address
+          : ""
+      );
+    }
     formData.set(
       "reference",
       empresa.reference
@@ -298,7 +318,7 @@ const MRegistroEmpresa = ({
         : ""
     );
 
-    if (service) {
+    if (service.length > 0) {
       for (var [i, value] of Object.entries(service)) {
         formData.set(`services[${i}][service_id]`, value.service_id);
         formData.set(`services[${i}][state]`, value.status);
@@ -346,54 +366,46 @@ const MRegistroEmpresa = ({
     e.preventDefault();
 
     if (empresa.ruc.trim() === "" || null) {
-      setError(true);
-
       document.getElementById("ruc").style = "border:1px solid red !important";
     }
 
     if (empresa.business_name.trim() === "" || null) {
-      setError(true);
-
       document.getElementById("business_name").style =
         "border:1px solid red !important";
     }
 
     if (empresa.name.trim() === "" || null) {
-      setError(true);
-
       document.getElementById("name").style = "border:1px solid red !important";
     }
 
     if (empresa.phone.trim() === "" || null) {
-      setError(true);
-
       document.getElementById("phone").style =
         "border:1px solid red !important";
     }
 
     if (empresa.email.trim() === "" || null) {
-      setError(true);
-
       document.getElementById("email").style =
         "border:1px solid red !important";
     }
     if (
-      empresa.ruc.trim() !== null ||
+      (editar === false && empresa.ruc.trim() !== null) ||
       ("" && empresa.business_name.trim() !== null) ||
-      ("" && empresa.name !== null) ||
-      ("" && empresa.phone !== null) ||
-      ("" && empresa.email !== null) ||
-      ("" && editar === false)
+      ("" && empresa.name.trim() !== null) ||
+      ("" && empresa.phone.trim() !== null) ||
+      ("" && empresa.email.trim() !== null) ||
+      ""
     ) {
       postCorporation();
     }
-    if (editar) {
+
+    if (editar === true) {
       document.getElementById("ruc").style = "border:none";
 
       document.getElementById("business_name").style = "border:none";
       document.getElementById("name").style = "border:none";
       document.getElementById("phone").style = "border:none";
       document.getElementById("email").style = "border:none";
+
       putCorporation();
     }
   };
@@ -794,13 +806,16 @@ const MRegistroEmpresa = ({
                               defaultChecked={
                                 dataSelected &&
                                 dataSelected.services &&
-                                dataSelected.services[i]
+                                dataSelected.services[i] &&
+                                dataSelected.services[i].last_discount &&
+                                dataSelected.services[i].last_discount.state ===
+                                  1
                                   ? true
                                   : false
                               }
                               onChange={(e) => handleService(e, data)}
                             />
-                            <label>{data.name}</label>
+                            <label>{data.abbreviation}</label>
                           </>
                         ))}
                     </div>
