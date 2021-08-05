@@ -21,7 +21,7 @@ const SubirLaboratorio = () => {
   const [dataSelected, setDataSelected] = useState(null);
   const [tipoPrueba, setTipoPrueba] = useState({});
   const [servicios, setServicios] = useState({});
-  const [filterData, setFilterData] = useState({});
+  const [filterData, setFilterData] = useState([]);
 
   const getAtencion = () => {
     fetchGETPOSTPUTDELETE("result")
@@ -124,19 +124,24 @@ const SubirLaboratorio = () => {
     },
   ];
 
-  // useEffect(() => {
-  //   const filtrarElemento = () => {
-  //     const search = filterData.filter((data) => {
-  //       return data.person.dni
-  //         .normalize('NFD')
-  //         .replace(/[\u0300-\u036f]/g, '')
-  //         .toLocaleLowerCase()
-  //         .includes(busqueda);
-  //     });
-  //     setListRegistro(search);
-  //   };
-  //   filtrarElemento();
-  // }, [busqueda, filterData]);
+  useEffect(() => {
+    const filtrarElemento = () => {
+      const search = filterData.filter((data) => {
+        return (
+          data.person.dni.toString().includes(busqueda) ||
+          data.date_creation.toString().includes(busqueda) ||
+          (data.person
+            ? `${data.person.name} ${data.person.pat_lastname}`
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "")
+        );
+      });
+      setListRegistro(search);
+    };
+    filtrarElemento();
+  }, [busqueda, filterData]);
 
   const handleModal = (tipoPrueba, e) => {
     setDataSelected(e);
@@ -238,7 +243,7 @@ const SubirLaboratorio = () => {
 
             <DataTable
               columns={columnas}
-              data={filterData}
+              data={listRegistro}
               pagination
               paginationComponentOptions={paginacionOpciones}
               fixedHeader
