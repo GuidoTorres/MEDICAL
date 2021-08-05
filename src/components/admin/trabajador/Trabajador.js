@@ -83,15 +83,10 @@ const Trabajador = () => {
       const search = trabajadores.filter((data) => {
         return (
           data.fullName
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.type
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda)
+            .toString()
+            .toLowerCase()
+            .includes(busqueda.toLowerCase()) ||
+          data.type.toString().toLowerCase().includes(busqueda.toLowerCase())
         );
       });
       setListRegistro(search);
@@ -122,7 +117,7 @@ const Trabajador = () => {
               Swal.fire({
                 icon: "success",
                 title: "Éxito",
-                text: "Se elimino el trabajador correctamente.",
+                text: "Se elimino el responsable correctamente.",
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Aceptar",
@@ -155,7 +150,7 @@ const Trabajador = () => {
   return (
     <div className="container">
       <div className="row">
-        <h3 className="titulo">Trabajadores</h3>
+        <h3 className="titulo">Responsables</h3>
         <div className="table-responsive">
           <div className="adminregistro__option">
             <div>
@@ -169,7 +164,7 @@ const Trabajador = () => {
             </div>
             <div>
               <label>
-                Agregar trabajador{" "}
+                Agregar responsable{" "}
                 <i
                   className="fas fa-plus-circle"
                   onClick={handleAddRegistro}
