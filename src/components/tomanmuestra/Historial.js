@@ -6,7 +6,7 @@ import { paginacionOpciones } from '../../helpers/tablaOpciones';
 
 const Historial = () => {
   const [busqueda, setBusqueda] = useState('');
-  const [listRegistro, setListRegistro] = useState([]);
+  // const [listRegistro, setListRegistro] = useState([]);
   const [dataHistorial, setDataHistorial] = useState([]);
 
   const getHistorial = () => {

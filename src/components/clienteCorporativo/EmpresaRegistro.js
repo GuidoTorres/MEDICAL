@@ -20,6 +20,7 @@ const EmpresaRegistro = () => {
   useEffect(() => {
     getEmployees();
   }, []);
+  console.log(employees);
 
   const importarExcel = (file) => {
     const formData = new FormData();
@@ -238,7 +239,11 @@ const EmpresaRegistro = () => {
               />
             </div>
             <div className="">
-              <input type="file" onChangeCapture={(e) => subidaExcel(e)} />
+              <input
+                type="file"
+                style={{ backgroundColor: '#c5f7ff', border: 'none' }}
+                onChangeCapture={(e) => subidaExcel(e)}
+              />
             </div>
           </div>
           <DataTable

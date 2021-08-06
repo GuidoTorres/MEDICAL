@@ -26,17 +26,13 @@ const MMapa = ({ setModalMapa, modalMapa, llmapa }) => {
         ariaHideApp={false}
       >
         <h3 className="title__modal">Ubicación</h3>
-        {/* <div className="container"> */}
-        {/* <div className="row"> */}
-        <div style={{ backgroundColor: 'orange' }}>
+        <div style={{ backgroundColor: 'white' }}>
           <MapaGoogle
             dataMapa={dataMapa}
             setDataMapa={setDataMapa}
             style={{ height: '500px' }}
             dataSelected={llmapa}
           />
-          {/* </div> */}
-          {/* </div> */}
         </div>
       </Modal>
     </>

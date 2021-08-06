@@ -3,12 +3,13 @@ const mapContainerStyle = {
   width: '100%',
   height: '190px',
 };
-
+//fechas de google maps
 const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: 'AIzaSyC14u7ry3uBKIHsEnEql4sA2MaebwNJWI4',
   });
+
   const { map_latitude, map_length } = dataSelected;
 
   const position = {

@@ -18,7 +18,7 @@ const RegistroClinica = () => {
   const [listRegistro, setListRegistro] = useState([]);
   const [metGetClinic, setMetGetClinic] = useState([]);
   const [modalLocalizacion, setModalLocalizacion] = useState(false);
-  const [clinicasFiltradas, setClinicasFiltradas] = useState({});
+  // const [clinicasFiltradas, setClinicasFiltradas] = useState({});
   const getClinica = () => {
     fetchGETPOSTPUTDELETE('clinics')
       .then((data) => data.json())
@@ -58,10 +58,7 @@ const RegistroClinica = () => {
           ? row.corporation.business_name
           : '',
       sortable: true,
-<<<<<<< HEAD
       grow: 1,
-=======
->>>>>>> 75cc79e0b9ea5b212ba8bfdb6464509de042bfcf
       style: {
         borderBotton: 'none',
         color: '#555555',

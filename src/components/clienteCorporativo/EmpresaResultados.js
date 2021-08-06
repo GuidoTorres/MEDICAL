@@ -4,9 +4,13 @@ import { paginacionOpciones } from '../../helpers/tablaOpciones';
 import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 import jsPDF from 'jspdf';
 import eclia from '../../assets/pdf Imagen/eclia.png';
-import antigeno from '../../assets/pdf Imagen/antigenoSi.png';
+import antigenono from '../../assets/pdf Imagen/antigenoSi.png';
+import antigenosi from '../../assets/pdf Imagen/antigenoSi.png';
+import anticuerpos from '../../assets/pdf Imagen/anticuerpos.png';
 import molecular from '../../assets/pdf Imagen/molecular.png';
 import rapida from '../../assets/pdf Imagen/rapida.png';
+import firma from '../../assets/pdf Imagen/Firma.png';
+import isos from '../../assets/pdf Imagen/isos.png';
 
 const EmpresaResultados = () => {
   const [busqueda, setBusqueda] = useState('');
@@ -122,12 +126,16 @@ const EmpresaResultados = () => {
 
   const handleDetalles = (e) => {
     console.log(e);
-    if (e.servicio_id == 5) {
-      generarPDF(e, antigeno, 'Formato Antígeno');
+    if (e.servicio_id === 5) {
+      if (e.resultado && e.resultado.result === 0) {
+        generarPDF(e, antigenono, 'Formato Antígeno');
+      } else if (e.resultado && e.resultado.result === 1) {
+        generarPDF(e, antigenosi, 'Formato Antígeno');
+      }
     } else if (e.servicio_id === 6) {
       generarPDF(e, eclia, 'Formato Eclia');
     } else if (e.servicio_id === 7) {
-      generarPDF(e, molecular, 'Formato Molecular');
+      generarPDF(e, anticuerpos, 'Formato Anticuerpos');
     } else if (e.servicio_id === 8) {
       generarPDF(e, rapida, 'Formato Rapida');
     }
@@ -141,23 +149,32 @@ const EmpresaResultados = () => {
     });
     doc.setFontSize(10);
 
-    doc.addImage(imagen, 'PNG', 5, 20, 580, 800, '', 'FAST');
+    doc.addImage(imagen, 'PNG', 6, 20, 580, 800, '', 'FAST');
 
     if (e.servicio_id === 5) {
       doc.text(328, 135, `${e && e.genero ? e.genero : ''}`);
+      doc.text(328, 135, `${e && e.genero === null ? 'Masculino' : ''}`);
+
       doc.text(90, 136, `${e.nro_atencion ? e.nro_atencion : ''}`);
       doc.text(60, 158, `${e.dni ? e.dni : ''}`);
       doc.text(428, 157, `${e.fecha_atencion ? e.fecha_atencion : ''}`);
 
-      doc.text(90, 180, `${e.paciente ? e.paciente : ''}`);
+      doc.text(85, 180, `${e.paciente ? e.paciente : ''}`);
+      doc.text(312, 180, '20');
 
       doc.text(
-        280,
+        284,
         268,
         `${
-          e.resultado && e.resultado.result === 0 ? 'No detectado' : 'Detectado'
+          e.resultado && e.resultado.result === 0
+            ? 'No detectado'
+            : e.resultado && e.resultado.result === 1
+            ? 'Detectado'
+            : 'Sin resultado'
         }`
       );
+      doc.addImage(firma, 'PNG', 345, 450, 100, 80, '', 'FAST');
+      doc.addImage(isos, 'PNG', 300, 760, 220, 60, '', 'FAST');
     } else if (e.servicio_id == 6) {
       doc.text(
         328,
@@ -170,7 +187,9 @@ const EmpresaResultados = () => {
       doc.text(55, 141, `${e.dni ? e.dni : ''}`);
       doc.text(428, 141, `${e.fecha_atencion ? e.fecha_atencion : ''}`);
 
-      doc.text(85, 163, `${e.paciente ? e.paciente : ''}`);
+      doc.text(80, 163, `${e.paciente ? e.paciente : ''}`);
+      // doc.text(313, 164, '20');
+
       doc.text(
         195,
         268,
@@ -181,32 +200,68 @@ const EmpresaResultados = () => {
         268,
         `${e.resultado && e.resultado.result_igg ? e.resultado.result_igg : ''}`
       );
+      doc.setFillColor(255, 255, 255);
+      doc.rect(335, 464, 150, 80, 'F');
+      doc.addImage(firma, 'PNG', 345, 485, 100, 80, '', 'FAST');
     } else if (e.servicio_id == 7) {
-      doc.text(328, 141, `${e && e.genero ? e.genero : ''}`);
+      doc.text(328, 124, `${e && e.genero === null ? 'Masculino' : ''}`);
 
-      doc.text(85, 140, `${e.nro_atencion ? e.nro_atencion : ''}`);
-      doc.text(55, 163, `${e.dni ? e.dni : ''}`);
-      doc.text(428, 163, `${e.fecha_atencion ? e.fecha_atencion : ''}`);
+      doc.text(83, 124, `${e.nro_atencion ? e.nro_atencion : ''}`);
+      doc.text(55, 146, `${e.dni ? e.dni : ''}`);
+      doc.text(428, 146, `${e.fecha_atencion ? e.fecha_atencion : ''}`);
 
-      doc.text(85, 185, `${e.paciente ? e.paciente : ''}`);
-    } else if (e.servicio_id == 8) {
-      doc.text(328, 141, `${e && e.genero ? e.genero : ''}`);
-      doc.text(55, 163, `${e && e.person && e.person.dni ? e.person.dni : ''}`);
-      doc.text(
-        428,
-        163,
-        `${e && e.result && e.result.date ? e.result.date : ''}`
-      );
+      doc.text(78, 167, `${e.paciente ? e.paciente : ''}`);
+
+      doc.text(310, 167, '20');
 
       doc.text(
-        85,
-        185,
+        180,
+        265,
         `${
-          e && e.person && e.person.name && e.person.pat_lastname
-            ? e.person.name + ' ' + e.person.pat_lastname
-            : ''
+          e.resultado && e.resultado.result === '0'
+            ? 'Negativo'
+            : e.resultado && e.resultado.result === '1'
+            ? 'Positivo'
+            : 'Sin resultado'
         }`
       );
+      doc.setFillColor(255, 255, 255);
+      doc.rect(335, 465, 151, 81, 'F');
+      doc.addImage(firma, 'PNG', 345, 484, 100, 80, '', 'FAST');
+    } else if (e.servicio_id == 8) {
+      doc.text(84, 142, `${e.nro_atencion ? e.nro_atencion : ''}`);
+
+      doc.text(328, 141, `${e && e.genero ? e.genero : ''}`);
+      doc.text(55, 163, `${e && e.dni ? e.dni : ''}`);
+      doc.text(428, 163, `${e && e.fecha_atencion ? e.fecha_atencion : ''}`);
+
+      doc.text(80, 184, `${e.paciente ? e.paciente : ''}`);
+      doc.text(310, 185, '20');
+
+      if (e.resultado.reactive === '1') {
+        doc.text(295, 285, 'X');
+      }
+      if (e.resultado.reactive === '2') {
+        doc.text(200, 285, 'X');
+      }
+      if (e.resultado.reactive === '3') {
+        doc.text(200, 285, 'X');
+        doc.text(295, 285, 'X');
+      }
+      if (e.resultado.reactive === '4') {
+        doc.text(180, 285, 'No reactivo');
+
+        doc.text(270, 285, 'No reactivo');
+      }
+      if (e.resultado.reactive === '5') {
+        doc.text(195, 285, 'null');
+
+        doc.text(290, 285, 'null');
+      }
+
+      doc.setFillColor(255, 255, 255);
+      doc.rect(335, 465, 151, 81, 'F');
+      doc.addImage(firma, 'PNG', 345, 484, 100, 80, '', 'FAST');
     }
 
     window.open(doc.output('bloburl'), '_blank');
