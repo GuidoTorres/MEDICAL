@@ -18,6 +18,7 @@ const RegistroClinica = () => {
   const [listRegistro, setListRegistro] = useState([]);
   const [metGetClinic, setMetGetClinic] = useState([]);
   const [modalLocalizacion, setModalLocalizacion] = useState(false);
+  const [clinicasFiltradas, setClinicasFiltradas] = useState({});
   const getClinica = () => {
     fetchGETPOSTPUTDELETE("clinics")
       .then((data) => data.json())
@@ -26,9 +27,19 @@ const RegistroClinica = () => {
       });
   };
 
+  // Funcion para filtra la clinica roma de la tabla
+  // const filtrarMedical = () => {
+  //   const clinics = metGetClinic.filter((item) => item.id !== 1);
+  //   console.log(clinics);
+  //   setClinicasFiltradas(clinics);
+  // };
+
   useEffect(() => {
     getClinica();
+    // filtrarMedical();
   }, []);
+
+  console.log(metGetClinic);
 
   const columnas = [
     {
@@ -47,7 +58,6 @@ const RegistroClinica = () => {
           ? row.corporation.business_name
           : "",
       sortable: true,
-      grow: 2,
       style: {
         borderBotton: "none",
         color: "#555555",
@@ -147,6 +157,7 @@ const RegistroClinica = () => {
     const filtrarElemento = () => {
       const search =
         // metGetClinic.length !==undefined &&
+
         metGetClinic.filter((data) => {
           return (
             (data.corporation
