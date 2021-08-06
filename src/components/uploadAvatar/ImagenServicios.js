@@ -1,13 +1,8 @@
-import { useCallback} from "react";
+import React from "react";
+import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-const UploadAvatar = ({
-  setAvatar,
-  avatar,
-  editar,
-  dataSelected,
-  idServicio,
-}) => {
+const ImagenServicios = ({ setAvatar, avatar, dataSelected, id }) => {
   const onDrop = useCallback(
     (acceptdFiles) => {
       const file = acceptdFiles[0];
@@ -21,9 +16,16 @@ const UploadAvatar = ({
     onDrop,
   });
 
-
   return (
-    <div className="image__upload" {...getRootProps()}>
+    <div
+      className="image__upload"
+      {...getRootProps()}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <input {...getInputProps()} />
       {isDragActive ? (
         <img
@@ -35,17 +37,17 @@ const UploadAvatar = ({
         <img
           style={{
             maxHeight: "100%",
-            maxWidth: "95%",
+            maxWidth: "100%",
           }}
           className="image__avatar"
           src={
             avatar
               ? avatar.preview
               : dataSelected &&
-                dataSelected.corporation &&
-                dataSelected.corporation.logo
-              ? dataSelected.corporation.logo
-
+                dataSelected.services &&
+                dataSelected.services[id] &&
+                dataSelected.services[id].image
+              ? dataSelected.services[id].image
               : ""
           }
           alt=""
@@ -55,4 +57,4 @@ const UploadAvatar = ({
   );
 };
 
-export { UploadAvatar };
+export default ImagenServicios;

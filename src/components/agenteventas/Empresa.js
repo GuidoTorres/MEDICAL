@@ -119,16 +119,18 @@ const Empresa = ({ getServicio }) => {
   //
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = metGetClinic.filter((data) => {
-        return data.corporation
-          ? data.corporation.business_name
+      const search =
+        metGetClinic &&
+        metGetClinic.filter((data) => {
+          return data.corporation
             ? data.corporation.business_name
-                .toString()
-                .toLowerCase()
-                .includes(busqueda.toLowerCase())
-            : ""
-          : "";
-      });
+              ? data.corporation.business_name
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : ""
+            : "";
+        });
       setListRegistro(search);
     };
     filtrarElemento();

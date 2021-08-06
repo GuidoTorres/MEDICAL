@@ -10,6 +10,7 @@ import {
 import { customStyles } from "../../../helpers/tablaOpciones";
 import { UploadAvatar } from "../../uploadAvatar/uploadAvatar";
 import MRegistroEmpresa from "../registro/MRegistroEmpresa";
+import ImagenTrabajador from "../../uploadAvatar/ImagenTrabajador";
 
 const MTrabajador = ({
   openModal,
@@ -422,7 +423,7 @@ const MTrabajador = ({
                 Imagen <span>(.jpg, .jpeg, .jpg)</span>
               </p>
               <div>
-                <UploadAvatar
+                <ImagenTrabajador
                   avatar={avatar}
                   setAvatar={setAvatar}
                   dataSelected={dataSelected}

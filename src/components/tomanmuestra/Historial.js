@@ -10,9 +10,9 @@ const Historial = () => {
   const [dataHistorial, setDataHistorial] = useState([]);
 
   const getHistorial = () => {
-    fetchGETPOSTPUTDELETE(`attention_history`)
+    fetchGETPOSTPUTDELETE(`historial/atencion`, null, "POST")
       .then((data) => data.json())
-      .then((datos) => setDataHistorial(datos.data));
+      .then((datos) => setDataHistorial(datos));
   };
 
   useEffect(() => {
@@ -69,7 +69,8 @@ const Historial = () => {
 
     {
       name: "Tipo de prueba",
-      selector: (row) => (row.service.name ? row.service.name : ""),
+      selector: (row) =>
+        row.service.abbreviation ? row.service.abbreviation : "",
 
       sortable: true,
       style: {

@@ -6,6 +6,7 @@ import { UploadAvatar } from "../../uploadAvatar/uploadAvatar";
 import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
 
 import { customStyles } from "../../../helpers/tablaOpciones";
+import ImagenServicios from "../../uploadAvatar/ImagenServicios";
 
 const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
   const [crearServicio, setCrearServicio] = useState({});
@@ -101,7 +102,7 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
     });
   };
 
-  console.log(dataSelected);
+  console.log(crearServicio);
 
   return (
     <Modal
@@ -128,7 +129,7 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                   name="service_category_id"
                   onChange={(e) => handleChange(e)}
                 >
-                  <option selected>Seleccione</option>
+                  <option>Seleccione</option>
                   <option value="1">Covid 19</option>
                 </select>
               </div>
@@ -268,10 +269,11 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                   Imagen <span>(.jpg, .jpeg, .jpg)</span>
                 </p>
                 <div style={{ width: "100%" }}>
-                  <UploadAvatar
+                  <ImagenServicios
                     avatar={avatar}
                     setAvatar={setAvatar}
-                    idServicio={crearServicio}
+                    id={crearServicio.subCategoria}
+                    dataSelected={dataSelected}
                   />
                 </div>
               </div>

@@ -20,11 +20,16 @@ const MAnticuerpos = ({
   console.log(result);
 
   const postResults = () => {
-    if (result.anticuerpos === "-1" || null) {
+    console.log(result.anticuerpos);
+    if (
+      result.anticuerpos === "" ||
+      result.anticuerpos === null ||
+      result.anticuerpos === undefined ||
+      result.anticuerpos === "Seleccione"
+    ) {
       document.getElementById("resultado").style =
         "border:1px solid red !important";
-    }
-    if (result.anticuerpos !== "-1" || null) {
+    } else if (result.anticuerpos !== "" || null) {
       fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) => {
         console.log(data);
 
@@ -117,7 +122,7 @@ const MAnticuerpos = ({
                     setResult({ ...result, anticuerpos: e.target.value })
                   }
                 >
-                  <option value="-1">Seleccione</option>
+                  <option>Seleccione</option>
                   <option value="0">Negativo</option>
                   <option value="1">Positivo</option>
                 </select>

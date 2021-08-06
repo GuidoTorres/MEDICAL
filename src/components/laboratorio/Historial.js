@@ -44,8 +44,6 @@ const Historial = () => {
     getServicios();
   }, [filterData]);
 
-  console.log(results);
-
   const columnas = [
     {
       name: "Ítem",
@@ -113,10 +111,11 @@ const Historial = () => {
   ];
 
   const filtrarTabla = () => {
-    const result = Object.values(results).filter(
-      (data) => data && data.prueba === tipoPrueba.id
-    );
-
+    const result =
+      results.length > 0 &&
+      results.filter(
+        (data) => Number(data.servicio_id) === Number(tipoPrueba.id)
+      );
     setFilterData(result);
   };
 
@@ -330,7 +329,7 @@ const Historial = () => {
                     servicios[0] &&
                     servicios[0].services &&
                     servicios[0].services.map((data, i) => (
-                      <option key={i} value={data.name}>
+                      <option key={i} value={data.id}>
                         {data.abbreviation}
                       </option>
                     ))}
