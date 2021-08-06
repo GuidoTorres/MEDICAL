@@ -175,7 +175,7 @@ const SubirLaboratorio = () => {
 
   useEffect(() => {
     filtrarTabla();
-  }, [tipoPrueba.prueba]);
+  }, [tipoPrueba.prueba, attention]);
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));

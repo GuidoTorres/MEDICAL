@@ -42,12 +42,8 @@ const MSubirRapida = ({
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Aceptar",
-          }).then((resp) => {
-            if (resp.isConfirmed) {
-              console.log("entro al resp isconfirmed");
-              getAtencion();
-            }
           });
+          getAtencion();
         } else {
           closeModal();
           Swal.fire({
