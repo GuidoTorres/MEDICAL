@@ -41,11 +41,11 @@ const Usuario = () => {
     {
       name: "Tipo documento",
       selector: (row) =>
-        row.person && row.person.document_type_id === 3
+        row.document_type === 3
           ? "Carné de extranjería"
-          : row.person && row.person.document_type_id === 2
+          : row.document_type === 2
           ? "Pasaporte"
-          : row.person && row.person.document_type_id === 1
+          : row.document_type === 1
           ? "DNI"
           : "",
       sortable: true,
