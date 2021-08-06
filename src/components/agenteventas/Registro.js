@@ -25,7 +25,6 @@ const Registro = () => {
     getCorporations();
   }, []);
 
-
   const columnas = [
     {
       name: "Ítem",
@@ -129,29 +128,45 @@ const Registro = () => {
         corporations.length > 0 &&
         corporations.filter((data) => {
           return (
-            data.corporation.business_name
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .toLocaleLowerCase()
-              .includes(busqueda) ||
-            data.corporation.ruc.toString().includes(busqueda) ||
-            data.corporation.contacts[0].name
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .toLocaleLowerCase()
-              .includes(busqueda) ||
-            data.corporation.contacts[0].phone.toString().includes(busqueda) ||
-            data.corporation.contacts[0].email
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .toLocaleLowerCase()
-              .includes(busqueda)
+            (data.corporation
+              ? data.corporation.business_name
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "") ||
+            (data.corporation
+              ? data.corporation.ruc.toString().includes(busqueda)
+              : "") ||
+            (data.corporation
+              ? data.corporation.contacts
+                ? data.corporation.contacts[0].name
+                    .toString()
+                    .toLowerCase()
+                    .includes(busqueda.toLowerCase())
+                : ""
+              : "") ||
+            (data.corporation
+              ? data.corporation.contacts
+                ? data.corporation.contacts[0].phone
+                    .toString()
+                    .toLowerCase()
+                    .includes(busqueda.toLowerCase())
+                : ""
+              : "") ||
+            (data.corporation
+              ? data.corporation.contacts
+                ? data.corporation.contacts[0].email
+                    .toString()
+                    .toLowerCase()
+                    .includes(busqueda.toLowerCase())
+                : ""
+              : "")
           );
         });
       setListRegistro(search);
     };
     filtrarElemento();
-  }, [busqueda]);
+  }, [busqueda, corporations]);
 
   const handleEditar = (e) => {
     setOpenModal(true);
@@ -206,7 +221,7 @@ const Registro = () => {
 
           <DataTable
             columns={columnas}
-            data={corporations}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
@@ -229,7 +244,7 @@ const Registro = () => {
           dataSelected={dataSelected}
           setDataSelected={setDataSelected}
           editar={editar}
-          setEditar = {setEditar}
+          setEditar={setEditar}
           getCorporations={getCorporations}
         />
       )}

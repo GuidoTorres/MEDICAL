@@ -128,8 +128,10 @@ const SubirLaboratorio = () => {
     const filtrarElemento = () => {
       const search = filterData.filter((data) => {
         return (
-          data.person.dni.toString().includes(busqueda) ||
-          data.date_creation.toString().includes(busqueda) ||
+          (data.person ? data.person.dni.toString().includes(busqueda) : "") ||
+          (data.date_creation
+            ? data.date_creation.toString().includes(busqueda)
+            : "") ||
           (data.person
             ? `${data.person.name} ${data.person.pat_lastname}`
                 .toString()

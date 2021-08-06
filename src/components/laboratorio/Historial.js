@@ -128,8 +128,10 @@ const Historial = () => {
     const filtrarElemento = () => {
       const search = filterData.filter((data) => {
         return (
-          data.dni.toString().includes(busqueda) ||
-          data.fecha_atencion.toString().includes(busqueda) ||
+          (data.dni ? data.dni.toString().includes(busqueda) : "") ||
+          (data.fecha_atencion
+            ? data.fecha_atencion.toString().includes(busqueda)
+            : "") ||
           (data.paciente
             ? data.paciente
                 .toString()

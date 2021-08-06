@@ -128,22 +128,31 @@ const Usuario = () => {
       console.log(getUsuario);
       const search = getUsuario.filter((data) => {
         return (
-          data.dni.toString().includes(busqueda) ||
-          data.user_type
-            .toString()
-            .toLowerCase()
-            .includes(busqueda.toLowerCase()) ||
+          (data.dni ? data.dni.toString().includes(busqueda) : "") ||
+          (data.user_type
+            ? data.user_type
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "") ||
           (data.company
             ? data.company
                 .toString()
                 .toLowerCase()
                 .includes(busqueda.toLowerCase())
             : "") ||
-          data.phone
-            .toString()
-            .toLowerCase()
-            .includes(busqueda.toLowerCase()) ||
-          data.email.toString().toLowerCase().includes(busqueda.toLowerCase())
+          (data.phone
+            ? data.phone
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "") ||
+          (data.email
+            ? data.email
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "")
         );
       });
       setListRegistro(search);

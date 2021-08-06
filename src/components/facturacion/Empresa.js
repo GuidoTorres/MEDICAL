@@ -114,29 +114,42 @@ const Empresa = () => {
       if (busqueda !== "" && busqueda !== null) {
         const search = corporations.filter((data) => {
           return (
-            data.id.toString().includes(busqueda) ||
-            data.corporation.business_name
-              .toString()
-              .toLowerCase()
-              .includes(busqueda.toLowerCase()) ||
-            data.corporation.ruc.toString().includes(busqueda) ||
-            (data.corporation.contacts.length > 0
-              ? data.corporation.contacts[0].name
-                  .toString()
-                  .toLowerCase()
-                  .includes(busqueda.toLowerCase())
+            (data.corporation
+              ? data.corporation.business_name
+                ? data.corporation.business_name
+                    .toString()
+                    .toLowerCase()
+                    .includes(busqueda.toLowerCase())
+                : ""
               : "") ||
-            (data.corporation.contacts.length > 0
-              ? data.corporation.contacts[0].phone
-                  .toString()
-                  .toLowerCase()
-                  .includes(busqueda.toLowerCase())
+            (data.corporation
+              ? data.corporation
+                ? data.corporation.ruc.toString().includes(busqueda)
+                : ""
               : "") ||
-            (data.corporation.contacts.length > 0
-              ? data.corporation.contacts[0].email
-                  .toString()
-                  .toLowerCase()
-                  .includes(busqueda.toLowerCase())
+            (data.corporation.contacts
+              ? data.corporation.contacts.length > 0
+                ? data.corporation.contacts[0].name
+                    .toString()
+                    .toLowerCase()
+                    .includes(busqueda.toLowerCase())
+                : ""
+              : "") ||
+            (data.corporation.contacts
+              ? data.corporation.contacts.length > 0
+                ? data.corporation.contacts[0].phone
+                    .toString()
+                    .toLowerCase()
+                    .includes(busqueda.toLowerCase())
+                : ""
+              : "") ||
+            (data.corporation.contacts
+              ? data.corporation.contacts.length > 0
+                ? data.corporation.contacts[0].email
+                    .toString()
+                    .toLowerCase()
+                    .includes(busqueda.toLowerCase())
+                : ""
               : "")
           );
         });
