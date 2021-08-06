@@ -62,21 +62,27 @@ const Transportista = () => {
         return (
           (data.person
             ? data.person.name
-                .toString()
-                .toLowerCase()
-                .includes(busqueda.toLowerCase())
+              ? data.person.name
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : ""
             : "") ||
           (data.vehicle
             ? data.vehicle.name
-                .toString()
-                .toLowerCase()
-                .includes(busqueda.toLowerCase())
+              ? data.vehicle.name
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : ""
             : "") ||
           (data.vehicle
             ? data.vehicle.license_plate
-                .toString()
-                .toLowerCase()
-                .includes(busqueda.toLowerCase())
+              ? data.vehicle.license_plate
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : ""
             : "")
         );
       });

@@ -18,7 +18,6 @@ const Servicio = () => {
       .then((datos) => setGetServicio(datos.data));
   };
 
-
   useEffect(() => {
     getServices();
   }, []);
@@ -28,7 +27,7 @@ const Servicio = () => {
       <div className="row">
         <div className="col-12">
           <div className="table-responsive barra">
-            <h6>Precio para el publico en general</h6>
+            <h6>Precio para el público en general</h6>
             <table className="table">
               <thead>
                 <tr>
@@ -98,9 +97,7 @@ const Servicio = () => {
                   aria-labelledby="headingTwo"
                   data-bs-parent="#accordionExample"
                 >
-                  <Empresa
-                    getServicio={getServicio}
-                  />
+                  <Empresa getServicio={getServicio} />
                 </div>
               </div>
             </div>

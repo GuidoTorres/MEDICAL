@@ -82,11 +82,18 @@ const Trabajador = () => {
     const filtrarElemento = () => {
       const search = trabajadores.filter((data) => {
         return (
-          data.fullName
-            .toString()
-            .toLowerCase()
-            .includes(busqueda.toLowerCase()) ||
-          data.type.toString().toLowerCase().includes(busqueda.toLowerCase())
+          (data.fullName
+            ? data.fullName
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "") ||
+          (data.type
+            ? data.type
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "")
         );
       });
       setListRegistro(search);

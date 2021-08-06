@@ -107,7 +107,7 @@ const Solicitud = () => {
     const filtrarElemento = () => {
       const search = oranizadorxd.filter((data) => {
         return (
-          (data.users.length > 0
+          (data.users
             ? data.users[0].person.name
                 .toString()
                 .toLowerCase()
@@ -115,12 +115,18 @@ const Solicitud = () => {
             : "") ||
           (data.address
             ? data.address.district.name
-                .toString()
-                .toLowerCase()
-                .includes(busqueda.toLowerCase())
+              ? data.address.district.name
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : ""
             : "") ||
-          data.attention_date.toString().includes(busqueda) ||
-          data.attention_time.toString().includes(busqueda)
+          (data.attention_date
+            ? data.attention_date.toString().includes(busqueda)
+            : "") ||
+          (data.attention_time
+            ? data.attention_time.toString().includes(busqueda)
+            : "")
         );
       });
       setSearch(search);

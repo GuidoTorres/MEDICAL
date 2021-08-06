@@ -14,7 +14,7 @@ const Atencion = () => {
   const [listRegistro, setListRegistro] = useState([]);
   const [openModalBar, setOpenModalBar] = useState(false);
   const [dataBarCode, setDataBarCode] = useState({});
-  const [attention, setAttention] = useState({});
+  const [attention, setAttention] = useState([]);
   const [generateAttention, setGenerateAttention] = useState({});
 
   //clinic care es el optimo
@@ -125,25 +125,33 @@ const Atencion = () => {
 
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = ratencion.filter((data) => {
+      const search = attention.filter((data) => {
         return (
-          data.nombre
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.dni.toString().includes(busqueda) ||
-          data.tipoprueba
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda)
+          (data.fullName
+            ? data.fullName
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "") ||
+          (data.dni ? data.dni.toString().includes(busqueda) : "") ||
+          (data.type_user
+            ? data.type_user
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "") ||
+          (data.service_details
+            ? data.service_details.abbreviation
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "")
         );
       });
       setListRegistro(search);
     };
     filtrarElemento();
-  }, [busqueda]);
+  }, [busqueda, attention]);
 
   const openBarcode = (e) => {
     setDataBarCode(e);
@@ -225,7 +233,7 @@ const Atencion = () => {
 
           <DataTable
             columns={columnas}
-            data={attention}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader

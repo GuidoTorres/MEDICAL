@@ -183,31 +183,28 @@ const Usuarios = ({ history }) => {
 
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = rusuario.filter((data) => {
+      const search = getDateAttention.filter((data) => {
         return (
-          data.nombre
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.dni.toString().includes(busqueda) ||
-          data.tipousuario
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.telefono.toString().includes(busqueda) ||
-          data.correo
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda)
+          (data.name
+            ? data.name
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "") ||
+          (data.dni ? data.dni.toString().includes(busqueda) : "") ||
+          (data.phone ? data.phone.toString().includes(busqueda) : "") ||
+          (data.email
+            ? data.email
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "")
         );
       });
       setListServicio(search);
     };
     filtrarElemento();
-  }, [busqueda]);
+  }, [busqueda, getDateAttention]);
   return (
     <div className="container">
       <div className="row">
@@ -235,7 +232,7 @@ const Usuarios = ({ history }) => {
 
           <DataTable
             columns={columnas}
-            data={getDateAttention}
+            data={listServicio}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
