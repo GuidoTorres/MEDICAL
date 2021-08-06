@@ -10,7 +10,7 @@ const Historial = () => {
   const [dataHistorial, setDataHistorial] = useState([]);
 
   const getHistorial = () => {
-    fetchGETPOSTPUTDELETE(`historial/atencion`, null, "POST")
+    fetchGETPOSTPUTDELETE(`historial/atencion`, null, 'POST')
       .then((data) => data.json())
       .then((datos) => setDataHistorial(datos));
   };
@@ -68,15 +68,9 @@ const Historial = () => {
     },
 
     {
-<<<<<<< HEAD
       name: 'Tipo de prueba',
-      selector: (row) => (row.service ? row.service.name : ''),
-=======
-      name: "Tipo de prueba",
       selector: (row) =>
-        row.service.abbreviation ? row.service.abbreviation : "",
->>>>>>> 8786e204d51ef9a16c7080299bf1a6e41fc44ff4
-
+        row.service.abbreviation ? row.service.abbreviation : '',
       sortable: true,
       style: {
         borderBotton: 'none',
