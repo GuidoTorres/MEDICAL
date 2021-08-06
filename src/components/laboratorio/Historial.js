@@ -123,27 +123,27 @@ const Historial = () => {
     filtrarTabla();
   }, [tipoPrueba]);
 
-  useEffect(() => {
-    const filtrarElemento = () => {
-      const search = filterData.filter((data) => {
-        return (
-          (data.dni ? data.dni.toString().includes(busqueda) : "") ||
-          (data.fecha_atencion
-            ? data.fecha_atencion.toString().includes(busqueda)
-            : "") ||
-          (data.paciente
-            ? data.paciente
-                .toString()
-                .toLowerCase()
-                .includes(busqueda.toLowerCase())
-            : "")
-        );
-      });
-      setListRegistro(search);
-    };
-    filtrarElemento();
-  }, [busqueda, filterData]);
-  console.log(filterData);
+  // useEffect(() => {
+  //   const filtrarElemento = () => {
+  //     const search = filterData.filter((data) => {
+  //       return (
+  //         (data.dni ? data.dni.toString().includes(busqueda) : "") ||
+  //         (data.fecha_atencion
+  //           ? data.fecha_atencion.toString().includes(busqueda)
+  //           : "") ||
+  //         (data.paciente
+  //           ? data.paciente
+  //               .toString()
+  //               .toLowerCase()
+  //               .includes(busqueda.toLowerCase())
+  //           : "")
+  //       );
+  //     });
+  //     setListRegistro(search);
+  //   };
+  //   filtrarElemento();
+  // }, [busqueda, filterData]);
+  // console.log(filterData);
 
   const handleDetalles = (e) => {
     console.log(e);

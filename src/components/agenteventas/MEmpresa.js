@@ -35,7 +35,7 @@ const MEmpresa = ({
       .then((res) => setServices(res));
   };
 
-  useEffect(() => {},[])
+  useEffect(() => {}, []);
 
   const crearCompanyDiscount = () => {
     // console.log(dataSelected);
@@ -277,7 +277,9 @@ const MEmpresa = ({
               <thead>
                 <tr>
                   <th scope="col">Tipo de prueba</th>
-                  <th scope="col">Costo</th>
+                  <th scope="col">Costo Limite inferior</th>
+                  <th scope="col">Costo Limite superior</th>
+                  <th scope="col">Precio de vitrina</th>
                 </tr>
               </thead>
               <tbody>
@@ -286,6 +288,17 @@ const MEmpresa = ({
                     <tr key={i}>
                       <td>
                         {servicio.abbreviation ? servicio.abbreviation : ""}
+                      </td>
+
+                      <td>
+                        {servicio.last_price && servicio.last_price.amount
+                          ? servicio.last_price.amount - 50
+                          : ""}
+                      </td>
+                      <td>
+                        {servicio.last_price && servicio.last_price.amount
+                          ? servicio.last_price.amount - 30
+                          : ""}
                       </td>
                       <td>
                         {servicio.last_price && servicio.last_price.amount
