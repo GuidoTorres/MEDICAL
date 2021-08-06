@@ -8,6 +8,10 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
     tecnica: "Tecnica nr 1000",
     edad: 100,
   };
+
+  const handleChange = () => {};
+
+  console.log(ficha);
   return (
     <div className="fichaCovid">
       <label className="titulo1 mt-2" htmlFor="">
@@ -27,9 +31,7 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
                   placeholder=""
                   aria-label="Username"
                   aria-describedby="basic-addon1"
-                  onChange={(e) =>
-                    setFicha({ ...ficha, fechaNoti: e.target.value })
-                  }
+                  onChange={handleChange}
                 />
               </>
             ))}
@@ -46,262 +48,104 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
                   placeholder=""
                   aria-label="Username"
                   aria-describedby="basic-addon1"
-                  onKeyUp={(e) =>
-                    setFicha({ ...ficha, geresa: e.target.value })
-                  }
+                  onKeyUp={handleChange}
                 />
               </>
             ))}
           </div>
         </div>
 
-        {formulario[1].questions.slice(4, 5).map((data, i) => (
-          <>
-            <label className="mt-2" htmlFor="">
-              4. {data.text}
-            </label>
-            <div className="div2">
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="flexCheckDefault"
-                  onChange={(e) => {
-                    setFicha({ ...ficha, minsa: e.target.checked });
-                  }}
-                />
+        <label className="mt-2" htmlFor="">
+          4. Inst. Adm:
+        </label>
+        <div className="div2">
+          {formulario[1].questions.slice(5, 9).map((data, i) => (
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="flexCheckDefault"
+                onChange={handleChange}
+              />
 
-                <label class="form-check-label" for="flexCheckDefault">
-                  MINSA
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="flexCheckDefault"
-                  onChange={(e) => {
-                    setFicha({ ...ficha, essalud: e.target.checked });
-                  }}
-                />
-                <label class="form-check-label" for="flexCheckDefault">
-                  EsSalud
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="flexCheckDefault"
-                  onChange={(e) => {
-                    setFicha({ ...ficha, ffaa: e.target.checked });
-                  }}
-                />
-                <label class="form-check-label" for="flexCheckDefault">
-                  FFAA/PNP
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="flexCheckDefault"
-                  onChange={(e) => {
-                    setFicha({ ...ficha, privado: e.target.checked });
-                  }}
-                />
-                <label class="form-check-label" for="flexCheckDefault">
-                  Privado
-                </label>
-              </div>
+              <label class="form-check-label" for="flexCheckDefault">
+                {data.text}
+              </label>
             </div>
-          </>
-        ))}
+          ))}
+        </div>
 
-        {formulario[1].questions.slice(3, 4).map((data, i) => (
-          <>
-            <label className="mt-2" htmlFor="">
-              5. {data.text}
+        <label className="mt-2" htmlFor="">
+          5. Clasificación del caso:
+        </label>
+        {formulario[1].questions.slice(3, 6).map((data, i) => (
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="flexCheckDefault"
+              onChange={handleChange}
+            />
+            <label class="form-check-label" for="flexCheckDefault">
+              {data.text}
             </label>
-            <div className="div2">
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="flexCheckDefault"
-                  onChange={(e) => {
-                    setFicha({ ...ficha, confirmado: e.target.checked });
-                  }}
-                />
-                <label class="form-check-label" for="flexCheckDefault">
-                  Confirmado
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="flexCheckDefault"
-                  onChange={(e) => {
-                    setFicha({ ...ficha, probable: e.target.checked });
-                  }}
-                />
-                <label class="form-check-label" for="flexCheckDefault">
-                  Probable
-                </label>
-              </div>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="flexCheckDefault"
-                  onChange={(e) => {
-                    setFicha({ ...ficha, sospechoso: e.target.checked });
-                  }}
-                />
-                <label class="form-check-label" for="flexCheckDefault">
-                  Sospechoso
-                </label>
-              </div>
-            </div>
-          </>
+          </div>
         ))}
       </div>
 
       <label className="mt-4" htmlFor="">
         <strong>II. DATOS DEL PACIENTE</strong>
       </label>
+
       <div className="paciente">
         <div className="div1 mt-2">
+          {formulario[1].questions.slice(10, 12).map((data, i) => (
+            <>
+              <div className="mt-2">
+                <label htmlFor="">{data.text}</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                  value={data.nombre}
+                />
+              </div>
+            </>
+          ))}
+          {formulario[1].questions.slice(12, 13).map((data, i) => (
+            <div className="mt-2">
+              <label htmlFor="">8. {data.text}</label>
+              <input
+                type="date"
+                class="form-control"
+                placeholder="Username"
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+                onChange={handleChange}
+              />
+            </div>
+          ))}
+        </div>
+        {formulario[1].questions.slice(13, 14).map((data, i) => (
           <div className="mt-2">
-            <label htmlFor="">6. Apellidos y nombres</label>
+            <label htmlFor="">9. {data.text}</label>
             <input
               type="text"
               class="form-control"
-              placeholder="Username"
+              placeholder=""
               aria-label="Username"
               aria-describedby="basic-addon1"
-              value={data.nombre}
+              onChange={(e) => setFicha({ ...ficha, edad: e.target.value })}
             />
           </div>
-          <div className="mt-2">
-            <label htmlFor="">7. Nº Teléfono</label>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Username"
-              aria-label="Username"
-              aria-describedby="basic-addon1"
-              value={data.nombre}
-            />
-          </div>
-          <div className="mt-2">
-            <label htmlFor="">8. Fecha de nacimiento</label>
-            <input
-              type="date"
-              class="form-control"
-              placeholder="Username"
-              aria-label="Username"
-              aria-describedby="basic-addon1"
-              onChange={(e) =>
-                setFicha({ ...ficha, fechaNaci: e.target.value })
-              }
-            />
-          </div>
-        </div>
-        <div className="mt-2">
-          <label htmlFor="">9. Edad</label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder=""
-            aria-label="Username"
-            aria-describedby="basic-addon1"
-            onChange={(e) => setFicha({ ...ficha, edad: e.target.value })}
-          />
-        </div>
+        ))}
 
         <label className="mt-2" htmlFor="">
           10. Sexo
         </label>
         <div className="div2">
-          <div class="form-check">
-            <input
-              class="masculino form-check-input"
-              type="checkbox"
-              id="flexCheckDefault"
-              onChange={(e) => {
-                setFicha({ ...ficha, masculino: e.target.checked });
-
-                let check = document.querySelector(".femenino");
-                e.target.checked === true
-                  ? (check.disabled = true)
-                  : (check.disabled = false);
-              }}
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              Masculino
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              class="femenino form-check-input"
-              type="checkbox"
-              id="flexCheckDefault"
-              onChange={(e) => {
-                setFicha({ ...ficha, femenino: e.target.checked });
-
-                let check = document.querySelector(".masculino");
-                e.target.checked === true
-                  ? (check.disabled = true)
-                  : (check.disabled = false);
-              }}
-            />
-            <label class="form-check-label" for="flexCheckDefault">
-              Femenino
-            </label>
-          </div>
-        </div>
-
-        <div className="div3">
-          <div>
-            <label htmlFor="">11. Nº DNI/CE/PASAPORTE</label>
-            <input
-              type="text"
-              class="form-control"
-              placeholder=""
-              aria-label="Username"
-              aria-describedby="basic-addon1"
-              onChange={(e) => setFicha({ ...ficha, dni: e.target.value })}
-            />
-          </div>
-          <div>
-            <label htmlFor="">12. Peso</label>
-            <input
-              type="text"
-              class="form-control"
-              placeholder=""
-              aria-label="Username"
-              aria-describedby="basic-addon1"
-              onChange={(e) => setFicha({ ...ficha, dni: e.target.value })}
-            />
-          </div>
-          <div>
-            <label htmlFor="">13. Talla</label>
-            <input
-              type="text"
-              class="form-control"
-              placeholder=""
-              aria-label="Username"
-              aria-describedby="basic-addon1"
-              onChange={(e) => setFicha({ ...ficha, dni: e.target.value })}
-            />
-          </div>
-
-          <label className="mt-2" htmlFor="">
-            14. Etnia o raza
-          </label>
-          <div className="div2">
+          {formulario[1].questions.slice(14, 16).map((data, i) => (
             <div class="form-check">
               <input
                 class="masculino form-check-input"
@@ -317,81 +161,44 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
                 }}
               />
               <label class="form-check-label" for="flexCheckDefault">
-                Mestizo
+                {data.text}
               </label>
             </div>
-            <div class="form-check">
+          ))}
+        </div>
+        <div className="div3">
+          {formulario[1].questions.slice(17, 20).map((data, i) => (
+            <div>
+              <label htmlFor="">11. {data.text}</label>
               <input
-                class="femenino form-check-input"
-                type="checkbox"
-                id="flexCheckDefault"
-                onChange={(e) => {
-                  setFicha({ ...ficha, femenino: e.target.checked });
-
-                  let check = document.querySelector(".masculino");
-                  e.target.checked === true
-                    ? (check.disabled = true)
-                    : (check.disabled = false);
-                }}
+                type="text"
+                class="form-control"
+                placeholder=""
+                aria-label="Username"
+                aria-describedby="basic-addon1"
+                onChange={(e) => setFicha({ ...ficha, dni: e.target.value })}
               />
-              <label class="form-check-label" for="flexCheckDefault">
-                Afrodescendiente
-              </label>
             </div>
-            <div class="form-check">
-              <input
-                class="femenino form-check-input"
-                type="checkbox"
-                id="flexCheckDefault"
-                onChange={(e) => {
-                  setFicha({ ...ficha, femenino: e.target.checked });
+          ))}
 
-                  let check = document.querySelector(".masculino");
-                  e.target.checked === true
-                    ? (check.disabled = true)
-                    : (check.disabled = false);
-                }}
-              />
-              <label class="form-check-label" for="flexCheckDefault">
-                Andino
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="femenino form-check-input"
-                type="checkbox"
-                id="flexCheckDefault"
-                onChange={(e) => {
-                  setFicha({ ...ficha, femenino: e.target.checked });
+          <label className="mt-2" htmlFor="">
+            14. Etnia o raza
+          </label>
 
-                  let check = document.querySelector(".masculino");
-                  e.target.checked === true
-                    ? (check.disabled = true)
-                    : (check.disabled = false);
-                }}
-              />
-              <label class="form-check-label" for="flexCheckDefault">
-                Indigeno amazónico
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                class="femenino form-check-input"
-                type="checkbox"
-                id="flexCheckDefault"
-                onChange={(e) => {
-                  setFicha({ ...ficha, femenino: e.target.checked });
-
-                  let check = document.querySelector(".masculino");
-                  e.target.checked === true
-                    ? (check.disabled = true)
-                    : (check.disabled = false);
-                }}
-              />
-              <label class="form-check-label" for="flexCheckDefault">
-                Asiático descendiente
-              </label>
-            </div>
+          <div className="div2">
+            {formulario[1].questions.slice(20, 25).map((data, i) => (
+              <div class="form-check">
+                <input
+                  class="masculino form-check-input"
+                  type="checkbox"
+                  id="flexCheckDefault"
+                  onChange={handleChange}
+                />
+                <label class="form-check-label" for="flexCheckDefault">
+                  {data.text}
+                </label>
+              </div>
+            ))}
 
             <div className="mt-2">
               <label htmlFor="">Otro</label>
@@ -517,11 +324,9 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
             </div>
           </div>
         </div>
-
         <label className="titulo1 mt-3" htmlFor="">
           Lugar probable de infección
         </label>
-
         <br />
         <label htmlFor="" className="mt-2">
           17. Dirección de residencia actual
