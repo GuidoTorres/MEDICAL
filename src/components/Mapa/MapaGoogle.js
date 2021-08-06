@@ -1,9 +1,9 @@
-import React from "react";
-import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import React from 'react';
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 // import { TransitLayer } from '@react-google-maps/api';
 const mapContainerStyle = {
-  width: "100%",
-  height: "190px",
+  width: '100%',
+  height: '190px',
 };
 
 const center = {
@@ -13,8 +13,8 @@ const center = {
 
 const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
   const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: "AIzaSyC14u7ry3uBKIHsEnEql4sA2MaebwNJWI4",
+    id: 'google-map-script',
+    googleMapsApiKey: 'AIzaSyC14u7ry3uBKIHsEnEql4sA2MaebwNJWI4',
   });
 
   console.log(dataSelected);
@@ -62,7 +62,7 @@ const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
   //   // console.log('transitLayer: ', transitLayer)
   // }
 
-  console.log(dataMapa);
+  // console.log(dataMapa);
 
   return isLoaded ? (
     <GoogleMap
@@ -73,7 +73,7 @@ const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
         dataSelected &&
         dataSelected.corporation &&
         dataSelected.corporation.address &&
-        dataSelected.corporation.address.map_latitude !== "0"
+        dataSelected.corporation.address.map_latitude !== '0'
           ? center2
           : center
       }
@@ -81,7 +81,7 @@ const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
         setDataMapa({ ...dataMapa, lat: e.latLng.lat(), lng: e.latLng.lng() })
       }
     >
-      {editar && dataSelected.corporation.address.map_latitude !== "0" ? (
+      {editar && dataSelected.corporation.address.map_latitude !== '0' ? (
         <Marker
           // onLoad={onLoad}
           position={position2}

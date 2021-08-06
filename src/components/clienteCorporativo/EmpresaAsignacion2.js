@@ -3,11 +3,14 @@ import Modal from 'react-modal';
 import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 import { customStyles } from '../../helpers/tablaOpciones';
 import Swal from 'sweetalert2';
+import MMapa from './Modales/MMapa';
 
 const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, data, modal1 }) => {
   const [asignation, setAsignation] = useState([]);
   const [listclinica, setListclinica] = useState([]);
   const [prueba, setPrueba] = useState({});
+  const [llmapa, setLlmapa] = useState({});
+  const [modalMapa, setModalMapa] = useState(false);
   const [formValues, setFormValues] = useState({
     date_attention: null,
     time_attention: Date.now(),
@@ -106,7 +109,12 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, data, modal1 }) => {
       }
     });
   };
-
+  const handleMapa = (e) => {
+    setModalMapa(true);
+    setLlmapa(e);
+    // console.log(e);
+    // console.log(llmapa);
+  };
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -126,12 +134,11 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, data, modal1 }) => {
             <div>
               <div className="">
                 <label>Tipo de prueba </label>
-
                 <select
                   className="form-select mt-2"
                   aria-label="Default select example"
                   name="service_id"
-                  onChange={handleOnChange}
+                  onChange={(e) => handleOnChange(e)}
                 >
                   <option>Seleccione</option>
                   {asignation.map((data, index) => {
@@ -160,19 +167,24 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, data, modal1 }) => {
               <thead>
                 <tr>
                   <th scope="col">Nombre</th>
-                  <th scope="col">Direccion</th>
-                  <th scope="col">ubicacion</th>
+                  <th scope="col">Dirección</th>
+                  <th scope="col">ubicación</th>
                   <th scope="col">seleccionar</th>
                 </tr>
               </thead>
               <tbody>
                 {listclinica.map((data, index) => {
+                  // console.log(data.corporation.address);
                   return (
                     <tr key={index}>
-                      <td>{data.corporation.contacts[0].name}</td>
+                      <td>{data.corporation.business_name}</td>
                       <td>{data.corporation.address.address}</td>
                       <td>
-                        <i className="fas fa-map-marked-alt"></i>
+                        <i
+                          className="fas fa-map-marked-alt"
+                          onClick={() => handleMapa(data.corporation.address)}
+                          style={{ color: '#009DCA', cursor: 'pointer' }}
+                        ></i>
                       </td>
                       <td>
                         <input
@@ -198,6 +210,13 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, data, modal1 }) => {
           </button>
         </div>
       </div>
+      {modalMapa && (
+        <MMapa
+          setModalMapa={setModalMapa}
+          modalMapa={modalMapa}
+          llmapa={llmapa}
+        />
+      )}
     </Modal>
   );
 };

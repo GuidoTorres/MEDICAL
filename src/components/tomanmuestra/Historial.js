@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
+import React, { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component';
 
-import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
-import { paginacionOpciones } from "../../helpers/tablaOpciones";
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
+import { paginacionOpciones } from '../../helpers/tablaOpciones';
 
 const Historial = () => {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
   const [dataHistorial, setDataHistorial] = useState([]);
 
   const getHistorial = () => {
-    fetchGETPOSTPUTDELETE(`historial/atencion`, null, "POST")
+    fetchGETPOSTPUTDELETE(`historial/atencion`, null, 'POST')
       .then((data) => data.json())
       .then((datos) => setDataHistorial(datos));
   };
@@ -23,77 +23,76 @@ const Historial = () => {
 
   const columnas = [
     {
-      name: "Item",
-      selector: "id",
+      name: 'Item',
+      selector: 'id',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Tipo de documento",
+      name: 'Tipo de documento',
       selector: (row) =>
         row.person && row.person.document_type_id === 3
-          ? "Carné de extranjería"
+          ? 'Carné de extranjería'
           : row.person && row.person.document_type_id === 2
-          ? "Pasaporte"
+          ? 'Pasaporte'
           : row.person && row.person.document_type_id === 1
-          ? "DNI"
-          : "",
+          ? 'DNI'
+          : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nº documento",
-      selector: (row) => (row.person.dni ? row.person.dni : ""),
+      name: 'Nº documento',
+      selector: (row) => (row.person ? row.person.dni : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nombres y apellidos",
+      name: 'Nombres y apellidos',
       selector: (row) =>
-        row.person.name ? row.person.name + " " + row.person.pat_lastname : "",
+        row.person ? row.person.name + ' ' + row.person.pat_lastname : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
 
     {
-      name: "Tipo de prueba",
+      name: 'Tipo de prueba',
       selector: (row) =>
-        row.service.abbreviation ? row.service.abbreviation : "",
-
+        row.service.abbreviation ? row.service.abbreviation : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Fecha solicitud",
-      selector: (row) => (row.date_attention ? row.date_attention : ""),
+      name: 'Fecha solicitud',
+      selector: (row) => (row.date_attention ? row.date_attention : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Fecha entrega",
-      selector: (row) => (row.date_creation ? row.date_creation : ""),
+      name: 'Fecha entrega',
+      selector: (row) => (row.date_creation ? row.date_creation : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
   ];
@@ -153,7 +152,7 @@ const Historial = () => {
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: "lightgrey" }}>No hay datos</p>
+                <p style={{ color: 'lightgrey' }}>No hay datos</p>
               </div>
             }
           />
