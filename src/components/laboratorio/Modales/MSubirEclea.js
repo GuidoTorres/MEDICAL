@@ -24,11 +24,8 @@ const MSubirEclea = ({ openModal, setOpenModal, dataSelected, tipoPrueba }) => {
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getAtencion();
-          }
         });
+        getAtencion();
       } else {
         closeModal();
         Swal.fire({
