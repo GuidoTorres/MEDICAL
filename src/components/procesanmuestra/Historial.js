@@ -18,9 +18,9 @@ const Historial = () => {
   const getAttention = () => {
     // fetchGETPOSTPUTDELETE(`resultados/clinica/${getDateAttention[0].clinic_id}`)
 
-    fetchGETPOSTPUTDELETE(`result_historial`)
+    fetchGETPOSTPUTDELETE("resultados/clinica", null, "POST")
       .then((data) => data.json())
-      .then((datos) => setGetDateAttention(datos.data));
+      .then((datos) => setGetDateAttention(datos));
   };
 
   useEffect(() => {
@@ -42,14 +42,8 @@ const Historial = () => {
     },
     {
       name: "Tipo de documento",
-      selector: (row) =>
-        row.person && row.person.document_type_id === 3
-          ? "Carné de extranjería"
-          : row.person && row.person.document_type_id === 2
-          ? "Pasaporte"
-          : row.person && row.person.document_type_id === 1
-          ? "DNI"
-          : "",
+      selector: (row) => (row.tipo_documento ? row.tipo_documento : ""),
+
       sortable: true,
       style: {
         borderBotton: "none",
@@ -58,7 +52,7 @@ const Historial = () => {
     },
     {
       name: "Nº documento",
-      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
+      selector: (row) => (row.dni ? row.dni : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -67,7 +61,7 @@ const Historial = () => {
     },
     {
       name: "Nombres y apellidos",
-      selector: (row) => (row.person && row.person.name ? row.person.name : ""),
+      selector: (row) => (row.paciente ? row.paciente : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -77,8 +71,7 @@ const Historial = () => {
 
     {
       name: "Tipo de prueba",
-      selector: (row) =>
-        row.service && row.service && row.service.name ? row.service.name : "",
+      selector: (row) => (row.prueba ? row.prueba : ""),
 
       sortable: true,
       style: {
@@ -88,7 +81,7 @@ const Historial = () => {
     },
     {
       name: "Fecha solicitud",
-      selector: (row) => (row.date_attention ? row.date_attention : ""),
+      selector: (row) => (row.fecha_solicitud ? row.fecha_solicitud : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -97,7 +90,7 @@ const Historial = () => {
     },
     {
       name: "Fecha entrega",
-      selector: (row) => (row.result && row.result.date ? row.result.date : ""),
+      selector: (row) => (row.fecha_atencion ? row.fecha_atencion : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -109,13 +102,13 @@ const Historial = () => {
       name: "Detalles",
       button: true,
       cell: (e) =>
-        e.result.pdf === null ? (
+        e.resultado.pdf === null ? (
           <button className="table__tablebutton">
             <i className="far fa-file-pdf" style={{ color: "grey" }}></i>
           </button>
         ) : (
           <a
-            href={e.result.pdf}
+            href={e.resultado.pdf}
             download
             target="_blank"
             style={{ color: "grey" }}
@@ -125,34 +118,6 @@ const Historial = () => {
             </button>
           </a>
         ),
-
-      // e.result.pdf !== null ? (
-      //   <a
-      //     href={e.result.pdf}
-      //     download
-      //     target="_blank"
-      //     style={{ color: "red" }}
-      //   >
-      //     {e.result.pdf !== null ? (
-      //       <i className="far fa-file-pdf"></i>
-      //     ) : (
-      //       <i className="far fa-file-pdf"></i>
-      //     )}
-      //   </a>
-      // ) : (
-      //   <a
-      //     href={e.result.pdf}
-      //     download
-      //     target="_blank"
-      //     style={{ color: "grey" }}
-      //   >
-      //     {e.result.pdf !== null ? (
-      //       <i className="far fa-file-pdf"></i>
-      //     ) : (
-      //       <i className="far fa-file-pdf"></i>
-      //     )}
-      //   </a>
-      // ),
     },
   ];
   //

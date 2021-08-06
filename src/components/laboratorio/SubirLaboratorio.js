@@ -147,7 +147,6 @@ const SubirLaboratorio = () => {
 
   const handleModal = (tipoPrueba, e) => {
     setDataSelected(e);
-    console.log(e);
     if (tipoPrueba.prueba === 5) {
       setOpenModal(true);
     } else if (tipoPrueba.prueba === 6) {
@@ -162,8 +161,6 @@ const SubirLaboratorio = () => {
       console.log("no funciona");
     }
   };
-
-  console.log(attention);
 
   const filtrarTabla = () => {
     const result = Object.values(attention).filter(
@@ -268,6 +265,7 @@ const SubirLaboratorio = () => {
             dataSelected={dataSelected}
             tipoPrueba={tipoPrueba}
             getAtencion={getAtencion}
+            filtrarTabla={filtrarTabla}
           />
         )}
         {openModal2 && (

@@ -62,28 +62,21 @@ const Reservas = () => {
     },
     {
       name: "Nombre",
-      selector: (row) => (row.person && row.person.name ? row.person.name : ""),
-      sortable: true,
-      style: {
-        borderBotton: "none",
-        color: "#555555",
-      },
-    },
-    {
-      name: "Apellido",
       selector: (row) =>
-        row.person && row.person.pat_lastname ? row.person.pat_lastname : "",
-
+        row.person && row.person.name
+          ? row.person.name + " " + row.person.pat_lastname
+          : "",
       sortable: true,
       style: {
         borderBotton: "none",
         color: "#555555",
       },
     },
+
     {
       name: "Tipo prueba",
       selector: (row) =>
-        row.service && row.service.name ? row.service.name : "",
+        row.service && row.service.abbreviation ? row.service.abbreviation : "",
 
       sortable: true,
       style: {
@@ -167,7 +160,7 @@ const Reservas = () => {
           if (data.status === 200) {
             Swal.fire(
               "Éxito!",
-              "Se genero la atención correctamente.",
+              "Se generó la atención correctamente.",
               "success"
             );
 
@@ -177,10 +170,16 @@ const Reservas = () => {
       }
     });
   };
+
+  const filtrarClinica = () => {
+
+    const filtro = getDateAttention
+
+  }
   const handleBarCode = (e) => {
     setOpenModal(true);
     setDataBarCode(e);
-    setCodigoHistorial(true)
+    setCodigoHistorial(true);
   };
   //
   return (
@@ -222,7 +221,7 @@ const Reservas = () => {
           openModal={openModal}
           setOpenModal={setOpenModal}
           dataBarCode={dataBarCode}
-          codigoHistorial ={codigoHistorial}
+          codigoHistorial={codigoHistorial}
         />
       )}
     </div>

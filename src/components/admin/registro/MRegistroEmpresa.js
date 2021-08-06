@@ -92,6 +92,7 @@ const MRegistroEmpresa = ({
       let position = s.findIndex((arreglo) => arreglo.service_id === data.id);
       const arreglos = [...s];
       arreglos[position].status = 0;
+      console.log(arreglos[position]);
       setService(arreglos);
     } else {
       setService((service) => [
@@ -777,6 +778,8 @@ const MRegistroEmpresa = ({
                       dataSelected.services &&
                       dataSelected.services[0] &&
                       dataSelected.services[0].services_category_id
+                        ? dataSelected.services[0].services_category_id
+                        : ""
                     }
                     onChange={(e) =>
                       setEmpresa({
