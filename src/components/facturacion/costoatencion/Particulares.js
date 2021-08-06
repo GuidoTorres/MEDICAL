@@ -248,7 +248,7 @@ const Particulares = () => {
       if (busqueda !== "" && busqueda !== null) {
         const search = particulares.filter((data) => {
           return (
-            data.id.toString().includes(busqueda) ||
+            // data.id.toString().includes(busqueda) ||
             (data.person
               ? data.person.name
                   .toString()
@@ -285,7 +285,7 @@ const Particulares = () => {
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
               : "") ||
-            data.amount.toString().includes(busqueda)
+            (data.amount ? data.amount.toString().includes(busqueda) : "")
           );
         });
         setListRegistro(search);
@@ -293,7 +293,7 @@ const Particulares = () => {
         /* Filtro para empresas*/
         const searchEmpresas = empresas.filter((data) => {
           return (
-            data.id.toString().includes(busqueda) ||
+            // data.id.toString().includes(busqueda) ||
             (data.nombre
               ? data.nombre
                   .toString()

@@ -8,7 +8,7 @@ const DeclaracionJurada = ({
   formulario,
 }) => {
   const handleChange = (e, data, resp) => {
-    if (resp === "Si") {
+    if (resp === "Si" || resp === "Sí") {
       let pos = declaracion.findIndex((arr) => arr.question_id === data.id);
 
       const arrs = [...declaracion];

@@ -18,16 +18,19 @@ const Estadistica = () => {
     check2: 0,
   });
 
+  console.log(fechas);
+  console.log(tipoPrueba.servicios);
+
   const traerHistorial = () => {
     const data = {
-      servicios1: tipoPrueba,
+      servicios: tipoPrueba.servicios,
       fecha_inicio: fechas.fecha_inicio,
       fecha_fin: fechas.fecha_fin,
     };
 
     fetchGETPOSTPUTDELETEJSON(
       "resultados/mi-clinica/estadisticas-servicios",
-      data.servicios1,
+      data,
       "POST"
     )
       .then((res) => res.json())

@@ -119,17 +119,22 @@ const Empresa = ({ getServicio }) => {
   //
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = empresa.filter((data) => {
-        return data.empresa
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .toLocaleLowerCase()
-          .includes(busqueda);
-      });
+      const search =
+        metGetClinic &&
+        metGetClinic.filter((data) => {
+          return data.corporation
+            ? data.corporation.business_name
+              ? data.corporation.business_name
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : ""
+            : "";
+        });
       setListRegistro(search);
     };
     filtrarElemento();
-  }, [busqueda]);
+  }, [busqueda, metGetClinic]);
 
   const handleEliminar = (e) => {
     Swal.fire({
@@ -193,7 +198,7 @@ const Empresa = ({ getServicio }) => {
 
           <DataTable
             columns={columnas}
-            data={metGetClinic}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader

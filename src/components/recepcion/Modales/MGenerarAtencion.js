@@ -25,7 +25,7 @@ const MGenerarAtencion = ({
   const [condicion, setCondicion] = useState({});
 
   const [declaracion, setDeclaracion] = useState();
-  const [ficha, setFicha] = useState([]);
+  const [ficha, setFicha] = useState();
   const [services, setServices] = useState({});
   const [clinics, setClinics] = useState({});
   const [departamentos, setDepartamentos] = useState({});
@@ -48,6 +48,21 @@ const MGenerarAtencion = ({
 
     setDeclaracion(arr);
   };
+
+  const generarFicha = () => {
+    let arr = Array.from({ length: 155 }, () => ({
+      question_id: null,
+      answer: null,
+    }));
+    const a = 27;
+    arr.map((item, a) => {
+      let data = a + 26;
+      item.question_id = data + 1;
+    });
+
+    setFicha(arr);
+  };
+
   const getClinics = () => {
     fetchGETPOSTPUTDELETE("clinics")
       .then((res) => res.json())
@@ -58,6 +73,7 @@ const MGenerarAtencion = ({
     getServices();
     getClinics();
     generarDeclaracion();
+    generarFicha();
   }, []);
 
   console.log(datos);

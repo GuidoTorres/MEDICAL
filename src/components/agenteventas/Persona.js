@@ -123,32 +123,41 @@ const Persona = () => {
   //
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = servicio.filter((data) => {
+      const search = particular.filter((data) => {
         return (
-          data.dni.toString().includes(busqueda) ||
-          data.nombre
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.apellido
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.tipo
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.descuento.toString().includes(busqueda) ||
-          data.total.toString().includes(busqueda)
+          (data.user
+            ? data.user.person
+              ? data.user.person.dni
+                ? data.user.person.dni.toString().includes(busqueda)
+                : ""
+              : ""
+            : "") ||
+          (data.user
+            ? data.user.person
+              ? data.user.person.name
+                ? data.user.person.name
+                    .toString()
+                    .toLowerCase()
+                    .includes(busqueda.toLowerCase())
+                : ""
+              : ""
+            : "") ||
+          (data.service
+            ? data.service.name
+              ? data.service.name
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : ""
+            : "") ||
+          (data.percent ? data.percent.toString().includes(busqueda) : "") ||
+          (data.amount ? data.amount.toString().includes(busqueda) : "")
         );
       });
       setListRegistro(search);
     };
     filtrarElemento();
-  }, [busqueda]);
+  }, [busqueda, particular]);
 
   const handleEliminar = (e) => {
     console.log(e);
@@ -206,7 +215,7 @@ const Persona = () => {
 
           <DataTable
             columns={columnas}
-            data={particular}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader

@@ -26,11 +26,21 @@ const MSubirRapida = ({
   console.log(result);
 
   const postResults = () => {
-    if (result.reactive === "" || null) {
+    if (
+      result.reactive === "" ||
+      result.reactive === null ||
+      result.reactive === undefined ||
+      result.reactive === "Seleccione"
+    ) {
       setError(true);
     }
 
-    if (result.reactive !== "" || null) {
+    if (
+      result.reactive !== "" ||
+      result.reactive !== null ||
+      result.reactive !== undefined ||
+      result.reactive !== "Seleccione"
+    ) {
       fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) => {
         console.log(data);
         if (data.status === 200) {
@@ -42,12 +52,8 @@ const MSubirRapida = ({
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Aceptar",
-          }).then((resp) => {
-            if (resp.isConfirmed) {
-              console.log("entro al resp isconfirmed");
-              getAtencion();
-            }
           });
+          getAtencion();
         } else {
           closeModal();
           Swal.fire({

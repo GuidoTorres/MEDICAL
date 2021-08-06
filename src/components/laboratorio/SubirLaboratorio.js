@@ -128,8 +128,10 @@ const SubirLaboratorio = () => {
     const filtrarElemento = () => {
       const search = filterData.filter((data) => {
         return (
-          data.person.dni.toString().includes(busqueda) ||
-          data.date_creation.toString().includes(busqueda) ||
+          (data.person ? data.person.dni.toString().includes(busqueda) : "") ||
+          (data.date_creation
+            ? data.date_creation.toString().includes(busqueda)
+            : "") ||
           (data.person
             ? `${data.person.name} ${data.person.pat_lastname}`
                 .toString()
@@ -145,7 +147,6 @@ const SubirLaboratorio = () => {
 
   const handleModal = (tipoPrueba, e) => {
     setDataSelected(e);
-    console.log(e);
     if (tipoPrueba.prueba === 5) {
       setOpenModal(true);
     } else if (tipoPrueba.prueba === 6) {
@@ -161,8 +162,6 @@ const SubirLaboratorio = () => {
     }
   };
 
-  console.log(attention);
-
   const filtrarTabla = () => {
     const result = Object.values(attention).filter(
       (data) => data && data.service_id === tipoPrueba.prueba
@@ -173,7 +172,7 @@ const SubirLaboratorio = () => {
 
   useEffect(() => {
     filtrarTabla();
-  }, [tipoPrueba.prueba]);
+  }, [tipoPrueba.prueba, attention]);
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -266,6 +265,7 @@ const SubirLaboratorio = () => {
             dataSelected={dataSelected}
             tipoPrueba={tipoPrueba}
             getAtencion={getAtencion}
+            filtrarTabla={filtrarTabla}
           />
         )}
         {openModal2 && (

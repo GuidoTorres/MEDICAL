@@ -109,9 +109,8 @@ const Servicio = () => {
     const filtrarElemento = () => {
       const search = getServicio.filter((data) => {
         return data.name
-          .toString()
-          .toLowerCase()
-          .includes(busqueda.toLowerCase());
+          ? data.name.toString().toLowerCase().includes(busqueda.toLowerCase())
+          : "";
       });
       setListRegistro(search);
     };

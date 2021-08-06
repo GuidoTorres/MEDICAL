@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DataTable from "react-data-table-component";
 import jsPDF from "jspdf";
 import eclia from "../../assets/pdf Imagen/eclia.png";
@@ -15,9 +15,11 @@ import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 import { paginacionOpciones } from "../../helpers/tablaOpciones";
 
 const CargarResultado = () => {
+  const inputRef = useRef(null);
   const [busqueda, setBusqueda] = useState("");
   // const [listResult, setListResult] = useState([]);
   const [result, setResult] = useState({});
+  const [id, setId] = useState();
   const [resultado, setResultado] = useState({});
   const [getDateAttention, setGetDateAttention] = useState([]);
 
@@ -27,8 +29,6 @@ const CargarResultado = () => {
       .then((info) => info.json())
       .then((datos) => setResult(datos.data));
   };
-
-  console.log(result);
 
   useEffect(() => {
     getResult();
@@ -155,41 +155,45 @@ const CargarResultado = () => {
   };
 
   const handleDetalles = (e) => {
-    const input = document.getElementById("file-input");
+    inputRef.current.click();
 
-    if (input) {
-      input.click();
+    const formData = new FormData();
+    formData.set("pdf", inputRef.current.files[0]);
+    formData.set("id", e.id);
+    console.log(inputRef.current.files[0]);
+
+    if (inputRef.current.files[0] !== undefined && e.id !== undefined) {
+      console.log("Si hay file");
+      fetchGETPOSTPUTDELETE("result", formData, "POST").then((info) => {
+        inputRef.current.value = "";
+        if (info.status === 200) {
+          Swal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Se guardó el pdf correctamente.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Aceptar",
+          }).then((resp) => {
+            if (resp.isConfirmed) {
+              getResult();
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "!Ups¡",
+            text: "Algo salió mal.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cerrar",
+          });
+          inputRef.current.value = null;
+        }
+      });
+    } else {
+      console.log("No hay file");
     }
-    const formData = new FormData()
-    formData.set("id", e.id)
-    formData.set("pdf", input.files[0])
-
-    fetchGETPOSTPUTDELETE("result", formData, "POST").then((info) => {
-      console.log(info);
-      if (info.status === 200) {
-        Swal.fire({
-          icon: "success",
-          title: "Éxito",
-          text: "Se guardo el pdf correctamente.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getResult();
-          }
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "!Ups¡",
-          text: "Algo salió mal.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Cerrar",
-        });
-      }
-    });
   };
 
   return (
@@ -202,16 +206,17 @@ const CargarResultado = () => {
                 type="text"
                 placeholder="Buscar"
                 name="busqueda"
+                ref={inputRef}
                 value={busqueda}
-                onChange={handleSearch}
+                onChange={() => handleSearch()}
               />
             </div>
 
             <input
               type="file"
               id="file-input"
+              ref={inputRef}
               style={{ display: "none" }}
-              onChangeCapture={(e) => handleDetalles(e)}
             />
           </div>
 

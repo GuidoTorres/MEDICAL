@@ -10,6 +10,7 @@ const MSubirLaboratorio = ({
   setOpenModal,
   dataSelected,
   getAtencion,
+  filtrarTabla,
 }) => {
   const [result, setResult] = useState({
     id: dataSelected.id,
@@ -21,7 +22,12 @@ const MSubirLaboratorio = ({
   console.log(result);
 
   const postResults = () => {
-    if (result.result === "" || null) {
+    if (
+      result.result === "" ||
+      result.result === null ||
+      result.result === undefined ||
+      result.result === "Seleccione"
+    ) {
       document.getElementById("resultado").style =
         "border:1px solid red !important";
     }
@@ -39,11 +45,8 @@ const MSubirLaboratorio = ({
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Aceptar",
-          }).then((resp) => {
-            if (resp.isConfirmed) {
-              getAtencion();
-            }
           });
+          getAtencion();
         } else {
           closeModal();
           Swal.fire({

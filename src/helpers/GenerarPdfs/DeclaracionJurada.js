@@ -93,9 +93,11 @@ const generarDeclaracionJurada = (data) => {
   doc.text(155, 147, `${data.address}`);
   // doc.text(308, 130, `${data.dire}`);
 
-
   if (data.declaration.length > 0) {
-    if (data.declaration[0].answer === "No") {
+    if (
+      data.declaration[0].answer === "No" ||
+      data.declaration[0].answer === null
+    ) {
       doc.text(
         268,
         315,
