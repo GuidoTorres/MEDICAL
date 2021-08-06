@@ -13,7 +13,7 @@ const OMLista = ({ modalList, setModalList, listRegistro }) => {
   useEffect(() => {
     setLista([datos]);
   }, [datos]);
-
+  // console.log(lista);
   return (
     <Modal
       isOpen={modalList}
@@ -41,7 +41,14 @@ const OMLista = ({ modalList, setModalList, listRegistro }) => {
                   {lista.map((datos, index) => {
                     return (
                       <tr key={index}>
-                        <td>hola</td>
+                        <td>
+                          {datos.map((datax, index) => {
+                            const servicio = datax.services;
+                            return servicio.map((datosx, index) => {
+                              return <tr> {datosx.category.name}</tr>;
+                            });
+                          })}
+                        </td>
                         <td>
                           {datos.map((data, index) => {
                             const servicio = data.services;
@@ -52,7 +59,6 @@ const OMLista = ({ modalList, setModalList, listRegistro }) => {
                         </td>
                         <td>
                           {datos.map((data, index) => {
-                            console.log(data);
                             return <tr key={index}>{data.cantidad}</tr>;
                           })}
                         </td>

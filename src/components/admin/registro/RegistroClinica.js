@@ -7,6 +7,7 @@ import { paginacionOpciones } from "../../../helpers/tablaOpciones";
 import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
 
 import MRegistroClinica from "./MRegistroClinica";
+import Mlocazion from "./Mlocazion";
 
 const RegistroClinica = () => {
   const [busqueda, setBusqueda] = useState("");
@@ -16,7 +17,7 @@ const RegistroClinica = () => {
   // const [getRegistro, setGetRegistro] = useState();
   const [listRegistro, setListRegistro] = useState([]);
   const [metGetClinic, setMetGetClinic] = useState([]);
-
+  const [modalLocalizacion, setModalLocalizacion] = useState(false);
   const getClinica = () => {
     fetchGETPOSTPUTDELETE("clinics")
       .then((data) => data.json())
@@ -46,6 +47,7 @@ const RegistroClinica = () => {
           ? row.corporation.business_name
           : "",
       sortable: true,
+      grow: 2,
       style: {
         borderBotton: "none",
         color: "#555555",
@@ -120,7 +122,10 @@ const RegistroClinica = () => {
       name: "Administrar lugares",
       button: true,
       cell: (e) => (
-        <button onClick={() => handleEditar(e)} className="table__tablebutton">
+        <button
+          onClick={() => handleLocalizacion(e)}
+          className="table__tablebutton"
+        >
           <i className="fas fa-pencil-alt"></i>
         </button>
       ),
@@ -144,23 +149,42 @@ const RegistroClinica = () => {
         // metGetClinic.length !==undefined &&
         metGetClinic.filter((data) => {
           return (
-            data.corporation.ruc.toString().includes(busqueda) ||
-            data.corporation.business_name
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .toLocaleLowerCase()
-              .includes(busqueda) ||
-            data.corporation.contacts[0].name
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .toLocaleLowerCase()
-              .includes(busqueda) ||
-            data.corporation.contacts[0].phone.toString().includes(busqueda) ||
-            data.corporation.contacts[0].email
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .toLocaleLowerCase()
-              .includes(busqueda)
+            (data.corporation
+              ? data.corporation.ruc
+                ? data.corporation.ruc.toString().includes(busqueda)
+                : ""
+              : "") ||
+            (data.corporation
+              ? data.corporation.business_name
+                ? data.corporation.business_name
+                    .toString()
+                    .toLowerCase()
+                    .includes(busqueda.toLowerCase())
+                : ""
+              : "") ||
+            (data.corporation
+              ? data.corporation.contacts
+                ? data.corporation.contacts[0].name
+                    .toString()
+                    .toLowerCase()
+                    .includes(busqueda.toLowerCase())
+                : ""
+              : "") ||
+            (data.corporation
+              ? data.corporation.contacts
+                ? data.corporation.contacts[0].phone
+                    .toString()
+                    .includes(busqueda)
+                : ""
+              : "") ||
+            (data.corporation
+              ? data.corporation.contacts
+                ? data.corporation.contacts[0].email
+                    .toString()
+                    .toLowerCase()
+                    .includes(busqueda.toLowerCase())
+                : ""
+              : "")
           );
         });
       setListRegistro(search);
@@ -178,6 +202,9 @@ const RegistroClinica = () => {
     setOpenModal(true);
     setDataSelected(e);
     setEditar(true);
+  };
+  const handleLocalizacion = () => {
+    setModalLocalizacion(true);
   };
   const handleEliminar = (e) => {
     Swal.fire({
@@ -263,6 +290,12 @@ const RegistroClinica = () => {
           setDataSelected={setDataSelected}
           editar={editar}
           setEditar={setEditar}
+        />
+      )}
+      {modalLocalizacion && (
+        <Mlocazion
+          modalLocalizacion={modalLocalizacion}
+          setModalLocalizacion={setModalLocalizacion}
         />
       )}
     </div>

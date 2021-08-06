@@ -11,11 +11,11 @@ const Historial = () => {
   const [busqueda, setBusqueda] = useState("");
   // const [addRegistro, setAddRegistro] = useState(false);
   const [codigoHistorial, setCodigoHistorial] = useState(false);
-  const [attention, setAttention] = useState({});
+  const [attention, setAttention] = useState([]);
   const [dataBarCode, setDataBarCode] = useState({});
+  const [listRegistro, setListRegistro] = useState([]);
 
   const getAttention = () => {
-    //falta servicio
     fetchGETPOSTPUTDELETE("attention_history")
       // fetchGETPOSTPUTDELETE('attention')
 
@@ -144,40 +144,34 @@ const Historial = () => {
   ];
 
   useEffect(() => {
-    // const filtrarElemento = () => {
-    //   const search = servicios.filter((data) => {
-    //     return (
-    //       data.categoria
-    //         .normalize("NFD")
-    //         .replace(/[\u0300-\u036f]/g, "")
-    //         .toLocaleLowerCase()
-    //         .includes(busqueda) ||
-    //       data.subcategoria
-    //         .normalize("NFD")
-    //         .replace(/[\u0300-\u036f]/g, "")
-    //         .toLocaleLowerCase()
-    //         .includes(busqueda) ||
-    //       data.precioregular
-    //         .normalize("NFD")
-    //         .replace(/[\u0300-\u036f]/g, "")
-    //         .toLocaleLowerCase()
-    //         .includes(busqueda) ||
-    //       data.descuentoempresas
-    //         .normalize("NFD")
-    //         .replace(/[\u0300-\u036f]/g, "")
-    //         .toLocaleLowerCase()
-    //         .includes(busqueda) ||
-    //       data.descuentomiembros
-    //         .normalize("NFD")
-    //         .replace(/[\u0300-\u036f]/g, "")
-    //         .toLocaleLowerCase()
-    //         .includes(busqueda)
-    //     );
-    //   });
-    //   setServicio(search);
-    // };
-    // filtrarElemento();
-  }, [busqueda]);
+    const filtrarElemento = () => {
+      const search = attention.filter((data) => {
+        return (
+          (data.fullName
+            ? data.fullName
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "") ||
+          (data.dni ? data.dni.toString().includes(busqueda) : "") ||
+          (data.type_user
+            ? data.type_user
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "") ||
+          (data.service_type
+            ? data.service_type
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "")
+        );
+      });
+      setListRegistro(search);
+    };
+    filtrarElemento();
+  }, [busqueda, attention]);
 
   const handleOnChange = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -208,7 +202,7 @@ const Historial = () => {
             <DataTable
               className="dataTable"
               columns={columnas}
-              data={attention}
+              data={listRegistro}
               pagination
               paginationComponentOptions={paginacionOpciones}
               fixedHeader

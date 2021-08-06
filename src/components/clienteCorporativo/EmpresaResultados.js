@@ -24,7 +24,7 @@ const EmpresaResultados = () => {
   useEffect(() => {
     getResultado();
   }, []);
-  console.log(clinica);
+
   const enviarEmail = () => {
     const array = data.map((m) => m.nro_atencion);
     fetchGETPOSTPUTDELETEJSON(

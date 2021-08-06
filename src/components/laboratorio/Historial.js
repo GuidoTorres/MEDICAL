@@ -25,7 +25,7 @@ const Historial = () => {
   const [results, setResults] = useState({});
   const [tipoPrueba, setTipoPrueba] = useState({});
   const [servicios, setServicios] = useState({});
-  const [filterData, setFilterData] = useState({});
+  const [filterData, setFilterData] = useState([]);
 
   const getResults = () => {
     fetchGETPOSTPUTDELETE("resultados/clinica", null, "POST")
@@ -123,20 +123,28 @@ const Historial = () => {
     filtrarTabla();
   }, [tipoPrueba]);
 
-  // useEffect(() => {
-  //   const filtrarElemento = () => {
-  //     const search = filterData.filter((data) => {
-  //       return data.dni
-  //         .normalize('NFD')
-  //         .replace(/[\u0300-\u036f]/g, '')
-  //         .toLocaleLowerCase()
-  //         .includes(busqueda);
-  //     });
-  //     setListRegistro(search);
-  //   };
-  //   filtrarElemento();
-  // }, [busqueda, filterData]);
-  // console.log(filterData);
+  useEffect(() => {
+    const filtrarElemento = () => {
+      const search = filterData.filter((data) => {
+        return (
+          (data.dni ? data.dni.toString().includes(busqueda) : "") ||
+          (data.fecha_atencion
+            ? data.fecha_atencion.toString().includes(busqueda)
+            : "") ||
+          (data.paciente
+            ? data.paciente
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "")
+        );
+      });
+      setListRegistro(search);
+    };
+    filtrarElemento();
+  }, [busqueda, filterData]);
+  console.log(filterData);
+
   const handleDetalles = (e) => {
     console.log(e);
     if (e.servicio_id === 5) {
@@ -352,7 +360,7 @@ const Historial = () => {
 
             <DataTable
               columns={columnas}
-              data={filterData}
+              data={listRegistro}
               pagination
               paginationComponentOptions={paginacionOpciones}
               fixedHeader

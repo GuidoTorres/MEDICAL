@@ -31,7 +31,7 @@ const Usuario = () => {
   const columnas = [
     {
       name: "Ítem",
-      selector:  (row, index) => (index += 1),
+      selector: (row, index) => (index += 1),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -125,41 +125,40 @@ const Usuario = () => {
 
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = usuario.filter((data) => {
+      console.log(getUsuario);
+      const search = getUsuario.filter((data) => {
         return (
-          data.documento
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.numero.toString().includes(busqueda) ||
-          data.usuario
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.empresa
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.telefono.toString().includes(busqueda) ||
-          data.correo
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.atencion
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLocaleLowerCase()
-            .includes(busqueda)
+          (data.dni ? data.dni.toString().includes(busqueda) : "") ||
+          (data.user_type
+            ? data.user_type
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "") ||
+          (data.company
+            ? data.company
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "") ||
+          (data.phone
+            ? data.phone
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "") ||
+          (data.email
+            ? data.email
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "")
         );
       });
       setListRegistro(search);
     };
     filtrarElemento();
-  }, [busqueda]);
+  }, [busqueda, getUsuario]);
 
   const handleEditar = (e) => {
     setOpenModal(true);
@@ -225,7 +224,7 @@ const Usuario = () => {
 
           <DataTable
             columns={columnas}
-            data={getUsuario}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
