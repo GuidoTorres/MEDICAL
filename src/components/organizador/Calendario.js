@@ -28,7 +28,7 @@ const Calendario = () => {
   const { person } = users[0];
   const { services } = sample[0];
   const { district } = address;
-
+  console.log(selectionId);
   const { category, description: descripcionservicio } = services[0];
 
   const { name: nombredistrito } = district;
