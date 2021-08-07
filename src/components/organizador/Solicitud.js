@@ -1,35 +1,35 @@
-import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
-import { paginacionOpciones } from "../../helpers/tablaOpciones";
-import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
-import { listaPacient } from "../../actions/organizador";
+import React, { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component';
+import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
+import { listaPacient } from '../../actions/organizador';
 
-import OMLista from "./OMLista";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import OMLista from './OMLista';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 const Solicitud = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState('');
   const [oranizadorxd, setOranizadorxd] = useState([]);
   const [modalList, setModalList] = useState(false);
   const [search, setSearch] = useState([]);
   const [listRegistro, setListRegistro] = useState({});
 
   const getSolicitudes = () => {
-    fetchGETPOSTPUTDELETEJSON("reservation/organizer")
+    fetchGETPOSTPUTDELETEJSON('reservation/organizer')
       .then((data) => data.json())
       .then((datos) => setOranizadorxd(datos.data));
   };
-  // console.log(oranizadorxd);
+
   useEffect(() => {
     getSolicitudes();
   }, []);
 
   const ventanaIr = (e) => {
     dispatch(listaPacient(e));
-    history.push("/organizador/calendario");
+    history.push('/organizador/calendario');
   };
 
   const abrirModal = (e) => {
@@ -39,52 +39,52 @@ const Solicitud = () => {
 
   const columnas = [
     {
-      name: "Ítem",
+      name: 'Ítem',
       selector: (row, index) => (index += 1),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Usuario",
-      selector: (row) => (row ? row.users[0].person.name : ""),
+      name: 'Usuario',
+      selector: (row) => (row ? row.users[0].person.name : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Distrito",
-      selector: (row) => (row ? row.address.district.name : ""),
+      name: 'Distrito',
+      selector: (row) => (row ? row.address.district.name : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Fecha solicitada",
-      selector: (row) => (row ? row.attention_date : ""),
+      name: 'Fecha solicitada',
+      selector: (row) => (row ? row.attention_date : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Hora solicitada",
-      selector: (row) => (row ? row.attention_time : ""),
+      name: 'Hora solicitada',
+      selector: (row) => (row ? row.attention_time : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Ver",
+      name: 'Ver',
       button: true,
       cell: (e) => (
         <button onClick={() => abrirModal(e)} className="table__tablebutton">
@@ -93,7 +93,7 @@ const Solicitud = () => {
       ),
     },
     {
-      name: "Atención",
+      name: 'Atención',
       button: true,
       cell: (e) => (
         <button onClick={() => ventanaIr(e)} className="table__tablebutton">
@@ -112,21 +112,21 @@ const Solicitud = () => {
                 .toString()
                 .toLowerCase()
                 .includes(busqueda.toLowerCase())
-            : "") ||
+            : '') ||
           (data.address
             ? data.address.district.name
               ? data.address.district.name
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : ""
-            : "") ||
+              : ''
+            : '') ||
           (data.attention_date
             ? data.attention_date.toString().includes(busqueda)
-            : "") ||
+            : '') ||
           (data.attention_time
             ? data.attention_time.toString().includes(busqueda)
-            : "")
+            : '')
         );
       });
       setSearch(search);

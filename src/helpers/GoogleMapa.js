@@ -3,7 +3,7 @@ const mapContainerStyle = {
   width: '100%',
   height: '190px',
 };
-//fechas de google maps
+
 const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
