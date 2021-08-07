@@ -1,7 +1,7 @@
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 const mapContainerStyle = {
   width: '100%',
-  height: '190px',
+  height: '390px',
 };
 
 const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
@@ -11,10 +11,10 @@ const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
   });
 
   const { map_latitude, map_length } = dataSelected;
-
+  console.log(dataSelected);
   const position = {
-    lat: parseInt(map_latitude),
-    lng: parseInt(map_length),
+    lng: Number(map_length),
+    lat: Number(map_latitude),
   };
 
   return isLoaded ? (
