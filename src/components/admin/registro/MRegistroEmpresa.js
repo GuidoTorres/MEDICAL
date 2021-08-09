@@ -174,11 +174,8 @@ const MRegistroEmpresa = ({
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getCorporations();
-          }
         });
+        getCorporations();
       } else {
         closeModal();
         Swal.fire({
@@ -367,11 +364,8 @@ const MRegistroEmpresa = ({
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getCorporations();
-          }
         });
+        getCorporations();
       } else {
         closeModal();
         Swal.fire({
