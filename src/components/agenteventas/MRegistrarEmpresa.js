@@ -60,48 +60,65 @@ const MRegistrarEmpresa = ({
     if (empresa && empresa.ruc && empresa.ruc.length === 11) {
       getRuc();
     }
+    serviciosEditar();
   }, [empresa.ruc]);
 
-  const handleService = (e, data) => {
-    if (e.target.checked && editar === false) {
-      setService((service) => [
-        ...service,
-        {
-          service_id: e.target.checked ? data.id : "",
-          status: e.target.checked ? 1 : 0,
-        },
-      ]);
-    } else {
-      if (service.length > 0) {
-        let position = service.findIndex(
-          (arreglo) => arreglo.service_id === data.id
-        );
-        const arreglos = [...service];
-        arreglos.splice(position, 1);
-
-        setService([...arreglos]);
-      }
+  const serviciosEditar = () => {
+    if (editar) {
+      const array = [];
+      dataSelected.services.map((s) =>
+        array.push({ service_id: s.id, status: s.last_discount.state })
+      );
+      setService(array);
     }
+  };
 
-    if (editar === true && e.target.checked === false) {
-      const s = dataSelected.services.map((item) => ({
-        service_id: item.id,
-        status: 1,
-      }));
+  const handleService = (e, data) => {
+    if (editar) {
+      //Editando...
+      console.log(data);
+      // if (editar === true && e.target.checked === false) {
+      //   const s = dataSelected.services.map((item) => ({
+      //     service_id: item.id,
+      //     status: 1,
+      //   }));
+      //   // service.find((service) => service.service_id === 5).status
 
-      let position = s.findIndex((arreglo) => arreglo.service_id === data.id);
-      const arreglos = [...s];
-      arreglos[position].status = 0;
-      console.log(arreglos[position]);
-      setService(arreglos);
+      //   let position = s.findIndex((arreglo) => arreglo.service_id === data.id);
+      //   const arreglos = [...s];
+      //   arreglos[position].status = 0;
+      //   console.log(arreglos[position]);
+      //   setService(arreglos);
+      // } else {
+      //   setService((service) => [
+      //     ...service,
+      //     {
+      //       service_id: e.target.checked ? data.id : "",
+      //       status: e.target.checked ? 1 : 0,
+      //     },
+      //   ]);
+      // }
     } else {
-      setService((service) => [
-        ...service,
-        {
-          service_id: e.target.checked ? data.id : "",
-          status: e.target.checked ? 1 : 0,
-        },
-      ]);
+      //Creando...
+      if (e.target.checked && editar === false) {
+        setService((service) => [
+          ...service,
+          {
+            service_id: e.target.checked ? data.id : "",
+            status: e.target.checked ? 1 : 0,
+          },
+        ]);
+      } else {
+        if (service.length > 0) {
+          let position = service.findIndex(
+            (arreglo) => arreglo.service_id === data.id
+          );
+          const arreglos = [...service];
+          arreglos.splice(position, 1);
+
+          setService([...arreglos]);
+        }
+      }
     }
   };
 
@@ -151,11 +168,8 @@ const MRegistrarEmpresa = ({
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getCorporations();
-          }
         });
+        getCorporations();
       } else {
         closeModal();
         Swal.fire({
@@ -805,10 +819,18 @@ const MRegistrarEmpresa = ({
                               type="checkbox"
                               className="w-auto"
                               defaultChecked={
-                                dataSelected &&
-                                dataSelected.services &&
-                                dataSelected.services[i]
-                                  ? true
+                                editar
+                                  ? dataSelected.services
+                                    ? dataSelected.services.find(
+                                        (s) => s.id === data.id
+                                      )
+                                      ? dataSelected.services.find(
+                                          (s) => s.id === data.id
+                                        ).last_discount.state === 1
+                                        ? true
+                                        : false
+                                      : false
+                                    : false
                                   : false
                               }
                               onChange={(e) => handleService(e, data)}
