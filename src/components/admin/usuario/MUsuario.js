@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
-import { fetchGETPOSTPUTDELETEJSON } from '../../../helpers/fetch';
-import { customStyles } from '../../../helpers/tablaOpciones';
+import React, { useState } from "react";
+import Modal from "react-modal";
+import { fetchGETPOSTPUTDELETEJSON } from "../../../helpers/fetch";
+import { customStyles } from "../../../helpers/tablaOpciones";
 
 const MUsuario = ({ openModal, setOpenModal, dataSelected }) => {
   const [usuario, setUsuario] = useState({});
@@ -12,7 +12,7 @@ const MUsuario = ({ openModal, setOpenModal, dataSelected }) => {
   console.log(dataSelected);
 
   const editarUsuario = () => {
-    fetchGETPOSTPUTDELETEJSON(`users/${dataSelected.id}`, usuario, 'PUT').then(
+    fetchGETPOSTPUTDELETEJSON(`users/${dataSelected.id}`, usuario, "PUT").then(
       (resp) => console.log(resp)
     );
   };
@@ -46,7 +46,16 @@ const MUsuario = ({ openModal, setOpenModal, dataSelected }) => {
                 <input
                   type="text"
                   name="document_type"
-                  defaultValue={dataSelected.document_type || ''}
+                  disabled
+                  defaultValue={
+                    dataSelected.document_type === 3
+                      ? "Carné de extranjería"
+                      : dataSelected.document_type === 2
+                      ? "Pasaporte"
+                      : dataSelected.document_type === 1
+                      ? "DNI"
+                      : "" || ""
+                  }
                   onChange={(e) => handleChange(e)}
                   disabled
                 />
@@ -55,7 +64,7 @@ const MUsuario = ({ openModal, setOpenModal, dataSelected }) => {
                 <label>Número de documento</label>
                 <input
                   type="text"
-                  defaultValue={dataSelected.dni || ''}
+                  defaultValue={dataSelected.dni || ""}
                   name="dni"
                   onChange={(e) => handleChange(e)}
                   disabled
@@ -65,7 +74,7 @@ const MUsuario = ({ openModal, setOpenModal, dataSelected }) => {
                 <label>Tipo de usuario</label>
                 <input
                   type="text"
-                  defaultValue={dataSelected.user_type || ''}
+                  defaultValue={dataSelected.user_type || ""}
                   name="user_type"
                   onChange={(e) => handleChange(e)}
                 />
@@ -74,7 +83,7 @@ const MUsuario = ({ openModal, setOpenModal, dataSelected }) => {
                 <label>Empresa</label>
                 <input
                   type="text"
-                  defaultValue={dataSelected.company || ''}
+                  defaultValue={dataSelected.company || "----"}
                   name="company"
                   onChange={(e) => handleChange(e)}
                   disabled
@@ -84,7 +93,7 @@ const MUsuario = ({ openModal, setOpenModal, dataSelected }) => {
                 <label>Teléfono</label>
                 <input
                   type="text"
-                  defaultValue={dataSelected.phone || ''}
+                  defaultValue={dataSelected.phone || ""}
                   name="phone"
                   onChange={(e) => handleChange(e)}
                 />
@@ -93,7 +102,7 @@ const MUsuario = ({ openModal, setOpenModal, dataSelected }) => {
                 <label>Correo</label>
                 <input
                   type="text"
-                  defaultValue={dataSelected.email || ''}
+                  defaultValue={dataSelected.email || ""}
                   name="email"
                   onChange={(e) => handleChange(e)}
                 />

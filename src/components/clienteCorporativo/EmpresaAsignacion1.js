@@ -20,7 +20,7 @@ const EmpresaAsignacion = () => {
   useEffect(() => {
     getAsignacion();
   }, []);
-
+  console.log(asignation);
   const columnas = [
     {
       name: 'Ítem',
@@ -105,7 +105,11 @@ const EmpresaAsignacion = () => {
     {
       name: 'Sexo',
       selector: (row) =>
-        row.person && row.person.gender_id === 1 ? 'Masculino' : 'Femenino',
+        row.person && row.person.gender_id === 1
+          ? 'Masculino'
+          : row.person.gender_id === 2
+          ? 'Femenino'
+          : '',
       sortable: true,
       style: {
         color: '#8f9196',
@@ -161,7 +165,7 @@ const EmpresaAsignacion = () => {
       <h3 className="title__modals">Asignar pruebas</h3>
       <div className="row">
         <div className=" table-responsive">
-          <div className="adminregistro__option">
+          <div className="adminregistro__option mb-3">
             <div>
               <input
                 type="text"

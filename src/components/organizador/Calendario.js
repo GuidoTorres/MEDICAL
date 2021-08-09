@@ -126,6 +126,7 @@ const Calendario = () => {
                   <label>Ubicación:</label>
                   <i
                     className="fas fa-map-marker-alt"
+                    style={{ color: '#009DCA' }}
                     onClick={handlePacienteUbicacion}
                   ></i>
                 </div>

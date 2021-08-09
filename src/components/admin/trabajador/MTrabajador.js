@@ -137,7 +137,7 @@ const MTrabajador = ({
 
   const putEmployee = () => {
     const formData = new FormData();
-    formData.set("dni", trabajador.dni || dataSelected.dni);
+    formData.set("dni", dataSelected.dni);
     formData.set("name", trabajador.name || dataSelected.name);
     formData.set(
       "pat_lastname",
@@ -161,7 +161,7 @@ const MTrabajador = ({
         Swal.fire({
           icon: "success",
           title: "Éxito",
-          text: "Se ha actualizo el trabajador correctamente.",
+          text: "Se ha actualizó el trabajador correctamente.",
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Aceptar",
