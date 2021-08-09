@@ -10,19 +10,19 @@ const Estadisticas = () => {
   const data = {
     labels: [
       estadisticas && estadisticas.labels && estadisticas.labels[0]
-        ? "Eclia"
-        : "",
-      estadisticas && estadisticas.labels && estadisticas.labels[1]
-        ? "Rápida"
-        : "",
-      estadisticas && estadisticas.labels && estadisticas.labels[2]
-        ? "Molecular"
-        : "",
-      estadisticas && estadisticas.labels && estadisticas.labels[3]
         ? "Antígeno"
         : "",
+      estadisticas && estadisticas.labels && estadisticas.labels[1]
+        ? "Eclia anticuerpos IgM/IgG"
+        : "",
+      estadisticas && estadisticas.labels && estadisticas.labels[2]
+        ? "Eclia anticuerpos neutralizantes"
+        : "",
       estadisticas && estadisticas.labels && estadisticas.labels[3]
-        ? "RT-PCR"
+        ? "Rápida"
+        : "",
+      estadisticas && estadisticas.labels && estadisticas.labels[3]
+        ? "Molecular"
         : "",
     ],
     datasets: [
@@ -45,6 +45,47 @@ const Estadisticas = () => {
       responsive: true,
     },
   };
+
+  const dataPie = {
+    labels: [
+      estadisticas && estadisticas.labels && estadisticas.labels[0]
+        ? "Antígeno"
+        : "",
+      estadisticas && estadisticas.labels && estadisticas.labels[1]
+        ? "Eclia anticuerpos IgM/IgG"
+        : "",
+      estadisticas && estadisticas.labels && estadisticas.labels[2]
+        ? "Eclia anticuerpos neutralizantes"
+        : "",
+      estadisticas && estadisticas.labels && estadisticas.labels[3]
+        ? "Rápida"
+        : "",
+      estadisticas && estadisticas.labels && estadisticas.labels[3]
+        ? "Molecular"
+        : "",
+    ],
+    datasets: [
+      {
+        label: "Pruebas COVID19",
+        data: estadisticas.data,
+        fill: true,
+        backgroundColor: [
+          "rgba(116, 156, 0, 0.5)",
+          "rgba(0, 79, 130, 0.62)",
+          "rgba(58, 98, 119, 0.6)",
+          "rgba(174, 115, 119, 0.5)",
+          "rgba(54,162,235,0.5)",
+        ],
+        // borderColor: "rgba(75,192,192,1)",
+      },
+    ],
+
+    options: {
+      maintainAspectRatio: false,
+      responsive: true,
+    },
+  };
+
   const handleChange = (e) => {
     setFechas({
       ...fechas,
@@ -156,7 +197,10 @@ const Estadisticas = () => {
                 role="tabpanel"
                 aria-labelledby="profile-tab"
               >
-                <Pie data={data} style={{ width: "50%", height: "40%" }}></Pie>
+                <Pie
+                  data={dataPie}
+                  style={{ width: "50%", height: "40%" }}
+                ></Pie>
               </div>
             </div>
           </div>

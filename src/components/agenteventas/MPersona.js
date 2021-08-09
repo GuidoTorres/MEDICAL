@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import Swal from "sweetalert2";
 
 import { customStyles } from "../../helpers/tablaOpciones";
-import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
+import { fetchDNI, fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 
 const MPersona = ({
   openModal,
@@ -14,8 +14,12 @@ const MPersona = ({
   setEditar,
   getParticularDiscount,
 }) => {
-  const [persona, setPersona] = useState({});
+  const [persona, setPersona] = useState({
+    name: "",
+    pat_lastname: "",
+  });
   const [services, setServices] = useState({});
+  const [dni, setDni] = useState({});
 
   const closeModal = () => {
     setOpenModal(false);
@@ -26,10 +30,27 @@ const MPersona = ({
   const handleChange = (e) => {
     setPersona({
       ...persona,
-
+      name: dni.nombres || e.target.value,
+      pat_lastname:
+        dni.apellidoPaterno + " " + dni.apellidoMaterno || e.target.value,
       [e.target.name]: e.target.value,
     });
   };
+
+  const getDni = () => {
+    fetchDNI(persona.dni, "GET")
+      .then((res) => res.json())
+      .then((res) => setDni(res));
+  };
+
+  useEffect(() => {
+    if (persona && persona.dni && persona.dni.length === 8) {
+      getDni();
+    }
+  }, [persona.dni, dataSelected]);
+
+  console.log(dni);
+  console.log(persona);
 
   const getServices = () => {
     fetchGETPOSTPUTDELETEJSON("services")
@@ -49,7 +70,7 @@ const MPersona = ({
           Swal.fire({
             icon: "success",
             title: "Éxito",
-            text: "Se actualizo la empresa correctamente.",
+            text: "Se creó correctamente.",
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Aceptar",
@@ -176,24 +197,26 @@ const MPersona = ({
                   onChange={(e) => handleChange(e)}
                 />
               </div>
-              <div>
+              {/* <div>
                 <label>Estado</label>
                 <input
                   type="text"
                   name="document_type_id"
                   onChange={(e) => handleChange(e)}
                 />
-              </div>
+              </div> */}
               <div>
                 <label>Nombres</label>
                 <input
                   type="text"
                   name="name"
                   defaultValue={
-                    dataSelected &&
-                    dataSelected.user &&
-                    dataSelected.user.person &&
-                    dataSelected.user.person.name
+                    dni && dni.nombres
+                      ? dni.nombres
+                      : dataSelected &&
+                        dataSelected.user &&
+                        dataSelected.user.person &&
+                        dataSelected.user.person.name
                       ? dataSelected.user.person.name
                       : ""
                   }
@@ -206,10 +229,12 @@ const MPersona = ({
                   type="text"
                   name="pat_lastname"
                   defaultValue={
-                    dataSelected &&
-                    dataSelected.user &&
-                    dataSelected.user.person &&
-                    dataSelected.user.person.pat_lastname
+                    dni && dni.apellidoPaterno && dni.apellidoMaterno
+                      ? dni.apellidoPaterno + " " + dni.apellidoMaterno
+                      : dataSelected &&
+                        dataSelected.user &&
+                        dataSelected.user.person &&
+                        dataSelected.user.person.pat_lastname
                       ? dataSelected.user.person.pat_lastname
                       : ""
                   }

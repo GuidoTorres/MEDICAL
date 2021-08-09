@@ -1,5 +1,6 @@
 import jsPDF from "jspdf";
 import image from "../../assets/pdf Imagen/sintomas.png";
+import fileUrl from "file-url";
 
 const getFecha = () => {
   let newDate = new Date();
@@ -10,14 +11,41 @@ const getFecha = () => {
   return `${date}${"            "}${month}`;
 };
 
+function getBase64Image(img) {
+  var canvas = document.createElement("canvas");
+
+  canvas.width = img.width;
+  canvas.height = img.height;
+  var ctx = canvas.getContext("2d");
+
+  ctx.drawImage(img, 0, 0);
+
+  var dataURL = canvas.toDataURL("image/jpeg");
+
+  return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}
+var img = new Image();
+img.crossOrigin = "anonymous";
+
+img.onload = function () {
+  var dataURI = getBase64Image(img);
+  return dataURI;
+};
+
 const generarDeclaracionJurada = (data) => {
-  console.log(data);
+  console.log(data.document_details.signature);
+
+  // img.src = data.document_details.signature;
+  getBase64Image(data.document_details.signature)
+  console.log(img.onload());
   const doc = new jsPDF("p", "pt");
   doc.setProperties({
     title: "Declaración jurada",
   });
 
   doc.addImage(image, "PNG", 15, 20, 600, 800);
+
+  // doc.addImage(img.onload(), "JPEG", 15, 20, 100, 200, { useCors: true });
 
   // doc.setFillColor(255, 255, 255);
   // doc.rect(0, 100, 600, 135, "F");

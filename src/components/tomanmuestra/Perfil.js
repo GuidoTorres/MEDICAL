@@ -27,7 +27,11 @@ const Perfil = () => {
           <div className="barra procesa__perfil">
             <div>
               <label>Razón social: </label>
-              <input type="text" disabled placeholder={profile.business_name} />
+              <input
+                type="text"
+                disabled
+                placeholder={profile.commercial_name}
+              />
             </div>
             <div>
               <label>RUC: </label>
@@ -61,7 +65,14 @@ const Perfil = () => {
           <div className="barra">
             <h5>Logo</h5>
             <div className="procesa__perfil-img">
-              <img src="" alt="" />
+              <img
+                src={profile.logo}
+                alt=""
+                style={{
+                  border: "1xp solid red",
+                  maxWidth: "100%",
+                }}
+              />
             </div>
           </div>
         </div>

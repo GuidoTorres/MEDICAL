@@ -57,12 +57,15 @@ const Estadistica = () => {
       document.getElementById("categoria").disabled = false;
     } else {
       document.getElementById("categoria").disabled = true;
+      document.getElementById("categoria").value = "";
     }
 
     if (checks.check2 === 1) {
       document.getElementById("subcategoria").disabled = false;
     } else {
       document.getElementById("subcategoria").disabled = true;
+      document.getElementById("subcategoria").value = "";
+      setTipoPrueba({ servicios: [] });
     }
   }, [checks]);
 
@@ -98,7 +101,7 @@ const Estadistica = () => {
                       disabled
                       onChange={(e) => setCategoria({ data: e.target.value })}
                     >
-                      <option>Seleccionar</option>
+                      <option value="">Seleccione</option>
                       <option value="Covid 19">Covid 19</option>
                     </select>
                   </div>
@@ -153,7 +156,25 @@ const Estadistica = () => {
                 </div>
                 <textarea
                   disabled
-                  placeholder={tipoPrueba ? tipoPrueba.servicios : ""}
+                  placeholder={
+                    tipoPrueba
+                      ? tipoPrueba.servicios
+                          .slice(0, 5)
+                          .map((item) =>
+                            item === 5
+                              ? "Antígeno"
+                              : item === 6
+                              ? " Eclia anticuerpos IgM/IgG"
+                              : item === 7
+                              ? " Eclia anticuerpos neutralizantes"
+                              : item === 8
+                              ? " Rápida"
+                              : item === 9
+                              ? " Molecular"
+                              : ""
+                          )
+                      : ""
+                  }
                 ></textarea>
               </div>
             </div>

@@ -49,6 +49,7 @@ const RegistroClinica = () => {
       style: {
         borderBotton: 'none',
         color: '#555555',
+        maxWidth: "40px"
       },
     },
     {
@@ -58,10 +59,6 @@ const RegistroClinica = () => {
           ? row.corporation.business_name
           : '',
       sortable: true,
-<<<<<<< HEAD
-      grow: 1,
-=======
->>>>>>> 75cc79e0b9ea5b212ba8bfdb6464509de042bfcf
       style: {
         borderBotton: 'none',
         color: '#555555',
