@@ -76,28 +76,34 @@ const MRegistrarEmpresa = ({
   const handleService = (e, data) => {
     if (editar) {
       //Editando...
-      console.log(data);
-      // if (editar === true && e.target.checked === false) {
-      //   const s = dataSelected.services.map((item) => ({
-      //     service_id: item.id,
-      //     status: 1,
-      //   }));
-      //   // service.find((service) => service.service_id === 5).status
+      if (e.target.checked) {
+        let position = service.findIndex(
+          (arreglo) => arreglo.service_id === data.id
+        );
+        if (position !== -1) {
+          const arreglos = [...service];
+          arreglos.splice(position, 1, { service_id: data.id, status: 1 });
 
-      //   let position = s.findIndex((arreglo) => arreglo.service_id === data.id);
-      //   const arreglos = [...s];
-      //   arreglos[position].status = 0;
-      //   console.log(arreglos[position]);
-      //   setService(arreglos);
-      // } else {
-      //   setService((service) => [
-      //     ...service,
-      //     {
-      //       service_id: e.target.checked ? data.id : "",
-      //       status: e.target.checked ? 1 : 0,
-      //     },
-      //   ]);
-      // }
+          setService([...arreglos]);
+        } else {
+          setService([
+            ...service,
+            {
+              service_id: data.id,
+              status: 1,
+            },
+          ]);
+        }
+      } else {
+        let position = service.findIndex(
+          (arreglo) => arreglo.service_id === data.id
+        );
+        const arreglos = [...service];
+        arreglos[position].status = 0;
+
+        setService([...arreglos]);
+      }
+      console.log(service);
     } else {
       //Creando...
       if (e.target.checked && editar === false) {
