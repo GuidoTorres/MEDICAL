@@ -119,6 +119,8 @@ const Historial = () => {
     setFilterData(result);
   };
 
+  console.log(filterData);
+
   useEffect(() => {
     filtrarTabla();
   }, [tipoPrueba]);
@@ -239,11 +241,11 @@ const Historial = () => {
         180,
         265,
         `${
-          e.resultado && e.resultado.result === '0'
-            ? 'Negativo'
-            : e.resultado && e.resultado.result === '1'
-            ? 'Positivo'
-            : 'Sin resultado'
+          e.resultado && e.resultado.anticuerpos === "0"
+            ? "Negativo"
+            : e.resultado && e.resultado.anticuerpos === "1"
+            ? "Positivo"
+            : "Sin resultado"
         }`
       );
       doc.setFillColor(255, 255, 255);
@@ -328,7 +330,7 @@ const Historial = () => {
                   {servicios &&
                     servicios[0] &&
                     servicios[0].services &&
-                    servicios[0].services.map((data, i) => (
+                    servicios[0].services.slice(0, 4).map((data, i) => (
                       <option key={i} value={data.id}>
                         {data.abbreviation}
                       </option>

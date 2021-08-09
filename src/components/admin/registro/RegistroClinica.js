@@ -58,7 +58,6 @@ const RegistroClinica = () => {
           ? row.corporation.business_name
           : "",
       sortable: true,
-      grow: 1,
       style: {
         borderBotton: "none",
         color: "#555555",

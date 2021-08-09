@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import logo from '../../assets/icons/Isotipo.png';
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
+import React, { useEffect, useState } from "react";
+import logo from "../../assets/icons/Isotipo.png";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 const Perfil = () => {
+  const [dataPerfil, setDataPerfil] = useState({});
 
-  const [dataPerfil, setDataPerfil] = useState({})
+  const perfil = () => {
+    fetchGETPOSTPUTDELETE("auth/me", null, "POST")
+      .then((res) => res.json())
+      .then((res) => setDataPerfil(res));
+  };
 
-  const perfil = () =>{
-
-    fetchGETPOSTPUTDELETE("auth/me", null, "POST").then(res => res.json()).then(res => setDataPerfil(res))
-
-  }
-
-  useEffect(()=>{
-    perfil()
-  },[])
+  useEffect(() => {
+    perfil();
+  }, []);
 
   console.log(dataPerfil);
 
@@ -24,7 +23,11 @@ const Perfil = () => {
           <div className="barra procesa__perfil">
             <div>
               <label>Razón social: </label>
-              <input type="text" disabled placeholder={dataPerfil.business_name} />
+              <input
+                type="text"
+                disabled
+                placeholder={dataPerfil.commercial_name}
+              />
             </div>
             <div>
               <label>RUC: </label>
@@ -58,7 +61,14 @@ const Perfil = () => {
           <div className="barra">
             <h5>Logo</h5>
             <div className="procesa__perfil-img">
-              <img src={logo} alt="" />
+              <img
+                src={dataPerfil.logo}
+                alt=""
+                style={{
+                  border: "1xp solid red",
+                  maxWidth: "100%",
+                }}
+              />
             </div>
           </div>
         </div>

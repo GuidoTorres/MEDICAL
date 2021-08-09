@@ -186,7 +186,7 @@ const Atencion = () => {
             Swal.fire({
               icon: "success",
               title: "Éxito",
-              text: "Se ha generó la atención correctamente.",
+              text: "Se generó la atención correctamente.",
               confirmButtonColor: "#3085d6",
               cancelButtonColor: "#d33",
               confirmButtonText: "Aceptar",

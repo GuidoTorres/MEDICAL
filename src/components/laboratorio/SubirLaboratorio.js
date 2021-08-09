@@ -215,7 +215,7 @@ const SubirLaboratorio = () => {
                   {servicios &&
                     servicios[0] &&
                     servicios[0].services &&
-                    servicios[0].services.map((data, i) => (
+                    servicios[0].services.slice(0, 4).map((data, i) => (
                       <option key={i} value={data.id}>
                         {data.abbreviation}
                       </option>

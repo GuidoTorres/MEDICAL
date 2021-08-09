@@ -21,13 +21,12 @@ const CargarResultado = () => {
   const [result, setResult] = useState({});
   const [id, setId] = useState();
   const [resultado, setResultado] = useState({});
-  const [getDateAttention, setGetDateAttention] = useState([]);
 
   const getResult = () => {
     //cargar un pdf con los resultados
-    fetchGETPOSTPUTDELETE("result_historial")
+    fetchGETPOSTPUTDELETE("atenciones/resultado-pendiente", null, "POST")
       .then((info) => info.json())
-      .then((datos) => setResult(datos.data));
+      .then((datos) => setResult(datos));
   };
 
   useEffect(() => {
@@ -63,7 +62,7 @@ const CargarResultado = () => {
     // },
     {
       name: "Nº documento",
-      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
+      selector: (row) => (row.dni ? row.dni : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -72,10 +71,7 @@ const CargarResultado = () => {
     },
     {
       name: "Nombre",
-      selector: (row) =>
-        row.person && row.person.name && row.person.pat_lastname
-          ? row.person.name + " " + row.person.pat_lastname
-          : "",
+      selector: (row) => (row.paciente ? row.paciente : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -85,8 +81,7 @@ const CargarResultado = () => {
 
     {
       name: "Tipo prueba",
-      selector: (row) =>
-        row.service && row.service.name ? row.service.name : "",
+      selector: (row) => (row.prueba ? row.prueba : ""),
 
       sortable: true,
       style: {
@@ -96,7 +91,7 @@ const CargarResultado = () => {
     },
     {
       name: "Fecha solicitud",
-      selector: (row) => (row.date_creation ? row.date_creation : ""),
+      selector: (row) => (row.fecha_solicitud ? row.fecha_solicitud : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -107,10 +102,7 @@ const CargarResultado = () => {
       name: "Cargar Resultados",
       button: true,
       cell: (e) => (
-        <button
-          onClick={() => handleDetalles(e)}
-          className="table__tablebutton"
-        >
+        <button onClick={() => onChangeFile(e)} className="table__tablebutton">
           <i className="far fa-file-pdf" style={{ color: "grey" }}></i>
         </button>
       ),
@@ -154,16 +146,22 @@ const CargarResultado = () => {
     setBusqueda(([e.target.name] = e.target.value));
   };
 
-  const handleDetalles = (e) => {
+  const onChangeFile = (e) => {
     inputRef.current.click();
-
-    const formData = new FormData();
-    formData.set("pdf", inputRef.current.files[0]);
-    formData.set("id", e.id);
     console.log(inputRef.current.files[0]);
+    setResultado({ ...resultado, id: e.atencion_id });
 
-    if (inputRef.current.files[0] !== undefined && e.id !== undefined) {
-      console.log("Si hay file");
+    if (inputRef.current.files[0]) {
+      setResultado({ ...resultado, pdf: inputRef.current.files[0] });
+      handleDetalles(resultado);
+    }
+  };
+
+  const handleDetalles = (resultado) => {
+    const formData = new FormData();
+    formData.set("pdf", resultado.pdf);
+    formData.set("id", resultado.id);
+
       fetchGETPOSTPUTDELETE("result", formData, "POST").then((info) => {
         inputRef.current.value = "";
         if (info.status === 200) {
@@ -188,12 +186,10 @@ const CargarResultado = () => {
             cancelButtonColor: "#d33",
             confirmButtonText: "Cerrar",
           });
-          inputRef.current.value = null;
+          inputRef.current.value = "";
         }
       });
-    } else {
-      console.log("No hay file");
-    }
+
   };
 
   return (
@@ -216,6 +212,7 @@ const CargarResultado = () => {
               type="file"
               id="file-input"
               ref={inputRef}
+              onChange={(e) => onChangeFile(e)}
               style={{ display: "none" }}
             />
           </div>

@@ -17,9 +17,9 @@ const Reservas = () => {
   // en historial
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("attention")
+    fetchGETPOSTPUTDELETE("atenciones/clinica", null, "POST")
       .then((data) => data.json())
-      .then((datos) => setGetDateAttention(datos.data));
+      .then((datos) => setGetDateAttention(datos));
   };
 
   useEffect(() => {
@@ -38,14 +38,7 @@ const Reservas = () => {
     },
     {
       name: "Tipo de documento",
-      selector: (row) =>
-        row.person && row.person.document_type_id === 3
-          ? "Carné de extranjería"
-          : row.person && row.person.document_type_id === 2
-          ? "Pasaporte"
-          : row.person && row.person.document_type_id === 1
-          ? "DNI"
-          : "",
+      selector: (row) => (row.tipo_documento ? row.tipo_documento : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -54,7 +47,7 @@ const Reservas = () => {
     },
     {
       name: "Nº documento",
-      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
+      selector: (row) => (row.dni ? row.dni : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -63,32 +56,19 @@ const Reservas = () => {
     },
     {
       name: "Nombre",
-      selector: (row) => (row.person && row.person.name ? row.person.name : ""),
+      selector: (row) => (row.paciente ? row.paciente : ""),
       sortable: true,
       style: {
         borderBotton: "none",
         color: "#555555",
       },
     },
-    {
-      name: "Apellido",
-      // selector:'apellido',
 
-      selector: (row) =>
-        row.person && row.person.pat_lastname ? row.person.pat_lastname : "",
-
-      sortable: true,
-      style: {
-        borderBotton: "none",
-        color: "#555555",
-      },
-    },
     {
       name: "Tipo prueba",
       // selector:'tipo',
 
-      selector: (row) =>
-        row.service && row.service.name ? row.service.name : "",
+      selector: (row) => (row.prueba ? row.prueba : ""),
 
       sortable: true,
       style: {
@@ -100,7 +80,7 @@ const Reservas = () => {
       name: "Fecha solicitud",
       // selector:'solicitud',
 
-      selector: (row) => (row.date_creation ? row.date_creation : ""),
+      selector: (row) => (row.fecha_solicitud ? row.fecha_solicitud : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -159,7 +139,7 @@ const Reservas = () => {
   const handleDetalles = (e) => {
     Swal.fire({
       title: "¿Atender paciente?",
-      text: `${e.person.name}`,
+      text: `${e.paciente}`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -167,18 +147,20 @@ const Reservas = () => {
       confirmButtonText: "Atender",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetchGETPOSTPUTDELETE(`attention/attend/${e.id}`).then((data) => {
-          console.log(data);
-          if (data.status === 200) {
-            Swal.fire(
-              "Éxito!",
-              "Se generó la atención correctamente.",
-              "success"
-            );
+        fetchGETPOSTPUTDELETE(`attention/attend/${e.atencion_id}`).then(
+          (data) => {
+            console.log(data);
+            if (data.status === 200) {
+              Swal.fire(
+                "Éxito!",
+                "Se generó la atención correctamente.",
+                "success"
+              );
 
-            getAttention();
+              getAttention();
+            }
           }
-        });
+        );
       }
     });
   };

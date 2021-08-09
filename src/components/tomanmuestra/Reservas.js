@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 
-import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import {
+  fetchGETPOSTPUTDELETE,
+  fetchGETPOSTPUTDELETEJSON,
+} from "../../helpers/fetch";
 import { paginacionOpciones } from "../../helpers/tablaOpciones";
 import MReserva from "./MReserva";
 
@@ -16,9 +19,9 @@ const Reservas = () => {
   const [getDateAttention, setGetDateAttention] = useState([]);
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("attention")
+    fetchGETPOSTPUTDELETEJSON("atenciones/clinica", null, "POST")
       .then((data) => data.json())
-      .then((datos) => setGetDateAttention(datos.data));
+      .then((datos) => setGetDateAttention(datos));
   };
 
   useEffect(() => {
@@ -28,7 +31,7 @@ const Reservas = () => {
   const columnas = [
     {
       name: "Item",
-      selector: "id",
+      selector: (row, index) => (index += 1),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -37,14 +40,7 @@ const Reservas = () => {
     },
     {
       name: "Tipo de documento",
-      selector: (row) =>
-        row.person && row.person.document_type_id === 3
-          ? "Carné de extranjería"
-          : row.person && row.person.document_type_id === 2
-          ? "Pasaporte"
-          : row.person && row.person.document_type_id === 1
-          ? "DNI"
-          : "",
+      selector: (row) => (row.tipo_documento ? row.tipo_documento : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -53,7 +49,7 @@ const Reservas = () => {
     },
     {
       name: "Nº documento",
-      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
+      selector: (row) => (row.dni ? row.dni : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -62,10 +58,7 @@ const Reservas = () => {
     },
     {
       name: "Nombre",
-      selector: (row) =>
-        row.person && row.person.name
-          ? row.person.name + " " + row.person.pat_lastname
-          : "",
+      selector: (row) => (row.paciente ? row.paciente : ""),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -75,8 +68,9 @@ const Reservas = () => {
 
     {
       name: "Tipo prueba",
-      selector: (row) =>
-        row.service && row.service.abbreviation ? row.service.abbreviation : "",
+      // selector:'tipo',
+
+      selector: (row) => (row.prueba ? row.prueba : ""),
 
       sortable: true,
       style: {
@@ -86,22 +80,14 @@ const Reservas = () => {
     },
     {
       name: "Fecha solicitud",
-      selector: (row) => (row.date_creation ? row.date_creation : ""),
+      // selector:'solicitud',
+
+      selector: (row) => (row.fecha_solicitud ? row.fecha_solicitud : ""),
       sortable: true,
       style: {
         borderBotton: "none",
         color: "#555555",
       },
-    },
-
-    {
-      name: "Código Barras",
-      button: true,
-      cell: (e) => (
-        <button onClick={() => handleBarCode(e)} className="table__tablebutton">
-          <i className="fas fa-barcode"></i>
-        </button>
-      ),
     },
     {
       name: "Atender",
@@ -172,10 +158,8 @@ const Reservas = () => {
   };
 
   const filtrarClinica = () => {
-
-    const filtro = getDateAttention
-
-  }
+    const filtro = getDateAttention;
+  };
   const handleBarCode = (e) => {
     setOpenModal(true);
     setDataBarCode(e);

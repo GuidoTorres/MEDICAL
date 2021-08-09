@@ -171,6 +171,8 @@ const MEmpresa = ({
     filtrarServicios();
   }, [dataSelected]);
 
+  console.log(filterServices);
+
   return (
     <Modal
       isOpen={openModal}
@@ -341,6 +343,13 @@ const MEmpresa = ({
                             className="form-check-input"
                             type="checkbox"
                             name="services"
+                            defaultChecked={
+                              data &&
+                              data.last_discount &&
+                              data.last_discount.state
+                                ? data.last_discount.state
+                                : ""
+                            }
                             value={data.service_id}
                             id="flexCheckDefault"
                             onChange={(e) => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
+import { fetchGETPOSTPUTDELETE, fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
 
 const Historial = () => {
@@ -14,6 +14,7 @@ const Historial = () => {
       .then((data) => data.json())
       .then((datos) => setDataHistorial(datos));
   };
+
 
   useEffect(() => {
     getHistorial();

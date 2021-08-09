@@ -100,6 +100,8 @@ const MGenerarAtencion = ({
   };
 
   const crearAtencion = () => {
+    console.log("crear atencion");
+    console.log(ficha);
     const atencion = {
       date_attention: getFecha() || "",
       time_attention: getHora() || "",
@@ -278,7 +280,7 @@ const MGenerarAtencion = ({
                   services[0].services &&
                   services[0].services.map((data, i) => (
                     <option key={i} title={data.name} value={data.id}>
-                      {data.name}
+                      {data.abbreviation}
                     </option>
                   ))}
               </select>
