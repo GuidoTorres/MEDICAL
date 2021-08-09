@@ -22,8 +22,7 @@ const FacturacionRouter = () => {
         url5={''}
         titulo6={''}
         url6={''}
-        ç
-        ruta={'/laboratorio/subir'}
+        ruta={'/facturacion/empresas'}
       />
       <div>
         <Switch>

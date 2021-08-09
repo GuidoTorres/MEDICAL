@@ -15,7 +15,8 @@ const ImagenTrabajador = ({ setAvatar, avatar, dataSelected, id }) => {
     noKeyboard: true,
     onDrop,
   });
-  console.log(dataSelected.photo);
+
+  console.log(dataSelected);
   return (
     <div
       className="image__upload"
@@ -41,10 +42,10 @@ const ImagenTrabajador = ({ setAvatar, avatar, dataSelected, id }) => {
           }}
           className="image__avatar"
           src={
-            avatar
+            avatar && avatar
               ? avatar.preview
-              : dataSelected.photo
-              ? dataSelected.photo
+              // : dataSelected.photo
+              // ? dataSelected.photo
               : ""
           }
           alt=""

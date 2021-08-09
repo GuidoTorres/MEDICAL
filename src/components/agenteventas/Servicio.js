@@ -32,7 +32,9 @@ const Servicio = () => {
               <thead>
                 <tr>
                   <th scope="col">Tipo de prueba</th>
-                  <th scope="col">Costo</th>
+                  <th scope="col">Costo Limite inferior</th>
+                  <th scope="col">Costo Limite superior</th>
+                  <th scope="col">Precio de vitrina</th>
                 </tr>
               </thead>
               <tbody>
@@ -40,6 +42,17 @@ const Servicio = () => {
                   getServicio[0].services.map((servicio, i) => (
                     <tr key={i}>
                       <td>{servicio.name ? servicio.name : ""}</td>
+
+                      <td>
+                        {servicio.last_price && servicio.last_price.amount
+                          ? servicio.last_price.amount - 50
+                          : ""}
+                      </td>
+                      <td>
+                        {servicio.last_price && servicio.last_price.amount
+                          ? servicio.last_price.amount - 30
+                          : ""}
+                      </td>
                       <td>
                         {servicio.last_price && servicio.last_price.amount
                           ? servicio.last_price.amount

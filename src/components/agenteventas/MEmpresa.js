@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import Swal from "sweetalert2";
-import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
+import {
+  fetchGETPOSTPUTDELETE,
+  fetchGETPOSTPUTDELETEJSON,
+} from "../../helpers/fetch";
 
 import { customStyles } from "../../helpers/tablaOpciones";
 
@@ -18,12 +21,21 @@ const MEmpresa = ({
   const [discount, setDiscount] = useState([]);
   const [filterServices, setFilterServices] = useState({});
   const [dataFacturacion, setDataFacturacion] = useState({});
+  const [services, setServices] = useState({});
 
   const closeModal = () => {
     setOpenModal(false);
     setEditar(false);
     setDataSelected(null);
   };
+
+  const getServices = () => {
+    fetchGETPOSTPUTDELETE("services")
+      .then((res) => res.json())
+      .then((res) => setServices(res));
+  };
+
+  useEffect(() => {}, []);
 
   const crearCompanyDiscount = () => {
     // console.log(dataSelected);
@@ -87,11 +99,17 @@ const MEmpresa = ({
         },
       ]);
 
-      document.getElementById(`amount-${data.id}`).disabled = false;
-      document.getElementById(`percent-${data.id}`).value =
-        data.last_discount.percent;
-      document.getElementById(`amount-${data.id}`).value =
-        data.last_discount.amount;
+      if (document.getElementById(`amount-${data.id}`).disabled) {
+        document.getElementById(`amount-${data.id}`).disabled = false;
+      }
+      if (document.getElementById(`percent-${data.id}`).value !== null) {
+        document.getElementById(`percent-${data.id}`).value =
+          data.last_discount.percent;
+      }
+      if (document.getElementById(`amount-${data.id}`).value !== null) {
+        document.getElementById(`amount-${data.id}`).value =
+          data.last_discount.amount;
+      }
 
       console.log(discount);
     } else {
@@ -259,7 +277,9 @@ const MEmpresa = ({
               <thead>
                 <tr>
                   <th scope="col">Tipo de prueba</th>
-                  <th scope="col">Costo</th>
+                  <th scope="col">Costo Limite inferior</th>
+                  <th scope="col">Costo Limite superior</th>
+                  <th scope="col">Precio de vitrina</th>
                 </tr>
               </thead>
               <tbody>
@@ -268,6 +288,17 @@ const MEmpresa = ({
                     <tr key={i}>
                       <td>
                         {servicio.abbreviation ? servicio.abbreviation : ""}
+                      </td>
+
+                      <td>
+                        {servicio.last_price && servicio.last_price.amount
+                          ? servicio.last_price.amount - 50
+                          : ""}
+                      </td>
+                      <td>
+                        {servicio.last_price && servicio.last_price.amount
+                          ? servicio.last_price.amount - 30
+                          : ""}
                       </td>
                       <td>
                         {servicio.last_price && servicio.last_price.amount
