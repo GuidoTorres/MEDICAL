@@ -35,6 +35,8 @@ const Calendario = () => {
   const { dni, name: personanombre, pat_lastname, mom_lastname } = person;
   const { name: nombreservicio } = category;
 
+  console.log(selectionId);
+
   useEffect(() => {
     const listaTransportista = () => {
       fetchGETPOSTPUTDELETEJSON('transportistas_asignados')
@@ -192,7 +194,7 @@ const Calendario = () => {
         </div>
         <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
           <div className="barra">
-            <div>
+            {/* <div>
               <span className="">Material disponible</span>
               <div className="organizador__datostransportistas">
                 <div>
@@ -212,11 +214,62 @@ const Calendario = () => {
                   <input type="text" />
                 </div>
               </div>
+            </div> */}
+            <div className="accordion mt-3" id="accordionExample">
+              <div className="accordion-item">
+                <h2 className="accordion-header" id="headingOne">
+                  <button
+                    className="accordion-button"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseOne"
+                    aria-expanded="true"
+                    aria-controls="collapseOne"
+                  >
+                    Material disponibles
+                  </button>
+                </h2>
+                <div
+                  id="collapseOne"
+                  className="accordion-collapse collapse show"
+                  aria-labelledby="headingOne"
+                  data-bs-parent="#accordionExample"
+                >
+                  <div className="accordion-body">
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Material</th>
+                          <th scope="col">Cantidad</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>P. Antigeno(kit)</td>
+                          <td>Otto</td>
+                        </tr>
+                        <tr>
+                          <td>P. Electroquimioluminiscencia(kit)</td>
+                          <td>@fat</td>
+                        </tr>
+                        <tr>
+                          <td>P. Inmunocromatografía(kit)</td>
+                          <td>@twitter</td>
+                        </tr>
+                        <tr>
+                          <td>P. RT-PCR en tiempo real(kit)</td>
+                          <td>@twitter</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="row mt-5">
+      <div className="row mt-3">
         <div className="col-12">
           <div className="barra">
             {condicional && (
