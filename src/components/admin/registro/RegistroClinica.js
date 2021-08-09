@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import DataTable from 'react-data-table-component';
-import Swal from 'sweetalert2';
+import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
 
-import { paginacionOpciones } from '../../../helpers/tablaOpciones';
-import { fetchGETPOSTPUTDELETE } from '../../../helpers/fetch';
+import { paginacionOpciones } from "../../../helpers/tablaOpciones";
+import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
 
-import MRegistroClinica from './MRegistroClinica';
-import Mlocazion from './Mlocazion';
+import MRegistroClinica from "./MRegistroClinica";
+import Mlocazion from "./Mlocazion";
 
 const RegistroClinica = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [editar, setEditar] = useState(false);
   const [dataSelected, setDataSelected] = useState();
@@ -20,7 +20,7 @@ const RegistroClinica = () => {
   const [modalLocalizacion, setModalLocalizacion] = useState(false);
   // const [clinicasFiltradas, setClinicasFiltradas] = useState({});
   const getClinica = () => {
-    fetchGETPOSTPUTDELETE('clinics')
+    fetchGETPOSTPUTDELETE("clinics")
       .then((data) => data.json())
       .then((datos) => {
         setMetGetClinic(datos.data);
@@ -39,89 +39,89 @@ const RegistroClinica = () => {
     // filtrarMedical();
   }, []);
 
-  console.log(metGetClinic);
+  // console.log(metGetClinic);
 
   const columnas = [
     {
-      name: 'Ítem',
+      name: "Ítem",
       selector: (row, index) => (index += 1),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Razón social',
+      name: "Razón social",
       selector: (row) =>
         row.corporation && row.corporation.business_name
           ? row.corporation.business_name
-          : '',
+          : "",
       sortable: true,
       grow: 1,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'RUC',
+      name: "RUC",
       selector: (row) =>
-        row.corporation && row.corporation.ruc ? row.corporation.ruc : '',
+        row.corporation && row.corporation.ruc ? row.corporation.ruc : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Responsable',
+      name: "Responsable",
       selector: (row) =>
         row.corporation && row.corporation.contacts[0]
           ? row.corporation.contacts[0].name
-          : '',
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Teléfono',
+      name: "Teléfono",
       selector: (row) =>
         row.corporation && row.corporation.contacts[0]
           ? row.corporation.contacts[0].phone
-          : '',
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Correo',
+      name: "Correo",
       selector: (row) =>
         row.corporation && row.corporation.contacts[0]
           ? row.corporation.contacts[0].email
-          : '',
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Actividad',
+      name: "Actividad",
       selector: (row) =>
-        row.clinic_type_id === 1 ? 'Toman muestra' : 'Procesan muestra ',
+        row.clinic_type_id === 1 ? "Toman muestra" : "Procesan muestra ",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Editar',
+      name: "Editar",
       button: true,
       cell: (e) => (
         <button onClick={() => handleEditar(e)} className="table__tablebutton">
@@ -130,7 +130,7 @@ const RegistroClinica = () => {
       ),
     },
     {
-      name: 'Administrar lugares',
+      name: "Administrar lugares",
       button: true,
       cell: (e) => (
         <button
@@ -142,7 +142,7 @@ const RegistroClinica = () => {
       ),
     },
     {
-      name: 'Eliminar',
+      name: "Eliminar",
       button: true,
       cell: (e) => (
         <button
@@ -164,39 +164,39 @@ const RegistroClinica = () => {
             (data.corporation
               ? data.corporation.ruc
                 ? data.corporation.ruc.toString().includes(busqueda)
-                : ''
-              : '') ||
+                : ""
+              : "") ||
             (data.corporation
               ? data.corporation.business_name
                 ? data.corporation.business_name
                     .toString()
                     .toLowerCase()
                     .includes(busqueda.toLowerCase())
-                : ''
-              : '') ||
+                : ""
+              : "") ||
             (data.corporation
               ? data.corporation.contacts
                 ? data.corporation.contacts[0].name
                     .toString()
                     .toLowerCase()
                     .includes(busqueda.toLowerCase())
-                : ''
-              : '') ||
+                : ""
+              : "") ||
             (data.corporation
               ? data.corporation.contacts
                 ? data.corporation.contacts[0].phone
                     .toString()
                     .includes(busqueda)
-                : ''
-              : '') ||
+                : ""
+              : "") ||
             (data.corporation
               ? data.corporation.contacts
                 ? data.corporation.contacts[0].email
                     .toString()
                     .toLowerCase()
                     .includes(busqueda.toLowerCase())
-                : ''
-              : '')
+                : ""
+              : "")
           );
         });
       setListRegistro(search);
@@ -220,21 +220,21 @@ const RegistroClinica = () => {
   };
   const handleEliminar = (e) => {
     Swal.fire({
-      title: '¿Desea eliminar?',
+      title: "¿Desea eliminar?",
       text: `${e.corporation.business_name}`,
-      icon: 'info',
+      icon: "info",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Eliminar',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
         fetchGETPOSTPUTDELETE(`clinics/delete/${e.id}`).then((result) => {
           if (result.status === 200) {
             Swal.fire(
-              'Eliminado!',
-              'Se ha eliminado correctamente.',
-              'success'
+              "Eliminado!",
+              "Se ha eliminado correctamente.",
+              "success"
             ).then((resp) => {
               if (resp.isConfirmed) {
                 getClinica();
@@ -242,12 +242,12 @@ const RegistroClinica = () => {
             });
           } else {
             Swal.fire({
-              icon: 'error',
-              title: '!Ups¡',
-              text: 'Algo salió mal.',
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Cerrar',
+              icon: "error",
+              title: "!Ups¡",
+              text: "Algo salió mal.",
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Cerrar",
             });
           }
         });
@@ -271,11 +271,11 @@ const RegistroClinica = () => {
             </div>
             <div>
               <label>
-                Agregar clínica{' '}
+                Agregar clínica{" "}
                 <i
                   className="fas fa-plus-circle"
                   onClick={handleAddRegistro}
-                ></i>{' '}
+                ></i>{" "}
               </label>
             </div>
           </div>
