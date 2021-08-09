@@ -168,8 +168,8 @@ const EmpresaAsignacion2 = ({ modalIsOpen, setIsOpen, data, modal1 }) => {
                 <tr>
                   <th scope="col">Nombre</th>
                   <th scope="col">Dirección</th>
-                  <th scope="col">ubicación</th>
-                  <th scope="col">seleccionar</th>
+                  <th scope="col">Ubicación</th>
+                  <th scope="col">Seleccionar</th>
                 </tr>
               </thead>
               <tbody>

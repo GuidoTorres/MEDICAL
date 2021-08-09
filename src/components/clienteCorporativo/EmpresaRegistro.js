@@ -20,6 +20,7 @@ const EmpresaRegistro = () => {
   useEffect(() => {
     getEmployees();
   }, []);
+  console.log(employees);
 
   const importarExcel = (file) => {
     const formData = new FormData();
@@ -43,6 +44,7 @@ const EmpresaRegistro = () => {
       name: 'Ítem',
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
         borderBotton: 'none',
         color: '#555555',
@@ -70,7 +72,7 @@ const EmpresaRegistro = () => {
       name: 'Nº de documento',
       selector: (row) => (row.person && row.person.dni ? row.person.dni : ''),
       sortable: true,
-      grow: 2,
+      grow: 3,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -80,7 +82,7 @@ const EmpresaRegistro = () => {
       name: 'Nombres',
       selector: (row) => (row.person && row.person.name ? row.person.name : ''),
       sortable: true,
-      grow: 2,
+      grow: 3,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -91,7 +93,7 @@ const EmpresaRegistro = () => {
       selector: (row) =>
         row.person && row.person.pat_lastname ? row.person.pat_lastname : '',
       sortable: true,
-      grow: 2,
+      grow: 3,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -102,7 +104,7 @@ const EmpresaRegistro = () => {
       selector: (row) =>
         row.person && row.person.mom_lastname ? row.person.mom_lastname : '',
       sortable: true,
-      grow: 2,
+      grow: 3,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -113,7 +115,7 @@ const EmpresaRegistro = () => {
       selector: (row) =>
         row.person && row.person.email ? row.person.email : '',
       sortable: true,
-      grow: 4,
+      grow: 5,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -138,7 +140,7 @@ const EmpresaRegistro = () => {
       selector: (row) =>
         row.person && row.person.birthday ? row.person.birthday : '',
       sortable: true,
-      grow: 2,
+      grow: 3,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -237,7 +239,8 @@ const EmpresaRegistro = () => {
                 onChange={handleOnChange}
               />
             </div>
-            <div className="">
+            <div className="file">
+              <label>Elejir un archivo</label>
               <input type="file" onChangeCapture={(e) => subidaExcel(e)} />
             </div>
           </div>

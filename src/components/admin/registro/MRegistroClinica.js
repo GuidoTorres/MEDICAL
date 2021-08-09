@@ -18,18 +18,39 @@ const MRegistroClinica = ({
 }) => {
   const [avatar, setAvatar] = useState(null);
   const [dataMapa, setDataMapa] = useState({
-    lat: 0,
-    lng: 0,
+    lat: -12.04318,
+    lng: -77.02824,
   });
   const [workday, setWorkday] = useState([]);
   const [data, setData] = useState({
-    ruc: "",
-    business_name: "",
-    name: "",
-    phone: "",
-    email: "",
+    apertura: null,
+    address: null,
+    ruc: null,
+    business_name: null,
+    name: null,
+    phone: null,
+    email: null,
+    reference: null,
+    clinic_type_id: null,
   });
   const [ruc, setRuc] = useState({});
+
+  const [fechasDeSemana, setFechasDeSemana] = useState([
+    // "Lunes",
+    // "Martes",
+    // "Miércoles",
+    // "Jueves",
+    // "Viernes",
+    // "Sábado",
+    // "Domingo",
+    { id: 1, name: "Lunes" },
+    { id: 2, name: "Martes" },
+    { id: 3, name: "Miércoles" },
+    { id: 4, name: "Jueves" },
+    { id: 5, name: "Viernes" },
+    { id: 6, name: "Sábado" },
+    { id: 7, name: "Domingo" },
+  ]);
 
   const closeModal = () => {
     setOpenModal(false);
@@ -43,11 +64,44 @@ const MRegistroClinica = ({
       .then((res) => setRuc(res));
   };
 
+  const obtenerData = () => {
+    setData({
+      address: dataSelected.corporation.address.address,
+      ruc: dataSelected.corporation.ruc,
+      business_name: dataSelected.corporation.business_name,
+      name: dataSelected.corporation.contacts[0].name,
+      phone: dataSelected.corporation.contacts[0].phone,
+      email: dataSelected.corporation.contacts[0].email,
+      reference: dataSelected.corporation.address.reference,
+      clinic_type_id: dataSelected.clinic_type_id,
+      apertura: {
+        opening: dataSelected.corporation.work_day[0].hours.opening,
+        closing: dataSelected.corporation.work_day[0].hours.closing,
+      },
+    });
+    setAvatar(dataSelected.corporation.logo);
+    setWorkday(
+      dataSelected.corporation.work_day.map((w) => {
+        return {
+          day: w.id,
+        };
+      })
+    );
+    setDataMapa({
+      lat: dataSelected.corporation.address.map_latitude,
+      lng: dataSelected.corporation.address.map_length,
+    });
+  };
+
   useEffect(() => {
     if (data && data.ruc && data.ruc.length === 11) {
       getRuc();
     }
   }, [data.ruc]);
+
+  useEffect(() => {
+    if (editar) obtenerData();
+  }, []);
 
   const handleChange = (e) => {
     setData({
@@ -56,6 +110,8 @@ const MRegistroClinica = ({
     });
   };
   const handleWorkday = (e, nro) => {
+    // console.log(workday);
+    // console.log(fechasDeSemana);
     if (e.target.checked) {
       setWorkday((workday) => [
         ...workday,
@@ -80,6 +136,7 @@ const MRegistroClinica = ({
 
   const postClinics = (e) => {
     const formData = new FormData();
+    console.log(data);
 
     formData.set("ruc", data.ruc || "");
     formData.set("business_name", ruc.razonSocial || data.business_name || "");
@@ -120,11 +177,8 @@ const MRegistroClinica = ({
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getClinica();
-          }
         });
+        getClinica();
       } else {
         closeModal();
         Swal.fire({
@@ -138,129 +192,29 @@ const MRegistroClinica = ({
       }
     });
   };
-  console.log(data);
+  // console.log(data);
 
-  console.log(dataSelected);
+  // console.log(dataSelected);
   const putClinics = (e) => {
     const formData = new FormData();
 
     formData.set("corporation_id", 1);
-    formData.set(
-      "ruc",
-      dataSelected && dataSelected.corporation.ruc
-        ? dataSelected.corporation.ruc
-        : ""
-    );
-    formData.set(
-      "business_name",
-      data.business_name
-        ? data.business_name
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.business_name
-        ? dataSelected.corporation.business_name
-        : ""
-    );
+    formData.set("ruc", data.ruc || "");
+    formData.set("business_name", ruc.razonSocial || data.business_name || "");
     formData.set(
       "commercial_name",
-      data.business_name
-        ? data.business_name
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.commercial_name
-        ? dataSelected.corporation.commercial_name
-        : ""
+      ruc.razonSocial || data.business_name || ""
     );
     formData.set("logo", avatar && avatar.file ? avatar.file : "");
-    formData.set(
-      "address",
-      data.address
-        ? data.address
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.address &&
-          dataSelected.corporation.address.address
-        ? dataSelected.corporation.address.address
-        : ""
-    );
-    formData.set(
-      "reference",
-      data.reference
-        ? data.reference
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.address &&
-          dataSelected.corporation.address.reference
-        ? dataSelected.corporation.address.reference
-        : ""
-    );
-    formData.set(
-      "clinic_type_id",
-      data.clinic_type_id
-        ? data.clinic_type_id
-        : dataSelected && dataSelected.clinic_type_id
-        ? dataSelected.clinic_type_id
-        : ""
-    );
-    formData.set(
-      "map_latitude",
-      dataMapa
-        ? dataMapa.lat
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.address &&
-          dataSelected.corporation.address.map_latitude
-        ? dataSelected.corporation.address.map_latitude
-        : ""
-    );
-    formData.set(
-      "map_length",
-      dataMapa
-        ? dataMapa.lng
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.address &&
-          dataSelected.corporation.address.map_length
-        ? dataSelected.corporation.address.map_length
-        : ""
-    );
+    formData.set("address", ruc.direccion || data.address || "");
+    formData.set("reference", data.reference || "");
+    formData.set("clinic_type_id", data.clinic_type_id.toString());
+    formData.set("map_latitude", dataMapa ? dataMapa.lat : "");
+    formData.set("map_length", dataMapa ? dataMapa.lng : "");
 
-    formData.set(
-      "contacts[0][name]",
-      data.name
-        ? data.name
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.contacts &&
-          dataSelected.corporation.contacts[0] &&
-          dataSelected.corporation.contacts[0].name
-        ? dataSelected.corporation.contacts[0].name
-        : ""
-    );
-    formData.set(
-      "contacts[0][phone]",
-      data.phone
-        ? data.phone
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.contacts &&
-          dataSelected.corporation.contacts[0] &&
-          dataSelected.corporation.contacts[0].phone
-        ? dataSelected.corporation.contacts[0].phone
-        : ""
-    );
-    formData.set(
-      "contacts[0][email]",
-      data.email
-        ? data.email
-        : dataSelected &&
-          dataSelected.corporation &&
-          dataSelected.corporation.contacts &&
-          dataSelected.corporation.contacts[0] &&
-          dataSelected.corporation.contacts[0].email
-        ? dataSelected.corporation.contacts[0].email
-        : ""
-    );
+    formData.set("contacts[0][name]", data.name || "");
+    formData.set("contacts[0][phone]", data.phone || "");
+    formData.set("contacts[0][email]", data.email || "");
     formData.set("contacts[0][contact_type]", 0);
 
     if (workday) {
@@ -273,10 +227,9 @@ const MRegistroClinica = ({
         }
       }
     }
+    // console.log(dataMapa);
 
-    console.log(dataMapa);
-
-    console.log(dataSelected.corporation.logo);
+    // console.log(dataSelected.corporation.logo);
     fetchGETPOSTPUTDELETE(
       `clinics/update/${dataSelected.id}`,
       formData,
@@ -292,11 +245,8 @@ const MRegistroClinica = ({
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getClinica();
-          }
         });
+        getClinica();
       } else {
         closeModal();
         Swal.fire({
@@ -314,49 +264,46 @@ const MRegistroClinica = ({
   const submit = (e) => {
     e.preventDefault();
 
-    if (data) {
-      if (data.ruc.trim() === "" || null) {
-        document.getElementById("ruc").style =
-          "border:1px solid red !important";
-      }
-
-      if (data.business_name.trim() === "" || null) {
-        document.getElementById("business_name").style =
-          "border:1px solid red !important";
-      }
-
-      if (data.name.trim() === "" || null) {
-        document.getElementById("name").style =
-          "border:1px solid red !important";
-      }
-
-      if (data.phone.trim() === "" || null) {
-        document.getElementById("phone").style =
-          "border:1px solid red !important";
-      }
-
-      if (data.email.trim() === "" || null) {
-        document.getElementById("email").style =
-          "border:1px solid red !important";
-      }
-    }
     if (
-      (data.ruc !== "" || null,
-      data.business_name !== "" || null,
-      data.name !== "" || null,
-      data.phone !== "" || null,
-      data.email !== "" || null)
+      data.address !== "" &&
+      data.address !== null &&
+      data.ruc !== "" &&
+      data.ruc !== null &&
+      data.business_name !== "" &&
+      data.business_name !== null &&
+      data.name !== "" &&
+      data.name !== null &&
+      data.phone !== "" &&
+      data.phone !== null &&
+      data.email !== "" &&
+      data.email !== null &&
+      data.reference !== "" &&
+      data.reference !== null &&
+      data.clinic_type_id !== null &&
+      data.apertura !== null &&
+      workday.length > 0 &&
+      avatar !== null
     ) {
-      postClinics();
-    }
-
-    if (editar) {
-      document.getElementById("ruc").style = "border:none";
-      document.getElementById("business_name").style = "border:none";
-      document.getElementById("name").style = "border:none";
-      document.getElementById("phone").style = "border:none";
-      document.getElementById("email").style = "border:none";
-      putClinics();
+      if (editar) {
+        putClinics();
+        console.log(data);
+        console.log(workday);
+        console.log(avatar);
+        console.log(dataMapa);
+      } else {
+        postClinics();
+      }
+    } else {
+      console.log(data);
+      // console.log(dataSelected);
+      console.log(workday);
+      console.log(avatar);
+      console.log(dataMapa);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Debe completar todos los datos",
+      });
     }
   };
 
@@ -367,7 +314,7 @@ const MRegistroClinica = ({
         onRequestClose={closeModal}
         style={customStyles}
         className="modal modal__clinica"
-        overlayClassName="modal-fondo"
+        overlayClassName="modal-fondo ReactToMessage"
         closeTimeoutMS={200}
         preventScroll={true}
         ariaHideApp={false}
@@ -385,11 +332,7 @@ const MRegistroClinica = ({
                     id="ruc"
                     style={{ border: "1px solid red !important" }}
                     disabled={editar ? true : false}
-                    defaultValue={
-                      dataSelected && dataSelected.corporation.ruc
-                        ? dataSelected.corporation.ruc
-                        : ""
-                    }
+                    defaultValue={data.ruc || ""}
                     onChange={(e) => handleChange(e)}
                   />
                   {/* {error ? <p style={{color:'red'}}>Campo obligatorio</p> : null} */}
@@ -400,13 +343,7 @@ const MRegistroClinica = ({
                     type="text"
                     name="business_name"
                     id="business_name"
-                    defaultValue={
-                      editar === true
-                        ? dataSelected && dataSelected.corporation.business_name
-                          ? dataSelected.corporation.business_name
-                          : ""
-                        : ruc.razonSocial
-                    }
+                    defaultValue={data.business_name || ""}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
@@ -416,15 +353,7 @@ const MRegistroClinica = ({
                     type="text"
                     name="name"
                     id="name"
-                    defaultValue={
-                      dataSelected &&
-                      dataSelected.corporation &&
-                      dataSelected.corporation.contacts &&
-                      dataSelected.corporation.contacts[0] &&
-                      dataSelected.corporation.contacts[0].name
-                        ? dataSelected.corporation.contacts[0].name
-                        : ""
-                    }
+                    defaultValue={data.name || ""}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
@@ -434,15 +363,7 @@ const MRegistroClinica = ({
                     type="number"
                     name="phone"
                     id="phone"
-                    defaultValue={
-                      dataSelected &&
-                      dataSelected.corporation &&
-                      dataSelected.corporation.contacts &&
-                      dataSelected.corporation.contacts[0] &&
-                      dataSelected.corporation.contacts[0].phone
-                        ? dataSelected.corporation.contacts[0].phone
-                        : ""
-                    }
+                    defaultValue={data.phone || ""}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
@@ -452,15 +373,7 @@ const MRegistroClinica = ({
                     type="email"
                     name="email"
                     id="email"
-                    defaultValue={
-                      dataSelected &&
-                      dataSelected.corporation &&
-                      dataSelected.corporation.contacts &&
-                      dataSelected.corporation.contacts[0] &&
-                      dataSelected.corporation.contacts[0].email
-                        ? dataSelected.corporation.contacts[0].email
-                        : ""
-                    }
+                    defaultValue={data.email || ""}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
@@ -469,13 +382,7 @@ const MRegistroClinica = ({
                   <input
                     type="text"
                     name="address"
-                    defaultValue={
-                      editar
-                        ? dataSelected && dataSelected.corporation.address
-                          ? dataSelected.corporation.address.address
-                          : ""
-                        : ruc.direccion
-                    }
+                    defaultValue={data.address || ""}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
@@ -484,14 +391,7 @@ const MRegistroClinica = ({
                   <input
                     type="text"
                     name="reference"
-                    defaultValue={
-                      dataSelected &&
-                      dataSelected.corporation &&
-                      dataSelected.corporation.address &&
-                      dataSelected.corporation.address.reference
-                        ? dataSelected.corporation.address.reference
-                        : null
-                    }
+                    defaultValue={data.reference || ""}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
@@ -501,15 +401,11 @@ const MRegistroClinica = ({
                 <div>
                   <div>
                     <input
-                      type="checkbox"
+                      type="radio"
                       className="form-check-input"
                       name="clinic_type_id"
                       // disabled={data.clinic_type_id === 2 ? true : false}
-                      defaultChecked={
-                        dataSelected && dataSelected.clinic_type_id === 1
-                          ? true
-                          : false
-                      }
+                      defaultChecked={data.clinic_type_id === 1 ? true : false}
                       onChange={(e) =>
                         e.target.checked === true
                           ? setData({ ...data, clinic_type_id: 1 })
@@ -520,15 +416,11 @@ const MRegistroClinica = ({
                   </div>
                   <div>
                     <input
-                      type="checkbox"
+                      type="radio"
                       className="form-check-input"
                       name="clinic_type_id"
                       // disabled={data.clinic_type_id === 1 ? true : false}
-                      defaultChecked={
-                        dataSelected && dataSelected.clinic_type_id === 2
-                          ? true
-                          : false
-                      }
+                      defaultChecked={data.clinic_type_id === 2 ? true : false}
                       onChange={(e) =>
                         e.target.checked === true
                           ? setData({ ...data, clinic_type_id: 2 })
@@ -539,20 +431,108 @@ const MRegistroClinica = ({
                   </div>
                 </div>
               </div>
+              <div className="mregistro__fecha">
+                <h6>Días de atención</h6>
+                <div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      name="monday"
+                      defaultChecked={
+                        workday.find((w) => w.day === 1) ? true : false
+                      }
+                      onChange={(e) => handleWorkday(e, 1)}
+                    />
+                    <label>L</label>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      name="tuesday"
+                      defaultChecked={
+                        workday.find((w) => w.day === 2) ? true : false
+                      }
+                      onChange={(e) => handleWorkday(e, 2)}
+                    />
+                    <label>M</label>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      defaultChecked={
+                        workday.find((w) => w.day === 3) ? true : false
+                      }
+                      onChange={(e) => handleWorkday(e, 3)}
+                    />
+                    <label>M</label>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      name="thursday"
+                      defaultChecked={
+                        workday.find((w) => w.day === 4) ? true : false
+                      }
+                      onChange={(e) => handleWorkday(e, 4)}
+                    />
+                    <label>J</label>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      name="friday"
+                      defaultChecked={
+                        workday.find((w) => w.day === 5) ? true : false
+                      }
+                      onChange={(e) => handleWorkday(e, 5)}
+                    />
+                    <label>V</label>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      name="saturday"
+                      defaultChecked={
+                        workday.find((w) => w.day === 6) ? true : false
+                      }
+                      onChange={(e) => handleWorkday(e, 6)}
+                    />
+                    <label>S</label>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      name="sunday"
+                      defaultChecked={
+                        workday.find((w) => w.day === 7) ? true : false
+                      }
+                      onChange={(e) => handleWorkday(e, 7)}
+                    />
+                    <label>D</label>
+                  </div>
+                </div>
+              </div>
               <div className="mregistro__tiempo">
+                <h6>Seleccione horario por día</h6>
+                {/* <select>
+                  {fechasDeSemana.map((fds) => (
+                    <option>{fds.name}</option>
+                  ))}
+                </select> */}
                 <div>
                   <label>Horario inicio de atención</label>
                   <input
                     type="time"
                     name="opening"
                     defaultValue={
-                      dataSelected &&
-                      dataSelected.corporation.work_day &&
-                      dataSelected.corporation.work_day[0] &&
-                      dataSelected.corporation.work_day[0].hours &&
-                      dataSelected.corporation.work_day[0].hours.opening
-                        ? dataSelected.corporation.work_day[0].hours.opening
-                        : false
+                      data.apertura ? data.apertura.opening : "00:00"
                     }
                     onChange={(e) =>
                       setData({
@@ -568,13 +548,7 @@ const MRegistroClinica = ({
                     type="time"
                     name="closing"
                     defaultValue={
-                      dataSelected &&
-                      dataSelected.corporation.work_day &&
-                      dataSelected.corporation.work_day[0] &&
-                      dataSelected.corporation.work_day[0].hours &&
-                      dataSelected.corporation.work_day[0].hours.closing
-                        ? dataSelected.corporation.work_day[0].hours.closing
-                        : false
+                      data.apertura ? data.apertura.closing : "23:59"
                     }
                     onChange={(e) =>
                       setData({
@@ -583,129 +557,6 @@ const MRegistroClinica = ({
                       })
                     }
                   />
-                </div>
-              </div>
-              <div className="mregistro__fecha">
-                <h6>Días de atención</h6>
-                <div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      name="monday"
-                      defaultChecked={
-                        dataSelected &&
-                        dataSelected.corporation &&
-                        dataSelected.corporation.work_day &&
-                        dataSelected.corporation.work_day[0]
-                          ? true
-                          : false
-                      }
-                      onChange={(e) => handleWorkday(e, 0)}
-                    />
-                    <label>L</label>
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      name="tuesday"
-                      defaultChecked={
-                        dataSelected &&
-                        dataSelected.corporation &&
-                        dataSelected.corporation.work_day &&
-                        dataSelected.corporation.work_day[1]
-                          ? true
-                          : false
-                      }
-                      onChange={(e) => handleWorkday(e, 1)}
-                    />
-                    <label>M</label>
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      defaultChecked={
-                        dataSelected &&
-                        dataSelected.corporation &&
-                        dataSelected.corporation.work_day &&
-                        dataSelected.corporation.work_day[2]
-                          ? true
-                          : false
-                      }
-                      onChange={(e) => handleWorkday(e, 2)}
-                    />
-                    <label>M</label>
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      name="thursday"
-                      defaultChecked={
-                        dataSelected &&
-                        dataSelected.corporation &&
-                        dataSelected.corporation.work_day &&
-                        dataSelected.corporation.work_day[3]
-                          ? true
-                          : false
-                      }
-                      onChange={(e) => handleWorkday(e, 3)}
-                    />
-                    <label>J</label>
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      name="friday"
-                      defaultChecked={
-                        dataSelected &&
-                        dataSelected.corporation &&
-                        dataSelected.corporation.work_day &&
-                        dataSelected.corporation.work_day[4]
-                          ? true
-                          : false
-                      }
-                      onChange={(e) => handleWorkday(e, 4)}
-                    />
-                    <label>V</label>
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      name="saturday"
-                      defaultChecked={
-                        dataSelected &&
-                        dataSelected.corporation &&
-                        dataSelected.corporation.work_day &&
-                        dataSelected.corporation.work_day[5]
-                          ? true
-                          : false
-                      }
-                      onChange={(e) => handleWorkday(e, 5)}
-                    />
-                    <label>S</label>
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      name="sunday"
-                      defaultChecked={
-                        dataSelected &&
-                        dataSelected.corporation &&
-                        dataSelected.corporation.work_day &&
-                        dataSelected.corporation.work_day[6]
-                          ? true
-                          : false
-                      }
-                      onChange={(e) => handleWorkday(e, 6)}
-                    />
-                    <label>D</label>
-                  </div>
                 </div>
               </div>
             </div>
@@ -719,7 +570,7 @@ const MRegistroClinica = ({
                     avatar={avatar}
                     setAvatar={setAvatar}
                     editar={editar}
-                    dataSelected={dataSelected}
+                    // dataSelected={avatar}
                   />
                 </div>
               </div>
@@ -733,7 +584,7 @@ const MRegistroClinica = ({
                     dataMapa={dataMapa}
                     setDataMapa={setDataMapa}
                     editar={editar}
-                    dataSelected={dataSelected}
+                    // dataSelected={dataSelected}
                   />
                 </div>
               </div>

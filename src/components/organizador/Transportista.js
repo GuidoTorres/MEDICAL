@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
-import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
-import { paginacionOpciones } from "../../helpers/tablaOpciones";
+import React, { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component';
+import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
+import { paginacionOpciones } from '../../helpers/tablaOpciones';
 
 const Transportista = () => {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
   const [listTransportista, setListTransportista] = useState([]);
 
   const getTransportista = () => {
-    fetchGETPOSTPUTDELETEJSON("transportistas_asignados")
+    fetchGETPOSTPUTDELETEJSON('transportistas_asignados')
       .then((data) => data.json())
       .then((result) => setListTransportista(result));
   };
@@ -19,39 +19,40 @@ const Transportista = () => {
 
   const columnas = [
     {
-      name: "Ítem",
+      name: 'Ítem',
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nombre Apellido",
-      selector: (row) => (row && row.person ? row.person.name : ""),
+      name: 'Nombre Apellido',
+      selector: (row) => (row && row.person ? row.person.name : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Tipo vehículo",
-      selector: (row) => (row.vehicle && row.vehicle ? row.vehicle.name : ""),
+      name: 'Tipo vehículo',
+      selector: (row) => (row.vehicle && row.vehicle ? row.vehicle.name : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Placa",
-      selector: (row) => (row.vehicle ? row.vehicle.license_plate : ""),
+      name: 'Placa',
+      selector: (row) => (row.vehicle ? row.vehicle.license_plate : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
   ];
@@ -66,24 +67,24 @@ const Transportista = () => {
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : ""
-            : "") ||
+              : ''
+            : '') ||
           (data.vehicle
             ? data.vehicle.name
               ? data.vehicle.name
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : ""
-            : "") ||
+              : ''
+            : '') ||
           (data.vehicle
             ? data.vehicle.license_plate
               ? data.vehicle.license_plate
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : ""
-            : "")
+              : ''
+            : '')
         );
       });
       setListRegistro(search);
