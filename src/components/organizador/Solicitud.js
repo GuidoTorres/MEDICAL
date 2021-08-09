@@ -42,9 +42,11 @@ const Solicitud = () => {
       name: 'Ítem',
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
         borderBotton: 'none',
         color: '#555555',
+        // maxWidth: '50px',
       },
     },
     {
@@ -60,6 +62,7 @@ const Solicitud = () => {
       name: 'Distrito',
       selector: (row) => (row ? row.address.district.name : ''),
       sortable: true,
+      grow: 1,
       style: {
         borderBotton: 'none',
         color: '#555555',

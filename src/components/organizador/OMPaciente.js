@@ -43,7 +43,7 @@ const OMPaciente = ({ setMPaciente, MPaciente }) => {
             dataSelected={state}
           />
         </div>
-        <button className="botones mt-3">Cerrar</button>
+        {/* <button className="botones mt-3">Cerrar</button> */}
       </div>
     </Modal>
   );

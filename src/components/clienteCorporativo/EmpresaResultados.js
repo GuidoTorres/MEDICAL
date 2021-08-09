@@ -7,7 +7,7 @@ import eclia from '../../assets/pdf Imagen/eclia.png';
 import antigenono from '../../assets/pdf Imagen/antigenoSi.png';
 import antigenosi from '../../assets/pdf Imagen/antigenoSi.png';
 import anticuerpos from '../../assets/pdf Imagen/anticuerpos.png';
-import molecular from '../../assets/pdf Imagen/molecular.png';
+// import molecular from '../../assets/pdf Imagen/molecular.png';
 import rapida from '../../assets/pdf Imagen/rapida.png';
 import firma from '../../assets/pdf Imagen/Firma.png';
 import isos from '../../assets/pdf Imagen/isos.png';
@@ -17,7 +17,10 @@ const EmpresaResultados = () => {
   const [clinica, setClinica] = useState([]);
   const [data, setData] = useState([]);
   const [listRegistro, setListRegistro] = useState('');
-
+  const [checboxValue, setChecboxValue] = useState({
+    chekcboxEmail: false,
+  });
+  const { chekcboxEmail } = checboxValue;
   const getResultado = () => {
     fetchGETPOSTPUTDELETEJSON('resultados/compania', {}, 'POST')
       .then((data) => data.json())
@@ -45,6 +48,7 @@ const EmpresaResultados = () => {
       name: 'Ítem',
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
         borderBotton: 'none',
         color: '#555555',
@@ -102,8 +106,12 @@ const EmpresaResultados = () => {
 
     {
       name: 'Estado',
-      // selector: 'telefono',
-      // sortable: true,
+      selector: (row) =>
+        row.resultado === null
+          ? ''
+          : row.resultado.enviado === 0
+          ? 'No enviado'
+          : 'Enviado',
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -285,6 +293,17 @@ const EmpresaResultados = () => {
   const handleOnChange = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
+  const handleOnChangeCheckbox = (e) => {
+    setChecboxValue({ ...checboxValue, [e.target.name]: e.target.checked });
+  };
+  // console.log(chekcboxEmail);
+  useEffect(() => {
+    if (chekcboxEmail) {
+      console.log('enviar data');
+      enviarEmail();
+    }
+  }, [chekcboxEmail]);
+
   return (
     <div className=" container ">
       <div className="row">
@@ -300,6 +319,16 @@ const EmpresaResultados = () => {
               />
             </div>
             <div>
+              <div className="switch">
+                <input
+                  type="checkbox"
+                  id="check"
+                  name="chekcboxEmail"
+                  value={chekcboxEmail}
+                  onChange={handleOnChangeCheckbox}
+                />
+                <label htmlFor="check"></label>
+              </div>
               <button className="botones" onClick={enviarEmail}>
                 Enviar
               </button>
