@@ -22,6 +22,46 @@ h6 {
   color: $color-primary;
 }
 
+.file {
+  background-color: aquamarine;
+}
+.switch > input {
+  display: none;
+}
+.switch > label {
+  display: block;
+  position: relative;
+  background: #e7e8e9;
+  width: 55px;
+  height: 20px;
+  margin-bottom: 10px;
+  border-radius: 50px;
+  border: 2px solid #cad3dc;
+  box-shadow: -8px -8px 15px rgba(255, 255, 255, 0.377),
+    // 10px 10px 10px rgba(0, 0, 0, 0.1),
+    inset -8px -8px 15px rgba(255, 255, 255, 0.329);
+  // inset 10px 10px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+.switch > label:before {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background: #fff;
+  border-radius: 50%;
+  // box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  left: 0;
+  top: 0;
+  transition: all 0.3s;
+}
+.switch > input:checked + label {
+  background: $color-primary;
+}
+.switch > input:checked + label:before {
+  left: 36px;
+}
+
 //SPINNER DE CARGA
 
 .spinner {
@@ -211,11 +251,6 @@ input[type='checkbox'] {
     display: none;
   }
 }
-
-// !header de la tabla
-// .sc-dlnjwi .ezEBKV .rdt_TableHeadRow{
-//   wi
-// }
 
 .modal {
   background: white;

@@ -35,7 +35,7 @@ const Calendario = () => {
   const { dni, name: personanombre, pat_lastname, mom_lastname } = person;
   const { name: nombreservicio } = category;
 
-  console.log(selectionId);
+  // console.log(selectionId);
 
   useEffect(() => {
     const listaTransportista = () => {
@@ -45,7 +45,7 @@ const Calendario = () => {
     };
     listaTransportista();
   }, []);
-
+  console.log(listRegistro);
   useEffect(() => {
     if (!cambioEstado) {
       const listFecha = () => {
@@ -215,7 +215,7 @@ const Calendario = () => {
                 </div>
               </div>
             </div> */}
-            <div className="accordion mt-3" id="accordionExample">
+            <div className="accordion" id="accordionExample">
               <div className="accordion-item">
                 <h2 className="accordion-header" id="headingOne">
                   <button
