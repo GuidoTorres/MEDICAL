@@ -213,7 +213,11 @@ const MTrabajador = ({
       preventScroll={true}
       ariaHideApp={false}
     >
-      <h3 className="title__modal">Registrar Trabajador</h3>
+      {editar ? (
+        <h3 className="title__modal">Editar Responsable</h3>
+      ) : (
+        <h3 className="title__modal">Registrar Responsable</h3>
+      )}
       <div className="container">
         <form className="row mt-3" onSubmit={handleSubmit}>
           <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 mregistro__trabajador">

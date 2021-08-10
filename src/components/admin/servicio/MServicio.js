@@ -63,6 +63,16 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
         dataSelected.services[crearServicio.subCategoria].stock
     );
     formData.set(
+      "limite_inferior",
+      crearServicio.limite_inferior ||
+        dataSelected.services[crearServicio.subCategoria].limite_inferior
+    );
+    formData.set(
+      "limite_superior",
+      crearServicio.limite_superior ||
+        dataSelected.services[crearServicio.subCategoria].limite_superior
+    );
+    formData.set(
       "amount",
       crearServicio.amount ||
         dataSelected.services[crearServicio.subCategoria].last_price.amount
@@ -191,7 +201,47 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
               </div>
 
               <div>
-                <label> Monto:</label>
+                <label> Costo limite inferior:</label>
+                <input
+                  type="text"
+                  name="limite_inferior"
+                  id="amount"
+                  onChange={(e) => handleChange(e)}
+                  defaultValue={
+                    crearServicio.subCategoria &&
+                    dataSelected.services &&
+                    dataSelected.services[crearServicio.subCategoria] &&
+                    dataSelected.services[crearServicio.subCategoria]
+                      .abbreviation
+                      ? dataSelected.services[crearServicio.subCategoria]
+                          .limite_inferior
+                      : ""
+                  }
+                />
+              </div>
+
+              <div>
+                <label> Costo limite superior:</label>
+                <input
+                  type="text"
+                  name="limite_superior"
+                  id="amount"
+                  onChange={(e) => handleChange(e)}
+                  defaultValue={
+                    crearServicio.subCategoria &&
+                    dataSelected.services &&
+                    dataSelected.services[crearServicio.subCategoria] &&
+                    dataSelected.services[crearServicio.subCategoria]
+                      .abbreviation
+                      ? dataSelected.services[crearServicio.subCategoria]
+                          .limite_superior
+                      : ""
+                  }
+                />
+              </div>
+
+              <div>
+                <label> Precio vitrina:</label>
                 <input
                   type="text"
                   name="amount"

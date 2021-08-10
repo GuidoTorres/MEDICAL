@@ -70,15 +70,36 @@ const MUsuario = ({ openModal, setOpenModal, dataSelected }) => {
                   disabled
                 />
               </div>
-              <div>
-                <label>Tipo de usuario</label>
-                <input
-                  type="text"
-                  defaultValue={dataSelected.user_type || ""}
-                  name="user_type"
-                  onChange={(e) => handleChange(e)}
-                />
-              </div>
+              {dataSelected && dataSelected.user_type === "Empresa" ? (
+                <div>
+                  <label> Tipo de usuario:</label>
+                  <select
+                    className="form-select"
+                    id="categoria"
+                    aria-label="Default select example"
+                    style={{ width: "50%" }}
+                    name="service_category_id"
+                    onChange={(e) => handleChange(e)}
+                    defaultValue={dataSelected.user_type}
+                  >
+                    <option selected>Seleccione</option>
+                    <option value="Empresa">Empresa</option>
+                    <option value="Particular">Particular</option>
+                  </select>
+                </div>
+              ) : (
+                <div>
+                  <label>Tipo de usuario:</label>
+                  <input
+                    type="text"
+                    defaultValue={dataSelected.user_type || "----"}
+                    name="company"
+                    onChange={(e) => handleChange(e)}
+                    disabled
+                  />
+                </div>
+              )}
+
               <div>
                 <label>Empresa</label>
                 <input

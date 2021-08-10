@@ -61,6 +61,9 @@ const MCrearServicio = ({ openServicio, setOpenServicio, getServices }) => {
     formData.set("url_extra", crearServicio.url_extra || "");
     formData.set("image", avatar && avatar.file ? avatar.file : "");
     formData.set("stock", crearServicio.stock || "");
+    formData.set("limite_inferior", crearServicio.limite_inferior || "");
+    formData.set("limite_superior", crearServicio.limite_superior || "");
+
     formData.set("amount", crearServicio.amount || "");
 
     if (
@@ -146,9 +149,27 @@ const MCrearServicio = ({ openServicio, setOpenServicio, getServices }) => {
                   onChange={(e) => handleChange(e)}
                 />
               </div>
+              <div>
+                <label> Costo limite inferior:</label>
+                <input
+                  type="text"
+                  name="limite_inferior"
+                  id="amount"
+                  onChange={(e) => handleChange(e)}
+                />
+              </div>
+              <div>
+                <label> Costo limite superior:</label>
+                <input
+                  type="text"
+                  name="limite_superior"
+                  id="amount"
+                  onChange={(e) => handleChange(e)}
+                />
+              </div>
 
               <div>
-                <label> Monto:</label>
+                <label> Precio de vitrina:</label>
                 <input
                   type="text"
                   name="amount"
@@ -178,7 +199,7 @@ const MCrearServicio = ({ openServicio, setOpenServicio, getServices }) => {
                 <textarea
                   type="text"
                   name="description"
-                  style={{width:'50%'}}
+                  style={{ width: "50%" }}
                   onChange={(e) => handleChange(e)}
                 ></textarea>
               </div>
@@ -187,7 +208,7 @@ const MCrearServicio = ({ openServicio, setOpenServicio, getServices }) => {
                 <p>
                   Imagen <span>(.jpg, .jpeg, .jpg)</span>
                 </p>
-                <div style={{ width: "100%" }}>
+                <div style={{ width: "100%", height: "173px" }}>
                   <UploadAvatar avatar={avatar} setAvatar={setAvatar} />
                 </div>
               </div>

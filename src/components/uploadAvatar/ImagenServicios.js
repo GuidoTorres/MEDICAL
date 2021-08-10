@@ -29,6 +29,13 @@ const ImagenServicios = ({ setAvatar, avatar, dataSelected, id }) => {
       <input {...getInputProps()} />
       {isDragActive ? (
         <img
+          style={{
+            maxHeight: "100%",
+            maxWidth: "100%",
+            marginLeft: "100px",
+            border: "1px solid red",
+          }}
+          className="image__avatar"
           // className={avatar ? 'image__avatar' : 'image__carga'}
           src=""
           alt=""
@@ -38,6 +45,7 @@ const ImagenServicios = ({ setAvatar, avatar, dataSelected, id }) => {
           style={{
             maxHeight: "100%",
             maxWidth: "100%",
+            textAlign: "center ",
           }}
           className="image__avatar"
           src={

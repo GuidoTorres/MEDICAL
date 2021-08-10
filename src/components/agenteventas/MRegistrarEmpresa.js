@@ -60,18 +60,24 @@ const MRegistrarEmpresa = ({
     if (empresa && empresa.ruc && empresa.ruc.length === 11) {
       getRuc();
     }
-    serviciosEditar();
+    // serviciosEditar();
   }, [empresa.ruc]);
 
   const serviciosEditar = () => {
     if (editar) {
       const array = [];
-      dataSelected.services.map((s) =>
-        array.push({ service_id: s.id, status: s.last_discount.state })
-      );
+      dataSelected &&
+        dataSelected.company_service.map((s) =>
+          array.push({
+            service_id: s.service_id,
+            status: s.service.last_discount.state,
+          })
+        );
       setService(array);
     }
   };
+  console.log(dataSelected);
+  console.log(dataSelected.company_service);
 
   const handleService = (e, data) => {
     if (editar) {
