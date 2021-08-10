@@ -60,7 +60,7 @@ const MRegistrarEmpresa = ({
     if (empresa && empresa.ruc && empresa.ruc.length === 11) {
       getRuc();
     }
-    // serviciosEditar();
+    serviciosEditar();
   }, [empresa.ruc]);
 
   const serviciosEditar = () => {
