@@ -22,8 +22,9 @@ const MRegistroClinica = ({
     lng: -77.02824,
   });
   const [workday, setWorkday] = useState([]);
+
+  const [idFecha, setIdFecha] = useState(0);
   const [data, setData] = useState({
-    apertura: null,
     address: null,
     ruc: null,
     business_name: null,
@@ -35,14 +36,8 @@ const MRegistroClinica = ({
   });
   const [ruc, setRuc] = useState({});
 
-  const [fechasDeSemana, setFechasDeSemana] = useState([
-    // "Lunes",
-    // "Martes",
-    // "Miércoles",
-    // "Jueves",
-    // "Viernes",
-    // "Sábado",
-    // "Domingo",
+  const [fechasElegidas, setFechasElegidas] = useState([]);
+  const fechasDeSemana = [
     { id: 1, name: "Lunes" },
     { id: 2, name: "Martes" },
     { id: 3, name: "Miércoles" },
@@ -50,7 +45,7 @@ const MRegistroClinica = ({
     { id: 5, name: "Viernes" },
     { id: 6, name: "Sábado" },
     { id: 7, name: "Domingo" },
-  ]);
+  ];
 
   const closeModal = () => {
     setOpenModal(false);
@@ -74,24 +69,36 @@ const MRegistroClinica = ({
       email: dataSelected.corporation.contacts[0].email,
       reference: dataSelected.corporation.address.reference,
       clinic_type_id: dataSelected.clinic_type_id,
-      apertura: {
-        opening: dataSelected.corporation.work_day[0].hours.opening,
-        closing: dataSelected.corporation.work_day[0].hours.closing,
-      },
     });
     setAvatar(dataSelected.corporation.logo);
-    setWorkday(
-      dataSelected.corporation.work_day.map((w) => {
-        return {
-          day: w.id,
-        };
-      })
-    );
     setDataMapa({
       lat: dataSelected.corporation.address.map_latitude,
       lng: dataSelected.corporation.address.map_length,
     });
+    const _workday = dataSelected.corporation.work_day.map((w) => {
+      return {
+        day: w.id,
+        opening: w.hours.opening,
+        closing: w.hours.closing,
+      };
+    });
+    setIdFecha(_workday[0].day);
+
+    setWorkday(_workday);
+
+    setFechasElegidas(
+      fechasDeSemana.map((m) =>
+        _workday.find((w) => w.day === m.id) ? m : null
+      )
+    );
+
+    setTimeout(() => {
+      document.getElementById("horario-ingreso").value = _workday[0].opening;
+      document.getElementById("horario-final").value = _workday[0].closing;
+    }, 0);
   };
+
+  // console.log(fechasElegidas);
 
   useEffect(() => {
     if (data && data.ruc && data.ruc.length === 11) {
@@ -110,33 +117,69 @@ const MRegistroClinica = ({
     });
   };
   const handleWorkday = (e, nro) => {
-    // console.log(workday);
-    // console.log(fechasDeSemana);
+    const arreglos = [...workday];
+
     if (e.target.checked) {
-      setWorkday((workday) => [
-        ...workday,
-        {
-          day: nro,
-        },
-      ]);
+      arreglos.push({ day: nro, opening: "00:00", closing: "23:59" });
+      setWorkday([...arreglos]);
     } else {
       if (workday.length > 1) {
-        let position = workday.findIndex(
-          (arreglo) => arreglo.day === workday.length
-        );
+        let position = workday.findIndex((arreglo) => arreglo.day === nro);
 
-        const arreglos = [...workday];
         arreglos.splice(position, 1);
         setWorkday([...arreglos]);
       } else {
         setWorkday([]);
+        arreglos.pop();
       }
     }
+    setFechasElegidas(
+      fechasDeSemana.map((m) =>
+        arreglos.find((w) => w.day === m.id) ? m : null
+      )
+    );
+  };
+
+  const seleccioneHorario = (e) => {
+    setIdFecha(Number(e.target.value));
+    // setHorarioSeleccionado(
+    const w = workday.find((w) => w.day === Number(e.target.value));
+    // );
+    // console.log(workday.find((w) => w.day === Number(e.target.value)));
+    document.getElementById("horario-ingreso").value = w.opening;
+    document.getElementById("horario-final").value = w.closing;
+  };
+
+  const actualizarHorarioOpening = (e) => {
+    // console.log(e.target.value);
+    const arreglos = [...workday];
+    let position = workday.findIndex((arreglo) => arreglo.day === idFecha);
+    const _day = arreglos[position];
+
+    arreglos.splice(position, 1, {
+      day: _day.day,
+      opening: e.target.value,
+      closing: _day.closing,
+    });
+    setWorkday([...arreglos]);
+  };
+
+  const actualizarHorarioClosing = (e) => {
+    const arreglos = [...workday];
+    let position = workday.findIndex((arreglo) => arreglo.day === idFecha);
+    const _day = arreglos[position];
+
+    arreglos.splice(position, 1, {
+      day: _day.day,
+      opening: _day.opening,
+      closing: e.target.value,
+    });
+    setWorkday([...arreglos]);
   };
 
   const postClinics = (e) => {
     const formData = new FormData();
-    console.log(data);
+    // console.log(data);
 
     formData.set("ruc", data.ruc || "");
     formData.set("business_name", ruc.razonSocial || data.business_name || "");
@@ -156,16 +199,12 @@ const MRegistroClinica = ({
     formData.set("contacts[0][email]", data.email || "");
     formData.set("contacts[0][contact_type]", 0);
 
-    if (workday) {
-      for (var [value] of Object.entries(workday)) {
-        formData.set(`work_days[${value}][day_id]`, Number(value) + 1);
-        if (data.apertura) {
-          for (var [key2, value2] of Object.entries(data.apertura)) {
-            formData.set(`work_days[${value}][${key2}]`, value2);
-          }
-        }
-      }
-    }
+    workday.map((w, index) => {
+      formData.set(`work_days[${index}][day_id]`, Number(w.day));
+
+      formData.set(`work_days[${index}][opening]`, w.opening);
+      formData.set(`work_days[${index}][closing]`, w.closing);
+    });
 
     fetchGETPOSTPUTDELETE("clinics", formData, "POST").then((resp) => {
       if (resp.status === 200) {
@@ -192,9 +231,7 @@ const MRegistroClinica = ({
       }
     });
   };
-  // console.log(data);
 
-  // console.log(dataSelected);
   const putClinics = (e) => {
     const formData = new FormData();
 
@@ -217,16 +254,23 @@ const MRegistroClinica = ({
     formData.set("contacts[0][email]", data.email || "");
     formData.set("contacts[0][contact_type]", 0);
 
-    if (workday) {
-      for (var [value] of Object.entries(workday)) {
-        formData.set(`work_days[${value}][day_id]`, Number(value) + 1);
-        if (data.apertura) {
-          for (var [key2, value2] of Object.entries(data.apertura)) {
-            formData.set(`work_days[${value}][${key2}]`, value2);
-          }
-        }
-      }
-    }
+    // if (workday) {
+    //   for (var [value] of Object.entries(workday)) {
+    //     formData.set(`work_days[${value}][day_id]`, Number(value) + 1);
+    //     if (data.apertura) {
+    //       for (var [key2, value2] of Object.entries(data.apertura)) {
+    //         formData.set(`work_days[${value}][${key2}]`, value2);
+    //       }
+    //     }
+    //   }
+    // }
+
+    workday.map((w, index) => {
+      formData.set(`work_days[${index}][day_id]`, Number(w.day));
+
+      formData.set(`work_days[${index}][opening]`, w.opening);
+      formData.set(`work_days[${index}][closing]`, w.closing);
+    });
     // console.log(dataMapa);
 
     // console.log(dataSelected.corporation.logo);
@@ -280,7 +324,6 @@ const MRegistroClinica = ({
       data.reference !== "" &&
       data.reference !== null &&
       data.clinic_type_id !== null &&
-      data.apertura !== null &&
       workday.length > 0 &&
       avatar !== null
     ) {
@@ -288,17 +331,16 @@ const MRegistroClinica = ({
         putClinics();
         console.log(data);
         console.log(workday);
-        console.log(avatar);
-        console.log(dataMapa);
+        // console.log(avatar);
+        // console.log(dataMapa);
       } else {
         postClinics();
       }
     } else {
       console.log(data);
-      // console.log(dataSelected);
       console.log(workday);
-      console.log(avatar);
-      console.log(dataMapa);
+      // console.log(avatar);
+      // console.log(dataMapa);
       Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -521,25 +563,25 @@ const MRegistroClinica = ({
               </div>
               <div className="mregistro__tiempo">
                 <h6>Seleccione horario por día</h6>
-                {/* <select>
-                  {fechasDeSemana.map((fds) => (
-                    <option>{fds.name}</option>
-                  ))}
-                </select> */}
+                <select onClick={(e) => seleccioneHorario(e)}>
+                  {fechasElegidas.map((fds) =>
+                    fds !== null ? (
+                      <option key={fds.id} value={fds.id}>
+                        {fds.name}
+                      </option>
+                    ) : (
+                      <></>
+                    )
+                  )}
+                </select>
                 <div>
                   <label>Horario inicio de atención</label>
                   <input
                     type="time"
                     name="opening"
-                    defaultValue={
-                      data.apertura ? data.apertura.opening : "00:00"
-                    }
-                    onChange={(e) =>
-                      setData({
-                        ...data,
-                        apertura: { ...data.apertura, opening: e.target.value },
-                      })
-                    }
+                    id="horario-ingreso"
+                    // defaultValue={editar ? "00:00" : "00:00"}
+                    onChange={(e) => actualizarHorarioOpening(e)}
                   />
                 </div>
                 <div>
@@ -547,15 +589,9 @@ const MRegistroClinica = ({
                   <input
                     type="time"
                     name="closing"
-                    defaultValue={
-                      data.apertura ? data.apertura.closing : "23:59"
-                    }
-                    onChange={(e) =>
-                      setData({
-                        ...data,
-                        apertura: { ...data.apertura, closing: e.target.value },
-                      })
-                    }
+                    id="horario-final"
+                    // defaultValue={editar ? "00:00" : "23:59"}
+                    onChange={(e) => actualizarHorarioClosing(e)}
                   />
                 </div>
               </div>
