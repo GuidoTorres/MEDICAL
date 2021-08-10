@@ -172,6 +172,7 @@ const RegistroEmpresa = () => {
   };
   const handleEditar = (e) => {
     setOpenModal(true);
+    console.log(e);
     setDataSelected(e);
     setEditar(true);
   };

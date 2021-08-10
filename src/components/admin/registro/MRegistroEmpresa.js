@@ -66,8 +66,8 @@ const MRegistroEmpresa = ({
   const serviciosEditar = () => {
     if (editar) {
       const array = [];
-      dataSelected.services.map((s) =>
-        array.push({ service_id: s.id, status: s.last_discount.state })
+      dataSelected.company_service.map((s) =>
+        array.push({ service_id: s.id, status: s.service.last_discount.state })
       );
       setService(array);
     }
