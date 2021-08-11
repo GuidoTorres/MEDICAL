@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
+import React, { useEffect, useState } from 'react';
+import { Bar } from 'react-chartjs-2';
 
 const GraficoBarra = ({ estadistica, tipoPrueba }) => {
   const [result, setResult] = useState();
@@ -16,30 +16,28 @@ const GraficoBarra = ({ estadistica, tipoPrueba }) => {
   }, [tipoPrueba]);
 
   return (
-    <div style={{ width: "100%", height: "50%" }}>
+    <div style={{ width: '100%', height: '50%' }}>
       <Bar
         data={{
           labels: estadistica.labels,
           datasets: [
             {
-              label: "Número de evaluaciones por período de tiempo",
+              label: 'Número de evaluaciones por período de tiempo',
               data: estadistica.data,
-              // backgroundColor: [
-              //   '#ff4c4c',
-              //   '#0099e5',
-              //   '#ffdd00',
-              //   '#34bf49',
-              //   '#7d3f98',
-              //   '#fe5000',
-              // ],
-              // borderColor: [
-              //   'rgba(255, 99, 132, 1)',
-              //   'rgba(54, 162, 235, 1)',
-              //   'rgba(255, 206, 86, 1)',
-              //   'rgba(75, 192, 192, 1)',
-              //   'rgba(153, 102, 255, 1)',
-              //   'rgba(255, 159, 64, 1)',
-              // ],
+              backgroundColor: [
+                '#64C9CF',
+                '#CAF7E3',
+                '#B8DFD8',
+                '#E5FBB8',
+                '#93D9A3',
+              ],
+              borderColor: [
+                '#64C9CF',
+                '#CAF7E3',
+                '#B8DFD8',
+                '#E5FBB8',
+                '#93D9A3',
+              ],
               borderWidth: 1,
             },
           ],
