@@ -66,12 +66,18 @@ const MRegistrarEmpresa = ({
   const serviciosEditar = () => {
     if (editar) {
       const array = [];
-      dataSelected.services.map((s) =>
-        array.push({ service_id: s.id, status: s.last_discount.state })
-      );
+      dataSelected &&
+        dataSelected.company_service.map((s) =>
+          array.push({
+            service_id: s.service_id,
+            status: s.service.last_discount.state,
+          })
+        );
       setService(array);
     }
   };
+  console.log(dataSelected);
+  console.log(dataSelected.company_service);
 
   const handleService = (e, data) => {
     if (editar) {
@@ -832,7 +838,7 @@ const MRegistrarEmpresa = ({
                                       )
                                       ? dataSelected.services.find(
                                           (s) => s.id === data.id
-                                        ).last_discount.state === 1
+                                        ).service.last_discount.state === 1
                                         ? true
                                         : false
                                       : false

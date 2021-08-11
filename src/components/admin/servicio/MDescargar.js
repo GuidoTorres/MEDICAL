@@ -67,7 +67,7 @@ const MDescargar = ({
                   {dataSelected &&
                     dataSelected.services.map((data, i) => (
                       <option key={i} value={data.id}>
-                        {data.name}
+                        {data.abbreviation}
                       </option>
                     ))}
                 </select>

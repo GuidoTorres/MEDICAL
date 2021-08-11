@@ -1038,6 +1038,26 @@ const generarFichaCovid = (e) => {
     }`
   );
 
+  doc.text(
+    388,
+    235,
+    `${
+      e.covid_file && e.covid_file[113] && e.covid_file[113].answer
+        ? e.covid_file[113].answer
+        : ""
+    }`
+  );
+
+  doc.text(
+    388,
+    235,
+    `${
+      e.covid_file && e.covid_file[114] && e.covid_file[114].answer
+        ? e.covid_file[114].answer
+        : ""
+    }`
+  );
+
   window.open(doc.output("bloburl"), "_blank");
 };
 

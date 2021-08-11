@@ -7,6 +7,7 @@ import { generarDeclaracionJurada } from "../../helpers/GenerarPdfs/DeclaracionJ
 import { generarConsentimientoInformado } from "../../helpers/GenerarPdfs/ConsentimientoInformado";
 import { generarFichaCovid } from "../../helpers/GenerarPdfs/FichaCovid";
 
+
 const Historial = () => {
   const [busqueda, setBusqueda] = useState("");
   // const [addRegistro, setAddRegistro] = useState(false);
@@ -22,6 +23,7 @@ const Historial = () => {
       .then((data) => data.json())
       .then((datos) => setAttention(datos.data));
   };
+
 
   useEffect(() => {
     getAttention();
@@ -134,6 +136,7 @@ const Historial = () => {
           <i
             class="far fa-file-pdf"
             onClick={() => {
+              // convertirImagen(e);
               generarFichaCovid(e);
               // generarFichaCovid();
             }}

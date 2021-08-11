@@ -86,18 +86,21 @@ const MEmpresa = ({
     setFilterServices(data);
   };
 
+  console.log(dataSelected);
+
+
   const handleChange = (e, data) => {
     if (e.target.checked) {
-      setDiscount((discount) => [
-        ...discount,
+     const s = filterServices.map((item) => ({
+        service_id: item.id,
+        status: 1,
+      }));
 
-        {
-          service_id: data.service.id,
-          state: 1,
-          percent: data.last_discount.percent,
-          amount: data.last_discount.amount,
-        },
-      ]);
+      let position = s.findIndex((arreglo) => arreglo.service_id === data.id);
+      const arreglos = [...s];
+      arreglos[position].status = 0;
+      setDiscount(arreglos)
+
 
       if (document.getElementById(`amount-${data.id}`).disabled) {
         document.getElementById(`amount-${data.id}`).disabled = false;
@@ -128,9 +131,9 @@ const MEmpresa = ({
       document.getElementById(`amount-${data.id}`).disabled = true;
     }
   };
+  console.log(discount);
 
-  const editarPercent = (e, id, idService) => {
-    console.log(e);
+  const editarPercent = (e, id, idService ,data ) => {
 
     const value = e.target.value || 0;
 
@@ -171,7 +174,7 @@ const MEmpresa = ({
     filtrarServicios();
   }, [dataSelected]);
 
-  console.log(filterServices);
+
 
   return (
     <Modal
@@ -389,7 +392,7 @@ const MEmpresa = ({
                                 : ""
                             }
                             onChange={(e) =>
-                              editarPercent(e, data.id, data.service.id)
+                              editarPercent(e, data.id, data.service.id, data)
                             }
                             aria-describedby="basic-addon1"
                           />
@@ -410,6 +413,7 @@ const MEmpresa = ({
                 className="form-control"
                 placeholder=""
                 aria-label=""
+                defaultValue={dataSelected.billing.before}
                 aria-describedby="basic-addon1"
                 onChange={(e) =>
                   setDataFacturacion({
@@ -428,6 +432,7 @@ const MEmpresa = ({
                 placeholder=""
                 aria-label=""
                 aria-describedby="basic-addon1"
+                defaultValue={dataSelected.billing.credit}
                 onChange={(e) =>
                   setDataFacturacion({
                     ...dataFacturacion,

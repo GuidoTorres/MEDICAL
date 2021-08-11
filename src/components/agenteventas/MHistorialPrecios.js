@@ -77,14 +77,15 @@ const MHistorialPrecios = ({ precios, setPrecios, id }) => {
       <h3 className="title__modal">Historial de precios</h3>
       <div class="tab-content" id="myTabContent">
         <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          className="historial_container"
+          // style={{
+          //   display: "flex",
+          //   alignItems: "center",
+          //   justifyContent: "center",
+          // }}
         >
           <div
-            class="input-group mb-3"
+            class="fecha input-group mb-3"
             style={{
               display: "flex",
               alignItems: "center",
@@ -114,13 +115,23 @@ const MHistorialPrecios = ({ precios, setPrecios, id }) => {
             <input
               type="date"
               name="fecha_fin"
-              class="form-control"
+              class="fecha form-control"
               aria-label="Username"
               aria-describedby="basic-addon1"
               onChange={handleChange}
             />
           </div>
+          <div>
+            <button
+              type="button"
+              class="botones btn btn-primary"
+              onClick={() => getHistorial()}
+            >
+              Mostrar historial
+            </button>
+          </div>
         </div>
+
         <div
           class="tab-pane fade show active"
           id="home"
@@ -129,13 +140,6 @@ const MHistorialPrecios = ({ precios, setPrecios, id }) => {
         >
           <Line className=" mt-5" data={data} />
         </div>
-        <button
-          type="button"
-          class="botones btn btn-primary"
-          onClick={() => getHistorial()}
-        >
-          Mostrar historial
-        </button>
       </div>
     </Modal>
   );

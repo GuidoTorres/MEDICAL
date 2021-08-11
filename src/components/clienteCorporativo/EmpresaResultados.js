@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
 import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
-import jsPDF from 'jspdf';
+import jsPDF from "jspdf";
 import eclia from '../../assets/pdf Imagen/eclia.png';
 import antigenono from '../../assets/pdf Imagen/antigenoSi.png';
 import antigenosi from '../../assets/pdf Imagen/antigenoSi.png';
