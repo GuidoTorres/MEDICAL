@@ -31,8 +31,8 @@ const generarFichaCovid = (e) => {
   //DATOS GENERALES
 
   doc.text(
-    147,
-    135,
+    180,
+    155,
     `${
       e.covid_file && e.covid_file[0] && e.covid_file[0].answer
         ? e.covid_file[0].answer
@@ -45,8 +45,8 @@ const generarFichaCovid = (e) => {
   //Inst. Adm:
 
   doc.text(
-    496,
-    135,
+    488,
+    155,
     `${
       e.covid_file && e.covid_file[3] && e.covid_file[3].answer === "X"
         ? "X"
@@ -54,8 +54,8 @@ const generarFichaCovid = (e) => {
     }`
   );
   doc.text(
-    496,
-    152,
+    488,
+    171,
     `${
       e.covid_file && e.covid_file[4] && e.covid_file[4].answer === "X"
         ? "X"
@@ -63,8 +63,8 @@ const generarFichaCovid = (e) => {
     }`
   );
   doc.text(
-    496,
-    169,
+    488,
+    186,
     `${
       e.covid_file && e.covid_file[5] && e.covid_file[5].answer === "X"
         ? "X"
@@ -72,8 +72,8 @@ const generarFichaCovid = (e) => {
     }`
   );
   doc.text(
-    496,
-    186,
+    488,
+    200,
     `${
       e.covid_file && e.covid_file[6] && e.covid_file[6].answer === "X"
         ? "X"
@@ -83,8 +83,8 @@ const generarFichaCovid = (e) => {
 
   // Clasificacion del caso
   doc.text(
-    150,
-    187,
+    170,
+    200,
     `${
       e.covid_file && e.covid_file[7] && e.covid_file[7].answer === "X"
         ? "X"
@@ -92,8 +92,8 @@ const generarFichaCovid = (e) => {
     }`
   );
   doc.text(
-    240,
-    187,
+    255,
+    200,
     `${
       e.covid_file && e.covid_file[8] && e.covid_file[8].answer === "X"
         ? "X"
@@ -101,8 +101,8 @@ const generarFichaCovid = (e) => {
     }`
   );
   doc.text(
-    313,
-    187,
+    320,
+    200,
     `${
       e.covid_file && e.covid_file[9] && e.covid_file[9].answer === "X"
         ? "X"
@@ -115,25 +115,25 @@ const generarFichaCovid = (e) => {
 
   //DATOS DEL PACIENTE
 
-  doc.text(135, 225, `${e.fullName ? e.fullName : ""}`);
-  doc.text(450, 225, `${e.patient_details ? e.patient_details.cellphone : ""}`);
-  doc.text(140, 243, `${e.birthday ? e.birthday : ""}`);
-  doc.text(280, 243, `${e.birthday ? e.birthday : ""}`);
+  doc.text(150, 232, `${e.fullName ? e.fullName : ""}`);
+  doc.text(450, 232, `${e.patient_details ? e.patient_details.cellphone : ""}`);
+  doc.text(152, 246, `${e.birthday ? e.birthday : ""}`);
+  doc.text(280, 246, `${e.birthday ? e.birthday : ""}`);
   //Sexo
   doc.text(
-    92,
-    260,
+    118,
+    262,
     `${
-      e.covid_file && e.covid_file[17] && e.covid_file[17].answer === "X"
+      e.covid_file && e.covid_file[17] && e.covid_file[17].answers.answer === "X"
         ? "X"
         : ""
     }`
   );
   doc.text(
-    150,
-    260,
+    172,
+    262,
     `${
-      e.covid_file && e.covid_file[18] && e.covid_file[18].answer === "X"
+      e.covid_file && e.covid_file[18] && e.covid_file[18].answers.answer === "X"
         ? "X"
         : ""
     }`
@@ -143,18 +143,18 @@ const generarFichaCovid = (e) => {
     350,
     260,
     `${
-      e.covid_file && e.covid_file[19] && e.covid_file[19].answer
-        ? e.covid_file[19].answer
+      e.covid_file && e.covid_file[19] && e.covid_file[19].answers.answer 
+        ? e.covid_file[19].answers.answer 
         : ""
     }`
   );
   //peso
   doc.text(
-    92,
+    118,
     278,
     `${
-      e.covid_file && e.covid_file[20] && e.covid_file[20].answer
-        ? e.covid_file[20].answer
+      e.covid_file && e.covid_file[20] && e.covid_file[20].answers.answer 
+        ? e.covid_file[20].answers.answer 
         : ""
     }`
   );
@@ -162,34 +162,36 @@ const generarFichaCovid = (e) => {
     300,
     278,
     `${
-      e.covid_file && e.covid_file[21] && e.covid_file[21].answer
-        ? e.covid_file[21].answer
+      e.covid_file && e.covid_file[21] && e.covid_file[21].answers.answer 
+        ? e.covid_file[21].answers.answer 
         : ""
     }`
   );
 
   //Etnia o raza
   doc.text(
-    110,
-    295,
+    135,
+    292,
     `${
-      e.covid_file && e.covid_file[22] && e.covid_file[22].answer === "X"
+      e.covid_file && e.covid_file[22] && e.covid_file[22].answers.answer  === "X"
         ? "X"
         : ""
     }`
   );
   doc.text(
-    222,
-    295,
+    135,
+    307,
     `${
-      e.covid_file && e.covid_file[23] && e.covid_file[23].answer === "X"
+      e.covid_file && e.covid_file[23] && e.covid_file[23].answers.answer  === "X"
         ? "X"
         : ""
     }`
   );
   doc.text(
-    350,
-    295,
+
+
+    238,
+    292,
     `${
       e.covid_file && e.covid_file[24] && e.covid_file[24].answer === "X"
         ? "X"
@@ -198,8 +200,10 @@ const generarFichaCovid = (e) => {
   );
 
   doc.text(
-    110,
-    312,
+
+
+    238,
+    307,
     `${
       e.covid_file && e.covid_file[25] && e.covid_file[25].answer === "X"
         ? "X"
@@ -207,8 +211,8 @@ const generarFichaCovid = (e) => {
     }`
   );
   doc.text(
-    222,
-    312,
+    360,
+    292,
     `${
       e.covid_file && e.covid_file[26] && e.covid_file[26].answer === "X"
         ? "X"
@@ -216,11 +220,11 @@ const generarFichaCovid = (e) => {
     }`
   );
   doc.text(
-    350,
-    312,
+    370,
+    300,
     `${
       e.covid_file && e.covid_file[27] && e.covid_file[27].answer === "X"
-        ? "X"
+        ? "BBBB"
         : ""
     }`
   );

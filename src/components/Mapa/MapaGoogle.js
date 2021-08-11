@@ -12,6 +12,8 @@ const Mapa = ({ dataMapa, setDataMapa, editar }) => {
     googleMapsApiKey: "AIzaSyC14u7ry3uBKIHsEnEql4sA2MaebwNJWI4",
   });
 
+  
+
   const position = {
     lat: dataMapa.lat !== "0" ? Number(dataMapa.lat) : -12.04318,
     lng: dataMapa.lng !== "0" ? Number(dataMapa.lng) : -77.02824,
@@ -27,7 +29,7 @@ const Mapa = ({ dataMapa, setDataMapa, editar }) => {
         setDataMapa({ ...dataMapa, lat: e.latLng.lat(), lng: e.latLng.lng() })
       }
     >
-      {editar ? <Marker position={position} /> : <Marker position={position} />}
+      {editar ? <Marker position={position} /> : <></>}
     </GoogleMap>
   ) : (
     <></>

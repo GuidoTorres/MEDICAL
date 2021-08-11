@@ -73,6 +73,8 @@ const MRegistroEmpresa = ({
     }
   };
 
+  console.log(dataSelected);
+
   const handleService = (e, data) => {
     if (editar) {
       //Editando...

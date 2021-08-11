@@ -19,13 +19,15 @@ const getFecha = () => {
   let newDate = new Date();
   let date = newDate.getDate();
   let month = newDate.toLocaleString("default", { month: "long" });
-  // let year = newDate.getFullYear();
+  let year = newDate.getFullYear();
 
-  return `${date}${" de "}${month}${" "}`;
+  return `${date}${" de "}${month}${" de "}${year}`;
 };
 
 const generarConsentimientoInformado = (data) => {
   console.log(data);
+
+  const prueba = data.service_details.abbreviation.bold()
   const doc = new jsPDF("p", "pt");
   doc.setProperties({
     title: "Consentimiento Informado",
@@ -34,14 +36,24 @@ const generarConsentimientoInformado = (data) => {
 
   doc.addImage(consentimiento, "PNG", 15, 20, 600, 700);
 
-  doc.text(120, 176, `${data && data.fullName ? data.fullName : ""}`);
-  doc.text(110, 193, `${data.DNI}`);
+  if(data.consent.signature !== null){
 
-  doc.text(388, 346, `${getFecha()}`);
+  doc.addImage(data.consent.signature, "JPEG", 100, 316, 180, 50, undefined, "FAST");
+  }
+
+
+  doc.text(120, 150, `${data && data.fullName ? data.fullName : ""}`);
+  doc.text(105, 164, `${data.DNI}`);
+
+    
+  // doc.text(100, 240, `Yo: ${data.fullName} con  DNI Nº ${data.DNI} declaro que he leído de manera clara y sencilla sobre la TOMA DE MUESTRAS(${prueba}), he podido aclarar mis dudas sobre qué es,cómo se hace, para qué sirve, qué riesgo conlleva y porque es importante en mi caso. Así, tras haber comprendido la informacion recibida, doy libremente mi consentimiento para la realizacion de (${data.service_details.abbreviation})`,{maxWidth: "450"});
+  // doc.text(378, 265, `${data.address}, ${getFecha()}`);
+
+  doc.text(378, 285, `${getFecha()}`);
 
   doc.text(
-    200,
-    670,
+    210,
+    533,
     `${
       data && data.patient_details && data.patient_details.email
         ? data.patient_details.email

@@ -50,6 +50,7 @@ const Historial = () => {
       name: "Ítem",
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
         color: "#8f9196",
         borderBotton: "none",
@@ -59,6 +60,7 @@ const Historial = () => {
       name: "Nombres y apellidos",
       selector: (row) => (row.fullName ? row.fullName : ""),
       sortable: true,
+      grow:1,
       style: {
         color: "#8f9196",
         borderBotton: "none",
@@ -68,6 +70,7 @@ const Historial = () => {
       name: "Nº de documento",
       selector: (row) => (row.DNI ? row.DNI : ""),
       sortable: true,
+      grow:0,
       style: {
         color: "#8f9196",
         borderBotton: "none",
@@ -77,6 +80,7 @@ const Historial = () => {
       name: "Estado",
       selector: (row) => (row.user_type ? row.user_type : ""),
       sortable: true,
+      grow:0,
       style: {
         color: "#8f9196",
         borderBotton: "none",
@@ -84,7 +88,7 @@ const Historial = () => {
     },
     {
       name: "Tipo de atención",
-      selector: (row) => (row.service_type ? row.service_type : ""),
+      selector: (row) => (row.service_details.abbreviation ? row.service_details.abbreviation : ""),
       sortable: true,
       style: {
         color: "#8f9196",
