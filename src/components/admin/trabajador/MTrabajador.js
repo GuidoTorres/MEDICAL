@@ -23,12 +23,6 @@ const MTrabajador = ({
 }) => {
   const [avatar, setAvatar] = useState(null);
   const [trabajador, setTrabajador] = useState({
-    dni: "",
-    name: "",
-    mom_lastname: "",
-    pat_lastname: "",
-    email: "",
-    cellphone: "",
   });
   const [dni, setDni] = useState({});
   const [error, setError] = useState(false);
@@ -56,32 +50,32 @@ const MTrabajador = ({
   console.log(dni);
 
   const postEmployee = () => {
-    if (trabajador.dni === "" || null) {
-      document.getElementById("dni").style = "border:1px solid red !important";
-    }
-    if (trabajador.name === "" || null) {
-      document.getElementById("name").style = "border:1px solid red !important";
-    }
+    // if (trabajador.dni === "" || null) {
+    //   document.getElementById("dni").style = "border:1px solid red !important";
+    // }
+    // if (trabajador.name === "" || null) {
+    //   document.getElementById("name").style = "border:1px solid red !important";
+    // }
 
-    if (trabajador.pat_lastname === "" || null) {
-      document.getElementById("apellido1").style =
-        "border:1px solid red !important";
-    }
-    if (trabajador.mom_lastname === "" || null) {
-      document.getElementById("apellido2").style =
-        "border:1px solid red !important";
-    }
-    if (trabajador.email === "" || null) {
-      document.getElementById("email").style =
-        "border:1px solid red !important";
-    }
-    if (trabajador.cellphone === "" || null) {
-      document.getElementById("cell").style = "border:1px solid red !important";
-    }
+    // if (trabajador.pat_lastname === "" || null) {
+    //   document.getElementById("apellido1").style =
+    //     "border:1px solid red !important";
+    // }
+    // if (trabajador.mom_lastname === "" || null) {
+    //   document.getElementById("apellido2").style =
+    //     "border:1px solid red !important";
+    // }
+    // if (trabajador.email === "" || null) {
+    //   document.getElementById("email").style =
+    //     "border:1px solid red !important";
+    // }
+    // if (trabajador.cellphone === "" || null) {
+    //   document.getElementById("cell").style = "border:1px solid red !important";
+    // }
 
-    if (trabajador.role_id === "" || null) {
-      document.getElementById("role").style = "border:1px solid red !important";
-    }
+    // if (trabajador.role_id === "" || null) {
+    //   document.getElementById("role").style = "border:1px solid red !important";
+    // }
 
     const formData = new FormData();
     formData.set("dni", trabajador.dni || "");
@@ -104,7 +98,7 @@ const MTrabajador = ({
       formData.set("license_plate", trabajador.license_plate || "");
     }
 
-    if (trabajador.dni !== "" || null) {
+    // if (trabajador.dni !== "" || null) {
       fetchGETPOSTPUTDELETE("employees", formData, "POST").then((resp) => {
         if (resp.status === 201) {
           closeModal();
@@ -132,25 +126,26 @@ const MTrabajador = ({
           });
         }
       });
-    }
+    // }
   };
+  console.log(trabajador);
 
   const putEmployee = () => {
     const formData = new FormData();
     formData.set("dni", dataSelected.dni);
-    formData.set("name", trabajador.name || dataSelected.name);
+    formData.set("name", trabajador.name !== "" || null ? trabajador.name:  dataSelected.name);
     formData.set(
       "pat_lastname",
-      trabajador.pat_lastname || dataSelected.pat_lastname
+      trabajador.pat_lastname !== "" || null ? trabajador.pat_lastname: dataSelected.pat_lastname
     );
     formData.set(
       "mom_lastname",
-      trabajador.mom_lastname || dataSelected.mom_lastname
+      trabajador.mom_lastname !== "" || null ? trabajador.mom_lastname : dataSelected.mom_lastname
     );
-    formData.set("email", trabajador.email || dataSelected.email);
-    formData.set("cellphone", trabajador.cellphone || dataSelected.cellphone);
-    formData.set("photo", avatar && avatar.file ? avatar.file : "");
-    formData.set("role_id", dataSelected.role_id);
+    formData.set("email", trabajador.email !== "" || null ? trabajador.email : dataSelected.email);
+    formData.set("cellphone", trabajador.cellphone !== "" || null ? trabajador.cellphone : dataSelected.cellphone);
+    formData.set("photo", avatar && avatar.file ? avatar.file : dataSelected.photo);
+    formData.set("role_id", 9);
     fetchGETPOSTPUTDELETEJSON(
       `employees/${dataSelected.user_id}`,
       trabajador,

@@ -17,14 +17,18 @@ function PrimeraLetraMayuscula(string){
 
 const generarDeclaracionJurada = (data) => {
 
-
+  // console.log(data.declaration.answers[0].answer);
   const doc = new jsPDF("p", "pt");
   doc.setProperties({
     title: "Declaración jurada",
   });
   // doc.addImage(image1, 15, 20, 600, 800);
   doc.addImage(image, "JPEG", 0, 13, 600, 800, undefined, "FAST");
-  doc.addImage(data.firma, "JPEG", 200, 710, 180, 50, undefined, "FAST");
+
+  if(data.declaration.signature !== null){
+
+  doc.addImage(data.declaration.signature, "JPEG", 215, 707, 180, 50, undefined, "FAST");
+  }
   // doc.addImage(imagen, "JPEG", 15, 20, 600, 800, undefined, "FAST");
 
 
@@ -117,10 +121,10 @@ const generarDeclaracionJurada = (data) => {
 
   // doc.text(308, 130, `${data.dire}`);
 
-  if (data.declaration.length > 0) {
+  if (data.declaration.answers.length > 0) {
     if (
-      data.declaration[0].answer === "No" ||
-      data.declaration[0].answer === null
+      data.declaration.answers[0].answer === "No" ||
+      data.declaration.answers[0].answer === null
     ) {
 
       console.log("entro al primer");
@@ -133,110 +137,100 @@ const generarDeclaracionJurada = (data) => {
       //     ? "X"
       //     : ""
       // );
+
+      
       doc.text(
         222,
         338,
-        data.declaration[1].question_id === 2 &&
-          data.declaration[1].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[1].answer === "No" || null
+          ? ""
+          : "X"
       );
 
       doc.text(
         222,
         370,
-        data.declaration[2].question_id === 3 &&
-          data.declaration[2].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[2].answer === "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         222,
         400,
-        data.declaration[3].question_id === 4 &&
-          data.declaration[3].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[3].answer === "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         222,
         426,
-        data.declaration[4].question_id === 5 &&
-          data.declaration[4].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[4].answer=== "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         222,
         450,
-        data.declaration[5].question_id === 6 &&
-          data.declaration[5].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[5].answer === "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         222,
         480,
-        data.declaration[6].question_id === 7 &&
-          data.declaration[6].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[6].answer === "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         222,
         510,
-        data.declaration[7].question_id === 8 &&
-          data.declaration[7].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[7].answer === "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         222,
         540,
-        data.declaration[8].question_id === 9 &&
-          data.declaration[8].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[8].answer === "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         222,
         578,
-        data.declaration[9].question_id === 10 &&
-          data.declaration[9].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[9].answer === "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         222,
         615,
-        data.declaration[10].question_id === 11 &&
-          data.declaration[10].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[10].answer === "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         222,
         640,
-        data.declaration[11].question_id === 12 &&
-          data.declaration[11].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[11].answer === "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         222,
         670,
-        data.declaration[12].question_id === 13 &&
-          data.declaration[12].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[12].answer === "No" || null
+          ? ""
+          : "X"
       );
     } else {
       doc.text(
         255,
         310,
 
-        data.declaration[0].question_id === 1 &&
-          data.declaration[0].answer === "Si"
+
+          data.declaration.answers[0].answer=== "Si"|| "Sí"
           ? "X"
           : ""
       );
@@ -245,109 +239,101 @@ const generarDeclaracionJurada = (data) => {
     // //Condicion
 
     if (
-      data.declaration[13].answer === "No" ||
-      data.declaration[13].answer === null
+      data.declaration.answers[13].answer === "No" ||
+      data.declaration.answers[13].answer === null
     ) {
       console.log("entro al if de condicion");
 
       doc.text(
         500,
         340,
-        data.declaration[14].question_id === 15 &&
-          data.declaration[14].answer === "Si"
-          ? "X"
-          : ""
+
+          data.declaration.answers[14].answer === "No" || null
+          ? ""
+          : "X"
       );
 
       doc.text(
         500,
         370,
-        data.declaration[15].question_id === 16 &&
-          data.declaration[15].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[15].answer === "No" || null
+          ? ""
+          : "X"
       );
 
       doc.text(
         500,
         400,
-        data.declaration[16].question_id === 17 &&
-          data.declaration[16].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[16].answer === "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         500,
         428,
-        data.declaration[17].question_id === 18 &&
-          data.declaration[17].answer === "Si"
-          ? "X"
-          : ""
+
+          data.declaration.answers[17].answer === "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         500,
         450,
-        data.declaration[18].question_id === 19 &&
-          data.declaration[18].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[18].answer === "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         500,
         480,
-        data.declaration[19].question_id === 20 &&
-          data.declaration[19].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[19].answer === "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         500,
         510,
-        data.declaration[20].question_id === 21 &&
-          data.declaration[20].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[20].answer === "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         500,
         540,
-        data.declaration[21].question_id === 22 &&
-          data.declaration[21].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[21].answer === "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         500,
         577,
-        data.declaration[22].question_id === 23 &&
-          data.declaration[22].answer === "Si"
-          ? "X"
-          : ""
+
+          data.declaration.answers[22].answer || null
+          ? ""
+          : "X"
       );
 
       doc.text(
         500,
         615,
-        data.declaration[23].question_id === 24 &&
-          data.declaration[23].answer === "Si"
-          ? "X"
-          : ""
+
+          data.declaration.answers[23].answer === "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         500,
         640,
-        data.declaration[24].question_id === 25 &&
-          data.declaration[24].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[24].answer === "No" || null
+          ? ""
+          : "X"
       );
       doc.text(
         500,
         670,
-        data.declaration[25].question_id === 26 &&
-          data.declaration[25].answer === "Si"
-          ? "X"
-          : ""
+          data.declaration.answers[25].answer=== "No" || null
+          ? ""
+          : "X"
       );
     } else {
       doc.text(
@@ -357,7 +343,7 @@ const generarDeclaracionJurada = (data) => {
           data.declaration &&
           data.declaration[13] &&
           data.declaration[13].question_id === 14 &&
-          data.declaration[13].answer === "Si"
+          data.declaration[13].answer === "Si" || "Sí"
           ? "X"
           : ""
       );
