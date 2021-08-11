@@ -7,9 +7,7 @@ import { generarDeclaracionJurada } from "../../helpers/GenerarPdfs/DeclaracionJ
 import { generarConsentimientoInformado } from "../../helpers/GenerarPdfs/ConsentimientoInformado";
 import { generarFichaCovid } from "../../helpers/GenerarPdfs/FichaCovid";
 
-var pdfMake = require("pdfmake/build/pdfmake.js");
-var pdfFonts = require("pdfmake/build/vfs_fonts.js");
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 const Historial = () => {
   const [busqueda, setBusqueda] = useState("");
   // const [addRegistro, setAddRegistro] = useState(false);
@@ -26,16 +24,9 @@ const Historial = () => {
       .then((datos) => setAttention(datos.data));
   };
 
-  const getImagen = () => {
-    fetchGETPOSTPUTDELETE(
-      "https://uat-getbyte.online/medicalRoma/public/storage/forms/16-16.jpg"
-    )
-      .then((res) => res.json())
-      .then((res) => console.log(res));
-  };
+
   useEffect(() => {
     getAttention();
-    getImagen();
   }, []);
 
   function CodigoBarras(e) {

@@ -36,7 +36,6 @@ const Empresa = ({ getServicio }) => {
     getClinica();
   }, []);
 
-  console.log(metGetClinic);
 
   const columnas = [
     {

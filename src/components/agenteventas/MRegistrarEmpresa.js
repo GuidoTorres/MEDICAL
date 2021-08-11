@@ -838,7 +838,7 @@ const MRegistrarEmpresa = ({
                                       )
                                       ? dataSelected.services.find(
                                           (s) => s.id === data.id
-                                        ).last_discount.state === 1
+                                        ).service.last_discount.state === 1
                                         ? true
                                         : false
                                       : false
