@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import DataTable from "react-data-table-component";
-import { paginacionOpciones } from "../../../helpers/tablaOpciones";
-import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
-import Swal from "sweetalert2";
+import DataTable from 'react-data-table-component';
+import { paginacionOpciones } from '../../../helpers/tablaOpciones';
+import { fetchGETPOSTPUTDELETE } from '../../../helpers/fetch';
+import Swal from 'sweetalert2';
 
-import MRegistroEmpresa from "./MRegistroEmpresa";
+import MRegistroEmpresa from './MRegistroEmpresa';
 
 const RegistroEmpresa = () => {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
   const [corporations, setCorporations] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
@@ -16,7 +16,7 @@ const RegistroEmpresa = () => {
   const [openModal, setOpenModal] = useState(false);
 
   const getCorporations = () => {
-    fetchGETPOSTPUTDELETE("company")
+    fetchGETPOSTPUTDELETE('company')
       .then((info) => info.json())
       .then((datos) => setCorporations(datos.data));
   };
@@ -27,67 +27,68 @@ const RegistroEmpresa = () => {
 
   const columnas = [
     {
-      name: "Item",
+      name: 'Item',
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Razón social",
+      name: 'Razón social',
       selector: (row) =>
-        row.corporation.business_name ? row.corporation.business_name : "",
+        row.corporation.business_name ? row.corporation.business_name : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "RUC",
-      selector: (row) => (row.corporation.ruc ? row.corporation.ruc : ""),
+      name: 'RUC',
+      selector: (row) => (row.corporation.ruc ? row.corporation.ruc : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Responsable",
+      name: 'Responsable',
       selector: (row) =>
         row.corporation && row.corporation.contacts[0]
           ? row.corporation.contacts[0].name
-          : "",
+          : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Teléfono",
+      name: 'Teléfono',
       selector: (row) =>
         row.corporation && row.corporation.contacts[0]
           ? row.corporation.contacts[0].phone
-          : "",
+          : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Correo",
+      name: 'Correo',
       selector: (row) =>
         row.corporation && row.corporation.contacts[0]
           ? row.corporation.contacts[0].email
-          : "",
+          : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     // {
@@ -100,7 +101,7 @@ const RegistroEmpresa = () => {
     //   },
     // },
     {
-      name: "Editar",
+      name: 'Editar',
       button: true,
       cell: (e) => (
         <button onClick={() => handleEditar(e)} className="table__tablebutton">
@@ -109,7 +110,7 @@ const RegistroEmpresa = () => {
       ),
     },
     {
-      name: "Eliminar",
+      name: 'Eliminar',
       button: true,
       cell: (e) => (
         <button
@@ -129,37 +130,37 @@ const RegistroEmpresa = () => {
           (data.corporation
             ? data.corporation.ruc
               ? data.corporation.ruc.toString().includes(busqueda)
-              : ""
-            : "") ||
+              : ''
+            : '') ||
           (data.corporation
             ? data.corporation.business_name
               ? data.corporation.business_name
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : ""
-            : "") ||
+              : ''
+            : '') ||
           (data.corporation
             ? data.corporation.contacts
               ? data.corporation.contacts[0].name
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : ""
-            : "") ||
+              : ''
+            : '') ||
           (data.corporation
             ? data.corporation.contacts
               ? data.corporation.contacts[0].phone.toString().includes(busqueda)
-              : ""
-            : "") ||
+              : ''
+            : '') ||
           (data.corporation
             ? data.corporation.contacts
               ? data.corporation.contacts[0].email
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : ""
-            : "")
+              : ''
+            : '')
         );
       });
       setListRegistro(search);
@@ -178,16 +179,16 @@ const RegistroEmpresa = () => {
   };
   const handleEliminar = (e) => {
     Swal.fire({
-      title: "¿Desea eliminar?",
+      title: '¿Desea eliminar?',
       text: `${e.corporation.business_name}`,
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Eliminar",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Eliminar',
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Eliminado!", "Se ha eliminado correctamente.", "success");
+        Swal.fire('Eliminado!', 'Se ha eliminado correctamente.', 'success');
         fetchGETPOSTPUTDELETE(`company/delete/${e.id}`).then((result) => {
           result.json();
           getCorporations();
@@ -220,7 +221,7 @@ const RegistroEmpresa = () => {
                 <i
                   className="fas fa-plus-circle"
                   onClick={handleAddRegistro}
-                ></i>{" "}
+                ></i>{' '}
               </label>
             </div>
           </div>
@@ -237,7 +238,7 @@ const RegistroEmpresa = () => {
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: "lightgrey" }}>No hay datos</p>
+                <p style={{ color: 'lightgrey' }}>No hay datos</p>
               </div>
             }
           />
