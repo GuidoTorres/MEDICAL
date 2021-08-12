@@ -176,7 +176,7 @@ const Historial = () => {
 
     if (e.servicio_id === 5) {
       doc.text(328, 135, `${e && e.genero ? e.genero : ''}`);
-      doc.text(328, 135, `${e && e.genero === null ? 'Masculino' : ''}`);
+      // doc.text(328, 135, `${e && e.genero === null ? 'Masculino' : ''}`);
 
       doc.text(90, 136, `${e.nro_atencion ? e.nro_atencion : ''}`);
       doc.text(60, 158, `${e.dni ? e.dni : ''}`);

@@ -35,13 +35,12 @@ const Empresa = ({ getServicio }) => {
   useEffect(() => {
     getClinica();
   }, []);
-
-
   const columnas = [
     {
       name: "Item",
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
         borderBotton: "none",
         color: "#555555",

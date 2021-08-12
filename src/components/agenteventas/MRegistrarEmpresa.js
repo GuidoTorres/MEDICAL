@@ -27,6 +27,7 @@ const MRegistrarEmpresa = ({
   const [ruc, setRuc] = useState({});
   const [servicios, setServicios] = useState({});
   const [error, setError] = useState(false);
+  const [estado, setEstado] = useState([])
 
   const closeModal = () => {
     setOpenModal(false);
@@ -42,11 +43,22 @@ const MRegistrarEmpresa = ({
       });
   };
 
+  console.log(dataSelected);
+
   const getServices = () => {
     fetchGETPOSTPUTDELETE("services")
       .then((info) => info.json())
       .then((datos) => setServicios(datos.data));
   };
+
+  useEffect(()=>{
+
+  const prueba = dataSelected.company_service.map(item => ({state:item.state})  )
+  setEstado(prueba)
+
+  },[dataSelected])
+  console.log(estado);
+    
 
   const getRuc = () => {
     fetchRUC(empresa.ruc, "GET")
@@ -70,16 +82,18 @@ const MRegistrarEmpresa = ({
         dataSelected.company_service.map((s) =>
           array.push({
             service_id: s.service_id,
-            status: s.service.last_discount.state,
+            status: s.last_discount.state,
           })
         );
       setService(array);
     }
   };
+
   console.log(dataSelected);
-  console.log(dataSelected.company_service);
+  
 
   const handleService = (e, data) => {
+
     if (editar) {
       //Editando...
       if (e.target.checked) {
@@ -134,7 +148,6 @@ const MRegistrarEmpresa = ({
     }
   };
 
-  console.log(service);
 
   const postCorporation = (e) => {
     const formData = new FormData();
@@ -830,21 +843,8 @@ const MRegistrarEmpresa = ({
                               key={i}
                               type="checkbox"
                               className="w-auto"
-                              defaultChecked={
-                                editar
-                                  ? dataSelected.services
-                                    ? dataSelected.services.find(
-                                        (s) => s.id === data.id
-                                      )
-                                      ? dataSelected.services.find(
-                                          (s) => s.id === data.id
-                                        ).service.last_discount.state === 1
-                                        ? true
-                                        : false
-                                      : false
-                                    : false
-                                  : false
-                              }
+                              defaultChecked = {estado && estado[i] && estado[i].state === 1 ? true : false}
+
                               onChange={(e) => handleService(e, data)}
                             />
                             <label>{data.abbreviation}</label>
