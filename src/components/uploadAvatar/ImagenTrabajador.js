@@ -44,8 +44,8 @@ const ImagenTrabajador = ({ setAvatar, avatar, dataSelected, id }) => {
           src={
             avatar && avatar
               ? avatar.preview
-              // : dataSelected.photo
-              // ? dataSelected.photo
+              : dataSelected && dataSelected.photo
+              ? dataSelected.photo
               : ""
           }
           alt=""

@@ -46,6 +46,7 @@ const RegistroClinica = () => {
       name: "Ítem",
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
         borderBotton: "none",
         color: "#555555",
@@ -58,6 +59,7 @@ const RegistroClinica = () => {
           ? row.corporation.business_name
           : "",
       sortable: true,
+      grow:2,
       style: {
         borderBotton: "none",
         color: "#555555",
@@ -68,6 +70,7 @@ const RegistroClinica = () => {
       selector: (row) =>
         row.corporation && row.corporation.ruc ? row.corporation.ruc : "",
       sortable: true,
+      grow: 1,
       style: {
         borderBotton: "none",
         color: "#555555",

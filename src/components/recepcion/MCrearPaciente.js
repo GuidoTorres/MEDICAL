@@ -85,51 +85,51 @@ const MCrearPaciente = ({
   }, []);
 
   const crearPaciente = () => {
-    if (paciente.document_type_id === "" || null) {
-      document.getElementById("document").style =
-        "border:1px solid red !important";
-    }
-    if (paciente.dni === "" || null) {
-      document.getElementById("dni").style = "border:1px solid red !important";
-    }
-    if (paciente.name === "" || null) {
-      document.getElementById("nombre").style =
-        "border:1px solid red !important";
-    }
+    // if (paciente.document_type_id === "" || null) {
+    //   document.getElementById("document").style =
+    //     "border:1px solid red !important";
+    // }
+    // if (paciente.dni === "" || null) {
+    //   document.getElementById("dni").style = "border:1px solid red !important";
+    // }
+    // if (paciente.name === "" || null) {
+    //   document.getElementById("nombre").style =
+    //     "border:1px solid red !important";
+    // }
 
-    if (paciente.pat_lastname === "" || null) {
-      document.getElementById("apellido1").style =
-        "border:1px solid red !important";
-    }
-    if (paciente.mom_lastname === "" || null) {
-      document.getElementById("apellido2").style =
-        "border:1px solid red !important";
-    }
-    if (paciente.gender_id === "" || null) {
-      document.getElementById("genero").style =
-        "border:1px solid red !important";
-    }
-    if (paciente.birthday === "" || null) {
-      document.getElementById("birthday").style =
-        "border:1px solid red !important";
-    }
-    if (paciente.cellphone === "" || null) {
-      document.getElementById("phone").style =
-        "border:1px solid red !important";
-    }
-    if (paciente.email === "" || null) {
-      document.getElementById("email").style =
-        "border:1px solid red !important";
-    }
+    // if (paciente.pat_lastname === "" || null) {
+    //   document.getElementById("apellido1").style =
+    //     "border:1px solid red !important";
+    // }
+    // if (paciente.mom_lastname === "" || null) {
+    //   document.getElementById("apellido2").style =
+    //     "border:1px solid red !important";
+    // }
+    // if (paciente.gender_id === "" || null) {
+    //   document.getElementById("genero").style =
+    //     "border:1px solid red !important";
+    // }
+    // if (paciente.birthday === "" || null) {
+    //   document.getElementById("birthday").style =
+    //     "border:1px solid red !important";
+    // }
+    // if (paciente.cellphone === "" || null) {
+    //   document.getElementById("phone").style =
+    //     "border:1px solid red !important";
+    // }
+    // if (paciente.email === "" || null) {
+    //   document.getElementById("email").style =
+    //     "border:1px solid red !important";
+    // }
 
-    if (paciente.user_type_id === "" || null) {
-      document.getElementById("user_type").style =
-        "border:1px solid red !important";
-    }
-    if (paciente.reference === "" || null) {
-      document.getElementById("reference").style =
-        "border:1px solid red !important";
-    }
+    // if (paciente.user_type_id === "" || null) {
+    //   document.getElementById("user_type").style =
+    //     "border:1px solid red !important";
+    // }
+    // if (paciente.reference === "" || null) {
+    //   document.getElementById("reference").style =
+    //     "border:1px solid red !important";
+    // }
 
     const formData = new FormData();
     formData.set("document_type_id", paciente.document_type_id || "");
@@ -152,28 +152,28 @@ const MCrearPaciente = ({
     formData.set("workstation", paciente.workstation || "");
     formData.set("birthplace", "");
     formData.set("address", paciente.address || "");
-    formData.set("reference", paciente.reference || "");
+    formData.set("reference", paciente.address || "");
     formData.set("district_id", paciente.district_id || "");
     formData.set("department_id", paciente.district_id || "");
     formData.set("user_type_id", paciente.user_type_id || "");
     // formData.set("country_id", paciente.country_id || "");
     formData.set("grade_id", "");
 
-    if (
-      (paciente.document_type_id !== "" ||
-        (null && paciente.document_type_id !== "") ||
-        null,
-      paciente.dni !== "" ||
-        (null && paciente.ame !== "") ||
-        (null && paciente.pat_lastname !== "") ||
-        (null && paciente.mom_lastname !== "") ||
-        (null && paciente.gender_id !== "") ||
-        (null && paciente.birthday !== "") ||
-        (null && paciente.cellphone !== "") ||
-        (null && paciente.email !== "") ||
-        (null && paciente.user_type_id !== "") ||
-        null)
-    ) {
+    // if (
+    //   (paciente.document_type_id !== "" ||
+    //     (null && paciente.document_type_id !== "") ||
+    //     null,
+    //   paciente.dni !== "" ||
+    //     (null && paciente.ame !== "") ||
+    //     (null && paciente.pat_lastname !== "") ||
+    //     (null && paciente.mom_lastname !== "") ||
+    //     (null && paciente.gender_id !== "") ||
+    //     (null && paciente.birthday !== "") ||
+    //     (null && paciente.cellphone !== "") ||
+    //     (null && paciente.email !== "") ||
+    //     (null && paciente.user_type_id !== "") ||
+    //     null)
+    // ) {
       fetchGETPOSTPUTDELETE("patient", formData, "POST").then((data) => {
         if (data.status === 200) {
           closeModal();
@@ -201,7 +201,7 @@ const MCrearPaciente = ({
           });
         }
       });
-    }
+    // }
   };
 
   const actualizarPaciente = () => {
