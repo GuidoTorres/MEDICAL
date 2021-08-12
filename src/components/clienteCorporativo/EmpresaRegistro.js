@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import Swal from 'sweetalert2';
 import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
@@ -9,7 +9,8 @@ const EmpresaRegistro = () => {
   const [busqueda, setBusqueda] = useState('');
   const [employees, setEmployees] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [listRegistro, setListRegistro] = useState('');
+  // const [listRegistro, setListRegistro] = useState('');
+  const fileRef = useRef();
 
   const getEmployees = () => {
     fetchGETPOSTPUTDELETE('company_employees')
@@ -20,7 +21,6 @@ const EmpresaRegistro = () => {
   useEffect(() => {
     getEmployees();
   }, []);
-  console.log(employees);
 
   const importarExcel = (file) => {
     const formData = new FormData();
@@ -29,14 +29,19 @@ const EmpresaRegistro = () => {
       .then((data) => {
         data.json();
       })
-      .then((data) => console.log(data));
-    getEmployees();
+      .then(() => {
+        getEmployees();
+      });
   };
 
   const subidaExcel = (e) => {
     if (e.target.files[0] !== undefined) {
       importarExcel(e.target.files[0]);
     }
+  };
+
+  const triggerClick = () => {
+    console.log(fileRef.current.click());
   };
 
   const columnas = [
@@ -239,9 +244,29 @@ const EmpresaRegistro = () => {
                 onChange={handleOnChange}
               />
             </div>
-            <div className="file">
-              <label>Elejir un archivo</label>
-              <input type="file" onChangeCapture={(e) => subidaExcel(e)} />
+            <div
+              style={{
+                alignItems: 'center',
+                backgroundColor: '#009DCA',
+                borderRadius: '7px',
+                color: '#fff',
+                cursor: 'pointer',
+                display: 'flex',
+                justifyContent: 'center',
+                padding: '4px 6px',
+              }}
+              onClick={triggerClick}
+            >
+              <input
+                className="cargar"
+                type="file"
+                ref={fileRef}
+                id="file"
+                onChange={subidaExcel}
+                style={{ display: 'none' }}
+              />
+              <p className="pagregar">Subir</p>
+              <i className="fas fa-upload mx-1"></i>
             </div>
           </div>
           <DataTable

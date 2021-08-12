@@ -20,17 +20,17 @@
   align-items: center;
   display: flex;
   justify-content: space-between;
-  label {
-    display: grid;
-    grid-template-columns: auto auto;
-    gap: 5px;
+  // label {
+  //   display: grid;
+  //   grid-template-columns: auto auto;
+  //   gap: 5px;
 
-    i {
-      color: $color-primary;
-      cursor: pointer;
-      font-size: 1.2rem;
-    }
-  }
+  // i {
+  //   color: $color-primary;
+  //   cursor: pointer;
+  //   font-size: 1.2rem;
+  // }
+  // }
 }
 
 // ?Modal cliente
