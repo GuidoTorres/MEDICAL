@@ -148,49 +148,57 @@ const CargarResultado = () => {
 
   const onChangeFile = (e) => {
     inputRef.current.click();
-    console.log(inputRef.current.files[0]);
-    setResultado({ ...resultado, id: e.atencion_id });
-
-    if (inputRef.current.files[0]) {
-      setResultado({ ...resultado, pdf: inputRef.current.files[0] });
-      handleDetalles(resultado);
-    }
-  };
-
-  const handleDetalles = (resultado) => {
+    setResultado({...resultado, id: e.atencion_id, pdf:inputRef.current.files[0]})
     const formData = new FormData();
-    formData.set("pdf", resultado.pdf);
-    formData.set("id", resultado.id);
+    formData.set("id", e.atencion_id);
+    formData.set("pdf", inputRef.current.files[0]);
 
-      fetchGETPOSTPUTDELETE("result", formData, "POST").then((info) => {
-        inputRef.current.value = "";
-        if (info.status === 200) {
-          Swal.fire({
-            icon: "success",
-            title: "Éxito",
-            text: "Se guardó el pdf correctamente.",
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Aceptar",
-          }).then((resp) => {
-            if (resp.isConfirmed) {
-              getResult();
-            }
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "!Ups¡",
-            text: "Algo salió mal.",
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Cerrar",
-          });
-          inputRef.current.value = "";
-        }
-      });
 
+
+
+
+    // if (resultado.id !== undefined && resultado.pdf !== undefined) {
+    // console.log("entro al if ");
+    //       fetchGETPOSTPUTDELETE("result", formData, "POST").then((info) => {
+    //     inputRef.current.value = "";
+    //     setResultado({})
+    //     if (info.status === 200) {
+    //       Swal.fire({
+    //         icon: "success",
+    //         title: "Éxito",
+    //         text: "Se guardó el pdf correctamente.",
+    //         confirmButtonColor: "#3085d6",
+    //         cancelButtonColor: "#d33",
+    //         confirmButtonText: "Aceptar",
+    //       }).then((resp) => {
+    //         if (resp.isConfirmed) {
+    //           getResult();
+    //         }
+    //       });
+    //     } else {
+    //       Swal.fire({
+    //         icon: "error",
+    //         title: "!Ups¡",
+    //         text: "Algo salió mal.",
+    //         confirmButtonColor: "#3085d6",
+    //         cancelButtonColor: "#d33",
+    //         confirmButtonText: "Cerrar",
+    //       });
+    //       inputRef.current.value = "";
+    //     }
+    //   });
+    
+    // }else{
+    //     console.log("entro al 2do if ");
+    //     inputRef.current.value = "";
+    //     setResultado({})
+
+    // }
   };
+      console.log(resultado);
+
+
+
 
   return (
     <div className="container">
@@ -212,7 +220,7 @@ const CargarResultado = () => {
               type="file"
               id="file-input"
               ref={inputRef}
-              onChange={(e) => onChangeFile(e)}
+              onChange={(e) => setResultado({...resultado, pdf: e.target.files[0]})}
               style={{ display: "none" }}
             />
           </div>

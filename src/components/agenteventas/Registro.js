@@ -30,6 +30,7 @@ const Registro = () => {
       name: "Ítem",
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
         borderBotton: "none",
         color: "#555555",

@@ -84,23 +84,44 @@ const MEmpresa = ({
       dataSelected.company_service.filter((data) => data);
 
     setFilterServices(data);
+
+    
   };
+  
 
-  console.log(dataSelected);
+  const handleChange = (e, data, index, state) => {
 
+    console.log(state);
+    
+    const dataDiscount = filterServices.map(item => ({service_id:item.service.id, state: item.last_discount.state,
+     percent: item.last_discount.percent, amount: item.last_discount.amount
+    }))
+    // console.log(dataDiscount);
+    
+    console.log(dataDiscount);
 
-  const handleChange = (e, data) => {
+    let position = dataDiscount.findIndex(
+          (arreglo) => arreglo.service_id == data.service_id
+        );
+        const arreglos = [...dataDiscount];
+        if(state !== undefined){
+
+        arreglos[position].state = state
+        }
+        // console.log(arreglos[position].state) 
+        setDiscount([...arreglos]);
     if (e.target.checked) {
-     const s = filterServices.map((item) => ({
-        service_id: item.id,
-        status: 1,
-      }));
 
-      let position = s.findIndex((arreglo) => arreglo.service_id === data.id);
-      const arreglos = [...s];
-      arreglos[position].status = 0;
-      setDiscount(arreglos)
+      // setDiscount((discount) => [
+      //   ...discount,
 
+      //   {
+      //     service_id: data.service.id,
+      //     state: 1,
+      //     percent: data.last_discount.percent,
+      //     amount: data.last_discount.amount,
+      //   },
+      // ]);
 
       if (document.getElementById(`amount-${data.id}`).disabled) {
         document.getElementById(`amount-${data.id}`).disabled = false;
@@ -117,6 +138,7 @@ const MEmpresa = ({
       console.log(discount);
     } else {
       if (discount.length > 1) {
+        console.log(" entro al segundo if");
         let position = discount.findIndex(
           (arreglo) => arreglo.service_id == data.id
         );
@@ -131,7 +153,6 @@ const MEmpresa = ({
       document.getElementById(`amount-${data.id}`).disabled = true;
     }
   };
-  console.log(discount);
 
   const editarPercent = (e, id, idService ,data ) => {
 
@@ -154,6 +175,7 @@ const MEmpresa = ({
     const total1 = total * 100;
 
     if (total1 < 0) {
+      console.log("entro al primero");
       document.getElementById(`percent-${id}`).value = 0;
       arreglos[position].percent = 0;
       arreglos[position].amount = value;
@@ -161,6 +183,8 @@ const MEmpresa = ({
 
       setDiscount(arreglos);
     } else if (total1 > 0) {
+      console.log("entro al segundo");
+
       document.getElementById(`percent-${id}`).value = total1.toFixed();
       arreglos[position].percent = total1.toFixed();
       arreglos[position].amount = value;
@@ -296,13 +320,13 @@ const MEmpresa = ({
                       </td>
 
                       <td>
-                        {servicio.last_price && servicio.last_price.amount
-                          ? servicio.last_price.amount - 50
+                        {servicio.limite_inferior
+                          ? servicio.limite_inferior
                           : ""}
                       </td>
                       <td>
-                        {servicio.last_price && servicio.last_price.amount
-                          ? servicio.last_price.amount - 30
+                        {servicio.limite_superior
+                          ? servicio.limite_superior
                           : ""}
                       </td>
                       <td>
@@ -325,34 +349,42 @@ const MEmpresa = ({
             <table className="table">
               <thead>
                 <tr>
-                  <th scope="col">Tipos de prueba</th>
-                  <th scope="col">Seleccionar</th>
-                  <th scope="col">Descuento(%)</th>
-                  <th scope="col">Total</th>
+                <th scope="col" style={{width: '20%', textAlign: 'center'}}>Estado</th>
+                  <th scope="col" style={{width: '40%', textAlign: 'center'}}>Tipos de prueba</th>
+                  <th scope="col"style={{width: '5%', textAlign: 'center'}}>Seleccionar</th>
+                  <th scope="col"style={{width: '20%', textAlign: 'center'}}>Descuento(%)</th>
+                  <th scope="col"style={{width: '20%', textAlign: 'center'}}>Total</th>
                 </tr>
               </thead>
               <tbody>
                 {filterServices.length > 0 &&
                   filterServices.map((data, index) => (
                     <tr key={index}>
-                      <td>
+                    <td style={{textAlign: 'center'}}>
+                    {data.last_discount.state === 1 ?
+                    <span class="badge badge-success" onClick={e => handleChange(e, data ,index, 0)} style={{backgroundColor: 'green', borderRadius:'10px', opacity:'0.8', cursor:'pointer'}}>Activo</span>:
+                    <span class="badge badge-success" onClick={e => handleChange(e, data ,index, 1)}style={{backgroundColor: 'red', borderRadius:'10px', opacity:'0.7', cursor:'pointer'}}>Inactivo</span>
+                    }
+                    </td>
+                      <td style={{width: '20%', textAlign: 'center'}}>
                         {data && data.service && data.service.abbreviation
                           ? data.service.abbreviation
                           : ""}
                       </td>
-                      <td>
-                        <div className="form-check">
+                      <td >
+                        <div className="form-check" style={{display: 'flex', flexAlign:'center', justifyContent:'center'}}>
                           <input
                             className="form-check-input"
                             type="checkbox"
                             name="services"
-                            defaultChecked={
-                              data &&
-                              data.last_discount &&
-                              data.last_discount.state
-                                ? data.last_discount.state
-                                : ""
-                            }
+                            
+                            // defaultChecked={
+                            //   data &&
+                            //   data.last_discount &&
+                            //   data.last_discount.state
+                            //     ? data.last_discount.state
+                            //     : ""
+                            // }
                             value={data.service_id}
                             id="flexCheckDefault"
                             onChange={(e) => {
@@ -362,9 +394,10 @@ const MEmpresa = ({
                         </div>
                       </td>
 
-                      <td>
+                      <td >
                         <input
                           type="number"
+                          style={{width:'80px'}}
                           className="form-input"
                           id={`percent-${data.id}`}
                           placeholder=""
@@ -377,10 +410,11 @@ const MEmpresa = ({
                           aria-describedby="basic-addon1"
                         />
                       </td>
-                      <td>
+                      <td > 
                         <div className="input-group mb-3">
                           <input
                             type="number"
+                            style={{width:'80px'}}
                             id={`amount-${data.id}`}
                             placeholder=""
                             aria-label=""

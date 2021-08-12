@@ -20,6 +20,7 @@ const MSubirLaboratorio = ({
     setOpenModal(false);
   };
   console.log(result);
+      console.log(dataSelected);
 
   const postResults = () => {
     if (
@@ -31,6 +32,7 @@ const MSubirLaboratorio = ({
       document.getElementById("resultado").style =
         "border:1px solid red !important";
     }
+
 
     if (result.result !== "" || null) {
       fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) => {

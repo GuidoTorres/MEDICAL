@@ -16,8 +16,11 @@ function PrimeraLetraMayuscula(string){
 }
 
 const generarDeclaracionJurada = (data) => {
+  console.log(data);
 
   // console.log(data.declaration.answers[0].answer);
+
+  if(data.declaration.answers){
   const doc = new jsPDF("p", "pt");
   doc.setProperties({
     title: "Declaración jurada",
@@ -127,7 +130,6 @@ const generarDeclaracionJurada = (data) => {
       data.declaration.answers[0].answer === null
     ) {
 
-      console.log("entro al primer");
       // doc.text(
       //   268,
       //   315,
@@ -242,7 +244,6 @@ const generarDeclaracionJurada = (data) => {
       data.declaration.answers[13].answer === "No" ||
       data.declaration.answers[13].answer === null
     ) {
-      console.log("entro al if de condicion");
 
       doc.text(
         500,
@@ -353,6 +354,7 @@ const generarDeclaracionJurada = (data) => {
   }
   doc.text(60, 705, `Fecha: ${getFecha()}`)
   window.open(doc.output("bloburl"), "_blank");
+  }
 };
 
 export { generarDeclaracionJurada };
