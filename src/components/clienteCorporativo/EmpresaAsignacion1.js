@@ -9,7 +9,7 @@ const EmpresaAsignacion = () => {
   const [asignation, setAsignation] = useState([]);
   const [modaesCorporativo, setModaesCorporativo] = useState(false);
   const [data, setData] = useState([]);
-  const [listRegistro, setListRegistro] = useState('');
+  // const [listRegistro, setListRegistro] = useState('');
 
   const getAsignacion = () => {
     fetchGETPOSTPUTDELETE('company_employees')
@@ -176,9 +176,25 @@ const EmpresaAsignacion = () => {
                 onChange={handleOnChange}
               />
             </div>
-            <div>
-              <label>
-                Cargar <i onClick={modales} className="fas fa-upload"></i>
+            <div
+              style={{
+                alignItems: 'center',
+                backgroundColor: '#009DCA',
+                borderRadius: '7px',
+                color: '#fff',
+                cursor: 'pointer',
+                display: 'flex',
+                justifyContent: 'center',
+                padding: '4px 6px',
+              }}
+              onClick={modales}
+            >
+              <label
+                style={{
+                  cursor: 'pointer',
+                }}
+              >
+                Cargar <i className="fas fa-upload mx-1"></i>
               </label>
             </div>
           </div>
