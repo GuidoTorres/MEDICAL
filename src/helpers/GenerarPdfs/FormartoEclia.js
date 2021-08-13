@@ -1,3 +1,4 @@
+/* eslint-disable */
 import jsPDF from "jspdf";
 import eclia from "../../assets/pdf Imagen/eclia.png";
 

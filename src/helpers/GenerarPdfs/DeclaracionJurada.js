@@ -1,3 +1,4 @@
+/* eslint-disable */
 import jsPDF from "jspdf";
 import image from "../../assets/pdf Imagen/sintomas.png";
 import fileUrl from "file-url";

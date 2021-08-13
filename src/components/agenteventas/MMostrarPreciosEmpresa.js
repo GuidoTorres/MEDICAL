@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect } from "react";
 import Modal from "react-modal";
 
@@ -39,11 +40,11 @@ const MMostrarPreciosEmpresa = ({
               </thead>
               <tbody>
                 {dataSelected &&
-                  dataSelected.company_service.map((data, i) => (
+                  dataSelected.services.map((data, i) => (
                     <tr>
                       <td>
-                        {data && data.service && data.service.abbreviation
-                          ? data.service.abbreviation
+                        {data.abbreviation
+                          ? data.abbreviation
                           : ""}
                       </td>
                       <td>

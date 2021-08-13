@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { fetchGETPOSTPUTDELETE, fetchRUC } from "../../../helpers/fetch";
@@ -27,6 +28,7 @@ const MRegistroEmpresa = ({
   const [ruc, setRuc] = useState({});
   const [servicios, setServicios] = useState({});
   const [error, setError] = useState([]);
+
 
   const closeModal = () => {
     setOpenModal(false);
@@ -429,6 +431,7 @@ const MRegistroEmpresa = ({
       putCorporation();
     }
   };
+
 
   return (
     <Modal

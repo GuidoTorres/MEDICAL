@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Modal from "react-modal";
 import { customStyles } from "../../../helpers/tablaOpciones";
 import React, { useEffect, useState } from "react";

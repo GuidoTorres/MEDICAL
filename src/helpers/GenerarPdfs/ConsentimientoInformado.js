@@ -1,3 +1,4 @@
+/* eslint-disable */
 import jsPDF from "jspdf";
 // import image from "../../assets/pdf Imagen/sintomas.png";
 import consentimiento from "../../assets/pdf Imagen/consentimiento.png";
@@ -28,6 +29,8 @@ const generarConsentimientoInformado = (data) => {
   console.log(data);
 
   const prueba = data.service_details.abbreviation.bold()
+
+  if(data.consent !== null){
   const doc = new jsPDF("p", "pt");
   doc.setProperties({
     title: "Consentimiento Informado",
@@ -62,5 +65,6 @@ const generarConsentimientoInformado = (data) => {
   );
 
   window.open(doc.output("bloburl"), "_blank");
+  }
 };
 export { generarConsentimientoInformado };

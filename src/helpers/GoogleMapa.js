@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 const mapContainerStyle = {
   width: '100%',
