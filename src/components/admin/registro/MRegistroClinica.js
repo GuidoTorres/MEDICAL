@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import Swal from "sweetalert2";
@@ -37,6 +38,9 @@ const MRegistroClinica = ({
   const [ruc, setRuc] = useState({});
 
   const [fechasElegidas, setFechasElegidas] = useState([]);
+  const [departamentos, setDepartamentos] = useState({});
+  const [provinces, setProvinces] = useState({});
+  const [districts, setDistricts] = useState();
   const fechasDeSemana = [
     { id: 1, name: "Lunes" },
     { id: 2, name: "Martes" },
@@ -198,6 +202,7 @@ const MRegistroClinica = ({
     formData.set("contacts[0][phone]", data.phone || "");
     formData.set("contacts[0][email]", data.email || "");
     formData.set("contacts[0][contact_type]", 0);
+    formData.set("district_id", data.district_id || "");
 
     workday.map((w, index) => {
       formData.set(`work_days[${index}][day_id]`, Number(w.day));
@@ -253,6 +258,7 @@ const MRegistroClinica = ({
     formData.set("contacts[0][phone]", data.phone || "");
     formData.set("contacts[0][email]", data.email || "");
     formData.set("contacts[0][contact_type]", 0);
+    formData.set("district_id", data.district_id || "");
 
     // if (workday) {
     //   for (var [value] of Object.entries(workday)) {
@@ -271,9 +277,7 @@ const MRegistroClinica = ({
       formData.set(`work_days[${index}][opening]`, w.opening);
       formData.set(`work_days[${index}][closing]`, w.closing);
     });
-    // console.log(dataMapa);
 
-    // console.log(dataSelected.corporation.logo);
     fetchGETPOSTPUTDELETE(
       `clinics/update/${dataSelected.id}`,
       formData,
@@ -349,6 +353,47 @@ const MRegistroClinica = ({
     }
   };
 
+  const getDepartments = () => {
+    fetchGETPOSTPUTDELETE("departamentos")
+      .then((res) => res.json())
+      .then((res) => setDepartamentos(res.departments));
+  };
+  useEffect(() => {
+    getDepartments();
+  }, []);
+
+  console.log(departamentos);
+
+  const getProvinces = () => {
+    //devuelve solo el objeto con el id = a department_id
+    const provincias =
+      departamentos.length > 0 &&
+      departamentos.filter(
+        (item) => Number(item.id) === Number(data.department_id)
+      );
+    console.log(provincias);
+    console.log(data);
+    setProvinces(provincias);
+
+    const distritos =
+      provinces.length > 0 &&
+      provinces.map((data1, i) =>
+        data1.provinces.filter((item, j) =>
+          Number(item.id) === Number(data.province_id)? item.districts
+          : ""
+        )
+      );
+    console.log(distritos);
+
+    setDistricts(distritos);
+  };
+  // console.log(provinces);
+  // console.log(data);
+
+  useEffect(() => {
+    getProvinces();
+  }, [data]);
+
   return (
     <div>
       <Modal
@@ -369,11 +414,11 @@ const MRegistroClinica = ({
                 <div>
                   <label htmlFor="validationCustom01">RUC:</label>
                   <input
-                    type="number"
+                    type="text"
                     name="ruc"
                     id="ruc"
                     style={{ border: "1px solid red !important" }}
-                    disabled={editar ? true : false}
+                    // disabled={editar ? true : false}
                     defaultValue={data.ruc || ""}
                     onChange={(e) => handleChange(e)}
                   />
@@ -436,6 +481,48 @@ const MRegistroClinica = ({
                     defaultValue={data.reference || ""}
                     onChange={(e) => handleChange(e)}
                   />
+                </div>
+                <div>
+                  <label>Departamento:</label>
+                  <select
+                    name="department_id"
+                    onChange={(e) => handleChange(e)}
+                  >
+                    <option value="">Seleccione</option>
+
+                    {departamentos.length > 0 &&
+                      departamentos.map((data, i) => (
+                        <option key={i} value={data.id}>
+                          {data.name}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+                <div>
+                  <label>Provincia:</label>
+                  <select name="province_id" onChange={(e) => handleChange(e)}>
+                    <option value="">Seleccione</option>
+                    {provinces.length > 0 &&
+                      provinces.map((data, i) =>
+                        data.provinces.map((prov, i) => (
+                          <option key={i} value={prov.id}>
+                            {prov.name}
+                          </option>
+                        ))
+                      )}
+                  </select>
+                </div>
+                <div>
+                  <label>Distrito:</label>
+                  <select name="district_id" onChange={(e) => handleChange(e)}>
+                    <option value="">Seleccione</option>
+                    {districts &&
+                      districts[0] &&
+                      districts[0][0] &&
+                      districts[0][0].districts.map((data, i) => (
+                        <option key={i}>{data.name}</option>
+                      ))}
+                  </select>
                 </div>
               </div>
               <div className="mregistro__tipo">

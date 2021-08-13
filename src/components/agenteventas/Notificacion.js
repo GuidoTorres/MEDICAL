@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
@@ -5,7 +6,7 @@ import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 import { paginacionOpciones } from "../../helpers/tablaOpciones";
 
 const Notificacion = () => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
 
   const getPending = () => {
     fetchGETPOSTPUTDELETEJSON("settlement_pending")
@@ -30,7 +31,12 @@ const Notificacion = () => {
     },
     {
       name: "Cliente",
-      selector: (row) => (row.name ? row.name : ""),
+      selector: (row) =>
+        row.detail[0].attention.person.name
+          ? row.detail[0].attention.person.name +
+            " " +
+            row.detail[0].attention.person.pat_lastname
+          : "",
       sortable: true,
       grow: 2,
       style: {
@@ -103,7 +109,7 @@ const Notificacion = () => {
     },
     {
       name: "Vencimiento",
-      selector: (row) => (row.email ? row.email : ""),
+      selector: (row) => (row.date_update ? row.date_update : ""),
       sortable: true,
       sortable: true,
       style: {

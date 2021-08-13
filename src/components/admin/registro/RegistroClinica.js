@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 
 import DataTable from "react-data-table-component";
@@ -18,6 +19,7 @@ const RegistroClinica = () => {
   const [listRegistro, setListRegistro] = useState([]);
   const [metGetClinic, setMetGetClinic] = useState([]);
   const [modalLocalizacion, setModalLocalizacion] = useState(false);
+
   // const [clinicasFiltradas, setClinicasFiltradas] = useState({});
   const getClinica = () => {
     fetchGETPOSTPUTDELETE("clinics")
@@ -26,6 +28,8 @@ const RegistroClinica = () => {
         setMetGetClinic(datos.data);
       });
   };
+
+
 
   // Funcion para filtra la clinica roma de la tabla
   // const filtrarMedical = () => {
@@ -38,6 +42,8 @@ const RegistroClinica = () => {
     getClinica();
     // filtrarMedical();
   }, []);
+
+
 
   // console.log(metGetClinic);
 
@@ -131,18 +137,18 @@ const RegistroClinica = () => {
         </button>
       ),
     },
-    {
-      name: "Administrar lugares",
-      button: true,
-      cell: (e) => (
-        <button
-          onClick={() => handleLocalizacion(e)}
-          className="table__tablebutton"
-        >
-          <i className="fas fa-pencil-alt"></i>
-        </button>
-      ),
-    },
+    // {
+    //   name: "Administrar lugares",
+    //   button: true,
+    //   cell: (e) => (
+    //     <button
+    //       onClick={() => handleLocalizacion(e)}
+    //       className="table__tablebutton"
+    //     >
+    //       <i className="fas fa-pencil-alt"></i>
+    //     </button>
+    //   ),
+    // },
     {
       name: "Eliminar",
       button: true,

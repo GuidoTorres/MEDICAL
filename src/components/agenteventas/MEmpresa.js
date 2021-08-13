@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import Swal from "sweetalert2";
@@ -28,14 +29,6 @@ const MEmpresa = ({
     setEditar(false);
     setDataSelected(null);
   };
-
-  const getServices = () => {
-    fetchGETPOSTPUTDELETE("services")
-      .then((res) => res.json())
-      .then((res) => setServices(res));
-  };
-
-  useEffect(() => {}, []);
 
   const crearCompanyDiscount = () => {
     // console.log(dataSelected);
@@ -76,52 +69,35 @@ const MEmpresa = ({
       }
     });
   };
+  console.log(dataSelected);
 
   const filtrarServicios = () => {
     const data =
       dataSelected &&
-      dataSelected.company_service &&
-      dataSelected.company_service.filter((data) => data);
+      dataSelected.services &&
+      dataSelected.services.filter((data) => data);
 
     setFilterServices(data);
 
-    
+    const dataDiscount = data.map((item) => ({
+      service_id: item.id,
+      state: item.last_discount.state,
+      percent: item.last_discount.percent,
+      amount: item.last_discount.amount,
+    }));
+
+    setDiscount(dataDiscount);
   };
-  
 
   const handleChange = (e, data, index, state) => {
-
-    console.log(state);
-    
-    const dataDiscount = filterServices.map(item => ({service_id:item.service.id, state: item.last_discount.state,
-     percent: item.last_discount.percent, amount: item.last_discount.amount
-    }))
-    // console.log(dataDiscount);
-    
-    console.log(dataDiscount);
-
-    let position = dataDiscount.findIndex(
-          (arreglo) => arreglo.service_id == data.service_id
-        );
-        const arreglos = [...dataDiscount];
-        if(state !== undefined){
-
-        arreglos[position].state = state
-        }
-        // console.log(arreglos[position].state) 
-        setDiscount([...arreglos]);
+    let position = discount.findIndex(
+      (arreglo) => arreglo.service_id == data.id
+    );
+    console.log(position);
+    const arreglos = [...discount];
     if (e.target.checked) {
-
-      // setDiscount((discount) => [
-      //   ...discount,
-
-      //   {
-      //     service_id: data.service.id,
-      //     state: 1,
-      //     percent: data.last_discount.percent,
-      //     amount: data.last_discount.amount,
-      //   },
-      // ]);
+      arreglos[position].state = 1;
+      setDiscount([...arreglos]);
 
       if (document.getElementById(`amount-${data.id}`).disabled) {
         document.getElementById(`amount-${data.id}`).disabled = false;
@@ -134,28 +110,16 @@ const MEmpresa = ({
         document.getElementById(`amount-${data.id}`).value =
           data.last_discount.amount;
       }
-
-      console.log(discount);
     } else {
-      if (discount.length > 1) {
-        console.log(" entro al segundo if");
-        let position = discount.findIndex(
-          (arreglo) => arreglo.service_id == data.id
-        );
-        const arreglos = [...discount];
-
-        arreglos.splice(position, 1);
-        setDiscount([...arreglos]);
-      } else {
-        setDiscount([]);
-      }
+      arreglos[position].state = 0;
+      setDiscount([...arreglos]);
 
       document.getElementById(`amount-${data.id}`).disabled = true;
     }
   };
+  console.log(discount);
 
-  const editarPercent = (e, id, idService ,data ) => {
-
+  const editarPercent = (e, id, idService, data) => {
     const value = e.target.value || 0;
 
     let position = discount.findIndex(
@@ -197,8 +161,6 @@ const MEmpresa = ({
   useEffect(() => {
     filtrarServicios();
   }, [dataSelected]);
-
-
 
   return (
     <Modal
@@ -269,7 +231,14 @@ const MEmpresa = ({
                 placeholder=""
                 aria-label=""
                 aria-describedby="basic-addon1"
-                defaultValue={dataSelected.corporation.responsable.name}
+                defaultValue={
+                  dataSelected &&
+                  dataSelected.corporation &&
+                  dataSelected.corporation.contacts[0] &&
+                  dataSelected.corporation.contacts[0].name
+                    ? dataSelected.corporation.contacts[0].name
+                    : ""
+                }
                 disabled
               />
             </div>
@@ -282,7 +251,14 @@ const MEmpresa = ({
                 placeholder=""
                 aria-label=""
                 aria-describedby="basic-addon1"
-                defaultValue={dataSelected.corporation.responsable.phone}
+                defaultValue={
+                  dataSelected &&
+                  dataSelected.corporation &&
+                  dataSelected.corporation.contacts[0] &&
+                  dataSelected.corporation.contacts[0].phone
+                    ? dataSelected.corporation.contacts[0].phone
+                    : ""
+                }
                 disabled
               />
             </div>
@@ -294,7 +270,14 @@ const MEmpresa = ({
                 placeholder=""
                 aria-label=""
                 aria-describedby="basic-addon1"
-                defaultValue={dataSelected.corporation.responsable.email}
+                defaultValue={
+                  dataSelected &&
+                  dataSelected.corporation &&
+                  dataSelected.corporation.contacts[0] &&
+                  dataSelected.corporation.contacts[0].email
+                    ? dataSelected.corporation.contacts[0].email
+                    : ""
+                }
                 disabled
               />
             </div>
@@ -349,35 +332,72 @@ const MEmpresa = ({
             <table className="table">
               <thead>
                 <tr>
-                <th scope="col" style={{width: '20%', textAlign: 'center'}}>Estado</th>
-                  <th scope="col" style={{width: '40%', textAlign: 'center'}}>Tipos de prueba</th>
-                  <th scope="col"style={{width: '5%', textAlign: 'center'}}>Seleccionar</th>
-                  <th scope="col"style={{width: '20%', textAlign: 'center'}}>Descuento(%)</th>
-                  <th scope="col"style={{width: '20%', textAlign: 'center'}}>Total</th>
+                  <th scope="col" style={{ width: "20%", textAlign: "center" }}>
+                    Estado
+                  </th>
+                  <th scope="col" style={{ width: "40%", textAlign: "center" }}>
+                    Tipos de prueba
+                  </th>
+                  <th scope="col" style={{ width: "5%", textAlign: "center" }}>
+                    Seleccionar
+                  </th>
+                  <th scope="col" style={{ width: "20%", textAlign: "center" }}>
+                    Descuento(%)
+                  </th>
+                  <th scope="col" style={{ width: "20%", textAlign: "center" }}>
+                    Total
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {filterServices.length > 0 &&
                   filterServices.map((data, index) => (
                     <tr key={index}>
-                    <td style={{textAlign: 'center'}}>
-                    {data.last_discount.state === 1 ?
-                    <span class="badge badge-success" onClick={e => handleChange(e, data ,index, 0)} style={{backgroundColor: 'green', borderRadius:'10px', opacity:'0.8', cursor:'pointer'}}>Activo</span>:
-                    <span class="badge badge-success" onClick={e => handleChange(e, data ,index, 1)}style={{backgroundColor: 'red', borderRadius:'10px', opacity:'0.7', cursor:'pointer'}}>Inactivo</span>
-                    }
-                    </td>
-                      <td style={{width: '20%', textAlign: 'center'}}>
-                        {data && data.service && data.service.abbreviation
-                          ? data.service.abbreviation
-                          : ""}
+                      <td style={{ textAlign: "center" }}>
+                        {data.last_discount.state === 1 ? (
+                          <span
+                            class="badge badge-success"
+                            onClick={(e) => handleChange(e, data, index, 0)}
+                            style={{
+                              backgroundColor: "green",
+                              borderRadius: "10px",
+                              opacity: "0.8",
+                              cursor: "pointer",
+                            }}
+                          >
+                            Activo
+                          </span>
+                        ) : (
+                          <span
+                            class="badge badge-success"
+                            onClick={(e) => handleChange(e, data, index, 1)}
+                            style={{
+                              backgroundColor: "red",
+                              borderRadius: "10px",
+                              opacity: "0.7",
+                              cursor: "pointer",
+                            }}
+                          >
+                            Inactivo
+                          </span>
+                        )}
                       </td>
-                      <td >
-                        <div className="form-check" style={{display: 'flex', flexAlign:'center', justifyContent:'center'}}>
+                      <td style={{ width: "20%", textAlign: "center" }}>
+                        {data.abbreviation ? data.abbreviation : ""}
+                      </td>
+                      <td>
+                        <div
+                          className="form-check"
+                          style={{
+                            display: "flex",
+                            flexAlign: "center",
+                            justifyContent: "center",
+                          }}
+                        >
                           <input
                             className="form-check-input"
                             type="checkbox"
                             name="services"
-                            
                             // defaultChecked={
                             //   data &&
                             //   data.last_discount &&
@@ -385,19 +405,30 @@ const MEmpresa = ({
                             //     ? data.last_discount.state
                             //     : ""
                             // }
+                            defaultChecked={
+                              dataSelected.services[index].last_discount
+                                .state === 1
+                                ? true
+                                : false
+                            }
                             value={data.service_id}
                             id="flexCheckDefault"
                             onChange={(e) => {
-                              handleChange(e, data, index);
+                              handleChange(
+                                e,
+                                data,
+                                index,
+                                data.last_discount.state === 1 ? 0 : 1
+                              );
                             }}
                           />
                         </div>
                       </td>
 
-                      <td >
+                      <td>
                         <input
                           type="number"
-                          style={{width:'80px'}}
+                          style={{ width: "80px" }}
                           className="form-input"
                           id={`percent-${data.id}`}
                           placeholder=""
@@ -410,23 +441,23 @@ const MEmpresa = ({
                           aria-describedby="basic-addon1"
                         />
                       </td>
-                      <td > 
+                      <td>
                         <div className="input-group mb-3">
                           <input
                             type="number"
-                            style={{width:'80px'}}
+                            style={{ width: "80px" }}
                             id={`amount-${data.id}`}
                             placeholder=""
                             aria-label=""
                             name="amount"
-                            disabled
+                            // disabled
                             defaultValue={
                               data.last_discount && data.last_discount.amount
                                 ? data.last_discount.amount
                                 : ""
                             }
                             onChange={(e) =>
-                              editarPercent(e, data.id, data.service.id, data)
+                              editarPercent(e, data.id, data.id, data)
                             }
                             aria-describedby="basic-addon1"
                           />

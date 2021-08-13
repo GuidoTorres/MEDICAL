@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import logo from "../../assets/icons/Isotipo.png";
 import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";

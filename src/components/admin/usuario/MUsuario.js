@@ -1,9 +1,11 @@
+/* eslint-disable */
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 import Modal from "react-modal";
 import { fetchGETPOSTPUTDELETEJSON } from "../../../helpers/fetch";
 import { customStyles } from "../../../helpers/tablaOpciones";
 
-const MUsuario = ({ openModal, setOpenModal, dataSelected }) => {
+const MUsuario = ({ openModal, setOpenModal, dataSelected, resp }) => {
   const [usuario, setUsuario] = useState({});
 
   const closeModal = () => {
@@ -11,9 +13,42 @@ const MUsuario = ({ openModal, setOpenModal, dataSelected }) => {
   };
   console.log(dataSelected);
 
+  // status 422 tiene atenciones
   const editarUsuario = () => {
-    fetchGETPOSTPUTDELETEJSON(`users/${dataSelected.id}`, usuario, "PUT").then(
-      (resp) => console.log(resp)
+    const data = {
+      tipo_usuario: usuario.tipo_usuario === "Particular" ? 1 : 0,
+      cellphone: usuario.cellphone ? usuario.cellphone : dataSelected.phone,
+      email: usuario.email ? usuario.email : dataSelected.email,
+    };
+
+    fetchGETPOSTPUTDELETEJSON(`users/${dataSelected.id}`, data, "PUT").then(
+      (res) => {
+        if (res.status === 201) {
+          closeModal();
+          Swal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Se ha creado el trabajador correctamente.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Aceptar",
+          }).then((res) => {
+            if (res.isConfirmed) {
+              resp();
+            }
+          });
+        } else {
+          closeModal();
+          Swal.fire({
+            icon: "error",
+            title: "Ups¡",
+            text: "Algo salió mal.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cerrar",
+          });
+        }
+      }
     );
   };
 
@@ -78,7 +113,7 @@ const MUsuario = ({ openModal, setOpenModal, dataSelected }) => {
                     id="categoria"
                     aria-label="Default select example"
                     style={{ width: "50%" }}
-                    name="service_category_id"
+                    name="tipo_usuario"
                     onChange={(e) => handleChange(e)}
                     defaultValue={dataSelected.user_type}
                   >
@@ -93,7 +128,7 @@ const MUsuario = ({ openModal, setOpenModal, dataSelected }) => {
                   <input
                     type="text"
                     defaultValue={dataSelected.user_type || "----"}
-                    name="company"
+                    name="tipo_usuario"
                     onChange={(e) => handleChange(e)}
                     disabled
                   />
@@ -115,7 +150,7 @@ const MUsuario = ({ openModal, setOpenModal, dataSelected }) => {
                 <input
                   type="text"
                   defaultValue={dataSelected.phone || ""}
-                  name="phone"
+                  name="cellphone"
                   onChange={(e) => handleChange(e)}
                 />
               </div>
