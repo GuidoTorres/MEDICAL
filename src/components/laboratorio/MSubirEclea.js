@@ -2,13 +2,16 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import {
-  fetchGETPOSTPUTDELETEJSON,
   fetchGETPOSTPUTDELETE,
 } from "../../helpers/fetch";
 
 import { customStyles } from "../../helpers/tablaOpciones";
 import Swal from "sweetalert2";
 
+import jsPDF from "jspdf";
+import eclia from "../../assets/pdf Imagen/eclia.png";
+import firma from "../../assets/pdf Imagen/Firma.png";
+// MODAL PARA SUBIR RESULTADOS DE PRUEBA ECLIA ANTICUERPOS IGM/IGG
 const MSubirEclea = ({
   openModal,
   setOpenModal,
@@ -25,7 +28,88 @@ const MSubirEclea = ({
     setOpenModal(false);
   };
 
-  const postResults = () => {
+  function getAge() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const birthDate = new Date(dataSelected.person.birthday);
+
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      const edad = age - 1;
+      return edad.toString();
+    } else {
+      return age.toString();
+    }
+  }
+
+  const generarPDF = () => {
+    const doc = new jsPDF("p", "pt");
+    doc.setProperties({
+      title: "Formato Antígeno",
+    });
+    doc.setFontSize(10);
+
+    doc.addImage(eclia, "PNG", 6, 20, 580, 800, "", "FAST");
+
+    doc.text(
+      328,
+      120,
+      `${dataSelected.person.gender_id === 1 ? "Masculino" : "Femenino"}`
+    );
+    doc.text(85, 119, `${dataSelected.id ? dataSelected.id : ""}`);
+    doc.text(
+      55,
+      141,
+      `${dataSelected.person.dni ? dataSelected.person.dni : ""}`
+    );
+    doc.text(
+      428,
+      141,
+      `${dataSelected.date_attention ? dataSelected.date_attention : ""}`
+    );
+
+    doc.text(
+      80,
+      163,
+      `${
+        dataSelected.person.name !== undefined || null
+          ? dataSelected.person.name.replace(
+              /(^\w|\s\w)(\S*)/g,
+              (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+            )
+          : ""
+      } ${
+        dataSelected.person.pat_lastname !== undefined || null
+          ? dataSelected.person.pat_lastname.replace(
+              /(^\w|\s\w)(\S*)/g,
+              (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+            )
+          : ""
+      } ${
+        dataSelected.person.mom_lastname !== undefined || null
+          ? dataSelected.person.mom_lastname.replace(
+              /(^\w|\s\w)(\S*)/g,
+              (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+            )
+          : ""
+      }`
+    );
+    doc.text(313, 164, getAge());
+
+    doc.text(195, 268, `${result.result_igm ? result.result_igm : ""}`);
+    doc.text(285, 268, `${result.result_igg ? result.result_igg : ""}`);
+    doc.setFillColor(255, 255, 255);
+    doc.rect(335, 464, 150, 80, "F");
+    doc.addImage(firma, "PNG", 345, 485, 100, 80, "", "FAST");
+    const pdf = new File([doc.output("blob")], "myDoc.pdf", {
+      type: "application/pdf",
+    });
+
+    postResults(pdf);
+  };
+
+  const postResults = (pdf) => {
     if (result.result_igg === "" || null) {
       document.getElementById("igg").style = "border:1px solid red !important";
     }
@@ -38,6 +122,7 @@ const MSubirEclea = ({
     formData.set("id", dataSelected.id || "");
     formData.set("result_igm", result.result_igm || "");
     formData.set("result_igg", result.result_igg || "");
+    formData.set("pdf", pdf);
 
     if (
       result.result_igg !== "" ||
@@ -72,7 +157,6 @@ const MSubirEclea = ({
     }
   };
 
-  console.log(dataSelected);
   return (
     <Modal
       isOpen={openModal}
@@ -153,7 +237,7 @@ const MSubirEclea = ({
               <button className="botones" onClick={closeModal}>
                 Cancelar
               </button>
-              <button className="botones" onClick={postResults}>
+              <button className="botones" onClick={generarPDF}>
                 Enviar
               </button>
             </div>

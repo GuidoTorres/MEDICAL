@@ -1,11 +1,17 @@
 /* eslint-disable */
 import React, { useState } from "react";
 import Modal from "react-modal";
-import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 import Swal from "sweetalert2";
+import jsPDF from "jspdf";
+
+import antigenosi from "../../assets/pdf Imagen/antigenoSi.png";
+import antigenono from "../../assets/pdf Imagen/antigenoNo.png";
+import firma from "../../assets/pdf Imagen/Firma.png";
+import isos from "../../assets/pdf Imagen/isos.png";
 
 import { customStyles } from "../../helpers/tablaOpciones";
-
+//MODAL PARA SUBIR RESULTADOS DE PRUEBA DE ANTÍGENO
 const MSubirLaboratorio = ({
   openModal,
   setOpenModal,
@@ -21,9 +27,116 @@ const MSubirLaboratorio = ({
     setOpenModal(false);
   };
   console.log(result);
-      console.log(dataSelected);
 
-  const postResults = () => {
+  function getAge() {
+    const today = new Date();
+    const birthDate = new Date(dataSelected.person.birthday);
+
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      const edad = age - 1;
+      return edad.toString();
+    } else {
+      return age.toString();
+    }
+  }
+
+  const generarPDF = () => {
+    const doc = new jsPDF("p", "pt");
+    doc.setProperties({
+      title: "Formato Antígeno",
+    });
+    doc.setFontSize(10);
+
+    doc.addImage(
+      result.result === "0" ? antigenono : antigenosi,
+      "PNG",
+      6,
+      20,
+      580,
+      800,
+      "",
+      "FAST"
+    );
+    doc.text(
+      328,
+      135,
+      `${dataSelected.person.gender_id === 1 ? "Masculino" : "Femenino"}`
+    );
+    // doc.text(328, 135, `${e && e.genero === null ? 'Masculino' : ''}`);
+
+    doc.text(90, 136, `${dataSelected.id ? dataSelected.id : ""}`);
+    doc.text(
+      60,
+      158,
+      `${dataSelected.person.dni ? dataSelected.person.dni : ""}`
+    );
+    doc.text(
+      428,
+      157,
+      `${dataSelected.date_attention ? dataSelected.date_attention : ""}`
+    );
+
+    doc.text(
+      85,
+      180,
+      `${
+        (dataSelected &&
+          dataSelected.person &&
+          dataSelected.person.name !== null) ||
+        undefined
+          ? dataSelected.person.name.replace(
+              /(^\w|\s\w)(\S*)/g,
+              (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+            )
+          : ""
+      } ${
+        (dataSelected &&
+          dataSelected.person &&
+          dataSelected.person.pat_lastname !== null) ||
+        undefined
+          ? dataSelected.person.pat_lastname.replace(
+              /(^\w|\s\w)(\S*)/g,
+              (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+            )
+          : ""
+      } ${
+        (dataSelected &&
+          dataSelected.person &&
+          dataSelected.person.mom_lastname !== null) ||
+        undefined
+          ? dataSelected.person.mom_lastname.replace(
+              /(^\w|\s\w)(\S*)/g,
+              (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+            )
+          : ""
+      }`
+    );
+    doc.text(312, 180, getAge());
+
+    if (result.result === "0" || 0) {
+      doc.text(284, 268, `No detectado`);
+    } else if (result.result === "1" || 1) {
+      doc.text(284, 268, `Detectado`);
+    }
+
+    doc.addImage(firma, "PNG", 345, 450, 100, 80, "", "FAST");
+    doc.addImage(isos, "PNG", 300, 760, 220, 60, "", "FAST");
+    // window.open(doc.output("bloburl"), "_blank");
+    const pdf = new File([doc.output("blob")], "myDoc.pdf", {
+      type: "application/pdf",
+    });
+
+    postResults(pdf);
+  };
+
+  const postResults = (pdf) => {
+    const formData = new FormData();
+    formData.set("id", result.id);
+    formData.set("result", result.result);
+    formData.set("pdf", pdf);
+
     if (
       result.result === "" ||
       result.result === null ||
@@ -34,11 +147,12 @@ const MSubirLaboratorio = ({
         "border:1px solid red !important";
     }
 
-
-    if (result.result !== "" || null) {
-      fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) => {
-        console.log(data);
-
+    if (
+      result.result !== "" &&
+      result.result !== undefined &&
+      result.result !== "Seleccione"
+    ) {
+      fetchGETPOSTPUTDELETE(`result`, formData, "POST").then((data) => {
         if (data.status === 200) {
           closeModal();
           Swal.fire({
@@ -65,7 +179,6 @@ const MSubirLaboratorio = ({
     }
   };
 
-  console.log(result);
   return (
     <Modal
       isOpen={openModal}
@@ -136,7 +249,7 @@ const MSubirLaboratorio = ({
               <button className="botones" onClick={closeModal}>
                 Cancelar
               </button>
-              <button className="botones" onClick={postResults}>
+              <button className="botones" onClick={generarPDF}>
                 Enviar
               </button>
             </div>

@@ -3,7 +3,23 @@ import jsPDF from "jspdf";
 import ficha1 from "../../assets/pdf Imagen/FichaCovid1.png";
 import ficha2 from "../../assets/pdf Imagen/FichaCovid2.png";
 
+function getAge(birth) {
+  const today = new Date();
+  const year = today.getFullYear();
+  const birthDate = new Date(birth);
+
+  const age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    const edad = age - 1;
+    return edad.toString();
+  } else {
+    return age.toString();
+  }
+}
+
 const generarFichaCovid = (e) => {
+  console.log(e);
   const data = {
     nombre: "Hector Torres Durand",
     dni: "72798529",
@@ -131,7 +147,7 @@ const generarFichaCovid = (e) => {
   doc.text(150, 232, `${e.fullName ? e.fullName : ""}`);
   doc.text(450, 232, `${e.patient_details ? e.patient_details.cellphone : ""}`);
   doc.text(152, 246, `${e.birthday ? e.birthday : ""}`);
-  doc.text(280, 246, `${e.birthday ? e.birthday : ""}`);
+  doc.text(284, 246, getAge(e.birthday));
   //Sexo
   doc.text(
     118,
@@ -523,47 +539,13 @@ const generarFichaCovid = (e) => {
   );
 
   doc.text(
-    205,
+    221,
     465,
     `${
       e.covid_file &&
       e.covid_file.answers[50] &&
       e.covid_file.answers[50].answer
-        ? e.covid_file.answers[50].answer
-        : ""
-    }`
-  );
-  doc.text(
-    205,
-    455,
-    `${
-      e.covid_file &&
-      e.covid_file.answers[51] &&
-      e.covid_file.answers[51].answer
-        ? e.covid_file.answers[51].answer
-        : ""
-    }`
-  );
-  doc.text(
-    350,
-    528,
-    `${
-      e.covid_file &&
-      e.covid_file.answers[52] &&
-      e.covid_file.answers[52].answer
-        ? e.covid_file.answers[52].answer
-        : ""
-    }`
-  );
-
-  doc.text(
-    221,
-    465,
-    `${
-      e.covid_file &&
-      e.covid_file.answers[53] &&
-      e.covid_file.answers[53].answer
-        ? e.covid_file.answers[53].answer
+        ? "X"
         : ""
     }`
   );
@@ -572,78 +554,135 @@ const generarFichaCovid = (e) => {
     477,
     `${
       e.covid_file &&
-      e.covid_file.answers[54] &&
-      e.covid_file.answers[54].answer
-        ? e.covid_file.answers[54].answer
+      e.covid_file.answers[51] &&
+      e.covid_file.answers[51].answer
+        ? "X"
         : ""
     }`
   );
-
   doc.text(
     221,
     490,
     `${
       e.covid_file &&
-      e.covid_file.answers[55] &&
-      e.covid_file.answers[55].answer
-        ? e.covid_file.answers[55].answer
-        : ""
-    }`
-  );
-  doc.text(
-    221,
-    503,
-    `${
-      e.covid_file &&
-      e.covid_file.answers[56] &&
-      e.covid_file.answers[56].answer
-        ? e.covid_file.answers[56].answer
+      e.covid_file.answers[52] &&
+      e.covid_file.answers[52].answer
+        ? "X"
         : ""
     }`
   );
 
   doc.text(
     221,
-    515,
+    503,
     `${
       e.covid_file &&
-      e.covid_file.answers[57] &&
-      e.covid_file.answers[57].answer
-        ? e.covid_file.answers[57].answer
+      e.covid_file.answers[53] &&
+      e.covid_file.answers[53].answer
+        ? "X"
         : ""
     }`
   );
   doc.text(
     221,
+    515,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[54] &&
+      e.covid_file.answers[54].answer
+        ? "X"
+        : ""
+    }`
+  );
+
+  doc.text(
+    221,
     528,
     `${
       e.covid_file &&
-      e.covid_file.answers[58] &&
-      e.covid_file.answers[58].answer
-        ? e.covid_file.answers[58].answer
+      e.covid_file.answers[55] &&
+      e.covid_file.answers[55].answer
+        ? "X"
+        : ""
+    }`
+  );
+  doc.text(
+    355,
+    465,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[56] &&
+      e.covid_file.answers[56].answer
+        ? "X"
         : ""
     }`
   );
 
   doc.text(
     355,
-    465,
+    477,
     `${
       e.covid_file &&
-      e.covid_file.answers[59] &&
-      e.covid_file.answers[59].answer
-        ? e.covid_file.answers[59].answer
+      e.covid_file.answers[57] &&
+      e.covid_file.answers[57].answer
+        ? "X"
         : ""
     }`
   );
   doc.text(
-    150,
-    577,
+    359,
+    502,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[58] &&
+      e.covid_file.answers[58].answer
+        ? "X"
+        : ""
+    }`
+  );
+
+  doc.text(
+    359,
+    515,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[59] &&
+      e.covid_file.answers[59].answer
+        ? "X"
+        : ""
+    }`
+  );
+  doc.text(
+    441,
+    502,
     `${
       e.covid_file &&
       e.covid_file.answers[60] &&
       e.covid_file.answers[60].answer
-        ? e.covid_file.answers[60].answer
+        ? "X"
+        : ""
+    }`
+  );
+  doc.text(
+    441,
+    515,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[61] &&
+      e.covid_file.answers[61].answer
+        ? "X"
+        : ""
+    }`
+  );
+
+  doc.text(
+    160,
+    538,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[62] &&
+      e.covid_file.answers[62].answer
+        ? e.covid_file.answers[62].answer
         : ""
     }`
   );
@@ -651,95 +690,115 @@ const generarFichaCovid = (e) => {
   //signos
 
   doc.text(
-    56,
-    618,
+    85,
+    568,
     `${
-      e.covid_file && e.covid_file[63] && e.covid_file[63].answer
-        ? e.covid_file[63].answer
+      e.covid_file &&
+      e.covid_file.answers[63] &&
+      e.covid_file.answers[63].answer
+        ? "X"
         : ""
     }`
   );
   doc.text(
-    186,
-    618,
+    85,
+    581,
     `${
-      e.covid_file && e.covid_file[64] && e.covid_file[64].answer
-        ? e.covid_file[64].answer
+      e.covid_file &&
+      e.covid_file.answers[64] &&
+      e.covid_file.answers[64].answer
+        ? "X"
         : ""
     }`
   );
   doc.text(
-    351,
-    618,
+    85,
+    594,
     `${
-      e.covid_file && e.covid_file[65] && e.covid_file[65].answer
-        ? e.covid_file[65].answer
-        : ""
-    }`
-  );
-
-  doc.text(
-    56,
-    635,
-    `${
-      e.covid_file && e.covid_file[66] && e.covid_file[66].answer
-        ? e.covid_file[66].answer
-        : ""
-    }`
-  );
-  doc.text(
-    186,
-    635,
-    `${
-      e.covid_file && e.covid_file[67] && e.covid_file[67].answer
-        ? e.covid_file[67].answer
-        : ""
-    }`
-  );
-  doc.text(
-    351,
-    635,
-    `${
-      e.covid_file && e.covid_file[68] && e.covid_file[68].answer
-        ? e.covid_file[68].answer
+      e.covid_file &&
+      e.covid_file.answers[65] &&
+      e.covid_file.answers[65].answer
+        ? "X"
         : ""
     }`
   );
 
   doc.text(
-    56,
-    650,
+    205,
+    568,
     `${
-      e.covid_file && e.covid_file[69] && e.covid_file[69].answer
-        ? e.covid_file[69].answer
+      e.covid_file &&
+      e.covid_file.answers[66] &&
+      e.covid_file.answers[66].answer
+        ? "X"
         : ""
     }`
   );
   doc.text(
-    351,
-    650,
+    205,
+    581,
     `${
-      e.covid_file && e.covid_file[70] && e.covid_file[70].answer
-        ? e.covid_file[70].answer
+      e.covid_file &&
+      e.covid_file.answers[67] &&
+      e.covid_file.answers[67].answer
+        ? "X"
+        : ""
+    }`
+  );
+  doc.text(
+    355,
+    568,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[68] &&
+      e.covid_file.answers[68].answer
+        ? "X"
         : ""
     }`
   );
 
   doc.text(
-    56,
-    664,
+    355,
+    581,
     `${
-      e.covid_file && e.covid_file[71] && e.covid_file[71].answer
-        ? e.covid_file[71].answer
+      e.covid_file &&
+      e.covid_file.answers[69] &&
+      e.covid_file.answers[69].answer
+        ? "X"
         : ""
     }`
   );
   doc.text(
-    351,
-    664,
+    355,
+    594,
     `${
-      e.covid_file && e.covid_file[71] && e.covid_file[71].answer
-        ? e.covid_file[71].answer
+      e.covid_file &&
+      e.covid_file.answers[70] &&
+      e.covid_file.answers[70].answer
+        ? "X"
+        : ""
+    }`
+  );
+
+  doc.text(
+    355,
+    607,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[71] &&
+      e.covid_file.answers[71].answer
+        ? "X"
+        : ""
+    }`
+  );
+  doc.text(
+    160,
+    604,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[72] &&
+      e.covid_file.answers[72].answer
+        ? e.covid_file.answers[72].answer
         : ""
     }`
   );
@@ -747,145 +806,186 @@ const generarFichaCovid = (e) => {
   // Condiciones de comorbilidad
 
   doc.text(
-    56,
+    85,
+    635,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[73] &&
+      e.covid_file.answers[73].answer
+        ? "X"
+        : ""
+    }`
+  );
+  doc.text(
+    190,
+    633,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[74] &&
+      e.covid_file.answers[74].answer
+        ? e.covid_file.answers[74].answer
+        : ""
+    }`
+  );
+
+  doc.text(
+    85,
+    646,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[75] &&
+      e.covid_file.answers[75].answer
+        ? "X"
+        : ""
+    }`
+  );
+  doc.text(
+    85,
+    659,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[76] &&
+      e.covid_file.answers[76].answer
+        ? "X"
+        : ""
+    }`
+  );
+
+  doc.text(
+    85,
+    672,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[77] &&
+      e.covid_file.answers[77].answer
+        ? "X"
+        : ""
+    }`
+  );
+  doc.text(
+    85,
+    684,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[78] &&
+      e.covid_file.answers[78].answer
+        ? "X"
+        : ""
+    }`
+  );
+
+  doc.text(
+    85,
     697,
     `${
-      e.covid_file && e.covid_file[72] && e.covid_file[72].answer
-        ? e.covid_file[72].answer
+      e.covid_file &&
+      e.covid_file.answers[79] &&
+      e.covid_file.answers[79].answer
+        ? "X"
         : ""
     }`
   );
   doc.text(
-    315,
-    697,
+    85,
+    709,
     `${
-      e.covid_file && e.covid_file[73] && e.covid_file[73].answer
-        ? e.covid_file[73].answer
-        : ""
-    }`
-  );
-
-  doc.text(
-    56,
-    713,
-    `${
-      e.covid_file && e.covid_file[74] && e.covid_file[74].answer
-        ? e.covid_file[74].answer
-        : ""
-    }`
-  );
-  doc.text(
-    315,
-    713,
-    `${
-      e.covid_file && e.covid_file[75] && e.covid_file[75].answer
-        ? e.covid_file[75].answer
+      e.covid_file &&
+      e.covid_file.answers[80] &&
+      e.covid_file.answers[80].answer
+        ? "X"
         : ""
     }`
   );
 
   doc.text(
-    56,
-    726,
+    321,
+    635,
     `${
-      e.covid_file && e.covid_file[76] && e.covid_file[76].answer
-        ? e.covid_file[76].answer
+      e.covid_file &&
+      e.covid_file.answers[81] &&
+      e.covid_file.answers[81].answer
+        ? "X"
         : ""
     }`
   );
   doc.text(
-    315,
-    726,
+    321,
+    648,
     `${
-      e.covid_file && e.covid_file[77] && e.covid_file[77].answer
-        ? e.covid_file[77].answer
-        : ""
-    }`
-  );
-
-  doc.text(
-    56,
-    741,
-    `${
-      e.covid_file && e.covid_file[78] && e.covid_file[78].answer
-        ? e.covid_file[78].answer
-        : ""
-    }`
-  );
-  doc.text(
-    315,
-    741,
-    `${
-      e.covid_file && e.covid_file[79] && e.covid_file[79].answer
-        ? e.covid_file[79].answer
+      e.covid_file &&
+      e.covid_file.answers[82] &&
+      e.covid_file.answers[82].answer
+        ? "X"
         : ""
     }`
   );
 
   doc.text(
-    56,
-    756,
+    321,
+    661,
     `${
-      e.covid_file && e.covid_file[80] && e.covid_file[80].answer
-        ? e.covid_file[80].answer
+      e.covid_file &&
+      e.covid_file.answers[83] &&
+      e.covid_file.answers[83].answer
+        ? "X"
         : ""
     }`
   );
   doc.text(
-    315,
-    756,
+    321,
+    672,
     `${
-      e.covid_file && e.covid_file[81] && e.covid_file[81].answer
-        ? e.covid_file[81].answer
-        : ""
-    }`
-  );
-
-  doc.text(
-    56,
-    771,
-    `${
-      e.covid_file && e.covid_file[82] && e.covid_file[82].answer
-        ? e.covid_file[82].answer
-        : ""
-    }`
-  );
-  doc.text(
-    315,
-    771,
-    `${
-      e.covid_file && e.covid_file[83] && e.covid_file[83].answer
-        ? e.covid_file[83].answer
+      e.covid_file &&
+      e.covid_file.answers[84] &&
+      e.covid_file.answers[84].answer
+        ? "X"
         : ""
     }`
   );
 
   doc.text(
-    56,
-    786,
+    321,
+    685,
     `${
-      e.covid_file && e.covid_file[84] && e.covid_file[84].answer
-        ? e.covid_file[84].answer
+      e.covid_file &&
+      e.covid_file.answers[85] &&
+      e.covid_file.answers[85].answer
+        ? "X"
         : ""
     }`
   );
   doc.text(
-    56,
-    799,
+    321,
+    698,
     `${
-      e.covid_file && e.covid_file[85] && e.covid_file[85].answer
-        ? e.covid_file[85].answer
+      e.covid_file &&
+      e.covid_file.answers[86] &&
+      e.covid_file.answers[86].answer
+        ? "X"
+        : ""
+    }`
+  );
+  doc.text(
+    160,
+    721,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[87] &&
+      e.covid_file.answers[87].answer
+        ? e.covid_file.answers[87].answer
         : ""
     }`
   );
 
   //Fecha culminacion embrazo
   doc.text(
-    190,
-    817,
+    205,
+    738,
     `${
-      e.covid_file && e.covid_file[87] && e.covid_file[87].answer
-        ? e.covid_file[87].answer
+      e.covid_file &&
+      e.covid_file.answers[88] &&
+      e.covid_file.answers[88].answer
+        ? e.covid_file.answers[88].answer
         : ""
     }`
   );
@@ -899,132 +999,147 @@ const generarFichaCovid = (e) => {
   //Ocupacion
 
   doc.text(
-    61,
-    65,
+    85,
+    83,
     `${
-      e.covid_file && e.covid_file[88] && e.covid_file[88].answer
-        ? e.covid_file[88].answer
+      e.covid_file &&
+      e.covid_file.answers[89] &&
+      e.covid_file.answers[89].answer
+        ? "X"
         : ""
     }`
   );
   doc.text(
-    61,
-    78,
+    85,
+    96,
     `${
-      e.covid_file && e.covid_file[89] && e.covid_file[89].answer
-        ? e.covid_file[89].answer
-        : ""
-    }`
-  );
-
-  doc.text(
-    61,
-    92,
-    `${
-      e.covid_file && e.covid_file[90] && e.covid_file[90].answer
-        ? e.covid_file[90].answer
-        : ""
-    }`
-  );
-  doc.text(
-    61,
-    106,
-    `${
-      e.covid_file && e.covid_file[91] && e.covid_file[91].answer
-        ? e.covid_file[91].answer
-        : ""
-    }`
-  );
-  doc.text(
-    260,
-    78,
-    `${
-      e.covid_file && e.covid_file[92] && e.covid_file[92].answer
-        ? e.covid_file[92].answer
-        : ""
-    }`
-  );
-  doc.text(
-    260,
-    93,
-    `${
-      e.covid_file && e.covid_file[93] && e.covid_file[93].answer
-        ? e.covid_file[93].answer
-        : ""
-    }`
-  );
-  doc.text(
-    260,
-    106,
-    `${
-      e.covid_file && e.covid_file[94] && e.covid_file[94].answer
-        ? e.covid_file[94].answer
+      e.covid_file &&
+      e.covid_file.answers[90] &&
+      e.covid_file.answers[90].answer
+        ? "X"
         : ""
     }`
   );
 
   doc.text(
-    369,
-    78,
+    85,
+    109,
     `${
-      e.covid_file && e.covid_file[95] && e.covid_file[95].answer
-        ? e.covid_file[95].answer
+      e.covid_file &&
+      e.covid_file.answers[91] &&
+      e.covid_file.answers[91].answer
+        ? "X"
         : ""
     }`
   );
   doc.text(
-    369,
-    92,
+    85,
+    121,
     `${
-      e.covid_file && e.covid_file[96] && e.covid_file[96].answer
-        ? e.covid_file[96].answer
+      e.covid_file &&
+      e.covid_file.answers[92] &&
+      e.covid_file.answers[92].answer
+        ? "X"
+        : ""
+    }`
+  );
+  doc.text(
+    270,
+    96,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[93] &&
+      e.covid_file.answers[93].answer
+        ? "X"
+        : ""
+    }`
+  );
+  doc.text(
+    270,
+    109,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[94] &&
+      e.covid_file.answers[94].answer
+        ? "X"
+        : ""
+    }`
+  );
+  doc.text(
+    270,
+    120,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[95] &&
+      e.covid_file.answers[95].answer
+        ? "X"
+        : ""
+    }`
+  );
+
+  doc.text(
+    372,
+    96,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[96] &&
+      e.covid_file.answers[96].answer
+        ? "X"
+        : ""
+    }`
+  );
+  doc.text(
+    372,
+    109,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[97] &&
+      e.covid_file.answers[97].answer
+        ? "X"
         : ""
     }`
   );
   doc.text(
     410,
-    103,
+    120,
     `${
-      e.covid_file && e.covid_file[97] && e.covid_file[97].answer
-        ? e.covid_file[97].answer
+      e.covid_file &&
+      e.covid_file.answers[98] &&
+      e.covid_file.answers[98].answer
+        ? e.covid_file.answers[98].answer
         : ""
     }`
   );
   doc.text(
-    80,
-    130,
+    100,
+    145,
     `${
-      e.covid_file && e.covid_file[98] && e.covid_file[98].answer
-        ? e.covid_file[98].answer
-        : ""
-    }`
-  );
-
-  doc.text(
-    405,
-    115,
-    `${
-      e.covid_file && e.covid_file[99] && e.covid_file[99].answer
-        ? e.covid_file[99].answer
-        : ""
-    }`
-  );
-
-  doc.text(
-    425,
-    130,
-    `${
-      e.covid_file && e.covid_file[100] && e.covid_file[100].answer
-        ? e.covid_file[100].answer
+      e.covid_file &&
+      e.covid_file.answers[99] &&
+      e.covid_file.answers[99].answer
+        ? e.covid_file.answers[99].answer
         : ""
     }`
   );
   doc.text(
     400,
-    143,
+    132,
     `${
-      e.covid_file && e.covid_file[101] && e.covid_file[101].answer
-        ? e.covid_file[101].answer
+      e.covid_file &&
+      e.covid_file.answers[100] &&
+      e.covid_file.answers[100].answer
+        ? e.covid_file.answers[100].answer
+        : ""
+    }`
+  );
+  doc.text(
+    415,
+    144,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[101] &&
+      e.covid_file.answers[101].answer
+        ? e.covid_file.answers[101].answer
         : ""
     }`
   );
@@ -1032,8 +1147,69 @@ const generarFichaCovid = (e) => {
     400,
     156,
     `${
-      e.covid_file && e.covid_file[102] && e.covid_file[102].answer
-        ? e.covid_file[102].answer
+      e.covid_file &&
+      e.covid_file.answers[102] &&
+      e.covid_file.answers[102].answer
+        ? e.covid_file.answers[102].answer
+        : ""
+    }`
+  );
+  doc.text(
+    400,
+    169,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[103] &&
+      e.covid_file.answers[103].answer
+        ? e.covid_file.answers[103].answer
+        : ""
+    }`
+  );
+
+  // si a tenido contacto directo con un caso sopechoso
+
+  doc.text(
+    85,
+    203,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[104] &&
+      e.covid_file.answers[104].answer
+        ? "X"
+        : ""
+    }`
+  );
+
+  doc.text(
+    135,
+    203,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[105] &&
+      e.covid_file.answers[105].answer
+        ? "X"
+        : ""
+    }`
+  );
+  doc.text(
+    205,
+    203,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[106] &&
+      e.covid_file.answers[106].answer
+        ? "X"
+        : ""
+    }`
+  );
+  doc.text(
+    85,
+    232,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[107] &&
+      e.covid_file.answers[107].answer
+        ? "X"
         : ""
     }`
   );
@@ -1041,123 +1217,206 @@ const generarFichaCovid = (e) => {
   //
 
   doc.text(
-    61,
-    192,
+    85,
+    244,
     `${
-      e.covid_file && e.covid_file[103] && e.covid_file[103].answer
-        ? e.covid_file[103].answer
+      e.covid_file &&
+      e.covid_file.answers[108] &&
+      e.covid_file.answers[108].answer
+        ? "X"
         : ""
     }`
   );
 
   doc.text(
-    115,
-    192,
+    85,
+    257,
     `${
-      e.covid_file && e.covid_file[104] && e.covid_file[104].answer
-        ? e.covid_file[104].answer
+      e.covid_file &&
+      e.covid_file.answers[109] &&
+      e.covid_file.answers[109].answer
+        ? "a"
         : ""
     }`
   );
 
   doc.text(
-    188,
-    192,
+    237,
+    232,
     `${
-      e.covid_file && e.covid_file[105] && e.covid_file[105].answer
-        ? e.covid_file[105].answer
+      e.covid_file &&
+      e.covid_file.answers[110] &&
+      e.covid_file.answers[110].answer
+        ? "b"
         : ""
     }`
   );
 
   doc.text(
-    61,
-    222,
+    237,
+    245,
     `${
-      e.covid_file && e.covid_file[106] && e.covid_file[106].answer
-        ? e.covid_file[106].answer
-        : ""
-    }`
-  );
-
-  doc.text(
-    61,
-    235,
-    `${
-      e.covid_file && e.covid_file[107] && e.covid_file[107].answer
-        ? e.covid_file[107].answer
-        : ""
-    }`
-  );
-  doc.text(
-    61,
-    248,
-    `${
-      e.covid_file && e.covid_file[108] && e.covid_file[108].answer
-        ? e.covid_file[108].answer
-        : ""
-    }`
-  );
-
-  doc.text(
-    225,
-    222,
-    `${
-      e.covid_file && e.covid_file[109] && e.covid_file[109].answer
-        ? e.covid_file[109].answer
-        : ""
-    }`
-  );
-
-  doc.text(
-    225,
-    235,
-    `${
-      e.covid_file && e.covid_file[110] && e.covid_file[110].answer
-        ? e.covid_file[110].answer
+      e.covid_file &&
+      e.covid_file.answers[111] &&
+      e.covid_file.answers[111].answer
+        ? "c"
         : ""
     }`
   );
 
   doc.text(
     388,
-    222,
+    232,
     `${
-      e.covid_file && e.covid_file[111] && e.covid_file[111].answer
-        ? e.covid_file[111].answer
+      e.covid_file &&
+      e.covid_file.answers[112] &&
+      e.covid_file.answers[112].answer
+        ? "d"
+        : ""
+    }`
+  );
+  doc.text(
+    388,
+    245,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[113] &&
+      e.covid_file.answers[113].answer
+        ? "e"
         : ""
     }`
   );
 
   doc.text(
-    388,
-    235,
+    320,
+    256,
     `${
-      e.covid_file && e.covid_file[112] && e.covid_file[112].answer
-        ? e.covid_file[112].answer
+      e.covid_file &&
+      e.covid_file.answers[114] &&
+      e.covid_file.answers[114].answer
+        ? e.covid_file.answers[114].answer
         : ""
     }`
   );
 
   doc.text(
-    388,
-    235,
+    153,
+    290,
     `${
-      e.covid_file && e.covid_file[113] && e.covid_file[113].answer
-        ? e.covid_file[113].answer
+      e.covid_file &&
+      e.covid_file.answers[115] &&
+      e.covid_file.answers[115].answer
+        ? e.covid_file.answers[115].answer
         : ""
     }`
   );
 
   doc.text(
-    388,
-    235,
+    205,
+    290,
     `${
-      e.covid_file && e.covid_file[114] && e.covid_file[114].answer
-        ? e.covid_file[114].answer
+      e.covid_file &&
+      e.covid_file.answers[116] &&
+      e.covid_file.answers[116].answer
+        ? e.covid_file.answers[116].answer
         : ""
     }`
   );
+
+  doc.text(
+    430,
+    288,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[117] &&
+      e.covid_file.answers[117].answer
+        ? e.covid_file.answers[117].answer
+        : ""
+    }`
+  );
+
+  doc.text(
+    153,
+    303,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[118] &&
+      e.covid_file.answers[118].answer
+        ? e.covid_file.answers[118].answer
+        : ""
+    }`
+  );
+
+  doc.text(
+    405,
+    303,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[119] &&
+      e.covid_file.answers[119].answer
+        ? e.covid_file.answers[119].answer
+        : ""
+    }`
+  );
+
+  doc.text(
+    165,
+    318,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[120] &&
+      e.covid_file.answers[120].answer
+        ? "a"
+        : ""
+    }`
+  );
+
+  doc.text(
+    85,
+    346,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[121] &&
+      e.covid_file.answers[121].answer
+        ? "b"
+        : ""
+    }`
+  );
+  doc.text(
+    85,
+    359,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[122] &&
+      e.covid_file.answers[122].answer
+        ? "c"
+        : ""
+    }`
+  );
+  doc.text(
+    140,
+    346,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[123] &&
+      e.covid_file.answers[123].answer
+        ? "d"
+        : ""
+    }`
+  );
+
+  doc.text(
+    140,
+    359,
+    `${
+      e.covid_file &&
+      e.covid_file.answers[124] &&
+      e.covid_file.answers[124].answer
+        ? e.covid_file.answers[124].answer
+        : ""
+    }`
+  );
+  
 
   window.open(doc.output("bloburl"), "_blank");
 };

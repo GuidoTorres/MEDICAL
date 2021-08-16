@@ -4,9 +4,26 @@
   align-items: center;
 
   .fecha {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     label {
-      width: 30%;
+      width: 20%;
     }
+  }
+  .fecha1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    label {
+      width: 20%;
+    }
+  }
+  .boton {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
   }
 }
 
@@ -15,8 +32,25 @@
     flex-direction: row;
 
     .fecha {
-      width: 33%;
-      border: 1px solid red;
+      width: 35%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .fecha1 {
+      margin-left: 20px;
+      width: 40%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .boton {
+      width: 25%;
+      height: 43px;
+      margin-top: 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
     }
   }
 }
