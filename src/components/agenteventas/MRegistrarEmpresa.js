@@ -28,7 +28,7 @@ const MRegistrarEmpresa = ({
   const [ruc, setRuc] = useState({});
   const [servicios, setServicios] = useState({});
   const [error, setError] = useState(false);
-  const [estado, setEstado] = useState([])
+  const [estado, setEstado] = useState([]);
 
   const closeModal = () => {
     setOpenModal(false);
@@ -44,22 +44,22 @@ const MRegistrarEmpresa = ({
       });
   };
 
-  console.log(dataSelected);
-
   const getServices = () => {
     fetchGETPOSTPUTDELETE("services")
       .then((info) => info.json())
       .then((datos) => setServicios(datos.data));
   };
 
-  useEffect(()=>{
+  console.log(dataSelected);
 
-  const prueba = dataSelected.company_service.map(item => ({state:item.state})  )
-  setEstado(prueba)
-
-  },[dataSelected])
-  console.log(estado);
-    
+  useEffect(() => {
+    if (editar) {
+      const prueba = dataSelected.company_service.map((item) => ({
+        state: item.last_discount.state,
+      }));
+      setEstado(prueba);
+    }
+  }, [dataSelected]);
 
   const getRuc = () => {
     fetchRUC(empresa.ruc, "GET")
@@ -90,11 +90,7 @@ const MRegistrarEmpresa = ({
     }
   };
 
-  console.log(dataSelected);
-  
-
   const handleService = (e, data) => {
-
     if (editar) {
       //Editando...
       if (e.target.checked) {
@@ -148,7 +144,7 @@ const MRegistrarEmpresa = ({
       }
     }
   };
-
+  console.log(avatar);
 
   const postCorporation = (e) => {
     const formData = new FormData();
@@ -159,7 +155,7 @@ const MRegistrarEmpresa = ({
       ruc.razonSocial || empresa.business_name || ""
     );
     formData.set("commercial_name", empresa.commercial_name || "");
-    formData.set("logo", avatar && avatar.file ? avatar.file : "");
+    formData.set("logo", avatar ? avatar.file : "");
 
     formData.set("address", ruc.direccion || empresa.address || "");
     formData.set("reference", empresa.reference || "");
@@ -376,6 +372,7 @@ const MRegistrarEmpresa = ({
       "POST"
     ).then((resp) => {
       if (resp.status === 200) {
+        setAvatar(null);
         closeModal();
         Swal.fire({
           icon: "success",
@@ -813,11 +810,14 @@ const MRegistrarEmpresa = ({
                   <label>Tipo de servicio</label>
                   <select
                     aria-label="Default select example"
-                    defaultValue={
+                    value={
                       dataSelected &&
-                      dataSelected.services &&
-                      dataSelected.services[0] &&
-                      dataSelected.services[0].services_category_id
+                      dataSelected.company_service &&
+                      dataSelected.company_service[0] &&
+                      dataSelected.company_service[0].service
+                        .service_category_id &&
+                      dataSelected.company_service[0].service
+                        .service_category_id
                     }
                     onChange={(e) =>
                       setEmpresa({
@@ -844,8 +844,11 @@ const MRegistrarEmpresa = ({
                               key={i}
                               type="checkbox"
                               className="w-auto"
-                              defaultChecked = {estado && estado[i] && estado[i].state === 1 ? true : false}
-
+                              defaultChecked={
+                                estado && estado[i] && estado[i].state === 1
+                                  ? true
+                                  : false
+                              }
                               onChange={(e) => handleService(e, data)}
                             />
                             <label>{data.abbreviation}</label>

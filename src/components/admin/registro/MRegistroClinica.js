@@ -187,10 +187,7 @@ const MRegistroClinica = ({
 
     formData.set("ruc", data.ruc || "");
     formData.set("business_name", ruc.razonSocial || data.business_name || "");
-    formData.set(
-      "commercial_name",
-      ruc.razonSocial || data.business_name || ""
-    );
+    formData.set("commercial_name", data.commercial_name || "");
     formData.set("logo", avatar && avatar.file ? avatar.file : "");
     formData.set("address", ruc.direccion || data.address || "");
     formData.set("reference", data.reference || "");
@@ -202,6 +199,8 @@ const MRegistroClinica = ({
     formData.set("contacts[0][phone]", data.phone || "");
     formData.set("contacts[0][email]", data.email || "");
     formData.set("contacts[0][contact_type]", 0);
+    formData.set("department_id", data.department_id || "");
+    formData.set("province_id", data.province_id || "");
     formData.set("district_id", data.district_id || "");
 
     workday.map((w, index) => {
@@ -243,10 +242,7 @@ const MRegistroClinica = ({
     formData.set("corporation_id", 1);
     formData.set("ruc", data.ruc || "");
     formData.set("business_name", ruc.razonSocial || data.business_name || "");
-    formData.set(
-      "commercial_name",
-      ruc.razonSocial || data.business_name || ""
-    );
+    formData.set("commercial_name", data.commercial_name || "");
     formData.set("logo", avatar && avatar.file ? avatar.file : "");
     formData.set("address", ruc.direccion || data.address || "");
     formData.set("reference", data.reference || "");
@@ -313,12 +309,12 @@ const MRegistroClinica = ({
     e.preventDefault();
 
     if (
-      data.address !== "" &&
-      data.address !== null &&
+      // data.address !== "" &&
+      // data.address !== null &&
       data.ruc !== "" &&
       data.ruc !== null &&
-      data.business_name !== "" &&
-      data.business_name !== null &&
+      // data.business_name !== "" &&
+      // data.business_name !== null &&
       data.name !== "" &&
       data.name !== null &&
       data.phone !== "" &&
@@ -361,38 +357,57 @@ const MRegistroClinica = ({
   useEffect(() => {
     getDepartments();
   }, []);
-
-  console.log(departamentos);
-
   const getProvinces = () => {
     //devuelve solo el objeto con el id = a department_id
-    const provincias =
-      departamentos.length > 0 &&
-      departamentos.filter(
-        (item) => Number(item.id) === Number(data.department_id)
-      );
-    console.log(provincias);
-    console.log(data);
-    setProvinces(provincias);
+    if (editar) {
+      console.log("entro al editar true");
+      const provincias =
+        departamentos.length > 0 &&
+        departamentos.filter((item) =>
+          item.id ===
+          dataSelected.corporation.address.district.province.department_id
+            ? item
+            : ""
+        );
+      setProvinces(provincias);
 
-    const distritos =
-      provinces.length > 0 &&
-      provinces.map((data1, i) =>
-        data1.provinces.filter((item, j) =>
-          Number(item.id) === Number(data.province_id)? item.districts
-          : ""
-        )
-      );
-    console.log(distritos);
+      const distritos =
+        provinces.length > 0 &&
+        provinces.map((data1, i) =>
+          data1.provinces.filter((item, j) =>
+            dataSelected.corporation.address.district_id ? item.districts : ""
+          )
+        );
 
-    setDistricts(distritos);
+      setDistricts(distritos);
+    } else {
+      console.log("entro al editar false");
+      const provincias =
+        departamentos.length > 0 &&
+        departamentos.filter(
+          (item) => Number(item.id) === Number(data.department_id)
+        );
+      setProvinces(provincias);
+      const distritos =
+        provinces.length > 0 &&
+        provinces.map((data1, i) =>
+          data1.provinces.filter((item, j) =>
+            Number(item.id) === Number(data.province_id) ? item.districts : ""
+          )
+        );
+
+      setDistricts(distritos);
+    }
   };
-  // console.log(provinces);
-  // console.log(data);
+  console.log(provinces);
+  console.log(districts);
+  // console.log(dataSelected.corporation.address.district.province.department_id);
+  // console.log(dataSelected.corporation.address.district.province_id);
+  // console.log(dataSelected.corporation.address.district_id);
 
   useEffect(() => {
     getProvinces();
-  }, [data]);
+  }, [data, dataSelected]);
 
   return (
     <div>
@@ -430,7 +445,17 @@ const MRegistroClinica = ({
                     type="text"
                     name="business_name"
                     id="business_name"
-                    defaultValue={data.business_name || ""}
+                    defaultValue={ruc.razonSocial || data.business_name || ""}
+                    onChange={(e) => handleChange(e)}
+                  />
+                </div>
+                <div>
+                  <label className="label_commercial">Nombre comercial:</label>
+                  <input
+                    type="text"
+                    name="commercial_name"
+                    id="commercial_name"
+                    defaultValue={data.name || ""}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
@@ -469,7 +494,7 @@ const MRegistroClinica = ({
                   <input
                     type="text"
                     name="address"
-                    defaultValue={data.address || ""}
+                    defaultValue={ruc.direccion || data.address || ""}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
@@ -487,6 +512,10 @@ const MRegistroClinica = ({
                   <select
                     name="department_id"
                     onChange={(e) => handleChange(e)}
+                    value={
+                      dataSelected.corporation.address.district.province
+                        .department_id
+                    }
                   >
                     <option value="">Seleccione</option>
 
@@ -500,7 +529,13 @@ const MRegistroClinica = ({
                 </div>
                 <div>
                   <label>Provincia:</label>
-                  <select name="province_id" onChange={(e) => handleChange(e)}>
+                  <select
+                    name="province_id"
+                    onChange={(e) => handleChange(e)}
+                    value={
+                      dataSelected.corporation.address.district.province_id
+                    }
+                  >
                     <option value="">Seleccione</option>
                     {provinces.length > 0 &&
                       provinces.map((data, i) =>
@@ -514,13 +549,19 @@ const MRegistroClinica = ({
                 </div>
                 <div>
                   <label>Distrito:</label>
-                  <select name="district_id" onChange={(e) => handleChange(e)}>
+                  <select
+                    name="district_id"
+                    onChange={(e) => handleChange(e)}
+                    value={dataSelected.corporation.address.district_id}
+                  >
                     <option value="">Seleccione</option>
                     {districts &&
                       districts[0] &&
                       districts[0][0] &&
                       districts[0][0].districts.map((data, i) => (
-                        <option key={i}>{data.name}</option>
+                        <option key={i} value={data.id}>
+                          {data.name}
+                        </option>
                       ))}
                   </select>
                 </div>

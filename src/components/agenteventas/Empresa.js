@@ -102,18 +102,18 @@ const Empresa = ({ getServicio }) => {
         </button>
       ),
     },
-    {
-      name: "Eliminar",
-      button: true,
-      cell: (e) => (
-        <button
-          onClick={() => handleEliminar(e)}
-          className="table__tablebutton"
-        >
-          <i className="far fa-trash-alt"></i>
-        </button>
-      ),
-    },
+    // {
+    //   name: "Eliminar",
+    //   button: true,
+    //   cell: (e) => (
+    //     <button
+    //       onClick={() => handleEliminar(e)}
+    //       className="table__tablebutton"
+    //     >
+    //       <i className="far fa-trash-alt"></i>
+    //     </button>
+    //   ),
+    // },
   ];
   //
   useEffect(() => {

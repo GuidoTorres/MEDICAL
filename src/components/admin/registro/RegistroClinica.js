@@ -29,8 +29,6 @@ const RegistroClinica = () => {
       });
   };
 
-
-
   // Funcion para filtra la clinica roma de la tabla
   // const filtrarMedical = () => {
   //   const clinics = metGetClinic.filter((item) => item.id !== 1);
@@ -43,9 +41,6 @@ const RegistroClinica = () => {
     // filtrarMedical();
   }, []);
 
-
-
-  // console.log(metGetClinic);
 
   const columnas = [
     {
@@ -62,10 +57,17 @@ const RegistroClinica = () => {
       name: "Razón social",
       selector: (row) =>
         row.corporation && row.corporation.business_name
-          ? row.corporation.business_name
+          ? `${row.corporation.business_name} ${"-"} ${
+              row.corporation &&
+              row.corporation.address &&
+              row.corporation.address.district &&
+              row.corporation.address.district.name
+                ? row.corporation.address.district.name
+                : ""
+            }`
           : "",
       sortable: true,
-      grow:2,
+      grow: 2,
       style: {
         borderBotton: "none",
         color: "#555555",
@@ -74,7 +76,9 @@ const RegistroClinica = () => {
     {
       name: "RUC",
       selector: (row) =>
-        row.corporation && row.corporation.ruc ? row.corporation.ruc : "",
+        row.admin && row.admin.username !== null
+          ? row.admin.username
+          : row.corporation.ruc,
       sortable: true,
       grow: 1,
       style: {

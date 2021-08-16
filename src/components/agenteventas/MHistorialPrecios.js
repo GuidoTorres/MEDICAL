@@ -85,44 +85,30 @@ const MHistorialPrecios = ({ precios, setPrecios, id }) => {
           //   justifyContent: "center",
           // }}
         >
-          <div
-            class="fecha input-group mb-3"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          <div class="fecha input-group mb-3">
             <label>Fecha inicio:</label>
             <input
               type="date"
               name="fecha_inicio"
-              class="form-control"
-              aria-label="Username"
-              aria-describedby="basic-addon1"
-              onChange={handleChange}
-            />
-          </div>
-          <div
-            class="input-group mb-3"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <label>Fecha fin:</label>
-
-            <input
-              type="date"
-              name="fecha_fin"
               class="fecha form-control"
               aria-label="Username"
               aria-describedby="basic-addon1"
               onChange={handleChange}
             />
           </div>
-          <div>
+          <div class="fecha1 input-group mb-3">
+            <label>Fecha fin:</label>
+
+            <input
+              type="date"
+              name="fecha_fin"
+              class="fecha1 form-control"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="boton">
             <button
               type="button"
               class="botones btn btn-primary"

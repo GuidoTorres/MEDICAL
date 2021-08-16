@@ -30,6 +30,7 @@ const Navbar = ({
     history.replace('/');
   };
 
+
   const mostrarSidebar = () => {
     const side = document.querySelector('.navBarUl').style;
 
