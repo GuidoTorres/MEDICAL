@@ -9,7 +9,7 @@ const EmpresaRegistro = () => {
   const [busqueda, setBusqueda] = useState('');
   const [employees, setEmployees] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
-  // const [listRegistro, setListRegistro] = useState('');
+  const [listRegistro, setListRegistro] = useState('');
   const fileRef = useRef();
 
   const getEmployees = () => {
@@ -214,20 +214,26 @@ const EmpresaRegistro = () => {
   const handleOnChange = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
-
-  // useEffect(() => {
-  //   const filtrarElemento = () => {
-  //     const search = employees.filter((data) => {
-  //       return data.person.dni
-  //         .normalize('NFD')
-  //         .replace(/[\u0300-\u036f]/g, '')
-  //         .toLocaleLowerCase()
-  //         .includes(busqueda);
-  //     });
-  //     setListRegistro(search);
-  //   };
-  //   filtrarElemento();
-  // }, [busqueda, employees]);
+  console.log(employees);
+  useEffect(() => {
+    const filtrarElemento = () => {
+      const search = employees.filter((data) => {
+        return data.person.dni
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLocaleLowerCase()
+          .includes(busqueda) || data.person.pat_lastname === null
+          ? ' '
+          : data.person.pat_lastname
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .toLocaleLowerCase()
+              .includes(busqueda);
+      });
+      setListRegistro(search);
+    };
+    filtrarElemento();
+  }, [busqueda, employees]);
 
   return (
     <div className="container">
@@ -273,7 +279,7 @@ const EmpresaRegistro = () => {
             className="dataTable"
             id="table"
             columns={columnas}
-            data={employees}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
