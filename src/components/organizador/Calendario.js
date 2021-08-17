@@ -9,6 +9,18 @@ import 'moment/locale/es';
 import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 import { messages } from '../../helpers/calendar-spain';
 
+//
+// import socketio from 'socket.io-client';
+// import Echo from 'laravel-echo';
+
+// const echo = new Echo({
+//   host: 'http://44.193.160.43:6001',
+//   broadcaster: 'socket.io',
+//   client: socketio,
+// });
+// echo.channel(``)
+// //
+
 moment.locale('es');
 
 const localizer = momentLocalizer(moment);
@@ -34,8 +46,6 @@ const Calendario = () => {
   const { name: nombredistrito } = district;
   const { dni, name: personanombre, pat_lastname, mom_lastname } = person;
   const { name: nombreservicio } = category;
-
-  // console.log(selectionId);
 
   useEffect(() => {
     const listaTransportista = () => {
@@ -194,27 +204,6 @@ const Calendario = () => {
         </div>
         <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
           <div className="barra">
-            {/* <div>
-              <span className="">Material disponible</span>
-              <div className="organizador__datostransportistas">
-                <div>
-                  <label>P. Antigeno(kit):</label>
-                  <input type="text" />
-                </div>
-                <div>
-                  <label>P. Electroquimioluminiscencia(kit):</label>
-                  <input type="text" />
-                </div>
-                <div>
-                  <label>P. Inmunocromatografía(kit):</label>
-                  <input type="text" />
-                </div>
-                <div>
-                  <label>P. RT-PCR en tiempo real(kit):</label>
-                  <input type="text" />
-                </div>
-              </div>
-            </div> */}
             <div className="accordion" id="accordionExample">
               <div className="accordion-item">
                 <h2 className="accordion-header" id="headingOne">
