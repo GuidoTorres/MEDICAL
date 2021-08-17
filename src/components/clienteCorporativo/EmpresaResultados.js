@@ -2,15 +2,6 @@ import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
 import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
-import jsPDF from 'jspdf';
-import eclia from '../../assets/pdf Imagen/eclia.png';
-import antigenono from '../../assets/pdf Imagen/antigenoSi.png';
-import antigenosi from '../../assets/pdf Imagen/antigenoSi.png';
-import anticuerpos from '../../assets/pdf Imagen/anticuerpos.png';
-// import molecular from '../../assets/pdf Imagen/molecular.png';
-import rapida from '../../assets/pdf Imagen/rapida.png';
-import firma from '../../assets/pdf Imagen/Firma.png';
-import isos from '../../assets/pdf Imagen/isos.png';
 
 const EmpresaResultados = () => {
   const [busqueda, setBusqueda] = useState('');
@@ -31,7 +22,7 @@ const EmpresaResultados = () => {
   useEffect(() => {
     getResultado();
   }, []);
-  console.log(clinica);
+
   const enviarEmail = () => {
     const array = data.map((m) => m.nro_atencion);
     fetchGETPOSTPUTDELETEJSON(
@@ -57,7 +48,7 @@ const EmpresaResultados = () => {
     {
       name: 'Nombres y apellidos',
       selector: (row) => (row && row.paciente ? row.paciente : ''),
-      // sortable: true,
+      sortable: true,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -77,7 +68,7 @@ const EmpresaResultados = () => {
     {
       name: 'Nº de documento',
       selector: (row) => (row && row.dni ? row.dni : ''),
-      // sortable: true,
+      sortable: true,
       grow: 2,
       style: {
         color: '#8f9196',
@@ -87,7 +78,7 @@ const EmpresaResultados = () => {
     {
       name: 'Teléfono',
       selector: (row) => (row && row.telefono ? row.telefono : ''),
-      // sortable: true,
+      sortable: true,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -96,14 +87,13 @@ const EmpresaResultados = () => {
     {
       name: 'Correo',
       selector: (row) => (row && row.email ? row.email : ''),
-      // sortable: true,
+      sortable: true,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
       },
       grow: 2,
     },
-
     {
       name: 'Estado',
       selector: (row) =>
@@ -163,10 +153,9 @@ const EmpresaResultados = () => {
   const handleOnChangeCheckbox = (e) => {
     setChecboxValue({ ...checboxValue, [e.target.name]: e.target.checked });
   };
-  // console.log(chekcboxEmail);
+
   useEffect(() => {
     if (chekcboxEmail) {
-      console.log('enviar data');
       enviarEmail();
     }
   }, [chekcboxEmail]);
