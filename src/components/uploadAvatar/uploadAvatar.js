@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
@@ -15,47 +14,37 @@ const UploadAvatar = ({ setAvatar, avatar, dataSelected, editar }) => {
     noKeyboard: true,
     onDrop,
   });
+  console.log(dataSelected);
   return (
-    <div
-      className="image__upload"
-      {...getRootProps()}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <div className="image__upload" {...getRootProps()}>
       <input {...getInputProps()} />
       {isDragActive ? (
         <img
-          style={{
-            maxHeight: "100%",
-            maxWidth: "100%",
-            marginLeft: "100px",
-            border: "1px solid red",
-          }}
-          className="image__avatar"
           // className={avatar ? 'image__avatar' : 'image__carga'}
           src=""
+          alt="aaa"
+        />
+      ) : avatar ? (
+        <img
+          style={{
+            maxHeight: "100%",
+            maxWidth: "95%",
+          }}
+          className="image__avatar"
+          src={avatar.preview}
           alt=""
         />
       ) : (
         <img
           style={{
             maxHeight: "100%",
-            maxWidth: "100%",
-            textAlign: "center ",
+            maxWidth: "95%",
           }}
           className="image__avatar"
-          className="image__avatar"
           src={
-            avatar
-              ? avatar.preview
-              : dataSelected &&
-                dataSelected.corporation &&
-                dataSelected.corporation.logo
-              ? dataSelected.corporation.logo
-              : ""
+            dataSelected &&
+            dataSelected.corporation &&
+            dataSelected.corporation.logo ? dataSelected.corporation.logo: ""
           }
           alt=""
         />
