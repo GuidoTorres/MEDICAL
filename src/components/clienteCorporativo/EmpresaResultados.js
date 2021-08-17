@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { paginacionOpciones } from '../../helpers/tablaOpciones';
 import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
-import jsPDF from "jspdf";
+import jsPDF from 'jspdf';
 import eclia from '../../assets/pdf Imagen/eclia.png';
 import antigenono from '../../assets/pdf Imagen/antigenoSi.png';
 import antigenosi from '../../assets/pdf Imagen/antigenoSi.png';
@@ -121,160 +121,27 @@ const EmpresaResultados = () => {
       name: 'Resultados',
       button: true,
       cell: (e) => (
-        <button
-          type="button"
-          onClick={() => handleDetalles(e)}
-          className="table__tablebutton eliminar"
-        >
-          <i className="far fa-file-pdf"></i>
+        <button type="button" className="table__tablebutton eliminar">
+          {e.resultado === null ? (
+            <i
+              className="far fa-file-pdf"
+              style={{ color: '#7c7c7c', cursor: 'unset' }}
+            ></i>
+          ) : (
+            <a
+              href={e.resultado.pdf}
+              alt=""
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: '#009DCA' }}
+            >
+              <i className="far fa-file-pdf"></i>
+            </a>
+          )}
         </button>
       ),
     },
   ];
-
-  const handleDetalles = (e) => {
-    console.log(e);
-    if (e.servicio_id === 5) {
-      if (e.resultado && e.resultado.result === 0) {
-        generarPDF(e, antigenono, 'Formato Antígeno');
-      } else if (e.resultado && e.resultado.result === 1) {
-        generarPDF(e, antigenosi, 'Formato Antígeno');
-      }
-    } else if (e.servicio_id === 6) {
-      generarPDF(e, eclia, 'Formato Eclia');
-    } else if (e.servicio_id === 7) {
-      generarPDF(e, anticuerpos, 'Formato Anticuerpos');
-    } else if (e.servicio_id === 8) {
-      generarPDF(e, rapida, 'Formato Rapida');
-    }
-  };
-
-  const generarPDF = (e, imagen, formato) => {
-    console.log(e);
-    const doc = new jsPDF('p', 'pt');
-    doc.setProperties({
-      title: formato,
-    });
-    doc.setFontSize(10);
-
-    doc.addImage(imagen, 'PNG', 6, 20, 580, 800, '', 'FAST');
-
-    if (e.servicio_id === 5) {
-      doc.text(328, 135, `${e && e.genero ? e.genero : ''}`);
-      doc.text(328, 135, `${e && e.genero === null ? 'Masculino' : ''}`);
-
-      doc.text(90, 136, `${e.nro_atencion ? e.nro_atencion : ''}`);
-      doc.text(60, 158, `${e.dni ? e.dni : ''}`);
-      doc.text(428, 157, `${e.fecha_atencion ? e.fecha_atencion : ''}`);
-
-      doc.text(85, 180, `${e.paciente ? e.paciente : ''}`);
-      doc.text(312, 180, '20');
-
-      doc.text(
-        284,
-        268,
-        `${
-          e.resultado && e.resultado.result === 0
-            ? 'No detectado'
-            : e.resultado && e.resultado.result === 1
-            ? 'Detectado'
-            : 'Sin resultado'
-        }`
-      );
-      doc.addImage(firma, 'PNG', 345, 450, 100, 80, '', 'FAST');
-      doc.addImage(isos, 'PNG', 300, 760, 220, 60, '', 'FAST');
-    } else if (e.servicio_id == 6) {
-      doc.text(
-        328,
-        120,
-        `${
-          e && e.person && e.person.gender_id === 1 ? 'Masculino' : 'Femenino'
-        }`
-      );
-      doc.text(85, 119, `${e.nro_atencion ? e.nro_atencion : ''}`);
-      doc.text(55, 141, `${e.dni ? e.dni : ''}`);
-      doc.text(428, 141, `${e.fecha_atencion ? e.fecha_atencion : ''}`);
-
-      doc.text(80, 163, `${e.paciente ? e.paciente : ''}`);
-      // doc.text(313, 164, '20');
-
-      doc.text(
-        195,
-        268,
-        `${e.resultado && e.resultado.result_igm ? e.resultado.result_igm : ''}`
-      );
-      doc.text(
-        285,
-        268,
-        `${e.resultado && e.resultado.result_igg ? e.resultado.result_igg : ''}`
-      );
-      doc.setFillColor(255, 255, 255);
-      doc.rect(335, 464, 150, 80, 'F');
-      doc.addImage(firma, 'PNG', 345, 485, 100, 80, '', 'FAST');
-    } else if (e.servicio_id == 7) {
-      doc.text(328, 124, `${e && e.genero === null ? 'Masculino' : ''}`);
-
-      doc.text(83, 124, `${e.nro_atencion ? e.nro_atencion : ''}`);
-      doc.text(55, 146, `${e.dni ? e.dni : ''}`);
-      doc.text(428, 146, `${e.fecha_atencion ? e.fecha_atencion : ''}`);
-
-      doc.text(78, 167, `${e.paciente ? e.paciente : ''}`);
-
-      doc.text(310, 167, '20');
-
-      doc.text(
-        180,
-        265,
-        `${
-          e.resultado && e.resultado.result === '0'
-            ? 'Negativo'
-            : e.resultado && e.resultado.result === '1'
-            ? 'Positivo'
-            : 'Sin resultado'
-        }`
-      );
-      doc.setFillColor(255, 255, 255);
-      doc.rect(335, 465, 151, 81, 'F');
-      doc.addImage(firma, 'PNG', 345, 484, 100, 80, '', 'FAST');
-    } else if (e.servicio_id == 8) {
-      doc.text(84, 142, `${e.nro_atencion ? e.nro_atencion : ''}`);
-
-      doc.text(328, 141, `${e && e.genero ? e.genero : ''}`);
-      doc.text(55, 163, `${e && e.dni ? e.dni : ''}`);
-      doc.text(428, 163, `${e && e.fecha_atencion ? e.fecha_atencion : ''}`);
-
-      doc.text(80, 184, `${e.paciente ? e.paciente : ''}`);
-      doc.text(310, 185, '20');
-
-      if (e.resultado.reactive === '1') {
-        doc.text(295, 285, 'X');
-      }
-      if (e.resultado.reactive === '2') {
-        doc.text(200, 285, 'X');
-      }
-      if (e.resultado.reactive === '3') {
-        doc.text(200, 285, 'X');
-        doc.text(295, 285, 'X');
-      }
-      if (e.resultado.reactive === '4') {
-        doc.text(180, 285, 'No reactivo');
-
-        doc.text(270, 285, 'No reactivo');
-      }
-      if (e.resultado.reactive === '5') {
-        doc.text(195, 285, 'null');
-
-        doc.text(290, 285, 'null');
-      }
-
-      doc.setFillColor(255, 255, 255);
-      doc.rect(335, 465, 151, 81, 'F');
-      doc.addImage(firma, 'PNG', 345, 484, 100, 80, '', 'FAST');
-    }
-
-    window.open(doc.output('bloburl'), '_blank');
-    // var blob = doc.output("blob");
-  };
 
   useEffect(() => {
     const filtrarElemento = () => {
