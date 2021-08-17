@@ -11,7 +11,7 @@ import { paginacionOpciones } from "../../helpers/tablaOpciones";
 const CargarResultado = () => {
   const inputRef = useRef(null);
   const [busqueda, setBusqueda] = useState("");
-  // const [listResult, setListResult] = useState([]);
+  const [listResult, setListResult] = useState([]);
   const [result, setResult] = useState({});
   const [id, setId] = useState();
   const [resultado, setResultado] = useState({});
@@ -32,7 +32,7 @@ const CargarResultado = () => {
       name: "Item",
       selector: (row, index) => (index += 1),
       sortable: true,
-
+      grow: 0,
       style: {
         borderBotton: "none",
         color: "#555555",
@@ -102,39 +102,41 @@ const CargarResultado = () => {
       ),
     },
   ];
+  console.log(result);
 
   //
-  // useEffect(() => {
-  //   const filtrarElemento = () => {
-  //     const search = historial.filter((data) => {
-  //       return (
-  //         data.dni.toString().includes(busqueda) ||
-  //         data.nombre
-  //           .normalize('NFD')
-  //           .replace(/[\u0300-\u036f]/g, '')
-  //           .toLocaleLowerCase()
-  //           .includes(busqueda) ||
-  //         data.apellido
-  //           .normalize('NFD')
-  //           .replace(/[\u0300-\u036f]/g, '')
-  //           .toLocaleLowerCase()
-  //           .includes(busqueda) ||
-  //         data.tipo
-  //           .normalize('NFD')
-  //           .replace(/[\u0300-\u036f]/g, '')
-  //           .toLocaleLowerCase()
-  //           .includes(busqueda) ||
-  //         data.solicitud
-  //           .normalize('NFD')
-  //           .replace(/[\u0300-\u036f]/g, '')
-  //           .toLocaleLowerCase()
-  //           .includes(busqueda)
-  //       );
-  //     });
-  //     setListRegistro(search);
-  //   };
-  //   filtrarElemento();
-  // }, [busqueda]);
+  useEffect(() => {
+    const filtrarElemento = () => {
+      const search =
+        result.length > 0 &&
+        result.filter((data) => {
+          return (
+            (data.tipo_documento
+              ? data.tipo_documento
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "") ||
+            (data.dni
+              ? data.dni.toString().toLowerCase().includes(busqueda)
+              : "") ||
+            (data.paciente
+              ? data.paciente.toString().toLowerCase().includes(busqueda)
+              : "") ||
+            (data.prueba
+              ? data.prueba
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "" || data.fecha_solicitud
+              ? fecha_solicitud.toString().toLowerCase().includes(busqueda)
+              : "")
+          );
+        });
+      setListResult(search);
+    };
+    filtrarElemento();
+  }, [busqueda, result]);
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -158,8 +160,6 @@ const CargarResultado = () => {
       CargarPdf(formData);
     }
   };
-
-  console.log(resultado);
 
   const CargarPdf = (pdf) => {
     console.log("entro al if ");
@@ -192,6 +192,7 @@ const CargarResultado = () => {
       }
     });
   };
+  console.log(busqueda);
 
   return (
     <div className="container">
@@ -205,7 +206,7 @@ const CargarResultado = () => {
                 name="busqueda"
                 ref={inputRef}
                 value={busqueda}
-                onChange={() => handleSearch()}
+                onChange={(e) => handleSearch(e)}
               />
             </div>
 
@@ -220,7 +221,7 @@ const CargarResultado = () => {
 
           <DataTable
             columns={columnas}
-            data={result}
+            data={listResult}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
