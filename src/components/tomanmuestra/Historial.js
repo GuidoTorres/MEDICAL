@@ -10,7 +10,7 @@ import { paginacionOpciones } from '../../helpers/tablaOpciones';
 
 const Historial = () => {
   const [busqueda, setBusqueda] = useState('');
-  // const [listRegistro, setListRegistro] = useState([]);
+  const [listRegistro, setListRegistro] = useState([]);
   const [dataHistorial, setDataHistorial] = useState([]);
 
   const getHistorial = () => {
@@ -93,27 +93,38 @@ const Historial = () => {
     },
   ];
   //
-  // useEffect(() => {
-  //   const filtrarElemento = () => {
-  //     const search = dataHistorial.filter((data) => {
-  //       return (
-  //         data.person.dni.toString().includes(busqueda) ||
-  //         data.person.name
-  //           .normalize('NFD')
-  //           .replace(/[\u0300-\u036f]/g, '')
-  //           .toLocaleLowerCase()
-  //           .includes(busqueda) ||
-  //         data.person.pat_lastname
-  //           .normalize('NFD')
-  //           .replace(/[\u0300-\u036f]/g, '')
-  //           .toLocaleLowerCase()
-  //           .includes(busqueda)
-  //       );
-  //     });
-  //     setListRegistro(search);
-  //   };
-  //   filtrarElemento();
-  // }, [busqueda, dataHistorial]);
+  useEffect(() => {
+    const filtrarElemento = () => {
+      const search =
+        dataHistorial.length > 0 &&
+        dataHistorial.filter((data) => {
+          return (
+            (data.tipo_documento
+              ? data.tipo_documento
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : '') ||
+            (data.dni
+              ? data.dni.toString().toLowerCase().includes(busqueda)
+              : '') ||
+            (data.paciente
+              ? data.paciente.toString().toLowerCase().includes(busqueda)
+              : '') ||
+            (data.prueba
+              ? data.prueba
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : '' || data.fecha_solicitud
+              ? fecha_solicitud.toString().toLowerCase().includes(busqueda)
+              : '')
+          );
+        });
+      setListRegistro(search);
+    };
+    filtrarElemento();
+  }, [busqueda, dataHistorial]);
   // console.log(listRegistro);
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -138,7 +149,7 @@ const Historial = () => {
 
           <DataTable
             columns={columnas}
-            data={dataHistorial}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader

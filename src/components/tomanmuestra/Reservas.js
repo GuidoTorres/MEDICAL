@@ -105,29 +105,38 @@ const Reservas = () => {
     },
   ];
   //
-  // useEffect(() => {
-  //   const filtrarElemento = () => {
-  //     const search =
-  //       getDateAttention.length > 0 &&
-  //       getDateAttention.filter((data) => {
-  //         return (
-  //           data.person.dni.toString().includes(busqueda) ||
-  //           data.person.name
-  //             .normalize('NFD')
-  //             .replace(/[\u0300-\u036f]/g, '')
-  //             .toLocaleLowerCase()
-  //             .includes(busqueda) ||
-  //           data.person.pat_lastname
-  //             .normalize('NFD')
-  //             .replace(/[\u0300-\u036f]/g, '')
-  //             .toLocaleLowerCase()
-  //             .includes(busqueda)
-  //         );
-  //       });
-  //     setListRegistro(search);
-  //   };
-  //   filtrarElemento();
-  // }, [busqueda, getDateAttention]);
+  useEffect(() => {
+    const filtrarElemento = () => {
+      const search =
+        getDateAttention.length > 0 &&
+        getDateAttention.filter((data) => {
+          return (
+            (data.tipo_documento
+              ? data.tipo_documento
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "") ||
+            (data.dni
+              ? data.dni.toString().toLowerCase().includes(busqueda)
+              : "") ||
+            (data.paciente
+              ? data.paciente.toString().toLowerCase().includes(busqueda)
+              : "") ||
+            (data.prueba
+              ? data.prueba
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "" || data.fecha_solicitud
+              ? fecha_solicitud.toString().toLowerCase().includes(busqueda)
+              : "")
+          );
+        });
+      setListRegistro(search);
+    };
+    filtrarElemento();
+  }, [busqueda, getDateAttention]);
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -186,7 +195,7 @@ const Reservas = () => {
 
           <DataTable
             columns={columnas}
-            data={getDateAttention}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader

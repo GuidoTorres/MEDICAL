@@ -28,18 +28,17 @@ const Historial = () => {
     getAttention();
   }, []);
 
-  // console.log(getDateAttention);
-
-  // console.log(getDateAttention);
   const columnas = [
     {
       name: 'Item',
       selector: (row, index) => (index += 1),
       sortable: true,
       grow: 0,
+      // align: center,
       style: {
         borderBotton: 'none',
         color: '#555555',
+        // textAlign: "center",
       },
     },
     {
@@ -125,35 +124,34 @@ const Historial = () => {
   //
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = historial.filter((data) => {
+      const search = getDateAttention.filter((data) => {
         return (
-          data.dni.toString().includes(busqueda) ||
-          data.nombre
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.apellido
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.tipo
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda) ||
-          data.solicitud
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLocaleLowerCase()
-            .includes(busqueda)
+          (data.tipo_documento
+            ? data.tipo_documento
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : '') ||
+          (data.dni
+            ? data.dni.toString().toLowerCase().includes(busqueda)
+            : '') ||
+          (data.paciente
+            ? data.paciente.toString().toLowerCase().includes(busqueda)
+            : '') ||
+          (data.prueba
+            ? data.prueba
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : '' || data.fecha_solicitud
+            ? fecha_solicitud.toString().toLowerCase().includes(busqueda)
+            : '')
         );
       });
       setListRegistro(search);
     };
     filtrarElemento();
-  }, [busqueda]);
+  }, [busqueda, getDateAttention]);
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -177,7 +175,7 @@ const Historial = () => {
 
           <DataTable
             columns={columnas}
-            data={getDateAttention}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
