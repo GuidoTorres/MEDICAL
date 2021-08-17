@@ -1,12 +1,9 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 import Modal from "react-modal";
-import {
-  fetchDNI,
-  fetchGETPOSTPUTDELETE,
-  fetchGETPOSTPUTDELETEJSON,
-} from "../../../helpers/fetch";
+import { fetchDNI, fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
 import { customStyles } from "../../../helpers/tablaOpciones";
 import { UploadAvatar } from "../../uploadAvatar/uploadAvatar";
 import MRegistroEmpresa from "../registro/MRegistroEmpresa";
@@ -22,8 +19,7 @@ const MTrabajador = ({
   setDataSelected,
 }) => {
   const [avatar, setAvatar] = useState(null);
-  const [trabajador, setTrabajador] = useState({
-  });
+  const [trabajador, setTrabajador] = useState({});
   const [dni, setDni] = useState({});
   const [error, setError] = useState(false);
 
@@ -99,33 +95,33 @@ const MTrabajador = ({
     }
 
     // if (trabajador.dni !== "" || null) {
-      fetchGETPOSTPUTDELETE("employees", formData, "POST").then((resp) => {
-        if (resp.status === 201) {
-          closeModal();
-          Swal.fire({
-            icon: "success",
-            title: "Éxito",
-            text: "Se ha creado el trabajador correctamente.",
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Aceptar",
-          }).then((resp) => {
-            if (resp.isConfirmed) {
-              getEmployee();
-            }
-          });
-        } else {
-          closeModal();
-          Swal.fire({
-            icon: "error",
-            title: "Ups¡",
-            text: "Algo salió mal.",
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Cerrar",
-          });
-        }
-      });
+    fetchGETPOSTPUTDELETE("employees", formData, "POST").then((resp) => {
+      if (resp.status === 201) {
+        closeModal();
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se ha creado el trabajador correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getEmployee();
+          }
+        });
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
+      }
+    });
     // }
   };
   console.log(trabajador);
@@ -133,23 +129,23 @@ const MTrabajador = ({
   const putEmployee = () => {
     const formData = new FormData();
     formData.set("dni", dataSelected.dni);
-    formData.set("name", trabajador.name !== "" || null ? trabajador.name:  dataSelected.name);
+    formData.set("name", trabajador.name || dataSelected.name);
     formData.set(
       "pat_lastname",
-      trabajador.pat_lastname !== "" || null ? trabajador.pat_lastname: dataSelected.pat_lastname
+      trabajador.pat_lastname || dataSelected.pat_lastname
     );
     formData.set(
       "mom_lastname",
-      trabajador.mom_lastname !== "" || null ? trabajador.mom_lastname : dataSelected.mom_lastname
+      trabajador.mom_lastname || dataSelected.mom_lastname
     );
-    formData.set("email", trabajador.email !== "" || null ? trabajador.email : dataSelected.email);
-    formData.set("cellphone", trabajador.cellphone !== "" || null ? trabajador.cellphone : dataSelected.cellphone);
-    formData.set("photo", avatar && avatar.file ? avatar.file : dataSelected.photo);
+    formData.set("email", trabajador.email || dataSelected.email);
+    formData.set("cellphone", trabajador.cellphone || dataSelected.cellphone);
+    formData.set("photo", avatar && avatar.file ? avatar.file : "");
     formData.set("role_id", 9);
-    fetchGETPOSTPUTDELETEJSON(
-      `employees/${dataSelected.user_id}`,
-      trabajador,
-      "PUT"
+    fetchGETPOSTPUTDELETE(
+      `employees/${dataSelected.user_id}?_method=PUT`,
+      formData,
+      "POST"
     ).then((resp) => {
       if (resp.status === 200) {
         closeModal();

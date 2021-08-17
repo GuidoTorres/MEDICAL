@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
@@ -30,6 +31,7 @@ const Registro = () => {
       name: "Ítem",
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
         borderBotton: "none",
         color: "#555555",

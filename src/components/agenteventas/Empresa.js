@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
@@ -35,13 +36,12 @@ const Empresa = ({ getServicio }) => {
   useEffect(() => {
     getClinica();
   }, []);
-
-
   const columnas = [
     {
       name: "Item",
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
         borderBotton: "none",
         color: "#555555",
@@ -102,18 +102,18 @@ const Empresa = ({ getServicio }) => {
         </button>
       ),
     },
-    {
-      name: "Eliminar",
-      button: true,
-      cell: (e) => (
-        <button
-          onClick={() => handleEliminar(e)}
-          className="table__tablebutton"
-        >
-          <i className="far fa-trash-alt"></i>
-        </button>
-      ),
-    },
+    // {
+    //   name: "Eliminar",
+    //   button: true,
+    //   cell: (e) => (
+    //     <button
+    //       onClick={() => handleEliminar(e)}
+    //       className="table__tablebutton"
+    //     >
+    //       <i className="far fa-trash-alt"></i>
+    //     </button>
+    //   ),
+    // },
   ];
   //
   useEffect(() => {

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 
 import DataTable from "react-data-table-component";
@@ -74,7 +75,7 @@ const Usuario = () => {
     },
     {
       name: "Empresa",
-      selector: (row) => row.company || "",
+      selector: (row) => row.company  ? row.company: "-----",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -245,6 +246,7 @@ const Usuario = () => {
           openModal={openModal}
           setOpenModal={setOpenModal}
           dataSelected={dataSelected}
+          resp = {resp}
         />
       )}
     </div>

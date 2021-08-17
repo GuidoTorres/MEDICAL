@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { fetchGETPOSTPUTDELETE, fetchRUC } from "../../../helpers/fetch";
@@ -26,7 +27,8 @@ const MRegistroEmpresa = ({
   const [types, setTypes] = useState([]);
   const [ruc, setRuc] = useState({});
   const [servicios, setServicios] = useState({});
-  const [error, setError] = useState([]);
+  const [error, setError] = useState(false);
+  const [estado, setEstado] = useState([]);
 
   const closeModal = () => {
     setOpenModal(false);
@@ -48,6 +50,15 @@ const MRegistroEmpresa = ({
       .then((datos) => setServicios(datos.data));
   };
 
+  useEffect(() => {
+    if (editar) {
+      const prueba = dataSelected.company_service.map((item) => ({
+        state: item.last_discount.state,
+      }));
+      setEstado(prueba);
+    }
+  }, [dataSelected]);
+
   const getRuc = () => {
     fetchRUC(empresa.ruc, "GET")
       .then((res) => res.json())
@@ -66,14 +77,16 @@ const MRegistroEmpresa = ({
   const serviciosEditar = () => {
     if (editar) {
       const array = [];
-      dataSelected.company_service.map((s) =>
-        array.push({ service_id: s.id, status: s.service.last_discount.state })
-      );
+      dataSelected &&
+        dataSelected.company_service.map((s) =>
+          array.push({
+            service_id: s.service_id,
+            status: s.last_discount.state,
+          })
+        );
       setService(array);
     }
   };
-
-  console.log(dataSelected);
 
   const handleService = (e, data) => {
     if (editar) {
@@ -129,8 +142,7 @@ const MRegistroEmpresa = ({
       }
     }
   };
-
-  console.log(service);
+  console.log(avatar);
 
   const postCorporation = (e) => {
     const formData = new FormData();
@@ -141,7 +153,7 @@ const MRegistroEmpresa = ({
       ruc.razonSocial || empresa.business_name || ""
     );
     formData.set("commercial_name", empresa.commercial_name || "");
-    formData.set("logo", avatar && avatar.file ? avatar.file : "");
+    formData.set("logo", avatar ? avatar.file : "");
 
     formData.set("address", ruc.direccion || empresa.address || "");
     formData.set("reference", empresa.reference || "");
@@ -358,6 +370,7 @@ const MRegistroEmpresa = ({
       "POST"
     ).then((resp) => {
       if (resp.status === 200) {
+        setAvatar(null);
         closeModal();
         Swal.fire({
           icon: "success",
@@ -797,8 +810,6 @@ const MRegistroEmpresa = ({
                       dataSelected.services &&
                       dataSelected.services[0] &&
                       dataSelected.services[0].services_category_id
-                        ? dataSelected.services[0].services_category_id
-                        : ""
                     }
                     onChange={(e) =>
                       setEmpresa({
@@ -826,18 +837,8 @@ const MRegistroEmpresa = ({
                               type="checkbox"
                               className="w-auto"
                               defaultChecked={
-                                editar
-                                  ? dataSelected.services
-                                    ? dataSelected.services.find(
-                                        (s) => s.id === data.id
-                                      )
-                                      ? dataSelected.services.find(
-                                          (s) => s.id === data.id
-                                        ).last_discount.state === 1
-                                        ? true
-                                        : false
-                                      : false
-                                    : false
+                                estado && estado[i] && estado[i].state === 1
+                                  ? true
                                   : false
                               }
                               onChange={(e) => handleService(e, data)}

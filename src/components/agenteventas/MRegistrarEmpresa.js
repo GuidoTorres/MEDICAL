@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import Swal from "sweetalert2";
@@ -27,6 +28,8 @@ const MRegistrarEmpresa = ({
   const [ruc, setRuc] = useState({});
   const [servicios, setServicios] = useState({});
   const [error, setError] = useState(false);
+  const [estado, setEstado] = useState([]);
+  const [status, setStatus] = useState()
 
   const closeModal = () => {
     setOpenModal(false);
@@ -47,6 +50,15 @@ const MRegistrarEmpresa = ({
       .then((info) => info.json())
       .then((datos) => setServicios(datos.data));
   };
+
+  useEffect(() => {
+    if (editar) {
+      const prueba = dataSelected.company_service.map((item) => ({
+        state: item.last_discount.state,
+      }));
+      setEstado(prueba);
+    }
+  }, [dataSelected]);
 
   const getRuc = () => {
     fetchRUC(empresa.ruc, "GET")
@@ -70,14 +82,12 @@ const MRegistrarEmpresa = ({
         dataSelected.company_service.map((s) =>
           array.push({
             service_id: s.service_id,
-            status: s.service.last_discount.state,
+            status: s.last_discount.state,
           })
         );
       setService(array);
     }
   };
-  console.log(dataSelected);
-  console.log(dataSelected.company_service);
 
   const handleService = (e, data) => {
     if (editar) {
@@ -134,8 +144,6 @@ const MRegistrarEmpresa = ({
     }
   };
 
-  console.log(service);
-
   const postCorporation = (e) => {
     const formData = new FormData();
 
@@ -145,7 +153,7 @@ const MRegistrarEmpresa = ({
       ruc.razonSocial || empresa.business_name || ""
     );
     formData.set("commercial_name", empresa.commercial_name || "");
-    formData.set("logo", avatar && avatar.file ? avatar.file : "");
+    formData.set("logo", avatar ? avatar.file : "");
 
     formData.set("address", ruc.direccion || empresa.address || "");
     formData.set("reference", empresa.reference || "");
@@ -361,6 +369,8 @@ const MRegistrarEmpresa = ({
       formData,
       "POST"
     ).then((resp) => {
+      setAvatar(null);
+      setStatus(resp.status)
       if (resp.status === 200) {
         closeModal();
         Swal.fire({
@@ -370,10 +380,6 @@ const MRegistrarEmpresa = ({
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getCorporations();
-          }
         });
       } else {
         closeModal();
@@ -436,6 +442,14 @@ const MRegistrarEmpresa = ({
       putCorporation();
     }
   };
+  useEffect(()=>{
+
+    if(status === 200){
+
+      getCorporations()
+    }
+
+  },[status])
 
   return (
     <Modal
@@ -799,11 +813,14 @@ const MRegistrarEmpresa = ({
                   <label>Tipo de servicio</label>
                   <select
                     aria-label="Default select example"
-                    defaultValue={
+                    value={
                       dataSelected &&
-                      dataSelected.services &&
-                      dataSelected.services[0] &&
-                      dataSelected.services[0].services_category_id
+                      dataSelected.company_service &&
+                      dataSelected.company_service[0] &&
+                      dataSelected.company_service[0].service
+                        .service_category_id &&
+                      dataSelected.company_service[0].service
+                        .service_category_id
                     }
                     onChange={(e) =>
                       setEmpresa({
@@ -831,18 +848,8 @@ const MRegistrarEmpresa = ({
                               type="checkbox"
                               className="w-auto"
                               defaultChecked={
-                                editar
-                                  ? dataSelected.services
-                                    ? dataSelected.services.find(
-                                        (s) => s.id === data.id
-                                      )
-                                      ? dataSelected.services.find(
-                                          (s) => s.id === data.id
-                                        ).service.last_discount.state === 1
-                                        ? true
-                                        : false
-                                      : false
-                                    : false
+                                estado && estado[i] && estado[i].state === 1
+                                  ? true
                                   : false
                               }
                               onChange={(e) => handleService(e, data)}

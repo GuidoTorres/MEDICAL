@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-const UploadAvatar = ({ setAvatar, avatar }) => {
+const UploadAvatar = ({ setAvatar, avatar, dataSelected, editar }) => {
   const onDrop = useCallback(
     (acceptdFiles) => {
       const file = acceptdFiles[0];
@@ -14,12 +14,26 @@ const UploadAvatar = ({ setAvatar, avatar }) => {
     noKeyboard: true,
     onDrop,
   });
-
+  console.log(dataSelected);
   return (
     <div className="image__upload" {...getRootProps()}>
       <input {...getInputProps()} />
       {isDragActive ? (
-        <img src="" alt="" />
+        <img
+          // className={avatar ? 'image__avatar' : 'image__carga'}
+          src=""
+          alt="aaa"
+        />
+      ) : avatar ? (
+        <img
+          style={{
+            maxHeight: "100%",
+            maxWidth: "95%",
+          }}
+          className="image__avatar"
+          src={avatar.preview}
+          alt=""
+        />
       ) : (
         <img
           style={{
@@ -27,7 +41,11 @@ const UploadAvatar = ({ setAvatar, avatar }) => {
             maxWidth: "95%",
           }}
           className="image__avatar"
-          src={avatar ? (avatar.preview ? avatar.preview : avatar) : ""}
+          src={
+            dataSelected &&
+            dataSelected.corporation &&
+            dataSelected.corporation.logo ? dataSelected.corporation.logo: ""
+          }
           alt=""
         />
       )}

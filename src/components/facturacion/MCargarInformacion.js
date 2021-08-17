@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+/* eslint-disable */
 import { customStyles } from "../../helpers/tablaOpciones";
 import Modal from "react-modal";
 import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";

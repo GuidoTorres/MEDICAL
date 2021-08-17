@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from "react";
 import { Bar, Doughnut, Pie } from "react-chartjs-2";
 import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";

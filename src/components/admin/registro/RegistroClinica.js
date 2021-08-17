@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 
 import DataTable from "react-data-table-component";
@@ -18,6 +19,7 @@ const RegistroClinica = () => {
   const [listRegistro, setListRegistro] = useState([]);
   const [metGetClinic, setMetGetClinic] = useState([]);
   const [modalLocalizacion, setModalLocalizacion] = useState(false);
+
   // const [clinicasFiltradas, setClinicasFiltradas] = useState({});
   const getClinica = () => {
     fetchGETPOSTPUTDELETE("clinics")
@@ -39,7 +41,6 @@ const RegistroClinica = () => {
     // filtrarMedical();
   }, []);
 
-  // console.log(metGetClinic);
 
   const columnas = [
     {
@@ -56,10 +57,17 @@ const RegistroClinica = () => {
       name: "Razón social",
       selector: (row) =>
         row.corporation && row.corporation.business_name
-          ? row.corporation.business_name
+          ? `${row.corporation.business_name} ${"-"} ${
+              row.corporation &&
+              row.corporation.address &&
+              row.corporation.address.district &&
+              row.corporation.address.district.name
+                ? row.corporation.address.district.name
+                : ""
+            }`
           : "",
       sortable: true,
-      grow:2,
+      grow: 2,
       style: {
         borderBotton: "none",
         color: "#555555",
@@ -68,7 +76,9 @@ const RegistroClinica = () => {
     {
       name: "RUC",
       selector: (row) =>
-        row.corporation && row.corporation.ruc ? row.corporation.ruc : "",
+        row.admin && row.admin.username !== null
+          ? row.admin.username
+          : row.corporation.ruc,
       sortable: true,
       grow: 1,
       style: {
@@ -131,18 +141,18 @@ const RegistroClinica = () => {
         </button>
       ),
     },
-    {
-      name: "Administrar lugares",
-      button: true,
-      cell: (e) => (
-        <button
-          onClick={() => handleLocalizacion(e)}
-          className="table__tablebutton"
-        >
-          <i className="fas fa-pencil-alt"></i>
-        </button>
-      ),
-    },
+    // {
+    //   name: "Administrar lugares",
+    //   button: true,
+    //   cell: (e) => (
+    //     <button
+    //       onClick={() => handleLocalizacion(e)}
+    //       className="table__tablebutton"
+    //     >
+    //       <i className="fas fa-pencil-alt"></i>
+    //     </button>
+    //   ),
+    // },
     {
       name: "Eliminar",
       button: true,

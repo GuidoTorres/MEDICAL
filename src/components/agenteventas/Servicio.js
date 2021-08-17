@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import Persona from "./Persona";
 import Empresa from "./Empresa";
@@ -17,6 +18,8 @@ const Servicio = () => {
       // .then((data) => console.log(data.data));
       .then((datos) => setGetServicio(datos.data));
   };
+
+  console.log(getServicio);
 
   useEffect(() => {
     getServices();
@@ -44,13 +47,13 @@ const Servicio = () => {
                       <td>{servicio.name ? servicio.name : ""}</td>
 
                       <td>
-                        {servicio.last_price && servicio.last_price.amount
-                          ? servicio.last_price.amount - 50
+                        {servicio.limite_inferior
+                          ? servicio.limite_inferior
                           : ""}
                       </td>
                       <td>
-                        {servicio.last_price && servicio.last_price.amount
-                          ? servicio.last_price.amount - 30
+                        {servicio.limite_superior
+                          ? servicio.limite_superior
                           : ""}
                       </td>
                       <td>

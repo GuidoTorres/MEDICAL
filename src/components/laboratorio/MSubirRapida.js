@@ -1,12 +1,14 @@
+/* eslint-disable */
 import React, { useState } from "react";
 import Modal from "react-modal";
-import {
-  fetchGETPOSTPUTDELETEJSON,
-  fetchGETPOSTPUTDELETE,
-} from "../../helpers/fetch";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 import Swal from "sweetalert2";
 
 import { customStyles } from "../../helpers/tablaOpciones";
+
+import jsPDF from "jspdf";
+import rapida from "../../assets/pdf Imagen/rapida.png";
+import firma from "../../assets/pdf Imagen/Firma.png";
 
 const MSubirRapida = ({
   openModal,
@@ -23,9 +25,113 @@ const MSubirRapida = ({
   const closeModal = () => {
     setOpenModal(false);
   };
-  console.log(result);
 
-  const postResults = () => {
+  function getAge() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const birthDate = new Date(dataSelected.person.birthday);
+
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    console.log(m);
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      const edad = age - 1;
+      return edad.toString();
+    } else {
+      return age.toString();
+    }
+  }
+
+  console.log(getAge());
+  console.log(dataSelected);
+  const generarPDF = () => {
+    const doc = new jsPDF("p", "pt");
+    doc.setProperties({
+      title: "Formato Antígeno",
+    });
+    doc.setFontSize(10);
+
+    doc.addImage(rapida, "PNG", 6, 20, 580, 800, "", "FAST");
+
+    doc.text(
+      328,
+      141,
+      `${dataSelected.person.gender_id === 1 ? "Masculino" : "Femenino"}`
+    );
+    doc.text(85, 142, `${dataSelected.id ? dataSelected.id : ""}`);
+    doc.text(
+      55,
+      163,
+      `${dataSelected.person.dni ? dataSelected.person.dni : ""}`
+    );
+    doc.text(
+      428,
+      163,
+      `${dataSelected.date_attention ? dataSelected.date_attention : ""}`
+    );
+
+    doc.text(
+      80,
+      184,
+      `${
+        dataSelected.person.name !== undefined || null
+          ? dataSelected.person.name.replace(
+              /(^\w|\s\w)(\S*)/g,
+              (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+            )
+          : ""
+      } ${
+        dataSelected.person.pat_lastname !== undefined || null
+          ? dataSelected.person.pat_lastname.replace(
+              /(^\w|\s\w)(\S*)/g,
+              (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+            )
+          : ""
+      } ${
+        dataSelected.person.mom_lastname !== undefined || null
+          ? dataSelected.person.mom_lastname.replace(
+              /(^\w|\s\w)(\S*)/g,
+              (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+            )
+          : ""
+      }`
+    );
+    doc.text(310, 185, getAge());
+
+    if (result.reactive === 1) {
+      doc.text(295, 285, "X");
+    } else if (result.reactive === 2) {
+      doc.text(200, 285, "X");
+    } else if (result.reactive === 3) {
+      doc.text(200, 285, "X");
+      doc.text(295, 285, "X");
+    } else if (result.reactive === 4) {
+      doc.text(180, 285, "No reactivo");
+
+      doc.text(270, 285, "No reactivo");
+    } else if (result.reactive === 5) {
+      doc.text(195, 285, "null");
+
+      doc.text(290, 285, "null");
+    }
+    doc.setFillColor(255, 255, 255);
+    doc.rect(335, 465, 151, 81, "F");
+    doc.addImage(firma, "PNG", 345, 483, 100, 80, "", "FAST");
+    const pdf = new File([doc.output("blob")], "myDoc.pdf", {
+      type: "application/pdf",
+    });
+    // window.open(doc.output("bloburl"), "_blank");
+
+    postResults(pdf);
+  };
+
+  const postResults = (pdf) => {
+    const formData = new FormData();
+
+    formData.set("id", dataSelected.id);
+    formData.set("reactive", result.reactive);
+    formData.set("pdf", pdf);
+
     if (
       result.reactive === "" ||
       result.reactive === null ||
@@ -33,15 +139,13 @@ const MSubirRapida = ({
       result.reactive === "Seleccione"
     ) {
       setError(true);
-    }
-
-    if (
-      result.reactive !== "" ||
-      result.reactive !== null ||
-      result.reactive !== undefined ||
+    } else if (
+      result.reactive !== "" &&
+      result.reactive !== null &&
+      result.reactive !== undefined &&
       result.reactive !== "Seleccione"
     ) {
-      fetchGETPOSTPUTDELETEJSON(`result`, result, "POST").then((data) => {
+      fetchGETPOSTPUTDELETE(`result`, formData, "POST").then((data) => {
         console.log(data);
         if (data.status === 200) {
           closeModal();
@@ -225,7 +329,7 @@ const MSubirRapida = ({
                 Cancelar
               </button>
               {/* <button className="botones">Visualizar</button> */}
-              <button className="botones" onClick={postResults}>
+              <button className="botones" onClick={generarPDF}>
                 Enviar
               </button>
             </div>

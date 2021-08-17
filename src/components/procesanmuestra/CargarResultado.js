@@ -1,12 +1,6 @@
+/* eslint-disable */
 import React, { useEffect, useRef, useState } from "react";
 import DataTable from "react-data-table-component";
-import jsPDF from "jspdf";
-import eclia from "../../assets/pdf Imagen/eclia.png";
-import antigenosi from "../../assets/pdf Imagen/antigenoSi.png";
-import antigenono from "../../assets/pdf Imagen/antigenoNo.png";
-import molecular from "../../assets/pdf Imagen/molecular.png";
-import rapida from "../../assets/pdf Imagen/rapida.png";
-import anticuerpos from "../../assets/pdf Imagen/anticuerpos.png";
 
 import Swal from "sweetalert2";
 
@@ -147,49 +141,56 @@ const CargarResultado = () => {
   };
 
   const onChangeFile = (e) => {
-    inputRef.current.click();
-    console.log(inputRef.current.files[0]);
     setResultado({ ...resultado, id: e.atencion_id });
+    inputRef.current.click();
+    console.log("onchangefile");
+  };
 
-    if (inputRef.current.files[0]) {
-      setResultado({ ...resultado, pdf: inputRef.current.files[0] });
-      handleDetalles(resultado);
+  const upload = (e) => {
+    setResultado({ ...resultado, pdf: e.target.files[0] });
+    console.log("upload");
+
+    const formData = new FormData();
+    formData.set("id", resultado.id);
+    formData.set("pdf", e.target.files[0]);
+
+    if (e.target.files[0] !== undefined) {
+      CargarPdf(formData);
     }
   };
 
-  const handleDetalles = (resultado) => {
-    const formData = new FormData();
-    formData.set("pdf", resultado.pdf);
-    formData.set("id", resultado.id);
+  console.log(resultado);
 
-      fetchGETPOSTPUTDELETE("result", formData, "POST").then((info) => {
+  const CargarPdf = (pdf) => {
+    console.log("entro al if ");
+    fetchGETPOSTPUTDELETE("result", pdf, "POST").then((info) => {
+      inputRef.current.value = "";
+      setResultado({});
+      if (info.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se guardó el pdf correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        }).then((resp) => {
+          if (resp.isConfirmed) {
+            getResult();
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
         inputRef.current.value = "";
-        if (info.status === 200) {
-          Swal.fire({
-            icon: "success",
-            title: "Éxito",
-            text: "Se guardó el pdf correctamente.",
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Aceptar",
-          }).then((resp) => {
-            if (resp.isConfirmed) {
-              getResult();
-            }
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "!Ups¡",
-            text: "Algo salió mal.",
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Cerrar",
-          });
-          inputRef.current.value = "";
-        }
-      });
-
+      }
+    });
   };
 
   return (
@@ -212,7 +213,7 @@ const CargarResultado = () => {
               type="file"
               id="file-input"
               ref={inputRef}
-              onChange={(e) => onChangeFile(e)}
+              onChange={upload}
               style={{ display: "none" }}
             />
           </div>

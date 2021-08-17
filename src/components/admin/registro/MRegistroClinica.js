@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import Swal from "sweetalert2";
@@ -37,6 +38,9 @@ const MRegistroClinica = ({
   const [ruc, setRuc] = useState({});
 
   const [fechasElegidas, setFechasElegidas] = useState([]);
+  const [departamentos, setDepartamentos] = useState({});
+  const [provinces, setProvinces] = useState({});
+  const [districts, setDistricts] = useState();
   const fechasDeSemana = [
     { id: 1, name: "Lunes" },
     { id: 2, name: "Martes" },
@@ -183,10 +187,7 @@ const MRegistroClinica = ({
 
     formData.set("ruc", data.ruc || "");
     formData.set("business_name", ruc.razonSocial || data.business_name || "");
-    formData.set(
-      "commercial_name",
-      ruc.razonSocial || data.business_name || ""
-    );
+    formData.set("commercial_name", data.commercial_name || "");
     formData.set("logo", avatar && avatar.file ? avatar.file : "");
     formData.set("address", ruc.direccion || data.address || "");
     formData.set("reference", data.reference || "");
@@ -198,6 +199,9 @@ const MRegistroClinica = ({
     formData.set("contacts[0][phone]", data.phone || "");
     formData.set("contacts[0][email]", data.email || "");
     formData.set("contacts[0][contact_type]", 0);
+    formData.set("department_id", data.department_id || "");
+    formData.set("province_id", data.province_id || "");
+    formData.set("district_id", data.district_id || "");
 
     workday.map((w, index) => {
       formData.set(`work_days[${index}][day_id]`, Number(w.day));
@@ -238,10 +242,7 @@ const MRegistroClinica = ({
     formData.set("corporation_id", 1);
     formData.set("ruc", data.ruc || "");
     formData.set("business_name", ruc.razonSocial || data.business_name || "");
-    formData.set(
-      "commercial_name",
-      ruc.razonSocial || data.business_name || ""
-    );
+    formData.set("commercial_name", data.commercial_name || "");
     formData.set("logo", avatar && avatar.file ? avatar.file : "");
     formData.set("address", ruc.direccion || data.address || "");
     formData.set("reference", data.reference || "");
@@ -253,6 +254,7 @@ const MRegistroClinica = ({
     formData.set("contacts[0][phone]", data.phone || "");
     formData.set("contacts[0][email]", data.email || "");
     formData.set("contacts[0][contact_type]", 0);
+    formData.set("district_id", data.district_id || "");
 
     // if (workday) {
     //   for (var [value] of Object.entries(workday)) {
@@ -271,9 +273,7 @@ const MRegistroClinica = ({
       formData.set(`work_days[${index}][opening]`, w.opening);
       formData.set(`work_days[${index}][closing]`, w.closing);
     });
-    // console.log(dataMapa);
 
-    // console.log(dataSelected.corporation.logo);
     fetchGETPOSTPUTDELETE(
       `clinics/update/${dataSelected.id}`,
       formData,
@@ -309,12 +309,12 @@ const MRegistroClinica = ({
     e.preventDefault();
 
     if (
-      data.address !== "" &&
-      data.address !== null &&
+      // data.address !== "" &&
+      // data.address !== null &&
       data.ruc !== "" &&
       data.ruc !== null &&
-      data.business_name !== "" &&
-      data.business_name !== null &&
+      // data.business_name !== "" &&
+      // data.business_name !== null &&
       data.name !== "" &&
       data.name !== null &&
       data.phone !== "" &&
@@ -349,6 +349,65 @@ const MRegistroClinica = ({
     }
   };
 
+  const getDepartments = () => {
+    fetchGETPOSTPUTDELETE("departamentos")
+      .then((res) => res.json())
+      .then((res) => setDepartamentos(res.departments));
+  };
+  useEffect(() => {
+    getDepartments();
+  }, []);
+  const getProvinces = () => {
+    //devuelve solo el objeto con el id = a department_id
+    if (editar) {
+      console.log("entro al editar true");
+      const provincias =
+        departamentos.length > 0 &&
+        departamentos.filter((item) =>
+          item.id ===
+          dataSelected.corporation.address.district.province.department_id
+            ? item
+            : ""
+        );
+      setProvinces(provincias);
+
+      const distritos =
+        provinces.length > 0 &&
+        provinces.map((data1, i) =>
+          data1.provinces.filter((item, j) =>
+            dataSelected.corporation.address.district_id ? item.districts : ""
+          )
+        );
+
+      setDistricts(distritos);
+    } else {
+      console.log("entro al editar false");
+      const provincias =
+        departamentos.length > 0 &&
+        departamentos.filter(
+          (item) => Number(item.id) === Number(data.department_id)
+        );
+      setProvinces(provincias);
+      const distritos =
+        provinces.length > 0 &&
+        provinces.map((data1, i) =>
+          data1.provinces.filter((item, j) =>
+            Number(item.id) === Number(data.province_id) ? item.districts : ""
+          )
+        );
+
+      setDistricts(distritos);
+    }
+  };
+  console.log(dataSelected);
+  // console.log(dataSelected.corporation.address.district.province.department_id);
+  // console.log(dataSelected.corporation.address.district.province_id);
+  // console.log(dataSelected.corporation.address.district_id);
+
+  useEffect(() => {
+    getProvinces();
+  }, [data, dataSelected]);
+
   return (
     <div>
       <Modal
@@ -369,11 +428,11 @@ const MRegistroClinica = ({
                 <div>
                   <label htmlFor="validationCustom01">RUC:</label>
                   <input
-                    type="number"
+                    type="text"
                     name="ruc"
                     id="ruc"
                     style={{ border: "1px solid red !important" }}
-                    disabled={editar ? true : false}
+                    // disabled={editar ? true : false}
                     defaultValue={data.ruc || ""}
                     onChange={(e) => handleChange(e)}
                   />
@@ -385,7 +444,17 @@ const MRegistroClinica = ({
                     type="text"
                     name="business_name"
                     id="business_name"
-                    defaultValue={data.business_name || ""}
+                    defaultValue={ruc.razonSocial || data.business_name || ""}
+                    onChange={(e) => handleChange(e)}
+                  />
+                </div>
+                <div>
+                  <label className="label_commercial">Nombre comercial:</label>
+                  <input
+                    type="text"
+                    name="commercial_name"
+                    id="commercial_name"
+                    defaultValue={data.name || ""}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
@@ -424,7 +493,7 @@ const MRegistroClinica = ({
                   <input
                     type="text"
                     name="address"
-                    defaultValue={data.address || ""}
+                    defaultValue={ruc.direccion || data.address || ""}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
@@ -436,6 +505,83 @@ const MRegistroClinica = ({
                     defaultValue={data.reference || ""}
                     onChange={(e) => handleChange(e)}
                   />
+                </div>
+                <div>
+                  <label>Departamento:</label>
+                  <select
+                    name="department_id"
+                    onChange={(e) => handleChange(e)}
+                    value={
+                      editar
+                        ? dataSelected.corporation &&
+                          dataSelected.corporation.address &&
+                          dataSelected.corporation.address.district &&
+                          dataSelected.corporation.address.district.province &&
+                          dataSelected.corporation.address.district.province
+                            .department_id
+                          ? dataSelected.corporation.address.district.province
+                              .department_id
+                          : ""
+                        : ""
+                    }
+                  >
+                    <option value="">Seleccione</option>
+
+                    {departamentos.length > 0 &&
+                      departamentos.map((data, i) => (
+                        <option key={i} value={data.id}>
+                          {data.name}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+                <div>
+                  <label>Provincia:</label>
+                  <select
+                    name="province_id"
+                    onChange={(e) => handleChange(e)}
+                    value={
+                      editar
+                        ? dataSelected.corporation &&
+                          dataSelected.corporation.address &&
+                          dataSelected.corporation.address.district &&
+                          dataSelected.corporation.address.district.province &&
+                          dataSelected.corporation.address.district.province
+                            .department_id
+                          ? dataSelected.corporation.address.district.province
+                              .department_id
+                          : ""
+                        : ""
+                    }
+                  >
+                    <option value="">Seleccione</option>
+                    {provinces.length > 0 &&
+                      provinces.map((data, i) =>
+                        data.provinces.map((prov, i) => (
+                          <option key={i} value={prov.id}>
+                            {prov.name}
+                          </option>
+                        ))
+                      )}
+                  </select>
+                </div>
+                <div>
+                  <label>Distrito:</label>
+                  <select
+                    name="district_id"
+                    onChange={(e) => handleChange(e)}
+                    // value={dataSelected.corporation.address.district_id}
+                  >
+                    <option value="">Seleccione</option>
+                    {districts &&
+                      districts[0] &&
+                      districts[0][0] &&
+                      districts[0][0].districts.map((data, i) => (
+                        <option key={i} value={data.id}>
+                          {data.name}
+                        </option>
+                      ))}
+                  </select>
                 </div>
               </div>
               <div className="mregistro__tipo">
@@ -606,7 +752,7 @@ const MRegistroClinica = ({
                     avatar={avatar}
                     setAvatar={setAvatar}
                     editar={editar}
-                    // dataSelected={avatar}
+                    dataSelected={avatar}
                   />
                 </div>
               </div>
