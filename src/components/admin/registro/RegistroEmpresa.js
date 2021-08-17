@@ -221,6 +221,11 @@ const RegistroEmpresa = () => {
                 <i
                   className="fas fa-plus-circle"
                   onClick={handleAddRegistro}
+                  style={{
+                    fontSize: '1rem',
+                    color: '#009DCA',
+                    cursor: 'pointer',
+                  }}
                 ></i>{' '}
               </label>
             </div>

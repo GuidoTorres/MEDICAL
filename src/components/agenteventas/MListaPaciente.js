@@ -1,10 +1,10 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
+import React, { useEffect, useState } from 'react';
+import Modal from 'react-modal';
 
-import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
+import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 
-import { customStyles } from "../../helpers/tablaOpciones";
+import { customStyles } from '../../helpers/tablaOpciones';
 
 const MListaPaciente = ({
   dataSelected,
@@ -22,7 +22,7 @@ const MListaPaciente = ({
       compania: dataSelected.id,
     };
 
-    fetchGETPOSTPUTDELETEJSON("compania/pacientes", data, "POST")
+    fetchGETPOSTPUTDELETEJSON('compania/pacientes', data, 'POST')
       .then((res) => res.json())
       .then((res) => setPaciente(res));
   };
@@ -30,7 +30,7 @@ const MListaPaciente = ({
   useEffect(() => {
     getPacientes();
   }, []);
-  console.log(paciente);
+  // console.log(paciente);
   return (
     <Modal
       isOpen={listapacientes}
@@ -65,7 +65,7 @@ const MListaPaciente = ({
                     <tr key={i}>
                       <td>{i + 1}</td>
                       <td>
-                        {item.person.name} {item.person.pat_lastname}{" "}
+                        {item.person.name} {item.person.pat_lastname}{' '}
                         {item.person.mom_lastname}
                       </td>
                       <td>{item.person.dni}</td>

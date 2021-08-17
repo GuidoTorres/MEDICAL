@@ -1,12 +1,12 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import logo from "../../assets/icons/Isotipo.png";
-import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import React, { useEffect, useState } from 'react';
+import logo from '../../assets/icons/Isotipo.png';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 const Perfil = () => {
   const [dataPerfil, setDataPerfil] = useState({});
 
   const perfil = () => {
-    fetchGETPOSTPUTDELETE("auth/me", null, "POST")
+    fetchGETPOSTPUTDELETE('auth/me', null, 'POST')
       .then((res) => res.json())
       .then((res) => setDataPerfil(res));
   };
@@ -15,7 +15,7 @@ const Perfil = () => {
     perfil();
   }, []);
 
-  console.log(dataPerfil);
+  // console.log(dataPerfil);
 
   return (
     <div className="container">
@@ -66,8 +66,8 @@ const Perfil = () => {
                 src={dataPerfil.logo}
                 alt=""
                 style={{
-                  border: "1xp solid red",
-                  maxWidth: "100%",
+                  border: '1xp solid red',
+                  maxWidth: '100%',
                 }}
               />
             </div>

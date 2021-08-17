@@ -1,20 +1,20 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
+import React, { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component';
 
 import {
   fetchGETPOSTPUTDELETE,
   fetchGETPOSTPUTDELETEJSON,
-} from "../../helpers/fetch";
-import { paginacionOpciones } from "../../helpers/tablaOpciones";
+} from '../../helpers/fetch';
+import { paginacionOpciones } from '../../helpers/tablaOpciones';
 
 const Historial = () => {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState('');
   // const [listRegistro, setListRegistro] = useState([]);
   const [dataHistorial, setDataHistorial] = useState([]);
 
   const getHistorial = () => {
-    fetchGETPOSTPUTDELETE(`historial/atencion`, null, "POST")
+    fetchGETPOSTPUTDELETE(`historial/atencion`, null, 'POST')
       .then((data) => data.json())
       .then((datos) => setDataHistorial(datos));
   };
@@ -27,67 +27,68 @@ const Historial = () => {
 
   const columnas = [
     {
-      name: "Item",
+      name: 'Item',
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Tipo de documento",
-      selector: (row) => (row.tipo_documento ? row.tipo_documento : ""),
+      name: 'Tipo de documento',
+      selector: (row) => (row.tipo_documento ? row.tipo_documento : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nº documento",
-      selector: (row) => (row ? row.dni : ""),
+      name: 'Nº documento',
+      selector: (row) => (row ? row.dni : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nombres y apellidos",
-      selector: (row) => (row.paciente ? row.paciente : ""),
+      name: 'Nombres y apellidos',
+      selector: (row) => (row.paciente ? row.paciente : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
 
     {
-      name: "Tipo de prueba",
-      selector: (row) => (row.prueba ? row.prueba : ""),
+      name: 'Tipo de prueba',
+      selector: (row) => (row.prueba ? row.prueba : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Fecha solicitud",
-      selector: (row) => (row.fecha_solicitud ? row.fecha_solicitud : ""),
+      name: 'Fecha solicitud',
+      selector: (row) => (row.fecha_solicitud ? row.fecha_solicitud : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Fecha entrega",
-      selector: (row) => (row.fecha_atencion ? row.fecha_atencion : ""),
+      name: 'Fecha entrega',
+      selector: (row) => (row.fecha_atencion ? row.fecha_atencion : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
   ];
@@ -147,7 +148,7 @@ const Historial = () => {
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: "lightgrey" }}>No hay datos</p>
+                <p style={{ color: 'lightgrey' }}>No hay datos</p>
               </div>
             }
           />

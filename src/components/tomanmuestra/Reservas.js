@@ -1,17 +1,17 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
-import Swal from "sweetalert2";
+import React, { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component';
+import Swal from 'sweetalert2';
 
 import {
   fetchGETPOSTPUTDELETE,
   fetchGETPOSTPUTDELETEJSON,
-} from "../../helpers/fetch";
-import { paginacionOpciones } from "../../helpers/tablaOpciones";
-import MReserva from "./MReserva";
+} from '../../helpers/fetch';
+import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import MReserva from './MReserva';
 
 const Reservas = () => {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [dataBarCode, setDataBarCode] = useState({});
@@ -20,7 +20,7 @@ const Reservas = () => {
   const [getDateAttention, setGetDateAttention] = useState([]);
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETEJSON("atenciones/clinica", null, "POST")
+    fetchGETPOSTPUTDELETEJSON('atenciones/clinica', null, 'POST')
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos));
   };
@@ -28,70 +28,71 @@ const Reservas = () => {
   useEffect(() => {
     getAttention();
   }, []);
-  console.log(getDateAttention);
+  // console.log(getDateAttention);
   const columnas = [
     {
-      name: "Item",
+      name: 'Item',
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Tipo de documento",
-      selector: (row) => (row.tipo_documento ? row.tipo_documento : ""),
+      name: 'Tipo de documento',
+      selector: (row) => (row.tipo_documento ? row.tipo_documento : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nº documento",
-      selector: (row) => (row.dni ? row.dni : ""),
+      name: 'Nº documento',
+      selector: (row) => (row.dni ? row.dni : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nombre",
-      selector: (row) => (row.paciente ? row.paciente : ""),
+      name: 'Nombre',
+      selector: (row) => (row.paciente ? row.paciente : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
 
     {
-      name: "Tipo prueba",
+      name: 'Tipo prueba',
       // selector:'tipo',
 
-      selector: (row) => (row.prueba ? row.prueba : ""),
+      selector: (row) => (row.prueba ? row.prueba : ''),
 
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Fecha solicitud",
+      name: 'Fecha solicitud',
       // selector:'solicitud',
 
-      selector: (row) => (row.fecha_solicitud ? row.fecha_solicitud : ""),
+      selector: (row) => (row.fecha_solicitud ? row.fecha_solicitud : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Atender",
+      name: 'Atender',
       button: true,
       cell: (e) => (
         <button
@@ -133,22 +134,22 @@ const Reservas = () => {
   };
   const handleDetalles = (e) => {
     Swal.fire({
-      title: "¿Atender paciente?",
-      text: `${e.person.name + " " + e.person.pat_lastname}`,
-      icon: "warning",
+      title: '¿Atender paciente?',
+      text: `${e.person.name + ' ' + e.person.pat_lastname}`,
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Atender",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Atender',
     }).then((result) => {
       if (result.isConfirmed) {
         fetchGETPOSTPUTDELETE(`attention/attend/${e.id}`).then((data) => {
           console.log(data);
           if (data.status === 200) {
             Swal.fire(
-              "Éxito!",
-              "Se generó la atención correctamente.",
-              "success"
+              'Éxito!',
+              'Se generó la atención correctamente.',
+              'success'
             );
 
             getAttention();
@@ -195,7 +196,7 @@ const Reservas = () => {
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: "lightgrey" }}>No hay datos</p>
+                <p style={{ color: 'lightgrey' }}>No hay datos</p>
               </div>
             }
           />

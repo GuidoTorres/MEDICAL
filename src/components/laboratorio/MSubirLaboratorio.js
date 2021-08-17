@@ -1,16 +1,16 @@
 /* eslint-disable */
-import React, { useState } from "react";
-import Modal from "react-modal";
-import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
-import Swal from "sweetalert2";
-import jsPDF from "jspdf";
+import React, { useState } from 'react';
+import Modal from 'react-modal';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
+import Swal from 'sweetalert2';
+import jsPDF from 'jspdf';
 
-import antigenosi from "../../assets/pdf Imagen/antigenoSi.png";
-import antigenono from "../../assets/pdf Imagen/antigenoNo.png";
-import firma from "../../assets/pdf Imagen/Firma.png";
-import isos from "../../assets/pdf Imagen/isos.png";
+import antigenosi from '../../assets/pdf Imagen/antigenoSi.png';
+import antigenono from '../../assets/pdf Imagen/antigenoNo.png';
+import firma from '../../assets/pdf Imagen/Firma.png';
+import isos from '../../assets/pdf Imagen/isos.png';
 
-import { customStyles } from "../../helpers/tablaOpciones";
+import { customStyles } from '../../helpers/tablaOpciones';
 //MODAL PARA SUBIR RESULTADOS DE PRUEBA DE ANTÍGENO
 const MSubirLaboratorio = ({
   openModal,
@@ -21,12 +21,12 @@ const MSubirLaboratorio = ({
 }) => {
   const [result, setResult] = useState({
     id: dataSelected.id,
-    result: "",
+    result: '',
   });
   const closeModal = () => {
     setOpenModal(false);
   };
-  console.log(result);
+  // console.log(result);
 
   function getAge() {
     const today = new Date();
@@ -43,39 +43,39 @@ const MSubirLaboratorio = ({
   }
 
   const generarPDF = () => {
-    const doc = new jsPDF("p", "pt");
+    const doc = new jsPDF('p', 'pt');
     doc.setProperties({
-      title: "Formato Antígeno",
+      title: 'Formato Antígeno',
     });
     doc.setFontSize(10);
 
     doc.addImage(
-      result.result === "0" ? antigenono : antigenosi,
-      "PNG",
+      result.result === '0' ? antigenono : antigenosi,
+      'PNG',
       6,
       20,
       580,
       800,
-      "",
-      "FAST"
+      '',
+      'FAST'
     );
     doc.text(
       328,
       135,
-      `${dataSelected.person.gender_id === 1 ? "Masculino" : "Femenino"}`
+      `${dataSelected.person.gender_id === 1 ? 'Masculino' : 'Femenino'}`
     );
     // doc.text(328, 135, `${e && e.genero === null ? 'Masculino' : ''}`);
 
-    doc.text(90, 136, `${dataSelected.id ? dataSelected.id : ""}`);
+    doc.text(90, 136, `${dataSelected.id ? dataSelected.id : ''}`);
     doc.text(
       60,
       158,
-      `${dataSelected.person.dni ? dataSelected.person.dni : ""}`
+      `${dataSelected.person.dni ? dataSelected.person.dni : ''}`
     );
     doc.text(
       428,
       157,
-      `${dataSelected.date_attention ? dataSelected.date_attention : ""}`
+      `${dataSelected.date_attention ? dataSelected.date_attention : ''}`
     );
 
     doc.text(
@@ -90,7 +90,7 @@ const MSubirLaboratorio = ({
               /(^\w|\s\w)(\S*)/g,
               (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
             )
-          : ""
+          : ''
       } ${
         (dataSelected &&
           dataSelected.person &&
@@ -100,7 +100,7 @@ const MSubirLaboratorio = ({
               /(^\w|\s\w)(\S*)/g,
               (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
             )
-          : ""
+          : ''
       } ${
         (dataSelected &&
           dataSelected.person &&
@@ -110,22 +110,22 @@ const MSubirLaboratorio = ({
               /(^\w|\s\w)(\S*)/g,
               (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
             )
-          : ""
+          : ''
       }`
     );
     doc.text(312, 180, getAge());
 
-    if (result.result === "0" || 0) {
+    if (result.result === '0' || 0) {
       doc.text(284, 268, `No detectado`);
-    } else if (result.result === "1" || 1) {
+    } else if (result.result === '1' || 1) {
       doc.text(284, 268, `Detectado`);
     }
 
-    doc.addImage(firma, "PNG", 345, 450, 100, 80, "", "FAST");
-    doc.addImage(isos, "PNG", 300, 760, 220, 60, "", "FAST");
+    doc.addImage(firma, 'PNG', 345, 450, 100, 80, '', 'FAST');
+    doc.addImage(isos, 'PNG', 300, 760, 220, 60, '', 'FAST');
     // window.open(doc.output("bloburl"), "_blank");
-    const pdf = new File([doc.output("blob")], "myDoc.pdf", {
-      type: "application/pdf",
+    const pdf = new File([doc.output('blob')], 'myDoc.pdf', {
+      type: 'application/pdf',
     });
 
     postResults(pdf);
@@ -133,46 +133,46 @@ const MSubirLaboratorio = ({
 
   const postResults = (pdf) => {
     const formData = new FormData();
-    formData.set("id", result.id);
-    formData.set("result", result.result);
-    formData.set("pdf", pdf);
+    formData.set('id', result.id);
+    formData.set('result', result.result);
+    formData.set('pdf', pdf);
 
     if (
-      result.result === "" ||
+      result.result === '' ||
       result.result === null ||
       result.result === undefined ||
-      result.result === "Seleccione"
+      result.result === 'Seleccione'
     ) {
-      document.getElementById("resultado").style =
-        "border:1px solid red !important";
+      document.getElementById('resultado').style =
+        'border:1px solid red !important';
     }
 
     if (
-      result.result !== "" &&
+      result.result !== '' &&
       result.result !== undefined &&
-      result.result !== "Seleccione"
+      result.result !== 'Seleccione'
     ) {
-      fetchGETPOSTPUTDELETE(`result`, formData, "POST").then((data) => {
+      fetchGETPOSTPUTDELETE(`result`, formData, 'POST').then((data) => {
         if (data.status === 200) {
           closeModal();
           Swal.fire({
-            icon: "success",
-            title: "Éxito",
-            text: "Se cargó el resultado correctamente.",
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Aceptar",
+            icon: 'success',
+            title: 'Éxito',
+            text: 'Se cargó el resultado correctamente.',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Aceptar',
           });
           getAtencion();
         } else {
           closeModal();
           Swal.fire({
-            icon: "error",
-            title: "!Ups¡",
-            text: "Algo salió mal.",
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Cerrar",
+            icon: 'error',
+            title: '!Ups¡',
+            text: 'Algo salió mal.',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Cerrar',
           });
         }
       });
@@ -195,13 +195,13 @@ const MSubirLaboratorio = ({
         <div className="row">
           <div className="col-12 mlaboratorio_cargar ">
             <p>
-              <strong>Datos del paciente</strong>{" "}
+              <strong>Datos del paciente</strong>{' '}
             </p>
             <div className="mt-2">
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
                 <label>DNI:</label>
                 <label>
-                  {dataSelected.person.dni ? dataSelected.person.dni : ""}
+                  {dataSelected.person.dni ? dataSelected.person.dni : ''}
                 </label>
               </div>
               <div>
@@ -209,24 +209,24 @@ const MSubirLaboratorio = ({
                 <label>
                   {dataSelected.person.name && dataSelected.person.pat_lastname
                     ? dataSelected.person.name +
-                      " " +
+                      ' ' +
                       dataSelected.person.pat_lastname
-                    : ""}
+                    : ''}
                 </label>
               </div>
               <div>
                 <label>Tipo de usuario</label>
                 <label>
                   {dataSelected.people_id === 1
-                    ? "Particular"
+                    ? 'Particular'
                     : dataSelected.people_id === 0
-                    ? "Empresa"
-                    : "Sin Tipo"}
+                    ? 'Empresa'
+                    : 'Sin Tipo'}
                 </label>
               </div>
             </div>
             <p>
-              <strong>Cargar Resultados</strong>{" "}
+              <strong>Cargar Resultados</strong>{' '}
             </p>
             <div className="mt-2">
               <div>

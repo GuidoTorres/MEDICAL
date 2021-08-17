@@ -1,14 +1,14 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import logo from "../../assets/icons/Isotipo.png";
-import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
+import React, { useEffect, useState } from 'react';
+import logo from '../../assets/icons/Isotipo.png';
+import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 const Perfil = () => {
   const [profile, setProfile] = useState({});
 
   const authMe = () => {
     // fetchGETPOSTPUTDELETEJSON('clinics/22')
 
-    fetchGETPOSTPUTDELETEJSON("auth/me", {}, "POST")
+    fetchGETPOSTPUTDELETEJSON('auth/me', {}, 'POST')
       .then((data) => data.json())
       .then((datos) => {
         setProfile(datos);
@@ -19,7 +19,7 @@ const Perfil = () => {
     authMe();
   }, []);
 
-  console.log(profile);
+  // console.log(profile);
 
   return (
     <div className="container">
@@ -70,8 +70,8 @@ const Perfil = () => {
                 src={profile.logo}
                 alt=""
                 style={{
-                  border: "1xp solid red",
-                  maxWidth: "100%",
+                  border: '1xp solid red',
+                  maxWidth: '100%',
                 }}
               />
             </div>

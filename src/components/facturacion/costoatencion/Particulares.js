@@ -1,19 +1,19 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import DataTable from "react-data-table-component";
-import { fparticular } from "../../../data/FParticular";
-import { fempresa2 } from "../../../data/FEmpresa";
-import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
-import Swal from "sweetalert2";
+import DataTable from 'react-data-table-component';
+import { fparticular } from '../../../data/FParticular';
+import { fempresa2 } from '../../../data/FEmpresa';
+import { fetchGETPOSTPUTDELETE } from '../../../helpers/fetch';
+import Swal from 'sweetalert2';
 
 import {
   paginacionOpciones,
   mensajesTablaFacturacion,
-} from "../../../helpers/tablaOpciones";
-import MParticulares from "./MParticulares";
-import MEmpresa from "./MEmpresa";
-import MMParticulares from "./MMParticulares";
+} from '../../../helpers/tablaOpciones';
+import MParticulares from './MParticulares';
+import MEmpresa from './MEmpresa';
+import MMParticulares from './MMParticulares';
 
 const Particulares = () => {
   const [busqueda, setBusqueda] = useState(null);
@@ -32,22 +32,22 @@ const Particulares = () => {
     useState(false);
 
   const getEmpresas = () => {
-    fetchGETPOSTPUTDELETE("liquidacion/empresas")
+    fetchGETPOSTPUTDELETE('liquidacion/empresas')
       .then((info) => info.json())
       .then((info) => {
         setEmpresas(info);
         setBusqueda(null);
-        setBusqueda("");
+        setBusqueda('');
       });
   };
 
   const getParticulares = () => {
-    fetchGETPOSTPUTDELETE("settlement_particular")
+    fetchGETPOSTPUTDELETE('settlement_particular')
       .then((info) => info.json())
       .then((info) => {
         setParticulares(info.data);
         setBusqueda(null);
-        setBusqueda("");
+        setBusqueda('');
       });
   };
 
@@ -60,96 +60,97 @@ const Particulares = () => {
 
   const columnas = [
     {
-      name: "Ítem",
+      name: 'Ítem',
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nombre",
-      selector: (row) => (row.person ? row.person.name : ""),
+      name: 'Nombre',
+      selector: (row) => (row.person ? row.person.name : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Apellido",
+      name: 'Apellido',
       selector: (row) =>
         row.person
-          ? row.person.pat_lastname + " " + row.person.mom_lastname
-          : "",
+          ? row.person.pat_lastname + ' ' + row.person.mom_lastname
+          : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "DNI",
-      selector: (row) => (row.person ? row.person.dni : ""),
+      name: 'DNI',
+      selector: (row) => (row.person ? row.person.dni : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Fecha",
-      selector: (row) => (row.date_attention ? row.date_attention : ""),
+      name: 'Fecha',
+      selector: (row) => (row.date_attention ? row.date_attention : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Tipo de servicio",
-      selector: (row) => (row.service ? row.service.description : ""),
+      name: 'Tipo de servicio',
+      selector: (row) => (row.service ? row.service.description : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Plan de atención",
-      selector: (row) => (row.service ? row.service.abbreviation : ""),
+      name: 'Plan de atención',
+      selector: (row) => (row.service ? row.service.abbreviation : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "SubTotal",
-      selector: "subtotal",
+      name: 'SubTotal',
+      selector: 'subtotal',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Impuesto",
-      selector: "igv",
+      name: 'Impuesto',
+      selector: 'igv',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Total",
+      name: 'Total',
       selector: (row) => row.amount,
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     // {
@@ -168,70 +169,70 @@ const Particulares = () => {
 
   const columnasEmpresa = [
     {
-      name: "Item",
+      name: 'Item',
       selector: (row, index) => (index += 1),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Razón social",
-      selector: "nombre",
+      name: 'Razón social',
+      selector: 'nombre',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Ruc",
-      selector: "ruc",
+      name: 'Ruc',
+      selector: 'ruc',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Cant. atenciones",
-      selector: "cant_atenciones",
+      name: 'Cant. atenciones',
+      selector: 'cant_atenciones',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Sub total",
-      selector: "sub_total",
+      name: 'Sub total',
+      selector: 'sub_total',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Impuesto",
-      selector: "igv",
+      name: 'Impuesto',
+      selector: 'igv',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Total",
-      selector: "total",
+      name: 'Total',
+      selector: 'total',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Detalles",
+      name: 'Detalles',
       button: true,
       cell: (e) => (
         <button
@@ -246,7 +247,7 @@ const Particulares = () => {
 
   useEffect(() => {
     const filtrarElemento = () => {
-      if (busqueda !== "" && busqueda !== null) {
+      if (busqueda !== '' && busqueda !== null) {
         const search = particulares.filter((data) => {
           return (
             // data.id.toString().includes(busqueda) ||
@@ -255,38 +256,38 @@ const Particulares = () => {
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : "") ||
+              : '') ||
             (data.person
               ? data.person.pat_lastname
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : "") ||
+              : '') ||
             (data.person
               ? data.person.mom_lastname
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : "") ||
+              : '') ||
             (data.person
               ? data.person.dni.toString().includes(busqueda)
-              : "") ||
+              : '') ||
             (data.date_attention
               ? data.date_attention.toString().includes(busqueda)
-              : "") ||
+              : '') ||
             (data.service
               ? data.service.description
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : "") ||
+              : '') ||
             (data.service
               ? data.service.abbreviation
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : "") ||
-            (data.amount ? data.amount.toString().includes(busqueda) : "")
+              : '') ||
+            (data.amount ? data.amount.toString().includes(busqueda) : '')
           );
         });
         setListRegistro(search);
@@ -300,16 +301,16 @@ const Particulares = () => {
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : "") ||
-            (data.ruc ? data.ruc.toString().includes(busqueda) : "") ||
+              : '') ||
+            (data.ruc ? data.ruc.toString().includes(busqueda) : '') ||
             (data.cant_atenciones
               ? data.cant_atenciones.toString().includes(busqueda)
-              : "") ||
+              : '') ||
             (data.sub_total
               ? data.sub_total.toString().includes(busqueda)
-              : "") ||
-            (data.igv ? data.igv.toString().includes(busqueda) : "") ||
-            (data.total ? data.total.toString().includes(busqueda) : "")
+              : '') ||
+            (data.igv ? data.igv.toString().includes(busqueda) : '') ||
+            (data.total ? data.total.toString().includes(busqueda) : '')
           );
         });
         setListRegistroEmpresas(searchEmpresas);
@@ -330,9 +331,9 @@ const Particulares = () => {
       setOpenModalLiquidarParticular(true);
     } else {
       Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Debe elegir al menos un paciente",
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Debe elegir al menos un paciente',
       });
     }
   };

@@ -1,17 +1,17 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
-import CodigoBarras from "./Modales/CodigoBarras";
-import { ratencion } from "../../data/RAtencion";
-import { paginacionOpciones } from "../../helpers/tablaOpciones";
-import Swal from "sweetalert2";
+import React, { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component';
+import CodigoBarras from './Modales/CodigoBarras';
+import { ratencion } from '../../data/RAtencion';
+import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import Swal from 'sweetalert2';
 import {
   fetchGETPOSTPUTDELETE,
   fetchGETPOSTPUTDELETEJSON,
-} from "../../helpers/fetch";
+} from '../../helpers/fetch';
 
 const Atencion = () => {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
   const [openModalBar, setOpenModalBar] = useState(false);
   const [dataBarCode, setDataBarCode] = useState({});
@@ -22,7 +22,7 @@ const Atencion = () => {
   // por ahora usar clinics get
 
   const getAttention = () => {
-    fetchGETPOSTPUTDELETE("attention_clinic")
+    fetchGETPOSTPUTDELETE('attention_clinic')
       .then((data) => data.json())
       .then((datos) => setAttention(datos.data));
   };
@@ -31,25 +31,26 @@ const Atencion = () => {
     getAttention();
   }, []);
 
-  console.log(attention);
+  // console.log(attention);
 
   const columnas = [
     {
-      name: "Ítem",
+      name: 'Ítem',
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     {
-      name: "Nombres y apellidos",
-      selector: (row) => (row.fullName ? row.fullName : ""),
+      name: 'Nombres y apellidos',
+      selector: (row) => (row.fullName ? row.fullName : ''),
       sortable: true,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     // {
@@ -69,33 +70,33 @@ const Atencion = () => {
     //   },
     // },
     {
-      name: "Nº de documento",
-      selector: (row) => (row.DNI ? row.DNI : ""),
+      name: 'Nº de documento',
+      selector: (row) => (row.DNI ? row.DNI : ''),
       sortable: true,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     {
-      name: "Estado",
-      selector: (row) => (row.type_user ? row.type_user : ""),
+      name: 'Estado',
+      selector: (row) => (row.type_user ? row.type_user : ''),
       sortable: true,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     {
-      name: "Tipo de prueba",
+      name: 'Tipo de prueba',
       selector: (row) =>
         row.service_details.abbreviation
           ? row.service_details.abbreviation
-          : "",
+          : '',
       sortable: true,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     // {
@@ -111,7 +112,7 @@ const Atencion = () => {
     //   ),
     // },
     {
-      name: "Atención",
+      name: 'Atención',
       button: true,
       cell: (e) => (
         <button
@@ -133,20 +134,20 @@ const Atencion = () => {
                 .toString()
                 .toLowerCase()
                 .includes(busqueda.toLowerCase())
-            : "") ||
-          (data.dni ? data.dni.toString().includes(busqueda) : "") ||
+            : '') ||
+          (data.dni ? data.dni.toString().includes(busqueda) : '') ||
           (data.type_user
             ? data.type_user
                 .toString()
                 .toLowerCase()
                 .includes(busqueda.toLowerCase())
-            : "") ||
+            : '') ||
           (data.service_details
             ? data.service_details.abbreviation
                 .toString()
                 .toLowerCase()
                 .includes(busqueda.toLowerCase())
-            : "")
+            : '')
         );
       });
       setListRegistro(search);
@@ -172,25 +173,25 @@ const Atencion = () => {
     //   codebar: "0213000011111",
     // });
     Swal.fire({
-      title: "¿Desea Atender al paciente?",
-      text: `${e.fullName ? e.fullName : "No hay datos"}`,
-      icon: "warning",
+      title: '¿Desea Atender al paciente?',
+      text: `${e.fullName ? e.fullName : 'No hay datos'}`,
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Atender",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Atender',
     }).then((result) => {
       console.log(result);
       if (result.isConfirmed) {
         fetchGETPOSTPUTDELETEJSON(`attention/attend/${e.id}`).then((data) => {
           if (data.status === 200) {
             Swal.fire({
-              icon: "success",
-              title: "Éxito",
-              text: "Se generó la atención correctamente.",
-              confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
-              confirmButtonText: "Aceptar",
+              icon: 'success',
+              title: 'Éxito',
+              text: 'Se generó la atención correctamente.',
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Aceptar',
             }).then((resp) => {
               if (resp.isConfirmed) {
                 getAttention();
@@ -198,12 +199,12 @@ const Atencion = () => {
             });
           } else {
             Swal.fire({
-              icon: "error",
-              title: "Ups¡",
-              text: "Algo salió mal.",
-              confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
-              confirmButtonText: "Cerrar",
+              icon: 'error',
+              title: 'Ups¡',
+              text: 'Algo salió mal.',
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Cerrar',
             });
           }
         });
@@ -244,7 +245,7 @@ const Atencion = () => {
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: "grey" }}>No hay datos</p>
+                <p style={{ color: 'grey' }}>No hay datos</p>
               </div>
             }
           />

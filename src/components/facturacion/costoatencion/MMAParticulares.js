@@ -17,6 +17,7 @@ const MMAParticulares = ({ openModalCrear, setOpenModalCrear }) => {
       name: 'Item',
       selector: 'id',
       sortable: true,
+      grow: 0,
       style: {
         borderBotton: 'none',
         color: '#555555',

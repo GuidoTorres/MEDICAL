@@ -1,12 +1,12 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import DataTable from "react-data-table-component";
-import { fempresa } from "../../data/FEmpresa";
-import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import DataTable from 'react-data-table-component';
+import { fempresa } from '../../data/FEmpresa';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 
-import { paginacionOpciones } from "../../helpers/tablaOpciones";
-import MEmpresa from "./MEmpresa";
+import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import MEmpresa from './MEmpresa';
 
 const Empresa = () => {
   const [busqueda, setBusqueda] = useState(null);
@@ -18,11 +18,11 @@ const Empresa = () => {
   // facuturacion empresa modal usar company discount
 
   const getCorporations = () => {
-    fetchGETPOSTPUTDELETE("company")
+    fetchGETPOSTPUTDELETE('company')
       .then((info) => info.json())
       .then((info) => {
         setCorporations(info.data);
-        setBusqueda("");
+        setBusqueda('');
       });
   };
 
@@ -34,70 +34,71 @@ const Empresa = () => {
 
   const columnas = [
     {
-      name: "Item",
+      name: 'Item',
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Razón social",
-      selector: (row) => (row.corporation ? row.corporation.business_name : ""),
+      name: 'Razón social',
+      selector: (row) => (row.corporation ? row.corporation.business_name : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "RUC",
-      selector: (row) => (row.corporation ? row.corporation.ruc : ""),
+      name: 'RUC',
+      selector: (row) => (row.corporation ? row.corporation.ruc : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Responsable",
+      name: 'Responsable',
       selector: (row) =>
         row.corporation.contacts.length > 0
           ? row.corporation.contacts[0].name
-          : "",
+          : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Telefono",
+      name: 'Telefono',
       selector: (row) =>
         row.corporation.contacts.length > 0
           ? row.corporation.contacts[0].phone
-          : "",
+          : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Correo",
+      name: 'Correo',
       selector: (row) =>
         row.corporation.contacts.length > 0
           ? row.corporation.contacts[0].email
-          : "",
+          : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Detalles",
+      name: 'Detalles',
       button: true,
       cell: (e) => (
         <button
@@ -112,7 +113,7 @@ const Empresa = () => {
 
   useEffect(() => {
     const filtrarElemento = () => {
-      if (busqueda !== "" && busqueda !== null) {
+      if (busqueda !== '' && busqueda !== null) {
         const search = corporations.filter((data) => {
           return (
             (data.corporation
@@ -121,37 +122,37 @@ const Empresa = () => {
                     .toString()
                     .toLowerCase()
                     .includes(busqueda.toLowerCase())
-                : ""
-              : "") ||
+                : ''
+              : '') ||
             (data.corporation
               ? data.corporation
                 ? data.corporation.ruc.toString().includes(busqueda)
-                : ""
-              : "") ||
+                : ''
+              : '') ||
             (data.corporation.contacts
               ? data.corporation.contacts.length > 0
                 ? data.corporation.contacts[0].name
                     .toString()
                     .toLowerCase()
                     .includes(busqueda.toLowerCase())
-                : ""
-              : "") ||
+                : ''
+              : '') ||
             (data.corporation.contacts
               ? data.corporation.contacts.length > 0
                 ? data.corporation.contacts[0].phone
                     .toString()
                     .toLowerCase()
                     .includes(busqueda.toLowerCase())
-                : ""
-              : "") ||
+                : ''
+              : '') ||
             (data.corporation.contacts
               ? data.corporation.contacts.length > 0
                 ? data.corporation.contacts[0].email
                     .toString()
                     .toLowerCase()
                     .includes(busqueda.toLowerCase())
-                : ""
-              : "")
+                : ''
+              : '')
           );
         });
         setListRegistro(search);

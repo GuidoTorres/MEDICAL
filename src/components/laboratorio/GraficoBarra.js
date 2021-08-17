@@ -10,7 +10,7 @@ const GraficoBarra = ({ estadistica, tipoPrueba }) => {
 
   //   setResult(prueba);
   // };
-  console.log(estadistica);
+  // console.log(estadistica);
 
   useEffect(() => {
     // getEstadistica();

@@ -1,12 +1,12 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import DataTable from "react-data-table-component";
-import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import DataTable from 'react-data-table-component';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 
-import { paginacionOpciones } from "../../helpers/tablaOpciones";
-import MCargarInformacion from "./MCargarInformacion";
-import MLiquidacion from "./MLiquidacion";
+import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import MCargarInformacion from './MCargarInformacion';
+import MLiquidacion from './MLiquidacion';
 
 const Liquidacion = () => {
   const [busqueda, setBusqueda] = useState(null);
@@ -18,12 +18,12 @@ const Liquidacion = () => {
 
   const getLiquidacion = () => {
     // console.log("a");
-    fetchGETPOSTPUTDELETE("settlement")
+    fetchGETPOSTPUTDELETE('settlement')
       .then((info) => info.json())
       .then((info) => {
         // console.log(info);
         setLiquidacion(info.data);
-        setBusqueda("");
+        setBusqueda('');
       });
   };
 
@@ -36,11 +36,11 @@ const Liquidacion = () => {
   const typeStatus = (estado) => {
     switch (Number(estado)) {
       case 0:
-        return "Rechazado";
+        return 'Rechazado';
       case 1:
-        return "Pendiente";
+        return 'Pendiente';
       case 2:
-        return "Aprobado";
+        return 'Aprobado';
     }
   };
 
@@ -53,100 +53,101 @@ const Liquidacion = () => {
 
   const columnas = [
     {
-      name: "Ítem",
+      name: 'Ítem',
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Razón social",
+      name: 'Razón social',
 
       selector: (row) =>
         row.company
           ? row.company.corporation.business_name
           : row.detail.length > 0
           ? row.detail[0].attention.person.name
-          : "",
+          : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "RUC",
+      name: 'RUC',
       selector: (row) =>
         row.company
           ? row.company.corporation.ruc
           : row.detail.length > 0
           ? row.detail[0].attention.person.dni
-          : "",
+          : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Fecha",
-      selector: "date_issue",
+      name: 'Fecha',
+      selector: 'date_issue',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Sub total",
-      selector: "subtotal",
+      name: 'Sub total',
+      selector: 'subtotal',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Impuesto",
-      selector: "igv",
+      name: 'Impuesto',
+      selector: 'igv',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Total",
-      selector: "amount",
+      name: 'Total',
+      selector: 'amount',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
 
     {
-      name: "Estado",
+      name: 'Estado',
       selector: (row) => typeStatus(row.isapproved),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Vencimiento",
-      selector: (row) => (row.isapproved === 2 ? row.date || "10 días" : "---"),
+      name: 'Vencimiento',
+      selector: (row) => (row.isapproved === 2 ? row.date || '10 días' : '---'),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Detalles",
+      name: 'Detalles',
       button: true,
       cell: (e) => (
         <button
@@ -158,7 +159,7 @@ const Liquidacion = () => {
       ),
     },
     {
-      name: "Cargar Información",
+      name: 'Cargar Información',
       button: true,
       cell: (e) =>
         e.isapproved === 2 ? (
@@ -176,7 +177,7 @@ const Liquidacion = () => {
 
   useEffect(() => {
     const filtrarElemento = () => {
-      if (busqueda !== "" && busqueda !== null) {
+      if (busqueda !== '' && busqueda !== null) {
         const search = liquidacion.filter((data) => {
           return (
             data.id.toString().includes(busqueda) ||
@@ -185,18 +186,18 @@ const Liquidacion = () => {
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : "") ||
+              : '') ||
             (data.company
               ? data.company.corporation.ruc.toString().includes(busqueda)
-              : "") ||
+              : '') ||
             (data.date_issue
               ? data.date_issue.toString().includes(busqueda)
-              : "") ||
+              : '') ||
             (data.subtotal
               ? data.subtotal.toString().includes(busqueda)
-              : "") ||
-            (data.igv ? data.igv.toString().includes(busqueda) : "") ||
-            (data.amount ? data.amount.toString().includes(busqueda) : "")
+              : '') ||
+            (data.igv ? data.igv.toString().includes(busqueda) : '') ||
+            (data.amount ? data.amount.toString().includes(busqueda) : '')
           );
         });
         setListRegistro(search);
@@ -220,7 +221,7 @@ const Liquidacion = () => {
   };
 
   const exportarArchivoExcel = () => {
-    console.log("aaa");
+    console.log('aaa');
   };
 
   return (

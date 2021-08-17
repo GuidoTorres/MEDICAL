@@ -1,16 +1,16 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
-import Swal from "sweetalert2";
+import React, { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component';
+import Swal from 'sweetalert2';
 
-import { paginacionOpciones } from "../../helpers/tablaOpciones";
-import { rusuario } from "../../data/RUsuario";
-import MCrearPaciente from "./MCrearPaciente";
-import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
-import MGenerarAtencion from "./Modales/MGenerarAtencion";
+import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import { rusuario } from '../../data/RUsuario';
+import MCrearPaciente from './MCrearPaciente';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
+import MGenerarAtencion from './Modales/MGenerarAtencion';
 
 const Usuarios = ({ history }) => {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState('');
   const [listServicio, setListServicio] = useState([]);
   const [addRegistro, setAddRegistro] = useState(false);
   const [generarAtencion, setGenerarAtencion] = useState(false);
@@ -28,14 +28,14 @@ const Usuarios = ({ history }) => {
   };
 
   const getForms = () => {
-    fetchGETPOSTPUTDELETE("forms")
+    fetchGETPOSTPUTDELETE('forms')
       .then((res) => res.json())
       .then((res) => setFormulario(res.data));
   };
 
   const getAttention = () => {
     // fetchGETPOSTPUTDELETE("patient")
-    fetchGETPOSTPUTDELETE("patient")
+    fetchGETPOSTPUTDELETE('patient')
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos.data));
   };
@@ -45,75 +45,76 @@ const Usuarios = ({ history }) => {
     getForms();
   }, []);
 
-  console.log(dataSelected);
+  // console.log(dataSelected);
   const columnas = [
     {
-      name: "Ítem",
+      name: 'Ítem',
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
-        width: "100px",
+        color: '#8f9196',
+        borderBotton: 'none',
+        width: '100px',
       },
     },
     {
-      name: "Nombres y apellidos",
-      selector: (row) => (row.name ? row.name : ""),
+      name: 'Nombres y apellidos',
+      selector: (row) => (row.name ? row.name : ''),
       sortable: true,
       grow: 2,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     {
-      name: "DNI",
-      selector: (row) => (row.dni ? row.dni : ""),
+      name: 'DNI',
+      selector: (row) => (row.dni ? row.dni : ''),
       sortable: true,
       sortable: true,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     {
-      name: "Tipo de usuario",
+      name: 'Tipo de usuario',
       selector: (row) =>
         row.user &&
         row.user.user_type &&
         row.user.user_type &&
         row.user.user_type.name
           ? row.user.user_type.name
-          : "",
+          : '',
       sortable: true,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     {
-      name: "Teléfono",
-      selector: (row) => (row.cellphone ? row.cellphone : ""),
+      name: 'Teléfono',
+      selector: (row) => (row.cellphone ? row.cellphone : ''),
       sortable: true,
       sortable: true,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     {
-      name: "Correo",
-      selector: (row) => (row.email ? row.email : ""),
+      name: 'Correo',
+      selector: (row) => (row.email ? row.email : ''),
       sortable: true,
       sortable: true,
       style: {
-        color: "#8f9196",
-        borderBotton: "none",
+        color: '#8f9196',
+        borderBotton: 'none',
       },
     },
     {
-      name: "Generar atención",
+      name: 'Generar atención',
       button: true,
       cell: (e) => (
         <button
@@ -125,7 +126,7 @@ const Usuarios = ({ history }) => {
       ),
     },
     {
-      name: "Editar",
+      name: 'Editar',
       button: true,
       cell: (e) => (
         <button
@@ -137,7 +138,7 @@ const Usuarios = ({ history }) => {
       ),
     },
     {
-      name: "Eliminar",
+      name: 'Eliminar',
       button: true,
       cell: (e) => (
         <button
@@ -162,20 +163,20 @@ const Usuarios = ({ history }) => {
 
   const handleEliminar = (e) => {
     Swal.fire({
-      title: "¿Desea eliminar?",
+      title: '¿Desea eliminar?',
       text: `${e.nombre}`,
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Eliminar",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Eliminar',
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Eliminado!", "Se ha eliminado correctamente.", "success");
-        fetchGETPOSTPUTDELETE(`attention/${e.id}`, {}, "DELETE")
+        Swal.fire('Eliminado!', 'Se ha eliminado correctamente.', 'success');
+        fetchGETPOSTPUTDELETE(`attention/${e.id}`, {}, 'DELETE')
           .then((result) => result.json())
           .then((data) => {
-            if (data === "Has been deleted") console.log(data);
+            if (data === 'Has been deleted') console.log(data);
             getAttention();
           });
       }
@@ -191,15 +192,15 @@ const Usuarios = ({ history }) => {
                 .toString()
                 .toLowerCase()
                 .includes(busqueda.toLowerCase())
-            : "") ||
-          (data.dni ? data.dni.toString().includes(busqueda) : "") ||
-          (data.phone ? data.phone.toString().includes(busqueda) : "") ||
+            : '') ||
+          (data.dni ? data.dni.toString().includes(busqueda) : '') ||
+          (data.phone ? data.phone.toString().includes(busqueda) : '') ||
           (data.email
             ? data.email
                 .toString()
                 .toLowerCase()
                 .includes(busqueda.toLowerCase())
-            : "")
+            : '')
         );
       });
       setListServicio(search);
@@ -226,7 +227,13 @@ const Usuarios = ({ history }) => {
                 <i
                   className="fas fa-plus-circle"
                   onClick={handleAddRegistro}
-                ></i>{" "}
+                  style={{
+                    fontSize: '1rem',
+                    color: '#009DCA',
+                    cursor: 'pointer',
+                    marginLeft: '5px',
+                  }}
+                ></i>{' '}
               </label>
             </div>
           </div>
@@ -243,7 +250,7 @@ const Usuarios = ({ history }) => {
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: "grey" }}>No hay datos</p>
+                <p style={{ color: 'grey' }}>No hay datos</p>
               </div>
             }
           />

@@ -1,15 +1,15 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
-import Swal from "sweetalert2";
-import DataTable from "react-data-table-component";
+import React, { useEffect, useState } from 'react';
+import Modal from 'react-modal';
+import Swal from 'sweetalert2';
+import DataTable from 'react-data-table-component';
 
 import {
   customStyles,
   paginacionOpciones,
   mensajesTablaFacturacion,
-} from "../../../helpers/tablaOpciones";
-import MMEmpresa from "./MMEmpresa";
+} from '../../../helpers/tablaOpciones';
+import MMEmpresa from './MMEmpresa';
 
 const MEmpresa = ({
   openModalEmpresa,
@@ -18,7 +18,7 @@ const MEmpresa = ({
   setBusqueda,
   getEmpresas,
 }) => {
-  const [busquedaMEmpresa, setBusquedaMEmpresa] = useState("");
+  const [busquedaMEmpresa, setBusquedaMEmpresa] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
   const [openModalParticular, setOpenModalParticular] = useState(false);
   const [data, setData] = useState([]);
@@ -27,91 +27,92 @@ const MEmpresa = ({
 
   const columnas = [
     {
-      name: "Item",
+      name: 'Item',
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "DNI",
-      selector: "dni",
+      name: 'DNI',
+      selector: 'dni',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Fecha Hora",
-      selector: "fecha_atencion",
+      name: 'Fecha Hora',
+      selector: 'fecha_atencion',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nombre y apellido",
-      selector: "paciente",
+      name: 'Nombre y apellido',
+      selector: 'paciente',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Tipo de servicio",
-      selector: "categoria",
+      name: 'Tipo de servicio',
+      selector: 'categoria',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Plan de atención",
-      selector: "servicio",
+      name: 'Plan de atención',
+      selector: 'servicio',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "SubTotal",
-      selector: "subtotal",
+      name: 'SubTotal',
+      selector: 'subtotal',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Impuesto",
-      selector: "igv",
+      name: 'Impuesto',
+      selector: 'igv',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Total",
-      selector: "total",
+      name: 'Total',
+      selector: 'total',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
   ];
 
   useEffect(() => {
     const filtrarElemento = () => {
-      if (busquedaMEmpresa !== "" && busquedaMEmpresa !== null) {
+      if (busquedaMEmpresa !== '' && busquedaMEmpresa !== null) {
         const search = dataEmpresa.attenciones.filter((data) => {
           return (
             data.id.toString().includes(busquedaMEmpresa) ||
@@ -148,9 +149,9 @@ const MEmpresa = ({
       setOpenModalParticular(true);
     } else {
       Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Debe elegir al menos un paciente",
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Debe elegir al menos un paciente',
       });
     }
   };

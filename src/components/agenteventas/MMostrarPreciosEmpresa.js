@@ -1,8 +1,8 @@
 /* eslint-disable */
-import React, { useEffect } from "react";
-import Modal from "react-modal";
+import React, { useEffect } from 'react';
+import Modal from 'react-modal';
 
-import { customStyles } from "../../helpers/tablaOpciones";
+import { customStyles } from '../../helpers/tablaOpciones';
 
 const MMostrarPreciosEmpresa = ({
   listaPrecios,
@@ -14,7 +14,7 @@ const MMostrarPreciosEmpresa = ({
     setListaPrecios(false);
   };
 
-  console.log(dataSelected);
+  // console.log(dataSelected);
   return (
     <Modal
       isOpen={listaPrecios}
@@ -42,17 +42,13 @@ const MMostrarPreciosEmpresa = ({
                 {dataSelected &&
                   dataSelected.services.map((data, i) => (
                     <tr>
-                      <td>
-                        {data.abbreviation
-                          ? data.abbreviation
-                          : ""}
-                      </td>
+                      <td>{data.abbreviation ? data.abbreviation : ''}</td>
                       <td>
                         {data.last_discount &&
                         data.last_discount &&
                         data.last_discount.percent
-                          ? data.last_discount.percent + "% "
-                          : "0%"}
+                          ? data.last_discount.percent + '% '
+                          : '0%'}
                       </td>
 
                       <td>
@@ -60,7 +56,7 @@ const MMostrarPreciosEmpresa = ({
                         data.last_discount &&
                         data.last_discount.amount
                           ? data.last_discount.amount
-                          : ""}
+                          : ''}
                       </td>
                     </tr>
                   ))}

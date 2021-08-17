@@ -1,25 +1,25 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
-import { lasubir } from "../../data/LASubir";
-import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import React, { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component';
+import { lasubir } from '../../data/LASubir';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 
-import { paginacionOpciones } from "../../helpers/tablaOpciones";
-import MDescargar from "./Modales/MDescargar";
-import MSubirLaboratorio from "./MSubirLaboratorio";
+import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import MDescargar from './Modales/MDescargar';
+import MSubirLaboratorio from './MSubirLaboratorio';
 
-import jsPDF from "jspdf";
-import eclia from "../../assets/pdf Imagen/eclia.png";
-import antigenosi from "../../assets/pdf Imagen/antigenoSi.png";
-import antigenono from "../../assets/pdf Imagen/antigenoNo.png";
-import molecular from "../../assets/pdf Imagen/molecular.png";
-import rapida from "../../assets/pdf Imagen/rapida.png";
-import anticuerpos from "../../assets/pdf Imagen/anticuerpos.png";
-import firma from "../../assets/pdf Imagen/Firma.png";
-import isos from "../../assets/pdf Imagen/isos.png";
+import jsPDF from 'jspdf';
+import eclia from '../../assets/pdf Imagen/eclia.png';
+import antigenosi from '../../assets/pdf Imagen/antigenoSi.png';
+import antigenono from '../../assets/pdf Imagen/antigenoNo.png';
+import molecular from '../../assets/pdf Imagen/molecular.png';
+import rapida from '../../assets/pdf Imagen/rapida.png';
+import anticuerpos from '../../assets/pdf Imagen/anticuerpos.png';
+import firma from '../../assets/pdf Imagen/Firma.png';
+import isos from '../../assets/pdf Imagen/isos.png';
 
 const Historial = () => {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [openDescarga, setOpenDescarga] = useState(false);
@@ -29,13 +29,13 @@ const Historial = () => {
   const [filterData, setFilterData] = useState([]);
 
   const getResults = () => {
-    fetchGETPOSTPUTDELETE("resultados/clinica", null, "POST")
+    fetchGETPOSTPUTDELETE('resultados/clinica', null, 'POST')
       .then((data) => data.json())
       .then((datos) => setResults(datos));
   };
 
   const getServicios = () => {
-    fetchGETPOSTPUTDELETE("services")
+    fetchGETPOSTPUTDELETE('services')
       .then((data) => data.json())
       .then((datos) => setServicios(datos.data));
   };
@@ -45,56 +45,55 @@ const Historial = () => {
     getServicios();
   }, [filterData]);
 
-
   const columnas = [
     {
-      name: "Ítem",
+      name: 'Ítem',
       selector: (row, index) => (index += 1),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Tipo de usuario",
-      selector: (row) => (row.tipo_usuario ? row.tipo_usuario : ""),
+      name: 'Tipo de usuario',
+      selector: (row) => (row.tipo_usuario ? row.tipo_usuario : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nº de documento",
-      selector: (row) => (row.dni ? row.dni : ""),
+      name: 'Nº de documento',
+      selector: (row) => (row.dni ? row.dni : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Fecha",
-      selector: (row) => (row.fecha_atencion ? row.fecha_atencion : ""),
+      name: 'Fecha',
+      selector: (row) => (row.fecha_atencion ? row.fecha_atencion : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nombre y apellido",
-      selector: (row) => (row.paciente ? row.paciente : ""),
+      name: 'Nombre y apellido',
+      selector: (row) => (row.paciente ? row.paciente : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
 
     {
-      name: "Visualización",
+      name: 'Visualización',
       button: true,
       cell: (e) => (
         <a href={e.resultado.pdf} target="_blank">
@@ -115,7 +114,7 @@ const Historial = () => {
     setFilterData(result);
   };
 
-  console.log(filterData);
+  // console.log(filterData);
 
   useEffect(() => {
     filtrarTabla();
@@ -172,7 +171,7 @@ const Historial = () => {
                 <select
                   class="form-select"
                   aria-label="Default select example"
-                  disabled={tipoPrueba.cat === "1" ? false : true}
+                  disabled={tipoPrueba.cat === '1' ? false : true}
                   onChange={(e) =>
                     setTipoPrueba({ ...tipoPrueba, id: e.target.value })
                   }
@@ -224,7 +223,7 @@ const Historial = () => {
               noDataComponent={
                 <div className="spinner">
                   <i className="fas fa-inbox table__icono"></i>
-                  <p style={{ color: "lightgrey" }}>No hay datos</p>
+                  <p style={{ color: 'lightgrey' }}>No hay datos</p>
                 </div>
               }
             />
@@ -242,7 +241,7 @@ const Historial = () => {
             setOpenDescarga={setOpenDescarga}
           />
         ) : (
-          ""
+          ''
         )}
       </div>
     </div>

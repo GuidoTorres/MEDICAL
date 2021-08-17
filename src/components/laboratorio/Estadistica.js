@@ -1,10 +1,10 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   fetchGETPOSTPUTDELETEJSON,
   fetchGETPOSTPUTDELETE,
-} from "../../helpers/fetch";
-import GraficoBarra from "./GraficoBarra";
+} from '../../helpers/fetch';
+import GraficoBarra from './GraficoBarra';
 
 const Estadistica = () => {
   const [estadistica, setEstadistica] = useState({});
@@ -19,8 +19,8 @@ const Estadistica = () => {
     check2: 0,
   });
 
-  console.log(fechas);
-  console.log(tipoPrueba.servicios);
+  // console.log(fechas);
+  // console.log(tipoPrueba.servicios);
 
   const traerHistorial = () => {
     const data = {
@@ -30,16 +30,16 @@ const Estadistica = () => {
     };
 
     fetchGETPOSTPUTDELETEJSON(
-      "resultados/mi-clinica/estadisticas-servicios",
+      'resultados/mi-clinica/estadisticas-servicios',
       data,
-      "POST"
+      'POST'
     )
       .then((res) => res.json())
       .then((res) => setEstadistica(res));
   };
 
   const getServicios = () => {
-    fetchGETPOSTPUTDELETE("services")
+    fetchGETPOSTPUTDELETE('services')
       .then((data) => data.json())
       .then((datos) => setServicios(datos.data));
   };
@@ -55,17 +55,17 @@ const Estadistica = () => {
   }, []);
   useEffect(() => {
     if (checks.check1 === 1) {
-      document.getElementById("categoria").disabled = false;
+      document.getElementById('categoria').disabled = false;
     } else {
-      document.getElementById("categoria").disabled = true;
-      document.getElementById("categoria").value = "";
+      document.getElementById('categoria').disabled = true;
+      document.getElementById('categoria').value = '';
     }
 
     if (checks.check2 === 1) {
-      document.getElementById("subcategoria").disabled = false;
+      document.getElementById('subcategoria').disabled = false;
     } else {
-      document.getElementById("subcategoria").disabled = true;
-      document.getElementById("subcategoria").value = "";
+      document.getElementById('subcategoria').disabled = true;
+      document.getElementById('subcategoria').value = '';
       setTipoPrueba({ servicios: [] });
     }
   }, [checks]);
@@ -109,7 +109,7 @@ const Estadistica = () => {
                 </div>
                 <textarea
                   disabled
-                  placeholder={categoria ? categoria.data : ""}
+                  placeholder={categoria ? categoria.data : ''}
                 ></textarea>
               </div>
               <div className="">
@@ -163,18 +163,18 @@ const Estadistica = () => {
                           .slice(0, 5)
                           .map((item) =>
                             item === 5
-                              ? "Antígeno"
+                              ? 'Antígeno'
                               : item === 6
-                              ? " Eclia anticuerpos IgM/IgG"
+                              ? ' Eclia anticuerpos IgM/IgG'
                               : item === 7
-                              ? " Eclia anticuerpos neutralizantes"
+                              ? ' Eclia anticuerpos neutralizantes'
                               : item === 8
-                              ? " Rápida"
+                              ? ' Rápida'
                               : item === 9
-                              ? " Molecular"
-                              : ""
+                              ? ' Molecular'
+                              : ''
                           )
-                      : ""
+                      : ''
                   }
                 ></textarea>
               </div>

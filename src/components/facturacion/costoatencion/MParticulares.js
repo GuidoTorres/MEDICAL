@@ -1,91 +1,92 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
-import DataTable from "react-data-table-component";
+import React, { useEffect, useState } from 'react';
+import Modal from 'react-modal';
+import DataTable from 'react-data-table-component';
 
 import {
   customStyles,
   paginacionOpciones,
-} from "../../../helpers/tablaOpciones";
-import { fmparticular } from "../../../data/FMParticular";
-import MMParticulares from "./MMParticulares";
+} from '../../../helpers/tablaOpciones';
+import { fmparticular } from '../../../data/FMParticular';
+import MMParticulares from './MMParticulares';
 
 const MParticulares = ({ openModal, setOpenModal }) => {
-  const [busqueda, setBusqueda] = useState("");
+  const [busqueda, setBusqueda] = useState('');
   const [listRegistro, setListRegistro] = useState([]);
   const [openModalParticular, setOpenModalParticular] = useState(false);
 
   const columnas = [
     {
-      name: "Item",
-      selector: "id",
+      name: 'Item',
+      selector: 'id',
       sortable: true,
+      grow: 0,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "DNI",
-      selector: "dni",
+      name: 'DNI',
+      selector: 'dni',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Fecha Hora",
-      selector: "fecha",
+      name: 'Fecha Hora',
+      selector: 'fecha',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nombre",
-      selector: "nombre",
+      name: 'Nombre',
+      selector: 'nombre',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Apellido",
-      selector: "apellido",
+      name: 'Apellido',
+      selector: 'apellido',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Tipo de servicio",
-      selector: "tipo",
+      name: 'Tipo de servicio',
+      selector: 'tipo',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Plan de atención",
-      selector: "atencion",
+      name: 'Plan de atención',
+      selector: 'atencion',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "SubTotal",
-      selector: "subtotal",
+      name: 'SubTotal',
+      selector: 'subtotal',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
   ];
@@ -95,29 +96,29 @@ const MParticulares = ({ openModal, setOpenModal }) => {
       const search = fmparticular.filter((data) => {
         return (
           data.nombre
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.apellido
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.dni.toString().includes(busqueda) ||
           data.fecha
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.tipo
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.atencion
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
             .toLocaleLowerCase()
             .includes(busqueda) ||
           data.subtotal.toString().includes(busqueda) ||
