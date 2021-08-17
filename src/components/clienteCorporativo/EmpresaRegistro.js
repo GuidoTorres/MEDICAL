@@ -214,7 +214,7 @@ const EmpresaRegistro = () => {
   const handleOnChange = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
   };
-  console.log(employees);
+
   useEffect(() => {
     const filtrarElemento = () => {
       const search = employees.filter((data) => {
