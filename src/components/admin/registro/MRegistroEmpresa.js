@@ -51,10 +51,12 @@ const MRegistroEmpresa = ({
   };
 
   useEffect(() => {
-    const prueba = dataSelected.company_service.map((item) => ({
-      state: item.last_discount.state,
-    }));
-    setEstado(prueba);
+    if (editar) {
+      const prueba = dataSelected.company_service.map((item) => ({
+        state: item.last_discount.state,
+      }));
+      setEstado(prueba);
+    }
   }, [dataSelected]);
 
   const getRuc = () => {
@@ -62,7 +64,6 @@ const MRegistroEmpresa = ({
       .then((res) => res.json())
       .then((res) => setRuc(res));
   };
-
 
   useEffect(() => {
     getCorporationTypes();
@@ -378,11 +379,8 @@ const MRegistroEmpresa = ({
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getCorporations();
-          }
         });
+        getCorporations();
       } else {
         closeModal();
         Swal.fire({

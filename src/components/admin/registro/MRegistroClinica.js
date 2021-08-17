@@ -399,8 +399,7 @@ const MRegistroClinica = ({
       setDistricts(distritos);
     }
   };
-  console.log(provinces);
-  console.log(districts);
+  console.log(dataSelected);
   // console.log(dataSelected.corporation.address.district.province.department_id);
   // console.log(dataSelected.corporation.address.district.province_id);
   // console.log(dataSelected.corporation.address.district_id);
@@ -513,8 +512,17 @@ const MRegistroClinica = ({
                     name="department_id"
                     onChange={(e) => handleChange(e)}
                     value={
-                      dataSelected.corporation.address.district.province
-                        .department_id
+                      editar
+                        ? dataSelected.corporation &&
+                          dataSelected.corporation.address &&
+                          dataSelected.corporation.address.district &&
+                          dataSelected.corporation.address.district.province &&
+                          dataSelected.corporation.address.district.province
+                            .department_id
+                          ? dataSelected.corporation.address.district.province
+                              .department_id
+                          : ""
+                        : ""
                     }
                   >
                     <option value="">Seleccione</option>
@@ -533,7 +541,17 @@ const MRegistroClinica = ({
                     name="province_id"
                     onChange={(e) => handleChange(e)}
                     value={
-                      dataSelected.corporation.address.district.province_id
+                      editar
+                        ? dataSelected.corporation &&
+                          dataSelected.corporation.address &&
+                          dataSelected.corporation.address.district &&
+                          dataSelected.corporation.address.district.province &&
+                          dataSelected.corporation.address.district.province
+                            .department_id
+                          ? dataSelected.corporation.address.district.province
+                              .department_id
+                          : ""
+                        : ""
                     }
                   >
                     <option value="">Seleccione</option>
@@ -552,7 +570,7 @@ const MRegistroClinica = ({
                   <select
                     name="district_id"
                     onChange={(e) => handleChange(e)}
-                    value={dataSelected.corporation.address.district_id}
+                    // value={dataSelected.corporation.address.district_id}
                   >
                     <option value="">Seleccione</option>
                     {districts &&
@@ -734,7 +752,7 @@ const MRegistroClinica = ({
                     avatar={avatar}
                     setAvatar={setAvatar}
                     editar={editar}
-                    // dataSelected={avatar}
+                    dataSelected={avatar}
                   />
                 </div>
               </div>

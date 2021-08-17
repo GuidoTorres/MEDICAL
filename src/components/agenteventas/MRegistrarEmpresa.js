@@ -29,6 +29,7 @@ const MRegistrarEmpresa = ({
   const [servicios, setServicios] = useState({});
   const [error, setError] = useState(false);
   const [estado, setEstado] = useState([]);
+  const [status, setStatus] = useState()
 
   const closeModal = () => {
     setOpenModal(false);
@@ -49,8 +50,6 @@ const MRegistrarEmpresa = ({
       .then((info) => info.json())
       .then((datos) => setServicios(datos.data));
   };
-
-  console.log(dataSelected);
 
   useEffect(() => {
     if (editar) {
@@ -144,7 +143,6 @@ const MRegistrarEmpresa = ({
       }
     }
   };
-  console.log(avatar);
 
   const postCorporation = (e) => {
     const formData = new FormData();
@@ -371,8 +369,9 @@ const MRegistrarEmpresa = ({
       formData,
       "POST"
     ).then((resp) => {
+      setAvatar(null);
+      setStatus(resp.status)
       if (resp.status === 200) {
-        setAvatar(null);
         closeModal();
         Swal.fire({
           icon: "success",
@@ -381,10 +380,6 @@ const MRegistrarEmpresa = ({
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getCorporations();
-          }
         });
       } else {
         closeModal();
@@ -447,6 +442,14 @@ const MRegistrarEmpresa = ({
       putCorporation();
     }
   };
+  useEffect(()=>{
+
+    if(status === 200){
+
+      getCorporations()
+    }
+
+  },[status])
 
   return (
     <Modal
