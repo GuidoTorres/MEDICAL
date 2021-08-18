@@ -146,18 +146,19 @@ const SubirLaboratorio = () => {
     };
     filtrarElemento();
   }, [busqueda, filterData]);
+  console.log(tipoPrueba);
 
   const handleModal = (tipoPrueba, e) => {
     setDataSelected(e);
-    if (tipoPrueba.prueba === 5) {
+    if (tipoPrueba.prueba === 1) {
       setOpenModal(true);
-    } else if (tipoPrueba.prueba === 6) {
+    } else if (tipoPrueba.prueba === 2) {
       setOpenModal2(true);
-    } else if (tipoPrueba.prueba === 7) {
+    } else if (tipoPrueba.prueba === 3) {
       setOpenModal3(true);
-    } else if (tipoPrueba.prueba === 8) {
+    } else if (tipoPrueba.prueba === 4) {
       setOpenModal4(true);
-    } else if (tipoPrueba.prueba === 9) {
+    } else if (tipoPrueba.prueba === 5) {
       setOpenModal5(true);
     } else {
       console.log('no funciona');

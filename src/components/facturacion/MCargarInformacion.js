@@ -2,6 +2,7 @@
 import { customStyles } from "../../helpers/tablaOpciones";
 import Modal from "react-modal";
 import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import { useState } from "react";
 
 const MCargarInformacion = ({
   openModalCargarInfo,

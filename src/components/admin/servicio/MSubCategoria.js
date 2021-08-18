@@ -30,6 +30,9 @@ const MSubCategoria = ({ setOpenSubModal, openSubModal, subCategoria }) => {
                     <th scope="col">Id</th>
                     <th scope="col text-center">Subcategoria</th>
                     <th scope="col text-center">Abreviatura</th>
+                    <th scope="col text-center">Precio vitrina</th>
+                    <th scope="col text-center">Precio vitrina</th>
+                    <th scope="col text-center">Precio vitrina</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -40,6 +43,11 @@ const MSubCategoria = ({ setOpenSubModal, openSubModal, subCategoria }) => {
                         <td className="text-center">{data.name}</td>
 
                         <td className="text-center">{data.abbreviation}</td>
+                        <td className="text-center">
+                          {data.last_price.amount}
+                        </td>
+                        <td className="text-center">{data.limite_superior}</td>
+                        <td className="text-center">{data.limite_inferior}</td>
                       </tr>
                     );
                   })}

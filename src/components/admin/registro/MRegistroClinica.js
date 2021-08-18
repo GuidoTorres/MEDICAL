@@ -41,6 +41,7 @@ const MRegistroClinica = ({
   const [departamentos, setDepartamentos] = useState({});
   const [provinces, setProvinces] = useState({});
   const [districts, setDistricts] = useState();
+  const [ubicacion, setUbicacion] = useState();
   const fechasDeSemana = [
     { id: 1, name: "Lunes" },
     { id: 2, name: "Martes" },
@@ -63,6 +64,8 @@ const MRegistroClinica = ({
       .then((res) => setRuc(res));
   };
 
+  // console.log(dataSelected);
+
   const obtenerData = () => {
     setData({
       address: dataSelected.corporation.address.address,
@@ -73,6 +76,24 @@ const MRegistroClinica = ({
       email: dataSelected.corporation.contacts[0].email,
       reference: dataSelected.corporation.address.reference,
       clinic_type_id: dataSelected.clinic_type_id,
+      department_id:
+        dataSelected &&
+        dataSelected.corporation &&
+        dataSelected.corporation.address &&
+        dataSelected.corporation.address.district &&
+        dataSelected.corporation.address.district.province &&
+        dataSelected.corporation.address.district.province.department_id,
+      province_id:
+        dataSelected &&
+        dataSelected.corporation &&
+        dataSelected.corporation.address &&
+        dataSelected.corporation.address.district &&
+        dataSelected.corporation.address.district.province_id,
+      district_id:
+        dataSelected &&
+        dataSelected.corporation &&
+        dataSelected.corporation.address &&
+        dataSelected.corporation.address.district_id,
     });
     setAvatar(dataSelected.corporation.logo);
     setDataMapa({
@@ -158,27 +179,31 @@ const MRegistroClinica = ({
     // console.log(e.target.value);
     const arreglos = [...workday];
     let position = workday.findIndex((arreglo) => arreglo.day === idFecha);
-    const _day = arreglos[position];
+    const day = arreglos[position];
 
     arreglos.splice(position, 1, {
-      day: _day.day,
+      day: day && day.day ? day.day : "",
       opening: e.target.value,
-      closing: _day.closing,
+      closing: day && day.closing ? day.closing : "",
     });
     setWorkday([...arreglos]);
+    console.log(workday);
   };
 
   const actualizarHorarioClosing = (e) => {
+    console.log(e);
     const arreglos = [...workday];
     let position = workday.findIndex((arreglo) => arreglo.day === idFecha);
-    const _day = arreglos[position];
+    const day = arreglos[position];
+    console.log(day);
 
     arreglos.splice(position, 1, {
-      day: _day.day,
-      opening: _day.opening,
+      day: day && day.day ? day.day : "",
+      opening: day && day.opening ? day.opening : "",
       closing: e.target.value,
     });
     setWorkday([...arreglos]);
+    console.log(workday);
   };
 
   const postClinics = (e) => {
@@ -359,54 +384,31 @@ const MRegistroClinica = ({
   }, []);
   const getProvinces = () => {
     //devuelve solo el objeto con el id = a department_id
-    if (editar) {
-      console.log("entro al editar true");
-      const provincias =
-        departamentos.length > 0 &&
-        departamentos.filter((item) =>
-          item.id ===
-          dataSelected.corporation.address.district.province.department_id
-            ? item
-            : ""
-        );
-      setProvinces(provincias);
 
-      const distritos =
-        provinces.length > 0 &&
-        provinces.map((data1, i) =>
-          data1.provinces.filter((item, j) =>
-            dataSelected.corporation.address.district_id ? item.districts : ""
-          )
-        );
+    const provincias =
+      departamentos.length > 0 &&
+      departamentos.filter(
+        (item) => Number(item.id) === Number(data.department_id)
+      );
+    console.log(provincias);
+    setProvinces(provincias);
 
-      setDistricts(distritos);
-    } else {
-      console.log("entro al editar false");
-      const provincias =
-        departamentos.length > 0 &&
-        departamentos.filter(
-          (item) => Number(item.id) === Number(data.department_id)
-        );
-      setProvinces(provincias);
-      const distritos =
-        provinces.length > 0 &&
-        provinces.map((data1, i) =>
-          data1.provinces.filter((item, j) =>
-            Number(item.id) === Number(data.province_id) ? item.districts : ""
-          )
-        );
+    const distritos =
+      provinces.length > 0 &&
+      provinces.map((data1, i) =>
+        data1.provinces.filter((item, j) =>
+          Number(item.id) === Number(data.province_id) ? item.districts : ""
+        )
+      );
 
-      setDistricts(distritos);
-    }
+    setDistricts(distritos);
   };
-  console.log(dataSelected);
-  // console.log(dataSelected.corporation.address.district.province.department_id);
-  // console.log(dataSelected.corporation.address.district.province_id);
-  // console.log(dataSelected.corporation.address.district_id);
+
+  console.log(data);
 
   useEffect(() => {
     getProvinces();
-  }, [data, dataSelected]);
+  }, [data]);
 
   return (
     <div>
@@ -509,21 +511,9 @@ const MRegistroClinica = ({
                 <div>
                   <label>Departamento:</label>
                   <select
+                    value={data.department_id || ""}
                     name="department_id"
-                    onChange={(e) => handleChange(e)}
-                    value={
-                      editar
-                        ? dataSelected.corporation &&
-                          dataSelected.corporation.address &&
-                          dataSelected.corporation.address.district &&
-                          dataSelected.corporation.address.district.province &&
-                          dataSelected.corporation.address.district.province
-                            .department_id
-                          ? dataSelected.corporation.address.district.province
-                              .department_id
-                          : ""
-                        : ""
-                    }
+                    onChange={handleChange}
                   >
                     <option value="">Seleccione</option>
 
@@ -540,19 +530,7 @@ const MRegistroClinica = ({
                   <select
                     name="province_id"
                     onChange={(e) => handleChange(e)}
-                    value={
-                      editar
-                        ? dataSelected.corporation &&
-                          dataSelected.corporation.address &&
-                          dataSelected.corporation.address.district &&
-                          dataSelected.corporation.address.district.province &&
-                          dataSelected.corporation.address.district.province
-                            .department_id
-                          ? dataSelected.corporation.address.district.province
-                              .department_id
-                          : ""
-                        : ""
-                    }
+                    value={data.province_id || ""}
                   >
                     <option value="">Seleccione</option>
                     {provinces.length > 0 &&
@@ -570,7 +548,7 @@ const MRegistroClinica = ({
                   <select
                     name="district_id"
                     onChange={(e) => handleChange(e)}
-                    // value={dataSelected.corporation.address.district_id}
+                    value={data.district_id || ""}
                   >
                     <option value="">Seleccione</option>
                     {districts &&

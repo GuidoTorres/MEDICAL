@@ -55,7 +55,7 @@ const MDescargar = ({
           <div className="col-12 mregistro__servicios">
             <div className="">
               <div>
-                <label> Sub-Categoria:</label>
+                <label> Sub-Categoría:</label>
                 <select
                   className="form-select"
                   aria-label="Default select example"

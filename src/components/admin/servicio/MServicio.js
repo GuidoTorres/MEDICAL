@@ -132,7 +132,7 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
           <div className="col-12 mregistro__servicios">
             <div className="">
               <div>
-                <label> Categoria:</label>
+                <label> Categoría:</label>
                 <select
                   className="form-select"
                   aria-label="Default select example"
@@ -145,7 +145,7 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                 </select>
               </div>
               <div>
-                <label> Sub-Categoria:</label>
+                <label> Sub-Categoría:</label>
                 <select
                   disabled={
                     crearServicio.service_category_id === "1" ? false : true
@@ -200,47 +200,6 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                   onChange={(e) => handleChange(e)}
                 />
               </div>
-
-              <div>
-                <label> Costo limite inferior:</label>
-                <input
-                  type="text"
-                  name="limite_inferior"
-                  id="amount"
-                  onChange={(e) => handleChange(e)}
-                  defaultValue={
-                    crearServicio.subCategoria &&
-                    dataSelected.services &&
-                    dataSelected.services[crearServicio.subCategoria] &&
-                    dataSelected.services[crearServicio.subCategoria]
-                      .abbreviation
-                      ? dataSelected.services[crearServicio.subCategoria]
-                          .limite_inferior
-                      : ""
-                  }
-                />
-              </div>
-
-              <div>
-                <label> Costo limite superior:</label>
-                <input
-                  type="text"
-                  name="limite_superior"
-                  id="amount"
-                  onChange={(e) => handleChange(e)}
-                  defaultValue={
-                    crearServicio.subCategoria &&
-                    dataSelected.services &&
-                    dataSelected.services[crearServicio.subCategoria] &&
-                    dataSelected.services[crearServicio.subCategoria]
-                      .abbreviation
-                      ? dataSelected.services[crearServicio.subCategoria]
-                          .limite_superior
-                      : ""
-                  }
-                />
-              </div>
-
               <div>
                 <label> Precio vitrina:</label>
                 <input
@@ -261,6 +220,47 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
                   onChange={(e) => handleChange(e)}
                 />
               </div>
+
+              <div>
+                <label> Costo límite superior:</label>
+                <input
+                  type="text"
+                  name="limite_superior"
+                  id="amount"
+                  onChange={(e) => handleChange(e)}
+                  defaultValue={
+                    crearServicio.subCategoria &&
+                    dataSelected.services &&
+                    dataSelected.services[crearServicio.subCategoria] &&
+                    dataSelected.services[crearServicio.subCategoria]
+                      .abbreviation
+                      ? dataSelected.services[crearServicio.subCategoria]
+                          .limite_superior
+                      : ""
+                  }
+                />
+              </div>
+
+              <div>
+                <label> Costo límite inferior:</label>
+                <input
+                  type="text"
+                  name="limite_inferior"
+                  id="amount"
+                  onChange={(e) => handleChange(e)}
+                  defaultValue={
+                    crearServicio.subCategoria &&
+                    dataSelected.services &&
+                    dataSelected.services[crearServicio.subCategoria] &&
+                    dataSelected.services[crearServicio.subCategoria]
+                      .abbreviation
+                      ? dataSelected.services[crearServicio.subCategoria]
+                          .limite_inferior
+                      : ""
+                  }
+                />
+              </div>
+
               <div>
                 <label> Url:</label>
                 <input
@@ -296,7 +296,7 @@ const MServicio = ({ openModal, setOpenModal, getServices, dataSelected }) => {
               </div>
 
               <div>
-                <label> Descripcion:</label>
+                <label> Descripción:</label>
 
                 <textarea
                   type="text"
