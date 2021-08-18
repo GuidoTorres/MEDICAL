@@ -40,6 +40,7 @@ const SubirLaboratorio = () => {
     getAtencion();
     getServicios();
   }, []);
+  console.log(servicios);
 
   const columnas = [
     {
