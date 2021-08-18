@@ -120,7 +120,7 @@ const MCrearServicio = ({ openServicio, setOpenServicio, getServices }) => {
           <div className="col-12 mregistro__servicios">
             <div className="">
               <div>
-                <label> Categoria:</label>
+                <label> Categoría:</label>
                 <select
                   className="form-select"
                   id="categoria"
@@ -151,16 +151,16 @@ const MCrearServicio = ({ openServicio, setOpenServicio, getServices }) => {
                 />
               </div>
               <div>
-                <label> Costo limite inferior:</label>
+                <label> Precio de vitrina:</label>
                 <input
                   type="text"
-                  name="limite_inferior"
+                  name="amount"
                   id="amount"
                   onChange={(e) => handleChange(e)}
                 />
               </div>
               <div>
-                <label> Costo limite superior:</label>
+                <label> Costo límite superior:</label>
                 <input
                   type="text"
                   name="limite_superior"
@@ -170,14 +170,15 @@ const MCrearServicio = ({ openServicio, setOpenServicio, getServices }) => {
               </div>
 
               <div>
-                <label> Precio de vitrina:</label>
+                <label> Costo límite inferior:</label>
                 <input
                   type="text"
-                  name="amount"
+                  name="limite_inferior"
                   id="amount"
                   onChange={(e) => handleChange(e)}
                 />
               </div>
+
               <div>
                 <label> Url:</label>
                 <input
@@ -195,7 +196,7 @@ const MCrearServicio = ({ openServicio, setOpenServicio, getServices }) => {
                 />
               </div>
               <div>
-                <label> Descripcion:</label>
+                <label> Descripción:</label>
 
                 <textarea
                   type="text"

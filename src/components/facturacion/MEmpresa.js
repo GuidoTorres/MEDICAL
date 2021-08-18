@@ -8,7 +8,7 @@ const MEmpresa = ({ openModal, setOpenModal, datos }) => {
     setOpenModal(false);
   };
 
-  // console.log(datos);
+  console.log(datos);
   return (
     <Modal
       isOpen={openModal}
@@ -38,9 +38,9 @@ const MEmpresa = ({ openModal, setOpenModal, datos }) => {
                 </thead>
                 <tbody>
                   {datos &&
-                    datos.services.map((data, i) => (
+                    datos.company_service.map((data, i) => (
                       <tr key={i}>
-                        <td>{data.name}</td>
+                        <td>{data.last_discount.services.abbreviation}</td>
                         <td>{data.last_discount.percent} %</td>
                         <td>{data.last_discount.amount}</td>
                       </tr>

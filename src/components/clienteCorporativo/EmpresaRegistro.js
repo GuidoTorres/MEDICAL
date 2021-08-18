@@ -22,6 +22,8 @@ const EmpresaRegistro = () => {
     getEmployees();
   }, []);
 
+  console.log(employees);
+
   const importarExcel = (file) => {
     const formData = new FormData();
     formData.set('file', file);

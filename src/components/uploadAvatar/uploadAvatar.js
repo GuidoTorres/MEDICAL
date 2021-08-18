@@ -14,7 +14,6 @@ const UploadAvatar = ({ setAvatar, avatar, dataSelected, editar }) => {
     noKeyboard: true,
     onDrop,
   });
-  console.log(dataSelected);
   return (
     <div className="image__upload" {...getRootProps()}>
       <input {...getInputProps()} />
