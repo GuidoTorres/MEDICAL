@@ -47,25 +47,25 @@ const MAnticuerpos = ({
     doc.addImage(anticuerpos, "PNG", 6, 20, 580, 800, "", "FAST");
 
     doc.text(
-      328,
-      120,
+      390,
+      160,
       `${dataSelected.person.gender_id === 1 ? "Masculino" : "Femenino"}`
     );
-    doc.text(85, 119, `${dataSelected.id ? dataSelected.id : ""}`);
+    doc.text(100, 160, `${dataSelected.id ? dataSelected.id : ""}`);
     doc.text(
-      55,
-      141,
+      70,
+      181,
       `${dataSelected.person.dni ? dataSelected.person.dni : ""}`
     );
     doc.text(
-      428,
-      141,
+      490,
+      181,
       `${dataSelected.date_attention ? dataSelected.date_attention : ""}`
     );
 
     doc.text(
-      80,
-      163,
+      100,
+      201,
       `${
         dataSelected.person.name !== undefined || null
           ? dataSelected.person.name.replace(
@@ -89,11 +89,11 @@ const MAnticuerpos = ({
           : ""
       }`
     );
-    doc.text(313, 164, getAge());
+    doc.text(380, 201, getAge());
 
     doc.text(
-      180,
-      265,
+      190,
+      292,
       `${
         result.anticuerpos === "0"
           ? "Negativo"
@@ -102,9 +102,8 @@ const MAnticuerpos = ({
           : "Sin resultado"
       }`
     );
-    doc.setFillColor(255, 255, 255);
-    doc.rect(335, 464, 150, 80, "F");
-    doc.addImage(firma, "PNG", 345, 485, 100, 80, "", "FAST");
+    // window.open(doc.output("bloburl"), "_blank");
+
     const pdf = new File([doc.output("blob")], "myDoc.pdf", {
       type: "application/pdf",
     });
@@ -195,12 +194,12 @@ const MAnticuerpos = ({
               </div>
               <div>
                 <label>Tipo de usuario</label>
+                <label>{dataSelected.person.user.user_type.name}</label>
+              </div>
+              <div>
+                <label>Empresa</label>
                 <label>
-                  {dataSelected.people_id === 1
-                    ? "Particular"
-                    : dataSelected.people_id === 0
-                    ? "Empresa"
-                    : "Sin Tipo"}
+                  {dataSelected.person.user.company.corporation.commercial_name}
                 </label>
               </div>
             </div>

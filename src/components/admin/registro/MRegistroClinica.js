@@ -117,10 +117,10 @@ const MRegistroClinica = ({
       )
     );
 
-    setTimeout(() => {
-      document.getElementById("horario-ingreso").value = _workday[0].opening;
-      document.getElementById("horario-final").value = _workday[0].closing;
-    }, 0);
+    // setTimeout(() => {
+    //   document.getElementById("horario-ingreso").value = _workday[0].opening;
+    //   document.getElementById("horario-final").value = _workday[0].closing;
+    // }, 0);
   };
 
   // console.log(fechasElegidas);
@@ -165,43 +165,47 @@ const MRegistroClinica = ({
     );
   };
 
-  const seleccioneHorario = (e) => {
-    setIdFecha(Number(e.target.value));
-    // setHorarioSeleccionado(
-    const w = workday.find((w) => w.day === Number(e.target.value));
-    // );
-    // console.log(workday.find((w) => w.day === Number(e.target.value)));
-    document.getElementById("horario-ingreso").value = w.opening;
-    document.getElementById("horario-final").value = w.closing;
-  };
+  // const seleccioneHorario = (e) => {
+  //   setIdFecha(Number(e.target.value));
+  //   // setHorarioSeleccionado(
+  //   const w = workday.find((w) => w.day === Number(e.target.value));
+  //   // );
+  //   // console.log(workday.find((w) => w.day === Number(e.target.value)));
+  //   document.getElementById("horario-ingreso").value = w.opening;
+  //   document.getElementById("horario-final").value = w.closing;
+  // };
 
-  const actualizarHorarioOpening = (e) => {
+  const actualizarHorarioOpening = (e, id) => {
     // console.log(e.target.value);
+    console.log(id);
     const arreglos = [...workday];
-    let position = workday.findIndex((arreglo) => arreglo.day === idFecha);
-    const day = arreglos[position];
+    let position = workday.findIndex((arreglo) => arreglo.day === id);
+    arreglos[position].opening = e.target.value;
 
-    arreglos.splice(position, 1, {
-      day: day && day.day ? day.day : "",
-      opening: e.target.value,
-      closing: day && day.closing ? day.closing : "",
-    });
+    // arreglos.splice(position, id, {
+    //   day: day && day.day ? day.day : "",
+    //   opening: e.target.value,
+    //   closing: day && day.closing ? day.closing : "",
+    // });
     setWorkday([...arreglos]);
     console.log(workday);
   };
 
-  const actualizarHorarioClosing = (e) => {
-    console.log(e);
+  const actualizarHorarioClosing = (e, id) => {
+    console.log(e.target.value);
+    console.log(id);
     const arreglos = [...workday];
-    let position = workday.findIndex((arreglo) => arreglo.day === idFecha);
-    const day = arreglos[position];
-    console.log(day);
+    console.log(arreglos);
+    let position = workday.findIndex((arreglo) => arreglo.day === id);
+    arreglos[position].closing = e.target.value;
+    // const day = arreglos[position];
+    // console.log(day);
 
-    arreglos.splice(position, 1, {
-      day: day && day.day ? day.day : "",
-      opening: day && day.opening ? day.opening : "",
-      closing: e.target.value,
-    });
+    // arreglos.splice(position, 1, {
+    //   day: day && day.day ? day.day : "",
+    //   opening: day && day.opening ? day.opening : "",
+    //   closing: e.target.value,
+    // });
     setWorkday([...arreglos]);
     console.log(workday);
   };
@@ -274,7 +278,6 @@ const MRegistroClinica = ({
     formData.set("clinic_type_id", data.clinic_type_id.toString());
     formData.set("map_latitude", dataMapa ? dataMapa.lat : "");
     formData.set("map_length", dataMapa ? dataMapa.lng : "");
-
     formData.set("contacts[0][name]", data.name || "");
     formData.set("contacts[0][phone]", data.phone || "");
     formData.set("contacts[0][email]", data.email || "");
@@ -373,6 +376,7 @@ const MRegistroClinica = ({
       });
     }
   };
+  console.log(workday);
 
   const getDepartments = () => {
     fetchGETPOSTPUTDELETE("departamentos")
@@ -390,7 +394,6 @@ const MRegistroClinica = ({
       departamentos.filter(
         (item) => Number(item.id) === Number(data.department_id)
       );
-    console.log(provincias);
     setProvinces(provincias);
 
     const distritos =
@@ -404,7 +407,17 @@ const MRegistroClinica = ({
     setDistricts(distritos);
   };
 
-  console.log(data);
+  // const getWorkDay = (id) =>{
+
+  //   var encontrar = workday.find(w => w.day === id)
+
+  //   if(encontrar){
+
+      
+
+  //   }
+
+  // }
 
   useEffect(() => {
     getProvinces();
@@ -599,125 +612,300 @@ const MRegistroClinica = ({
               </div>
               <div className="mregistro__fecha">
                 <h6>Días de atención</h6>
-                <div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      name="monday"
-                      defaultChecked={
-                        workday.find((w) => w.day === 1) ? true : false
-                      }
-                      onChange={(e) => handleWorkday(e, 1)}
-                    />
-                    <label>L</label>
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      name="tuesday"
-                      defaultChecked={
-                        workday.find((w) => w.day === 2) ? true : false
-                      }
-                      onChange={(e) => handleWorkday(e, 2)}
-                    />
-                    <label>M</label>
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      defaultChecked={
-                        workday.find((w) => w.day === 3) ? true : false
-                      }
-                      onChange={(e) => handleWorkday(e, 3)}
-                    />
-                    <label>M</label>
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      name="thursday"
-                      defaultChecked={
-                        workday.find((w) => w.day === 4) ? true : false
-                      }
-                      onChange={(e) => handleWorkday(e, 4)}
-                    />
-                    <label>J</label>
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      name="friday"
-                      defaultChecked={
-                        workday.find((w) => w.day === 5) ? true : false
-                      }
-                      onChange={(e) => handleWorkday(e, 5)}
-                    />
-                    <label>V</label>
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      name="saturday"
-                      defaultChecked={
-                        workday.find((w) => w.day === 6) ? true : false
-                      }
-                      onChange={(e) => handleWorkday(e, 6)}
-                    />
-                    <label>S</label>
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      name="sunday"
-                      defaultChecked={
-                        workday.find((w) => w.day === 7) ? true : false
-                      }
-                      onChange={(e) => handleWorkday(e, 7)}
-                    />
-                    <label>D</label>
-                  </div>
-                </div>
-              </div>
-              <div className="mregistro__tiempo">
-                <h6>Seleccione horario por día</h6>
-                <select onClick={(e) => seleccioneHorario(e)}>
-                  {fechasElegidas.map((fds) =>
-                    fds !== null ? (
-                      <option key={fds.id} value={fds.id}>
-                        {fds.name}
-                      </option>
-                    ) : (
-                      <></>
-                    )
-                  )}
-                </select>
-                <div>
-                  <label>Horario inicio de atención</label>
-                  <input
-                    type="time"
-                    name="opening"
-                    id="horario-ingreso"
-                    // defaultValue={editar ? "00:00" : "00:00"}
-                    onChange={(e) => actualizarHorarioOpening(e)}
-                  />
-                </div>
-                <div>
-                  <label>Horario final de atención</label>
-                  <input
-                    type="time"
-                    name="closing"
-                    id="horario-final"
-                    // defaultValue={editar ? "00:00" : "23:59"}
-                    onChange={(e) => actualizarHorarioClosing(e)}
-                  />
-                </div>
+
+                <table className="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">Días de atención</th>
+                      <th scope="col">Hora de Inicio</th>
+                      <th scope="col">Hora de Fin</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">
+                        {" "}
+                        <div>
+                          <input
+                            type="checkbox"
+                            className="form-check-input"
+                            name="monday"
+                            defaultChecked={
+                              workday.find((w) => w.day === 1) ? true : false
+                            }
+                            onChange={(e) => handleWorkday(e, 1)}
+                          />
+                          <label>Lunes</label>
+                        </div>
+                      </th>
+                      <td>
+                        <input
+                          type="time"
+                          name="opening"
+                          id="horario-ingreso1"
+                          defaultValue={
+                            editar
+                              ? workday && workday[0] && workday[0].day === 1
+                                ? workday[0].opening
+                                : ""
+                              : ""
+                          }
+                          onChange={(e) => actualizarHorarioOpening(e, 1)}
+                        />
+                      </td>
+                      <td>
+                        {" "}
+                        <input
+                          type="time"
+                          name="closing"
+                          id="horario-final1"
+                          defaultValue={workday.find((dia) => dia.day === 1) }
+                          onChange={(e) => actualizarHorarioClosing(e, 1)}
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {" "}
+                        <div>
+                          <input
+                            type="checkbox"
+                            className="form-check-input"
+                            name="tuesday"
+                            defaultChecked={
+                              workday.find((w) => w.day === 2) ? true : false
+                            }
+                            onChange={(e) => handleWorkday(e, 2)}
+                          />
+                          <label>Martes</label>
+                        </div>
+                      </th>
+                      <td>
+                        <input
+                          type="time"
+                          name="opening"
+                          id="horario-ingreso2"
+                          defaultValue={
+                            editar
+                              ? workday && workday[1] && workday[1].day === 2
+                                ? workday[1].opening
+                                : ""
+                              : ""
+                          }
+                          onChange={(e) => actualizarHorarioOpening(e, 2)}
+                        />
+                      </td>
+                      <td>
+                        {" "}
+                        <input
+                          type="time"
+                          name="closing"
+                          id="horario-final2"
+                          defaultValue={
+                            editar
+                              ? workday && workday[1] && workday[1].day === 2
+                                ? workday[1].closing
+                                : ""
+                              : ""
+                          }
+                          onChange={(e) => actualizarHorarioClosing(e, 2)}
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {" "}
+                        <div>
+                          <input
+                            type="checkbox"
+                            className="form-check-input"
+                            name="wednesday"
+                            defaultChecked={
+                              workday.find((w) => w.day === 3) ? true : false
+                            }
+                            onChange={(e) => handleWorkday(e, 3)}
+                          />
+                          <label>Miercoles</label>
+                        </div>
+                      </th>
+                      <td>
+                        <input
+                          type="time"
+                          name="opening"
+                          id="horario-ingreso3"
+                          defaultValue={
+                            editar
+                              ? workday && workday[2] && workday[2].day === 3
+                                ? workday[2].opening
+                                : ""
+                              : ""
+                          }
+                          onChange={(e) => actualizarHorarioOpening(e, 3)}
+                        />
+                      </td>
+                      <td>
+                        {" "}
+                        <input
+                          type="time"
+                          name="closing"
+                          id="horario-final3"
+                          defaultValue={
+                            editar
+                              ? workday && workday[3] && workday[3].day === 3
+                                ? workday[2].opening
+                                : ""
+                              : ""
+                          }
+                          onChange={(e) => actualizarHorarioClosing(e, 3)}
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {" "}
+                        <div>
+                          <input
+                            type="checkbox"
+                            className="form-check-input"
+                            name="thursday"
+                            defaultChecked={
+                              workday.find((w) => w.day === 4) ? true : false
+                            }
+                            onChange={(e) => handleWorkday(e, 4)}
+                          />
+                          <label>Jueves</label>
+                        </div>
+                      </th>
+                      <td>
+                        <input
+                          type="time"
+                          name="opening"
+                          id="horario-ingreso4"
+                          // defaultValue={editar ? "00:00" : "00:00"}
+                          onChange={(e) => actualizarHorarioOpening(e, 4)}
+                        />
+                      </td>
+                      <td>
+                        {" "}
+                        <input
+                          type="time"
+                          name="closing"
+                          id="horario-final4"
+                          // defaultValue={editar ? "00:00" : "23:59"}
+                          onChange={(e) => actualizarHorarioClosing(e, 4)}
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {" "}
+                        <div>
+                          <input
+                            type="checkbox"
+                            className="form-check-input"
+                            name="friday"
+                            defaultChecked={
+                              workday.find((w) => w.day === 5) ? true : false
+                            }
+                            onChange={(e) => handleWorkday(e, 5)}
+                          />
+                          <label>Viernes</label>
+                        </div>
+                      </th>
+                      <td>
+                        <input
+                          type="time"
+                          name="opening"
+                          id="horario-ingreso5"
+                          // defaultValue={editar ? "00:00" : "00:00"}
+                          onChange={(e) => actualizarHorarioOpening(e, 5)}
+                        />
+                      </td>
+                      <td>
+                        {" "}
+                        <input
+                          type="time"
+                          name="closing"
+                          id="horario-final5"
+                          // defaultValue={editar ? "00:00" : "23:59"}
+                          onChange={(e) => actualizarHorarioClosing(e, 5)}
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {" "}
+                        <div>
+                          <input
+                            type="checkbox"
+                            className="form-check-input"
+                            name="saturday"
+                            defaultChecked={
+                              workday.find((w) => w.day === 6) ? true : false
+                            }
+                            onChange={(e) => handleWorkday(e, 6)}
+                          />
+                          <label>Sabado</label>
+                        </div>
+                      </th>
+                      <td>
+                        <input
+                          type="time"
+                          name="opening"
+                          id="horario-ingreso6"
+                          // defaultValue={editar ? "00:00" : "00:00"}
+                          onChange={(e) => actualizarHorarioOpening(e, 6)}
+                        />
+                      </td>
+                      <td>
+                        {" "}
+                        <input
+                          type="time"
+                          name="closing"
+                          id="horario-final6"
+                          // defaultValue={editar ? "00:00" : "23:59"}
+                          onChange={(e) => actualizarHorarioClosing(e, 6)}
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">
+                        {" "}
+                        <div>
+                          <input
+                            type="checkbox"
+                            className="form-check-input"
+                            name="sunday"
+                            defaultChecked={
+                              workday.find((w) => w.day === 7) ? true : false
+                            }
+                            onChange={(e) => handleWorkday(e, 7)}
+                          />
+                          <label>Domingo</label>
+                        </div>
+                      </th>
+                      <td>
+                        <input
+                          type="time"
+                          name="opening"
+                          id="horario-ingreso7"
+                          // defaultValue={editar ? "00:00" : "00:00"}
+                          onChange={(e) => actualizarHorarioOpening(e, 7)}
+                        />
+                      </td>
+                      <td>
+                        {" "}
+                        <input
+                          type="time"
+                          name="closing"
+                          id="horario-final7"
+                          // defaultValue={editar ? "00:00" : "23:59"}
+                          onChange={(e) => actualizarHorarioClosing(e, 7)}
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
             <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 p-0">
@@ -730,7 +918,7 @@ const MRegistroClinica = ({
                     avatar={avatar}
                     setAvatar={setAvatar}
                     editar={editar}
-                    dataSelected={avatar}
+                    dataSelected={dataSelected}
                   />
                 </div>
               </div>

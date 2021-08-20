@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 
 import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
-import { usuario } from "../../../data/ACUsuario";
 import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
 import { paginacionOpciones } from "../../../helpers/tablaOpciones";
 import MUsuario from "./MUsuario";
@@ -34,6 +33,7 @@ const Usuario = () => {
       name: "Ítem",
       selector: (row, index) => (index += 1),
       sortable: true,
+      grow: 0,
       style: {
         borderBotton: "none",
         color: "#555555",
@@ -75,7 +75,7 @@ const Usuario = () => {
     },
     {
       name: "Empresa",
-      selector: (row) => row.company  ? row.company: "-----",
+      selector: (row) => (row.company ? row.company : "-----"),
       sortable: true,
       style: {
         borderBotton: "none",
@@ -246,7 +246,7 @@ const Usuario = () => {
           openModal={openModal}
           setOpenModal={setOpenModal}
           dataSelected={dataSelected}
-          resp = {resp}
+          resp={resp}
         />
       )}
     </div>
