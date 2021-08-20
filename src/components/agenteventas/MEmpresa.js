@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import Swal from 'sweetalert2';
 import {
-  fetchGETPOSTPUTDELETE,
   fetchGETPOSTPUTDELETEJSON,
 } from '../../helpers/fetch';
 
@@ -47,7 +46,7 @@ const MEmpresa = ({
         Swal.fire({
           icon: 'success',
           title: 'Éxito',
-          text: 'Se actualizó la clínica correctamente.',
+          text: 'Se editó el precio de la empresa correctamente.',
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
           confirmButtonText: 'Aceptar',
@@ -382,7 +381,7 @@ const MEmpresa = ({
                           </span>
                         )}
                       </td>
-                      <td style={{ width: '20%', textAlign: 'center' }}>
+                      <td style={{width: '20%', textAlign: 'center'}}>
                         {data.abbreviation ? data.abbreviation : ''}
                       </td>
                       <td>

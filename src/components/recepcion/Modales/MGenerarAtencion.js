@@ -169,6 +169,7 @@ const MGenerarAtencion = ({
       [e.target.name]: e.target.value,
     });
   };
+  console.log(datos);
 
   const mostrarDeclaracionJurada = () => {
     const declaracion = document.querySelector(".containerPDF").style;
@@ -202,6 +203,7 @@ const MGenerarAtencion = ({
     ficha.display = "block";
     ficha.visibility = "visible";
   };
+  console.log(dataSelected);
 
   return (
     <Modal
@@ -304,13 +306,16 @@ const MGenerarAtencion = ({
             >
               Consentimiento informado
             </button>
-            <button
-              type="button"
-              class="botones btn btn-primary"
-              onClick={() => mostrarFichaCovid()}
-            >
-              Ficha COVID 19
-            </button>
+
+            {datos.service_id === "5" ? (
+              <button
+                type="button"
+                class="botones btn btn-primary"
+                onClick={() => mostrarFichaCovid()}
+              >
+                Ficha COVID 19
+              </button>
+            ) : null}
           </div>
 
           <div class="contenedorPDF">

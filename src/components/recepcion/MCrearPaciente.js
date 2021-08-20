@@ -408,7 +408,7 @@ const MCrearPaciente = ({
     setDistricts1(distritos1);
   };
 
-  // console.log(dist2);
+  console.log(dataSelected);
   useEffect(() => {
     getProvinces1();
   }, [paciente2]);
