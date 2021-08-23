@@ -16,23 +16,22 @@ const DeclaracionJurada = ({
       arrs[pos].answer = resp;
       setDeclaracion([...arrs]);
     } else {
+      console.log(resp);
       if (declaracion.length > 1) {
         let pos = declaracion.findIndex((arr) => arr.question_id === data.id);
 
         const arrs = [...declaracion];
         arrs[pos].answer = resp;
         setDeclaracion([...arrs]);
+        // console.log(declaracion);
       }
     }
 
-    console.log(declaracion);
-
-    // //Bloquear checks de la parte de sintomas
-
+    // //Bloquear checks de la parte de sintomas si se selecciona ningun sintoma
     const sintoma = document.querySelectorAll(".sintoma");
     const sintoma1 = document.querySelectorAll(".sintoma1");
-
-    if (sintoma[0].checked) {
+    console.log(declaracion);
+    if (data.id === 1 && e.target.checked  && declaracion[0].answer === "Si") {
       for (var i = 1; i < sintoma.length; i++) {
         sintoma[i].disabled = true;
         sintoma[i].disabled = true;
@@ -43,7 +42,11 @@ const DeclaracionJurada = ({
         sintoma1[i].checked = false;
         sintoma1[i].checked = false;
       }
-    } else {
+    } else if (
+      data.id === 1 &&
+      sintoma1[0].checked === false &&
+      declaracion.answer !== null
+    ) {
       for (var i = 1; i < sintoma.length; i++) {
         sintoma[i].disabled = false;
         sintoma[i].disabled = false;
@@ -52,12 +55,12 @@ const DeclaracionJurada = ({
       }
     }
 
-    // //Bloquear checks de la parte de condicion
+    // //Bloquear checks de la parte de condicion si se selecciona ninguna condición
 
     const cond = document.querySelectorAll(".condicion");
     const cond1 = document.querySelectorAll(".condicion1");
 
-    if (cond[0].checked) {
+    if (data.id === 14 && cond[0].checked) {
       for (var i = 1; i < cond.length; i++) {
         cond[i].disabled = true;
         cond[i].disabled = true;
@@ -68,7 +71,11 @@ const DeclaracionJurada = ({
         cond1[i].checked = false;
         cond1[i].checked = false;
       }
-    } else {
+    } else if (
+      data.id === 14 &&
+      cond1[0].checked === false &&
+      declaracion.answer !== null
+    ) {
       for (var i = 1; i < cond.length; i++) {
         cond[i].disabled = false;
         cond[i].disabled = false;
@@ -102,14 +109,14 @@ const DeclaracionJurada = ({
             formulario[0].questions.slice(0, 13).map((data, i) => (
               <>
                 <label htmlFor="">{data.text}</label>
-                <div className="form-check">
+                <div key={i} className="form-check">
                   <input
                     className="sintoma form-check-input"
                     type="checkbox"
-                    value="sintomas"
+                    value="sintoma"
                     id={`si${data.id}`}
                     onChange={(e) => {
-                      handleChange(e, data, "Si");
+                      handleChange(e, data, e.target.checked ? "Si" : null);
                     }}
                   />
 
@@ -125,7 +132,7 @@ const DeclaracionJurada = ({
                     value="no"
                     id={`no${data.id}`}
                     onChange={(e) => {
-                      handleChange(e, data, "No");
+                      handleChange(e, data, e.target.checked ? "No" : null);
                     }}
                   />
 
@@ -156,7 +163,7 @@ const DeclaracionJurada = ({
                     value=""
                     id={`si${data.id}`}
                     onChange={(e) => {
-                      handleChange(e, data, "Si");
+                      handleChange(e, data, e.target.checked ? "Si" : null);
                     }}
                   />
                   <label className="form-check-label" for="flexCheckDefault">
@@ -171,7 +178,7 @@ const DeclaracionJurada = ({
                     value=""
                     id={`no${data.id}`}
                     onChange={(e) => {
-                      handleChange(e, data, "No");
+                      handleChange(e, data, e.target.checked ? "Si" : null);
                     }}
                   />
                   <label className="form-check-label" for="flexCheckDefault">

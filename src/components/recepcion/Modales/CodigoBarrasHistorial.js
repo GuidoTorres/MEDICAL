@@ -27,6 +27,7 @@ const CodigoBarrasHistorial = ({
   const closeModal = () => {
     setCodigoHistorial(false);
   };
+  console.log(dataBarCode);
 
   const descargar = () => {
     const data = document.querySelector("#canvas");
@@ -63,7 +64,13 @@ const CodigoBarrasHistorial = ({
       dataBarCode.fullName !== undefined ? `${dataBarCode.fullName}` : "";
     let person__info =
       dataBarCode.DNI !== undefined
-        ? `DNI: ${dataBarCode.DNI} \t Sexo: M \t Edad: 28`
+        ? `DNI: ${dataBarCode.DNI} \t Sexo: ${
+            dataBarCode.patient_details.gender_id === 2
+              ? "F"
+              : dataBarCode.patient_details.gender_id === 1
+              ? "M"
+              : ""
+          } \t Edad: ${getAge()}`
         : "";
     let service__abbreviation = dataBarCode.service_details
       ? dataBarCode.service_details.abbreviation
@@ -92,6 +99,22 @@ const CodigoBarrasHistorial = ({
       setTimeout(() => cargarBarra(), 0);
     }
   }, [codigoHistorial]);
+
+  function getAge() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const birthDate = new Date(dataBarCode.birthday);
+
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    console.log(m);
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      const edad = age - 1;
+      return edad.toString();
+    } else {
+      return age.toString();
+    }
+  }
 
   return (
     <Modal

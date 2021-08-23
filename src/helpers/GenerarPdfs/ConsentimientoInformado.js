@@ -28,8 +28,6 @@ const getFecha = () => {
 const generarConsentimientoInformado = (data) => {
   console.log(data);
 
-  const prueba = data.service_details.abbreviation.bold();
-
   if (data.consent !== null) {
     const doc = new jsPDF("p", "pt");
     doc.setProperties({
@@ -52,10 +50,19 @@ const generarConsentimientoInformado = (data) => {
       );
     }
 
-    doc.text(120, 150, `${data && data.fullName ? data.fullName : ""}`);
-    doc.text(105, 164, `${data.DNI}`);
+    doc.setFillColor(255, 255, 255);
+    doc.rect(20, 130, 550, 100, "F");
+    doc.setFontSize(12);
+    doc.setFont("bold")
 
-    // doc.text(100, 240, `Yo: ${data.fullName} con  DNI Nº ${data.DNI} declaro que he leído de manera clara y sencilla sobre la TOMA DE MUESTRAS(${prueba}), he podido aclarar mis dudas sobre qué es,cómo se hace, para qué sirve, qué riesgo conlleva y porque es importante en mi caso. Así, tras haber comprendido la informacion recibida, doy libremente mi consentimiento para la realizacion de (${data.service_details.abbreviation})`,{maxWidth: "450"});
+    //No tocar el texto, si se mueve no cuadra en el pdf
+    doc.text(
+      100,
+      150,
+      `Yo: ${data.fullName} con  DNI Nº ${data.DNI} declaro que he leído de manera clara y sencilla sobre la TOMA DE MUESTRAS(${data.service_details.abbreviation}), he podido aclarar mis dudas sobre qué es,cómo se hace, para qué sirve, qué riesgo conlleva y porque es importante en mi caso. Así, tras haber comprendido la informacion recibida, doy libremente mi consentimiento para la realizacion de (${data.service_details.abbreviation})`,
+      { maxWidth: "450" }
+    );
+
     // doc.text(378, 265, `${data.address}, ${getFecha()}`);
 
     doc.text(378, 285, `${getFecha()}`);

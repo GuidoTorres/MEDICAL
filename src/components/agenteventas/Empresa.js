@@ -204,7 +204,12 @@ const Empresa = ({ getServicio }) => {
             striped
             highlightOnHover
             fixedHeaderScrollHeight="100%"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            noDataComponent={
+              <div className="spinner">
+                <i className="fas fa-inbox table__icono"></i>
+                <p style={{ color: "lightgrey" }}>No hay datos</p>
+              </div>
+            }
           />
         </div>
       </div>

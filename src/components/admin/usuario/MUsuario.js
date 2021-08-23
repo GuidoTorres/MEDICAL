@@ -28,7 +28,7 @@ const MUsuario = ({ openModal, setOpenModal, dataSelected, resp }) => {
           Swal.fire({
             icon: "success",
             title: "Éxito",
-            text: "Se ha creado el trabajador correctamente.",
+            text: "Se edito el trabajador correctamente.",
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Aceptar",

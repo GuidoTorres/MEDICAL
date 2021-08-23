@@ -1,15 +1,15 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
-import Swal from 'sweetalert2';
+import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
 
-import { servicio } from '../../data/AVServicio';
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
-import MPersona from './MPersona';
+import { servicio } from "../../data/AVServicio";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import { paginacionOpciones } from "../../helpers/tablaOpciones";
+import MPersona from "./MPersona";
 
 const Persona = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [dataSelected, setDataSelected] = useState({});
@@ -18,7 +18,7 @@ const Persona = () => {
   const [particular, setParticular] = useState([]);
 
   const getParticularDiscount = () => {
-    fetchGETPOSTPUTDELETE('particular_discount')
+    fetchGETPOSTPUTDELETE("particular_discount")
       .then((data) => data.json())
       .then((datos) => {
         setParticular(datos.data);
@@ -31,77 +31,77 @@ const Persona = () => {
 
   const columnas = [
     {
-      name: 'Item',
+      name: "Item",
       selector: (row, index) => (index += 1),
       sortable: true,
       grow: 0,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
         // maxWidth: "40px",
       },
     },
     {
-      name: 'DNI',
+      name: "DNI",
       selector: (row) =>
         row.user && row.user.person && row.user.person.dni
           ? row.user.person.dni
-          : '',
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
         // maxWidth: "80px",
       },
     },
     {
-      name: 'Nombres y apellidos',
+      name: "Nombres y apellidos",
       selector: (row) =>
         row.user &&
         row.user.person &&
         row.user.person.name &&
         row.user.person.pat_lastname
-          ? row.user.person.name + ' ' + row.user.person.pat_lastname
-          : '',
+          ? row.user.person.name + " " + row.user.person.pat_lastname
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
 
     {
-      name: 'Tipo de prueba',
+      name: "Tipo de prueba",
       selector: (row) =>
-        row.service && row.service.name ? row.service.name : '',
+        row.service && row.service.name ? row.service.name : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Descuento para usuario (%)',
-      selector: (row) => (row.percent ? row.percent + '%' : ''),
+      name: "Descuento para usuario (%)",
+      selector: (row) => (row.percent ? row.percent + "%" : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
-        display: 'flex',
-        marginLeft: '20px',
+        borderBotton: "none",
+        color: "#555555",
+        display: "flex",
+        marginLeft: "20px",
       },
     },
     {
-      name: 'Total',
-      selector: (row) => (row.amount ? row.amount : ''),
+      name: "Total",
+      selector: (row) => (row.amount ? row.amount : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Editar',
+      name: "Editar",
       button: true,
       cell: (e) => (
         <button onClick={() => handleEditar(e)} className="table__tablebutton">
@@ -110,7 +110,7 @@ const Persona = () => {
       ),
     },
     {
-      name: 'Eliminar',
+      name: "Eliminar",
       button: true,
       cell: (e) => (
         <button
@@ -131,9 +131,9 @@ const Persona = () => {
             ? data.user.person
               ? data.user.person.dni
                 ? data.user.person.dni.toString().includes(busqueda)
-                : ''
-              : ''
-            : '') ||
+                : ""
+              : ""
+            : "") ||
           (data.user
             ? data.user.person
               ? data.user.person.name
@@ -141,19 +141,19 @@ const Persona = () => {
                     .toString()
                     .toLowerCase()
                     .includes(busqueda.toLowerCase())
-                : ''
-              : ''
-            : '') ||
+                : ""
+              : ""
+            : "") ||
           (data.service
             ? data.service.name
               ? data.service.name
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : ''
-            : '') ||
-          (data.percent ? data.percent.toString().includes(busqueda) : '') ||
-          (data.amount ? data.amount.toString().includes(busqueda) : '')
+              : ""
+            : "") ||
+          (data.percent ? data.percent.toString().includes(busqueda) : "") ||
+          (data.amount ? data.amount.toString().includes(busqueda) : "")
         );
       });
       setListRegistro(search);
@@ -164,16 +164,16 @@ const Persona = () => {
   const handleEliminar = (e) => {
     console.log(e);
     Swal.fire({
-      title: '¿Desea eliminar?',
+      title: "¿Desea eliminar?",
       text: `${e.nombre}`,
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Eliminar',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire('Eliminado!', 'Se ha eliminado correctamente.', 'success');
+        Swal.fire("Eliminado!", "Se ha eliminado correctamente.", "success");
       }
     });
   };
@@ -206,11 +206,11 @@ const Persona = () => {
             </div>
             <div>
               <label>
-                Agregar{' '}
+                Agregar{" "}
                 <i
                   className="fas fa-plus-circle"
                   onClick={handleAddRegistro}
-                ></i>{' '}
+                ></i>{" "}
               </label>
             </div>
           </div>
@@ -224,7 +224,12 @@ const Persona = () => {
             striped
             highlightOnHover
             fixedHeaderScrollHeight="100%"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            noDataComponent={
+              <div className="spinner">
+                <i className="fas fa-inbox table__icono"></i>
+                <p style={{ color: "lightgrey" }}>No hay datos</p>
+              </div>
+            }
           />
         </div>
       </div>

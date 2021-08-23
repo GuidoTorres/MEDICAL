@@ -8,7 +8,6 @@ import { generarDeclaracionJurada } from "../../helpers/GenerarPdfs/DeclaracionJ
 import { generarConsentimientoInformado } from "../../helpers/GenerarPdfs/ConsentimientoInformado";
 import { generarFichaCovid } from "../../helpers/GenerarPdfs/FichaCovid";
 
-
 const Historial = () => {
   const [busqueda, setBusqueda] = useState("");
   // const [addRegistro, setAddRegistro] = useState(false);
@@ -24,7 +23,6 @@ const Historial = () => {
       .then((data) => data.json())
       .then((datos) => setAttention(datos.data));
   };
-
 
   useEffect(() => {
     getAttention();
@@ -61,7 +59,7 @@ const Historial = () => {
       name: "Nombres y apellidos",
       selector: (row) => (row.fullName ? row.fullName : ""),
       sortable: true,
-      grow:1,
+      grow: 1,
       style: {
         color: "#8f9196",
         borderBotton: "none",
@@ -71,7 +69,7 @@ const Historial = () => {
       name: "Nº de documento",
       selector: (row) => (row.DNI ? row.DNI : ""),
       sortable: true,
-      grow:0,
+      grow: 0,
       style: {
         color: "#8f9196",
         borderBotton: "none",
@@ -81,7 +79,7 @@ const Historial = () => {
       name: "Estado",
       selector: (row) => (row.user_type ? row.user_type : ""),
       sortable: true,
-      grow:0,
+      grow: 0,
       style: {
         color: "#8f9196",
         borderBotton: "none",
@@ -89,7 +87,10 @@ const Historial = () => {
     },
     {
       name: "Tipo de atención",
-      selector: (row) => (row.service_details.abbreviation ? row.service_details.abbreviation : ""),
+      selector: (row) =>
+        row.service_details.abbreviation
+          ? row.service_details.abbreviation
+          : "",
       sortable: true,
       style: {
         color: "#8f9196",
@@ -153,29 +154,31 @@ const Historial = () => {
 
   useEffect(() => {
     const filtrarElemento = () => {
-      const search = attention.filter((data) => {
-        return (
-          (data.fullName
-            ? data.fullName
-                .toString()
-                .toLowerCase()
-                .includes(busqueda.toLowerCase())
-            : "") ||
-          (data.dni ? data.dni.toString().includes(busqueda) : "") ||
-          (data.type_user
-            ? data.type_user
-                .toString()
-                .toLowerCase()
-                .includes(busqueda.toLowerCase())
-            : "") ||
-          (data.service_type
-            ? data.service_type
-                .toString()
-                .toLowerCase()
-                .includes(busqueda.toLowerCase())
-            : "")
-        );
-      });
+      const search =
+        attention &&
+        attention.filter((data) => {
+          return (
+            (data.fullName
+              ? data.fullName
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "") ||
+            (data.dni ? data.dni.toString().includes(busqueda) : "") ||
+            (data.type_user
+              ? data.type_user
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "") ||
+            (data.service_type
+              ? data.service_type
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "")
+          );
+        });
       setListRegistro(search);
     };
     filtrarElemento();
