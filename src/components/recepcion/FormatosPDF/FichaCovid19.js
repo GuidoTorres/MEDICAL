@@ -112,6 +112,13 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
           ) : (
             ""
           )}
+          {i === 41 ? (
+            <>
+              <label> Lugar probable de infección:</label> <br></br>{" "}
+            </>
+          ) : (
+            ""
+          )}
 
           {i === 44 ? (
             <>
@@ -130,13 +137,14 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
           )}
           {i === 73 ? (
             <>
-              <label> Signos:</label> <br></br>{" "}
+              <label> Condiciones de comorbilidad o factores de riesgo:</label>{" "}
+              <br></br>{" "}
             </>
           ) : (
             ""
           )}
 
-          {i === 88 ? (
+          {i === 89 ? (
             <>
               <label> Ocupación:</label> <br></br>{" "}
             </>
@@ -144,7 +152,15 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
             ""
           )}
 
-          {i === 103 ? (
+          {i === 100 ? (
+            <>
+              <label> Lugar de trabajo:</label> <br></br>{" "}
+            </>
+          ) : (
+            ""
+          )}
+
+          {i === 104 ? (
             <>
               <label>
                 {" "}
@@ -192,14 +208,14 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
           ) : (
             ""
           )}
-          {i === 127 ? (
+          {i === 130 ? (
             <>
               <label> Servicio de hospitalización:</label> <br></br>{" "}
             </>
           ) : (
             ""
           )}
-          {i === 131 ? (
+          {i === 133 ? (
             <>
               <label> El paciente estuvo con ventilación mecánica:</label>{" "}
               <br></br>{" "}
@@ -207,7 +223,7 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
           ) : (
             ""
           )}
-          {i === 134 ? (
+          {i === 136 ? (
             <>
               <label>
                 {" "}
@@ -219,7 +235,7 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
           ) : (
             ""
           )}
-          {i === 136 ? (
+          {/* {i === 136 ? (
             <>
               <label>
                 {" "}
@@ -230,7 +246,7 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
             </>
           ) : (
             ""
-          )}
+          )} */}
 
           {i === 138 ? (
             <>

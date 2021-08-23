@@ -64,8 +64,6 @@ const MRegistroClinica = ({
       .then((res) => setRuc(res));
   };
 
-  // console.log(dataSelected);
-
   const obtenerData = () => {
     setData({
       address: dataSelected.corporation.address.address,
@@ -123,8 +121,6 @@ const MRegistroClinica = ({
     // }, 0);
   };
 
-  // console.log(fechasElegidas);
-
   useEffect(() => {
     if (data && data.ruc && data.ruc.length === 11) {
       getRuc();
@@ -163,17 +159,15 @@ const MRegistroClinica = ({
         arreglos.find((w) => w.day === m.id) ? m : null
       )
     );
-  };
 
-  // const seleccioneHorario = (e) => {
-  //   setIdFecha(Number(e.target.value));
-  //   // setHorarioSeleccionado(
-  //   const w = workday.find((w) => w.day === Number(e.target.value));
-  //   // );
-  //   // console.log(workday.find((w) => w.day === Number(e.target.value)));
-  //   document.getElementById("horario-ingreso").value = w.opening;
-  //   document.getElementById("horario-final").value = w.closing;
-  // };
+    if (document.getElementById(`check${nro}`).checked) {
+      document.getElementById(`horario-ingreso${nro}`).disabled = false;
+      document.getElementById(`horario-final${nro}`).disabled = false;
+    } else {
+      document.getElementById(`horario-ingreso${nro}`).disabled = true;
+      document.getElementById(`horario-final${nro}`).disabled = true;
+    }
+  };
 
   const actualizarHorarioOpening = (e, id) => {
     // console.log(e.target.value);
@@ -188,7 +182,6 @@ const MRegistroClinica = ({
     //   closing: day && day.closing ? day.closing : "",
     // });
     setWorkday([...arreglos]);
-    console.log(workday);
   };
 
   const actualizarHorarioClosing = (e, id) => {
@@ -207,7 +200,6 @@ const MRegistroClinica = ({
     //   closing: e.target.value,
     // });
     setWorkday([...arreglos]);
-    console.log(workday);
   };
 
   const postClinics = (e) => {
@@ -376,7 +368,6 @@ const MRegistroClinica = ({
       });
     }
   };
-  console.log(workday);
 
   const getDepartments = () => {
     fetchGETPOSTPUTDELETE("departamentos")
@@ -386,42 +377,68 @@ const MRegistroClinica = ({
   useEffect(() => {
     getDepartments();
   }, []);
-  const getProvinces = () => {
-    //devuelve solo el objeto con el id = a department_id
 
-    const provincias =
-      departamentos.length > 0 &&
-      departamentos.filter(
-        (item) => Number(item.id) === Number(data.department_id)
-      );
-    setProvinces(provincias);
 
-    const distritos =
-      provinces.length > 0 &&
-      provinces.map((data1, i) =>
-        data1.provinces.filter((item, j) =>
-          Number(item.id) === Number(data.province_id) ? item.districts : ""
-        )
-      );
-
-    setDistricts(distritos);
+  const getWorkDay = (id) => {
+    var encontrar = workday.findIndex((w) => w.day === id);
+    if (encontrar !== -1) {
+      return workday[encontrar].opening;
+    } else {
+      return "";
+    }
   };
 
-  // const getWorkDay = (id) =>{
-
-  //   var encontrar = workday.find(w => w.day === id)
-
-  //   if(encontrar){
-
-      
-
-  //   }
-
-  // }
+  const getClosing = (id) => {
+    var encontrar = workday.findIndex((w) => w.day === id);
+    if (encontrar !== -1) {
+      return workday[encontrar].closing;
+    } else {
+      return "";
+    }
+  };
 
   useEffect(() => {
-    getProvinces();
-  }, [data]);
+    if (data.department_id && editar) {
+      const provincias =
+        departamentos.length > 0 &&
+        departamentos.filter(
+          (item) => Number(item.id) === Number(data.department_id)
+        );
+
+      setProvinces(provincias);
+    } else {
+      const provincias =
+        departamentos.length > 0 &&
+        departamentos.filter(
+          (item) => Number(item.id) === Number(data.department_id)
+        );
+
+      setProvinces(provincias);
+    }
+  }, [departamentos, data.department_id]);
+  useEffect(() => {
+
+    if (data.department_id && editar) {
+      const distritos =
+        provinces.length > 0 &&
+        provinces.map((data1, i) =>
+          data1.provinces.filter((item, j) =>
+            Number(item.id) === Number(data.province_id) ? item.districts : ""
+          )
+        );
+      setDistricts(distritos);
+    } else {
+      const distritos =
+        provinces.length > 0 &&
+        provinces.map((data1, i) =>
+          data1.provinces.filter((item, j) =>
+            Number(item.id) === Number(data.province_id) ? item.districts : ""
+          )
+        );
+
+      setDistricts(distritos);
+    }
+  }, [provinces, data.province_id]);
 
   return (
     <div>
@@ -611,7 +628,9 @@ const MRegistroClinica = ({
                 </div>
               </div>
               <div className="mregistro__fecha">
-                <h6>Días de atención</h6>
+                {/* <h6>
+                  <strong>Días de atención</strong>
+                </h6> */}
 
                 <table className="table table-bordered">
                   <thead>
@@ -630,6 +649,7 @@ const MRegistroClinica = ({
                             type="checkbox"
                             className="form-check-input"
                             name="monday"
+                            id="check1"
                             defaultChecked={
                               workday.find((w) => w.day === 1) ? true : false
                             }
@@ -643,13 +663,8 @@ const MRegistroClinica = ({
                           type="time"
                           name="opening"
                           id="horario-ingreso1"
-                          defaultValue={
-                            editar
-                              ? workday && workday[0] && workday[0].day === 1
-                                ? workday[0].opening
-                                : ""
-                              : ""
-                          }
+                          disabled
+                          defaultValue={editar ? getWorkDay(1) : ""}
                           onChange={(e) => actualizarHorarioOpening(e, 1)}
                         />
                       </td>
@@ -659,7 +674,8 @@ const MRegistroClinica = ({
                           type="time"
                           name="closing"
                           id="horario-final1"
-                          defaultValue={workday.find((dia) => dia.day === 1) }
+                          disabled
+                          defaultValue={editar ? getClosing(1) : ""}
                           onChange={(e) => actualizarHorarioClosing(e, 1)}
                         />
                       </td>
@@ -672,6 +688,7 @@ const MRegistroClinica = ({
                             type="checkbox"
                             className="form-check-input"
                             name="tuesday"
+                            id="check2"
                             defaultChecked={
                               workday.find((w) => w.day === 2) ? true : false
                             }
@@ -685,13 +702,8 @@ const MRegistroClinica = ({
                           type="time"
                           name="opening"
                           id="horario-ingreso2"
-                          defaultValue={
-                            editar
-                              ? workday && workday[1] && workday[1].day === 2
-                                ? workday[1].opening
-                                : ""
-                              : ""
-                          }
+                          disabled
+                          defaultValue={editar ? getWorkDay(2) : ""}
                           onChange={(e) => actualizarHorarioOpening(e, 2)}
                         />
                       </td>
@@ -701,13 +713,8 @@ const MRegistroClinica = ({
                           type="time"
                           name="closing"
                           id="horario-final2"
-                          defaultValue={
-                            editar
-                              ? workday && workday[1] && workday[1].day === 2
-                                ? workday[1].closing
-                                : ""
-                              : ""
-                          }
+                          disabled
+                          defaultValue={editar ? getClosing(2) : ""}
                           onChange={(e) => actualizarHorarioClosing(e, 2)}
                         />
                       </td>
@@ -720,6 +727,7 @@ const MRegistroClinica = ({
                             type="checkbox"
                             className="form-check-input"
                             name="wednesday"
+                            id="check3"
                             defaultChecked={
                               workday.find((w) => w.day === 3) ? true : false
                             }
@@ -733,13 +741,8 @@ const MRegistroClinica = ({
                           type="time"
                           name="opening"
                           id="horario-ingreso3"
-                          defaultValue={
-                            editar
-                              ? workday && workday[2] && workday[2].day === 3
-                                ? workday[2].opening
-                                : ""
-                              : ""
-                          }
+                          disabled
+                          defaultValue={editar ? getWorkDay(3) : ""}
                           onChange={(e) => actualizarHorarioOpening(e, 3)}
                         />
                       </td>
@@ -749,13 +752,8 @@ const MRegistroClinica = ({
                           type="time"
                           name="closing"
                           id="horario-final3"
-                          defaultValue={
-                            editar
-                              ? workday && workday[3] && workday[3].day === 3
-                                ? workday[2].opening
-                                : ""
-                              : ""
-                          }
+                          disabled
+                          defaultValue={editar ? getClosing(3) : ""}
                           onChange={(e) => actualizarHorarioClosing(e, 3)}
                         />
                       </td>
@@ -768,6 +766,7 @@ const MRegistroClinica = ({
                             type="checkbox"
                             className="form-check-input"
                             name="thursday"
+                            id="check4"
                             defaultChecked={
                               workday.find((w) => w.day === 4) ? true : false
                             }
@@ -781,7 +780,8 @@ const MRegistroClinica = ({
                           type="time"
                           name="opening"
                           id="horario-ingreso4"
-                          // defaultValue={editar ? "00:00" : "00:00"}
+                          disabled
+                          defaultValue={editar ? getWorkDay(4) : ""}
                           onChange={(e) => actualizarHorarioOpening(e, 4)}
                         />
                       </td>
@@ -791,7 +791,8 @@ const MRegistroClinica = ({
                           type="time"
                           name="closing"
                           id="horario-final4"
-                          // defaultValue={editar ? "00:00" : "23:59"}
+                          disabled
+                          defaultValue={editar ? getClosing(4) : ""}
                           onChange={(e) => actualizarHorarioClosing(e, 4)}
                         />
                       </td>
@@ -804,6 +805,7 @@ const MRegistroClinica = ({
                             type="checkbox"
                             className="form-check-input"
                             name="friday"
+                            id="check5"
                             defaultChecked={
                               workday.find((w) => w.day === 5) ? true : false
                             }
@@ -817,7 +819,8 @@ const MRegistroClinica = ({
                           type="time"
                           name="opening"
                           id="horario-ingreso5"
-                          // defaultValue={editar ? "00:00" : "00:00"}
+                          disabled
+                          defaultValue={editar ? getWorkDay(5) : ""}
                           onChange={(e) => actualizarHorarioOpening(e, 5)}
                         />
                       </td>
@@ -827,7 +830,8 @@ const MRegistroClinica = ({
                           type="time"
                           name="closing"
                           id="horario-final5"
-                          // defaultValue={editar ? "00:00" : "23:59"}
+                          disabled
+                          defaultValue={editar ? getClosing(5) : ""}
                           onChange={(e) => actualizarHorarioClosing(e, 5)}
                         />
                       </td>
@@ -840,6 +844,7 @@ const MRegistroClinica = ({
                             type="checkbox"
                             className="form-check-input"
                             name="saturday"
+                            id="check6"
                             defaultChecked={
                               workday.find((w) => w.day === 6) ? true : false
                             }
@@ -853,7 +858,8 @@ const MRegistroClinica = ({
                           type="time"
                           name="opening"
                           id="horario-ingreso6"
-                          // defaultValue={editar ? "00:00" : "00:00"}
+                          disabled
+                          defaultValue={editar ? getWorkDay(6) : ""}
                           onChange={(e) => actualizarHorarioOpening(e, 6)}
                         />
                       </td>
@@ -863,7 +869,8 @@ const MRegistroClinica = ({
                           type="time"
                           name="closing"
                           id="horario-final6"
-                          // defaultValue={editar ? "00:00" : "23:59"}
+                          disabled
+                          defaultValue={editar ? getClosing(6) : ""}
                           onChange={(e) => actualizarHorarioClosing(e, 6)}
                         />
                       </td>
@@ -876,6 +883,7 @@ const MRegistroClinica = ({
                             type="checkbox"
                             className="form-check-input"
                             name="sunday"
+                            id="check7"
                             defaultChecked={
                               workday.find((w) => w.day === 7) ? true : false
                             }
@@ -889,7 +897,8 @@ const MRegistroClinica = ({
                           type="time"
                           name="opening"
                           id="horario-ingreso7"
-                          // defaultValue={editar ? "00:00" : "00:00"}
+                          disabled
+                          defaultValue={editar ? getWorkDay(7) : ""}
                           onChange={(e) => actualizarHorarioOpening(e, 7)}
                         />
                       </td>
@@ -899,7 +908,8 @@ const MRegistroClinica = ({
                           type="time"
                           name="closing"
                           id="horario-final7"
-                          // defaultValue={editar ? "00:00" : "23:59"}
+                          disabled
+                          defaultValue={editar ? getClosing(7) : ""}
                           onChange={(e) => actualizarHorarioClosing(e, 7)}
                         />
                       </td>
@@ -924,7 +934,9 @@ const MRegistroClinica = ({
               </div>
               <div className="mregistro__ubicacion">
                 <div className="icons">
-                  <p>Ubicación</p>
+                  <p>
+                    <strong>Ubicación</strong>
+                  </p>
                   <i className="fas fa-map-marker-alt"></i>
                 </div>
                 <div className="mapa">

@@ -29,7 +29,6 @@ const MGenerarAtencion = ({
   const [ficha, setFicha] = useState();
   const [services, setServices] = useState({});
   const [clinics, setClinics] = useState({});
-  const [departamentos, setDepartamentos] = useState({});
 
   const getServices = () => {
     fetchGETPOSTPUTDELETE("services")
@@ -77,7 +76,6 @@ const MGenerarAtencion = ({
     generarFicha();
   }, []);
 
-  console.log(datos);
 
   const getFecha = () => {
     let newDate = new Date();
@@ -169,7 +167,6 @@ const MGenerarAtencion = ({
       [e.target.name]: e.target.value,
     });
   };
-  console.log(datos);
 
   const mostrarDeclaracionJurada = () => {
     const declaracion = document.querySelector(".containerPDF").style;
@@ -203,7 +200,6 @@ const MGenerarAtencion = ({
     ficha.display = "block";
     ficha.visibility = "visible";
   };
-  console.log(dataSelected);
 
   return (
     <Modal
@@ -234,11 +230,20 @@ const MGenerarAtencion = ({
             {dataSelected.user &&
               dataSelected.user.user_type &&
               dataSelected.user.user_type &&
-              dataSelected.user.user_type.name}
+              dataSelected.user.user_type.name.replace(
+                /(^\w|\s\w)(\S*)/g,
+                (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+              )}
           </label>
           <label htmlFor="">
             Empresa:{" "}
-            {dataSelected.business_name ? dataSelected.business_name : "---"}
+            {dataSelected &&
+            dataSelected.user &&
+            dataSelected.user.company &&
+            dataSelected.user.company.corporation &&
+            dataSelected.user.company.corporation.commercial_name
+              ? dataSelected.user.company.corporation.commercial_name
+              : "---"}
           </label>
         </div>
 
@@ -272,7 +277,6 @@ const MGenerarAtencion = ({
                 id="subcategoria"
                 onChange={(e) => {
                   handleOnChange(e);
-                  console.log(e);
                   // setPrueba(e.target);
                 }}
               >
