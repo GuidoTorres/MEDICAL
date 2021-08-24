@@ -31,7 +31,6 @@ const MRegistroEmpresa = ({
   const [estado, setEstado] = useState([]);
   const [status, setStatus] = useState();
 
-
   const closeModal = () => {
     setOpenModal(false);
     setEditar(false);
@@ -45,8 +44,13 @@ const MRegistroEmpresa = ({
         setTypes(datos.types);
       });
   };
+  const getServices = () => {
+    fetchGETPOSTPUTDELETE("services")
+      .then((info) => info.json())
+      .then((datos) => setServicios(datos.data));
+  };
+
   console.log(dataSelected);
-  console.log(estado);
 
   useEffect(() => {
     if (editar) {
@@ -64,9 +68,12 @@ const MRegistroEmpresa = ({
       .then((res) => res.json())
       .then((res) => setRuc(res));
   };
-
   useEffect(() => {
     getCorporationTypes();
+    getServices()
+  }, []);
+
+  useEffect(() => {
     if (empresa && empresa.ruc && empresa.ruc.length === 11) {
       getRuc();
     }
@@ -870,7 +877,7 @@ const MRegistroEmpresa = ({
           </div>
         </form>
       </div>
-    </Modal> 
+    </Modal>
     // </div>
   );
 };
