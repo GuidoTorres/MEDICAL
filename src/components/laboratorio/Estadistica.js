@@ -162,15 +162,15 @@ const Estadistica = () => {
                       ? tipoPrueba.servicios
                           .slice(0, 5)
                           .map((item) =>
-                            item === 5
+                            item === 1
                               ? 'Antígeno'
-                              : item === 6
+                              : item === 2
                               ? ' Eclia anticuerpos IgM/IgG'
-                              : item === 7
+                              : item === 3
                               ? ' Eclia anticuerpos neutralizantes'
-                              : item === 8
+                              : item === 4
                               ? ' Rápida'
-                              : item === 9
+                              : item === 5
                               ? ' Molecular'
                               : ''
                           )

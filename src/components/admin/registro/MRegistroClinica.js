@@ -160,12 +160,20 @@ const MRegistroClinica = ({
       )
     );
 
-    if (document.getElementById(`check${nro}`).checked) {
-      document.getElementById(`horario-ingreso${nro}`).disabled = false;
-      document.getElementById(`horario-final${nro}`).disabled = false;
+    if (document.getElementById(`check${nro}`).checked === true) {
+      document
+        .getElementById(`horario-ingreso${nro}`)
+        .removeAttribute("disabled");
+      document
+        .getElementById(`horario-final${nro}`)
+        .removeAttribute("disabled");
     } else {
-      document.getElementById(`horario-ingreso${nro}`).disabled = true;
-      document.getElementById(`horario-final${nro}`).disabled = true;
+      document
+        .getElementById(`horario-ingreso${nro}`)
+        .setAttribute("disabled", "disabled");
+      document
+        .getElementById(`horario-final${nro}`)
+        .setAttribute("disabled", "disabled");
     }
   };
 
@@ -305,7 +313,7 @@ const MRegistroClinica = ({
         Swal.fire({
           icon: "success",
           title: "Éxito",
-          text: "Se actualizo la clínica correctamente.",
+          text: "Se actualizó la clínica correctamente.",
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Aceptar",
@@ -378,7 +386,6 @@ const MRegistroClinica = ({
     getDepartments();
   }, []);
 
-
   const getWorkDay = (id) => {
     var encontrar = workday.findIndex((w) => w.day === id);
     if (encontrar !== -1) {
@@ -417,7 +424,6 @@ const MRegistroClinica = ({
     }
   }, [departamentos, data.department_id]);
   useEffect(() => {
-
     if (data.department_id && editar) {
       const distritos =
         provinces.length > 0 &&
@@ -663,7 +669,6 @@ const MRegistroClinica = ({
                           type="time"
                           name="opening"
                           id="horario-ingreso1"
-                          disabled
                           defaultValue={editar ? getWorkDay(1) : ""}
                           onChange={(e) => actualizarHorarioOpening(e, 1)}
                         />
@@ -674,7 +679,6 @@ const MRegistroClinica = ({
                           type="time"
                           name="closing"
                           id="horario-final1"
-                          disabled
                           defaultValue={editar ? getClosing(1) : ""}
                           onChange={(e) => actualizarHorarioClosing(e, 1)}
                         />
@@ -702,7 +706,6 @@ const MRegistroClinica = ({
                           type="time"
                           name="opening"
                           id="horario-ingreso2"
-                          disabled
                           defaultValue={editar ? getWorkDay(2) : ""}
                           onChange={(e) => actualizarHorarioOpening(e, 2)}
                         />
@@ -713,7 +716,6 @@ const MRegistroClinica = ({
                           type="time"
                           name="closing"
                           id="horario-final2"
-                          disabled
                           defaultValue={editar ? getClosing(2) : ""}
                           onChange={(e) => actualizarHorarioClosing(e, 2)}
                         />
@@ -741,7 +743,6 @@ const MRegistroClinica = ({
                           type="time"
                           name="opening"
                           id="horario-ingreso3"
-                          disabled
                           defaultValue={editar ? getWorkDay(3) : ""}
                           onChange={(e) => actualizarHorarioOpening(e, 3)}
                         />
@@ -752,7 +753,6 @@ const MRegistroClinica = ({
                           type="time"
                           name="closing"
                           id="horario-final3"
-                          disabled
                           defaultValue={editar ? getClosing(3) : ""}
                           onChange={(e) => actualizarHorarioClosing(e, 3)}
                         />
@@ -780,7 +780,6 @@ const MRegistroClinica = ({
                           type="time"
                           name="opening"
                           id="horario-ingreso4"
-                          disabled
                           defaultValue={editar ? getWorkDay(4) : ""}
                           onChange={(e) => actualizarHorarioOpening(e, 4)}
                         />
@@ -791,7 +790,6 @@ const MRegistroClinica = ({
                           type="time"
                           name="closing"
                           id="horario-final4"
-                          disabled
                           defaultValue={editar ? getClosing(4) : ""}
                           onChange={(e) => actualizarHorarioClosing(e, 4)}
                         />
@@ -819,7 +817,6 @@ const MRegistroClinica = ({
                           type="time"
                           name="opening"
                           id="horario-ingreso5"
-                          disabled
                           defaultValue={editar ? getWorkDay(5) : ""}
                           onChange={(e) => actualizarHorarioOpening(e, 5)}
                         />
@@ -830,7 +827,6 @@ const MRegistroClinica = ({
                           type="time"
                           name="closing"
                           id="horario-final5"
-                          disabled
                           defaultValue={editar ? getClosing(5) : ""}
                           onChange={(e) => actualizarHorarioClosing(e, 5)}
                         />
@@ -858,7 +854,6 @@ const MRegistroClinica = ({
                           type="time"
                           name="opening"
                           id="horario-ingreso6"
-                          disabled
                           defaultValue={editar ? getWorkDay(6) : ""}
                           onChange={(e) => actualizarHorarioOpening(e, 6)}
                         />
@@ -869,7 +864,6 @@ const MRegistroClinica = ({
                           type="time"
                           name="closing"
                           id="horario-final6"
-                          disabled
                           defaultValue={editar ? getClosing(6) : ""}
                           onChange={(e) => actualizarHorarioClosing(e, 6)}
                         />
@@ -897,7 +891,6 @@ const MRegistroClinica = ({
                           type="time"
                           name="opening"
                           id="horario-ingreso7"
-                          disabled
                           defaultValue={editar ? getWorkDay(7) : ""}
                           onChange={(e) => actualizarHorarioOpening(e, 7)}
                         />
@@ -908,7 +901,6 @@ const MRegistroClinica = ({
                           type="time"
                           name="closing"
                           id="horario-final7"
-                          disabled
                           defaultValue={editar ? getClosing(7) : ""}
                           onChange={(e) => actualizarHorarioClosing(e, 7)}
                         />

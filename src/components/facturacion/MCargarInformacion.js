@@ -17,10 +17,14 @@ const MCargarInformacion = ({
 
   const subirArchivo = () => {
     const formData = new FormData();
-    formData.append("liquidacion", datos.id);
-    formData.append("factura", pdf);
+    // formData.append("liquidacion", datos.id);
+    formData.append("file", pdf);
 
-    fetchGETPOSTPUTDELETE("liquidacion/cargar-factura", formData, "POST")
+    fetchGETPOSTPUTDELETE(
+      `billing/${datos.detail[0].attention_id}`,
+      formData,
+      "POST"
+    )
       .then((info) => info.json())
       .then((info) => {
         console.log(info);

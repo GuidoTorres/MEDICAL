@@ -183,13 +183,20 @@ const MSubirEclea = ({
               <div style={{ display: "flex", alignItems: "center" }}>
                 <label>DNI:</label>
                 <label>
-                  {dataSelected.person.dni ? dataSelected.person.dni : ""}
+                  {dataSelected &&
+                  dataSelected.person &&
+                  dataSelected.person.dni
+                    ? dataSelected.person.dni
+                    : ""}
                 </label>
               </div>
               <div>
                 <label>Nombre</label>
                 <label>
-                  {dataSelected.person.name && dataSelected.person.pat_lastname
+                  {dataSelected &&
+                  dataSelected.person &&
+                  dataSelected.person.name &&
+                  dataSelected.person.pat_lastname
                     ? dataSelected.person.name +
                       " " +
                       dataSelected.person.pat_lastname
@@ -198,12 +205,28 @@ const MSubirEclea = ({
               </div>
               <div>
                 <label>Tipo de usuario</label>
-                <label>{dataSelected.person.user.user_type.name}</label>
+                <label>
+                  {dataSelected &&
+                    dataSelected.person &&
+                    dataSelected.person.user &&
+                    dataSelected.person.user.user_type &&
+                    dataSelected.person.user.user_type.name}
+                </label>
               </div>
               <div>
                 <label>Empresa</label>
                 <label>
-                  {dataSelected.person.user.company.corporation.commercial_name}
+                  {dataSelected &&
+                  dataSelected.person &&
+                  dataSelected.person.user &&
+                  dataSelected.person.user.company &&
+                  dataSelected.person.user.company.corporation &&
+                  dataSelected.person.user.company.corporation
+                    .commercial_name &&
+                  dataSelected.person.user.company.corporation.commercial_name
+                    ? dataSelected.person.user.company.corporation
+                        .commercial_name
+                    : ""}
                 </label>
               </div>
             </div>

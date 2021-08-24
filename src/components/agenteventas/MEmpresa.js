@@ -89,6 +89,8 @@ const MEmpresa = ({
   };
 
   const handleChange = (e, data, index, state) => {
+    console.log(discount);
+    console.log(data);
     let position = discount.findIndex(
       (arreglo) => arreglo.service_id == data.id
     );
@@ -138,7 +140,6 @@ const MEmpresa = ({
     const total1 = total * 100;
 
     if (total1 < 0) {
-      console.log('entro al primero');
       document.getElementById(`percent-${id}`).value = 0;
       arreglos[position].percent = 0;
       arreglos[position].amount = value;
@@ -146,7 +147,6 @@ const MEmpresa = ({
 
       setDiscount(arreglos);
     } else if (total1 > 0) {
-      console.log('entro al segundo');
 
       document.getElementById(`percent-${id}`).value = total1.toFixed();
       arreglos[position].percent = total1.toFixed();
@@ -160,6 +160,8 @@ const MEmpresa = ({
   useEffect(() => {
     filtrarServicios();
   }, [dataSelected]);
+
+  
 
   return (
     <Modal
@@ -397,13 +399,7 @@ const MEmpresa = ({
                             className="form-check-input"
                             type="checkbox"
                             name="services"
-                            // defaultChecked={
-                            //   data &&
-                            //   data.last_discount &&
-                            //   data.last_discount.state
-                            //     ? data.last_discount.state
-                            //     : ""
-                            // }
+                            id={`check${data.id}`}
                             defaultChecked={
                               dataSelected.services[index].last_discount
                                 .state === 1
