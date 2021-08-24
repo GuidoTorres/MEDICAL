@@ -14,6 +14,7 @@ const MRegistrarEmpresa = ({
   editar,
   setEditar,
   getCorporations,
+  servicios,
 }) => {
   const [avatar, setAvatar] = useState(null);
   const [empresa, setEmpresa] = useState({
@@ -26,10 +27,9 @@ const MRegistrarEmpresa = ({
   const [service, setService] = useState([]);
   const [types, setTypes] = useState([]);
   const [ruc, setRuc] = useState({});
-  const [servicios, setServicios] = useState({});
   const [error, setError] = useState(false);
   const [estado, setEstado] = useState([]);
-  const [status, setStatus] = useState()
+  const [status, setStatus] = useState();
 
   const closeModal = () => {
     setOpenModal(false);
@@ -44,22 +44,20 @@ const MRegistrarEmpresa = ({
         setTypes(datos.types);
       });
   };
-
-  const getServices = () => {
-    fetchGETPOSTPUTDELETE("services")
-      .then((info) => info.json())
-      .then((datos) => setServicios(datos.data));
-  };
+  console.log(dataSelected);
+  console.log(estado);
 
   useEffect(() => {
     if (editar) {
       const prueba = dataSelected.company_service.map((item) => ({
-        state: item.last_discount.state,
+        id: item.last_discount.service_id,
+        state: item.state,
       }));
       setEstado(prueba);
     }
   }, [dataSelected]);
 
+  console.log(estado);
   const getRuc = () => {
     fetchRUC(empresa.ruc, "GET")
       .then((res) => res.json())
@@ -68,79 +66,68 @@ const MRegistrarEmpresa = ({
 
   useEffect(() => {
     getCorporationTypes();
-    getServices();
     if (empresa && empresa.ruc && empresa.ruc.length === 11) {
       getRuc();
     }
-    serviciosEditar();
   }, [empresa.ruc]);
 
-  const serviciosEditar = () => {
-    if (editar) {
-      const array = [];
-      dataSelected &&
-        dataSelected.company_service.map((s) =>
-          array.push({
-            service_id: s.service_id,
-            status: s.last_discount.state,
-          })
-        );
-      setService(array);
-    }
-  };
+  useEffect(() => {
+    const data1 = [];
 
+    servicios &&
+      servicios[0] &&
+      servicios[0].services &&
+      servicios[0].services.map((item) =>
+        data1.push({
+          service_id: item.id,
+          state: 0,
+        })
+      );
+
+    setService([...data1]);
+  }, []);
+  console.log(service);
   const handleService = (e, data) => {
-    if (editar) {
-      //Editando...
-      if (e.target.checked) {
-        let position = service.findIndex(
-          (arreglo) => arreglo.service_id === data.id
-        );
-        if (position !== -1) {
-          const arreglos = [...service];
-          arreglos.splice(position, 1, { service_id: data.id, status: 1 });
+    //editar
+    if (e.target.checked && editar) {
+      let position = dataSelected.company_service.findIndex(
+        (arreglo) => arreglo.service_id === data.id
+      );
+      const arreglos = [...dataSelected.company_service];
+      arreglos[position].state = 1;
 
-          setService([...arreglos]);
-        } else {
-          setService([
-            ...service,
-            {
-              service_id: data.id,
-              status: 1,
-            },
-          ]);
-        }
-      } else {
-        let position = service.findIndex(
-          (arreglo) => arreglo.service_id === data.id
-        );
-        const arreglos = [...service];
-        arreglos[position].status = 0;
+      setService([...arreglos]);
+    } else if (e.target.checked === false && editar) {
+      let position = dataSelected.company_service.findIndex(
+        (arreglo) => arreglo.service_id === data.id
+      );
+      const arreglos = [...dataSelected.company_service];
+      arreglos[position].state = 0;
+      console.log(arreglos);
 
-        setService([...arreglos]);
-      }
-      console.log(service);
-    } else {
-      //Creando...
-      if (e.target.checked && editar === false) {
-        setService((service) => [
-          ...service,
-          {
-            service_id: e.target.checked ? data.id : "",
-            status: e.target.checked ? 1 : 0,
-          },
-        ]);
-      } else {
-        if (service.length > 0) {
-          let position = service.findIndex(
-            (arreglo) => arreglo.service_id === data.id
-          );
-          const arreglos = [...service];
-          arreglos.splice(position, 1);
+      setService([...arreglos]);
+    }
 
-          setService([...arreglos]);
-        }
-      }
+    //crear
+    if (e.target.checked && editar === false) {
+      let position = service.findIndex(
+        (arreglo) => arreglo.service_id === data.id
+      );
+      const arreglos = [...service];
+      console.log(position);
+      arreglos[position].state = 1;
+      console.log(arreglos);
+
+      setService([...arreglos]);
+    } else if (e.target.checked === false && editar === false) {
+      let position = service.findIndex(
+        (arreglo) => arreglo.service_id === data.id
+      );
+      const arreglos = [...service];
+      console.log(position);
+      arreglos[position].state = 0;
+
+      setService([...arreglos]);
     }
   };
 
@@ -174,6 +161,7 @@ const MRegistrarEmpresa = ({
     if (service) {
       for (var [i, value] of Object.entries(service)) {
         formData.set(`services[${i}][service_id]`, value.service_id);
+        formData.set(`services[${i}][state]`, value.state);
       }
     }
 
@@ -356,7 +344,7 @@ const MRegistrarEmpresa = ({
     if (service.length > 0) {
       for (var [i, value] of Object.entries(service)) {
         formData.set(`services[${i}][service_id]`, value.service_id);
-        formData.set(`services[${i}][state]`, value.status);
+        formData.set(`services[${i}][state]`, value.state);
       }
     }
 
@@ -370,13 +358,13 @@ const MRegistrarEmpresa = ({
       "POST"
     ).then((resp) => {
       setAvatar(null);
-      setStatus(resp.status)
+      setStatus(resp.status);
       if (resp.status === 200) {
         closeModal();
         Swal.fire({
           icon: "success",
           title: "Éxito",
-          text: "Se actualizo la empresa correctamente.",
+          text: "Se actualizó la empresa correctamente.",
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Aceptar",
@@ -442,14 +430,11 @@ const MRegistrarEmpresa = ({
       putCorporation();
     }
   };
-  useEffect(()=>{
-
-    if(status === 200){
-
-      getCorporations()
+  useEffect(() => {
+    if (status === 200) {
+      getCorporations();
     }
-
-  },[status])
+  }, [status]);
 
   return (
     <Modal
@@ -847,6 +832,8 @@ const MRegistrarEmpresa = ({
                               key={i}
                               type="checkbox"
                               className="w-auto"
+                              id={`check${data.id}`}
+                              value={data.id}
                               defaultChecked={
                                 estado && estado[i] && estado[i].state === 1
                                   ? true

@@ -291,90 +291,176 @@ const MCrearPaciente = ({
     );
     formData.set(
       "gender_id",
-      paciente.gender_id || (dataSelected && dataSelected.gender_id)
+      paciente.gender_id
+        ? paciente.gender_id
+        : dataSelected && dataSelected.gender_id
+        ? dataSelected.gender_id
+        : ""
     );
     formData.set(
       "birthday",
-      paciente.birthday || (dataSelected && dataSelected.birthday)
+      paciente.birthday
+        ? paciente.birthday
+        : dataSelected && dataSelected.birthday
+        ? dataSelected.birthday
+        : ""
     );
-    formData.set("religion_id", 1 || dataSelected.religion_id);
+    formData.set(
+      "religion_id",
+      paciente.religion_id
+        ? paciente.religion_id
+        : dataSelected.religion_id
+        ? dataSelected.religion_id
+        : ""
+    );
 
     formData.set(
       "civil_status_id",
-      paciente.civil_status_id || (dataSelected && dataSelected.civil_status_id)
+      paciente.civil_status_id
+        ? paciente.civil_status_id
+          ? dataSelected && dataSelected.civil_status_id
+          : dataSelected.civil_status_id
+        : ""
     );
     formData.set(
       "grade_id",
-      paciente.grade_id || (dataSelected && dataSelected.grade_id)
+      paciente.grade_id
+        ? paciente.grade_id
+        : dataSelected && dataSelected.grade_id
+        ? dataSelected.grade_id
+        : ""
     );
     formData.set(
       "cellphone",
-      paciente.cellphone || (dataSelected && dataSelected.cellphone)
+      paciente.cellphone
+        ? paciente.cellphone
+        : dataSelected && dataSelected.cellphone
+        ? dataSelected.cellphone
+        : ""
     );
     formData.set(
       "phone",
-      paciente.phone || (dataSelected && dataSelected.phone)
+      paciente.phone
+        ? paciente.phone
+        : dataSelected && dataSelected.phone
+        ? dataSelected.phone
+        : ""
     );
-    formData.set("email", paciente.email || dataSelected.email);
+    formData.set(
+      "email",
+      paciente.email
+        ? paciente.email
+        : dataSelected && dataSelected.email
+        ? dataSelected.email
+        : ""
+    );
     formData.set(
       "emergency_phone",
-      paciente.emergy_phone || (dataSelected && dataSelected.emergency_phone)
+      paciente.emergency_phone
+        ? paciente.emergency_phone
+        : dataSelected && dataSelected.emergency_phone
+        ? dataSelected.emergency_phone
+        : ""
     );
     formData.set(
       "contact_emergency",
-      paciente.contact_emergency ||
-        (dataSelected && dataSelected.contact_emergency)
+      paciente.contact_emergency
+        ? paciente.contact_emergency
+        : dataSelected && dataSelected.contact_emergency
+        ? dataSelected.contact_emergency
+        : ""
     );
     formData.set("company_id", "");
     formData.set(
       "workstation",
-      paciente.workstation || (dataSelected && dataSelected.workstation)
+      paciente.workstation
+        ? paciente.workstation
+        : dataSelected && dataSelected.workstation
+        ? dataSelected.workstation
+        : ""
     );
     formData.set("birthplace", "");
     formData.set(
       "address",
-      paciente.address || (dataSelected && dataSelected.address.addres)
+      paciente.address
+        ? paciente.address
+        : dataSelected && dataSelected.address && dataSelected.address.address
+        ? dataSelected.address.address
+        : ""
     );
     formData.set("reference", paciente.reference || "");
     formData.set(
       "country_b",
-      paciente.country_b || dataSelected.country_b || ""
+      paciente.country_b
+        ? paciente.country_b
+        : dataSelected && dataSelected.country_b
+        ? dataSelected.country_b
+        : ""
     );
     formData.set(
       "department_b",
-      paciente.department_b || dataSelected.department_b || ""
+      paciente.department_b
+        ? paciente.department_b
+        : dataSelected && dataSelected.department_b
+        ? dataSelected.department_b
+        : ""
     );
     formData.set(
       "province_b",
-      paciente.province_b || dataSelected.province_b || ""
+      paciente.province_b
+        ? paciente.province_b
+        : dataSelected && dataSelected.province_b
+        ? dataSelected.province_b
+        : ""
     );
     formData.set(
       "district_b",
-      paciente.district_b || dataSelected.department_b || ""
+      paciente.district_b
+        ? paciente.district_b
+        : dataSelected && dataSelected.district_b
+        ? dataSelected.district_b
+        : ""
     );
     formData.set(
       "country_id",
-      paciente.country_id || dataSelected.country_id || ""
+      paciente.country_id
+        ? paciente.country_id
+        : dataSelected && dataSelected.country_id
+        ? dataSelected.country_id
+        : ""
     );
 
     formData.set(
       "department_id",
-      paciente.department_id ||
-        (dataSelected && dataSelected.department_id) ||
-        ""
+      paciente.department_id
+        ? paciente.department_id
+        : dataSelected && dataSelected.department_id
+        ? dataSelected.department_id
+        : ""
     );
     formData.set(
       "province_id",
-      paciente.province_id || dataSelected.province_id || ""
+      paciente.province_id
+        ? paciente.province_id
+        : dataSelected && dataSelected.province_id
+        ? dataSelected.province_id
+        : ""
     );
     formData.set(
       "district_id",
-      paciente.district_id || dataSelected.district_id || ""
+      paciente.district_id
+        ? paciente.district_id
+        : dataSelected && dataSelected.district_id
+        ? dataSelected.district_id
+        : ""
     );
     formData.set(
       "user_type_id",
-      paciente.user_type_id ||
-        (dataSelected && dataSelected.user && dataSelected.user.user_type_id)
+      paciente.user_type_id
+        ? paciente.user_type_id
+        : dataSelected && dataSelected.user && dataSelected.user.user_type_id
+        ? dataSelected.user.user_type_id
+        : ""
     );
     // formData.set("country_id", paciente.country_id || "");
     formData.set("photo", avatar && avatar.file ? avatar.file : "");
@@ -386,7 +472,7 @@ const MCrearPaciente = ({
           Swal.fire({
             icon: "success",
             title: "Éxito",
-            text: "Se actualizo el paciente correctamente.",
+            text: "Se actualizó el paciente correctamente.",
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Aceptar",
