@@ -15,6 +15,7 @@ const Registro = () => {
   const [corporations, setCorporations] = useState([]);
   const [dataSelected, setDataSelected] = useState({});
   const [editar, setEditar] = useState(false);
+  const [servicios, setServicios] = useState({});
 
   const getCorporations = () => {
     fetchGETPOSTPUTDELETE("company")
@@ -22,8 +23,15 @@ const Registro = () => {
       .then((datos) => setCorporations(datos.data));
   };
 
+  const getServices = () => {
+    fetchGETPOSTPUTDELETE("services")
+      .then((info) => info.json())
+      .then((datos) => setServicios(datos.data));
+  };
+
   useEffect(() => {
     getCorporations();
+    getServices();
   }, []);
 
   const columnas = [
@@ -248,6 +256,7 @@ const Registro = () => {
           editar={editar}
           setEditar={setEditar}
           getCorporations={getCorporations}
+          servicios={servicios}
         />
       )}
     </div>

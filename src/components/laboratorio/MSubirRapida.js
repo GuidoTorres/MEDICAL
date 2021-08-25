@@ -52,32 +52,57 @@ const MSubirRapida = ({
     doc.text(
       395,
       143,
-      `${dataSelected.person.gender_id === 1 ? "Masculino" : "Femenino"}`
+      `${
+        dataSelected &&
+        dataSelected.person &&
+        dataSelected.person.gender_id &&
+        dataSelected.person.gender_id === 1
+          ? "Masculino"
+          : "Femenino"
+      }`
     );
-    doc.text(100, 143, `${dataSelected.id ? dataSelected.id : ""}`);
+    doc.text(
+      100,
+      143,
+      `${dataSelected && dataSelected.id ? dataSelected.id : ""}`
+    );
     doc.text(
       70,
       163,
-      `${dataSelected.person.dni ? dataSelected.person.dni : ""}`
+      `${
+        dataSelected && dataSelected.person && dataSelected.person.dni
+          ? dataSelected.person.dni
+          : ""
+      }`
     );
     doc.text(
       493,
       163,
-      `${dataSelected.date_attention ? dataSelected.date_attention : ""}`
+      `${
+        dataSelected && dataSelected.date_attention
+          ? dataSelected.date_attention
+          : ""
+      }`
     );
 
     doc.text(
       98,
       183,
       `${
-        dataSelected.person.name !== undefined || null
+        (dataSelected &&
+          dataSelected.person &&
+          dataSelected.person.name !== undefined) ||
+        null
           ? dataSelected.person.name.replace(
               /(^\w|\s\w)(\S*)/g,
               (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
             )
           : ""
       } ${
-        dataSelected.person.pat_lastname !== undefined || null
+        (dataSelected &&
+          dataSelected.person &&
+          dataSelected.person.pat_lastname !== undefined) ||
+        null
           ? dataSelected.person.pat_lastname.replace(
               /(^\w|\s\w)(\S*)/g,
               (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
@@ -188,13 +213,20 @@ const MSubirRapida = ({
               <div style={{ display: "flex", alignItems: "center" }}>
                 <label>DNI:</label>
                 <label>
-                  {dataSelected.person.dni ? dataSelected.person.dni : ""}
+                  {dataSelected &&
+                  dataSelected.person &&
+                  dataSelected.person.dni
+                    ? dataSelected.person.dni
+                    : ""}
                 </label>
               </div>
               <div>
                 <label>Nombre</label>
                 <label>
-                  {dataSelected.person.name && dataSelected.person.pat_lastname
+                  {dataSelected &&
+                  dataSelected.person &&
+                  dataSelected.person.name &&
+                  dataSelected.person.pat_lastname
                     ? dataSelected.person.name +
                       " " +
                       dataSelected.person.pat_lastname
@@ -203,12 +235,28 @@ const MSubirRapida = ({
               </div>
               <div>
                 <label>Tipo de usuario</label>
-                <label>{dataSelected.person.user.user_type.name}</label>
+                <label>
+                  {dataSelected &&
+                    dataSelected.person &&
+                    dataSelected.person.user &&
+                    dataSelected.person.user.user_type &&
+                    dataSelected.person.user.user_type.name}
+                </label>
               </div>
               <div>
                 <label>Empresa</label>
                 <label>
-                  {dataSelected.person.user.company.corporation.commercial_name}
+                  {dataSelected &&
+                  dataSelected.person &&
+                  dataSelected.person.user &&
+                  dataSelected.person.user.company &&
+                  dataSelected.person.user.company.corporation &&
+                  dataSelected.person.user.company.corporation
+                    .commercial_name &&
+                  dataSelected.person.user.company.corporation.commercial_name
+                    ? dataSelected.person.user.company.corporation
+                        .commercial_name
+                    : ""}
                 </label>
               </div>
             </div>

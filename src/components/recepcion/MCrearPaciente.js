@@ -11,6 +11,7 @@ import { customStyles } from "../../helpers/tablaOpciones";
 import { UploadAvatar } from "../uploadAvatar/uploadAvatar";
 import WebCamScreenshot from "../webcam/WebCamScreenshot";
 import Swal from "sweetalert2";
+import ImagenPaciente from "../uploadAvatar/ImagenPaciente";
 
 const MCrearPaciente = ({
   addRegistro,
@@ -55,7 +56,6 @@ const MCrearPaciente = ({
   const handleCambio = () => {
     setImagenes(true);
   };
-  console.log(paciente);
 
   const handleChange = (e) => {
     setPaciente({
@@ -85,6 +85,23 @@ const MCrearPaciente = ({
     fetchDNI(paciente.dni, "GET")
       .then((res) => res.json())
       .then((res) => setDni(res));
+  };
+  useEffect(() => {
+    if (editar) ObtenerData();
+  }, []);
+
+  const ObtenerData = () => {
+    setPaciente({
+      country_b: dataSelected.country_b,
+      department_b: dataSelected.department_b,
+      province_b: dataSelected.province_b,
+      district_b: dataSelected.district_b,
+      country_id: dataSelected.country_id,
+      department_id: dataSelected.department_id,
+      province_id: dataSelected.province_id,
+      district_id: dataSelected.district_id,
+      grade_id: dataSelected.grade_id,
+    });
   };
 
   useEffect(() => {
@@ -161,8 +178,6 @@ const MCrearPaciente = ({
     formData.set("gender_id", paciente.gender_id || "");
     formData.set("birthday", paciente.birthday || "");
     formData.set("religion_id", 1);
-    formData.set("department_id", paciente.department_id || "");
-    formData.set("civil_status_id", paciente.civil_status_id || "");
     formData.set("grade_id", paciente.grade_id || "");
     formData.set("cellphone", paciente.cellphone || "");
     formData.set("phone", paciente.phone || "");
@@ -175,10 +190,17 @@ const MCrearPaciente = ({
     formData.set("address", paciente.address || "");
     formData.set("reference", paciente.address || "");
     formData.set("district_id", paciente.district_id || "");
-    formData.set("department_id", paciente.district_id || "");
+    formData.set("country_b", paciente.country_b || "");
+    formData.set("department_b", paciente.department_b || "");
+    formData.set("province_b", paciente.province_b || "");
+    formData.set("district_b", paciente.district_b || "");
+    formData.set("country_id", paciente.country_id || "");
+    formData.set("department_id", paciente.department_id || "");
+    formData.set("province_id", paciente.province_id || "");
+    formData.set("district_id", paciente.district_id || "");
+
+    formData.set("civil_status_id", paciente.civil_status_id || "");
     formData.set("user_type_id", paciente.user_type_id || "");
-    // formData.set("country_id", paciente.country_id || "");
-    formData.set("grade_id", "");
 
     // if (
     //   (paciente.document_type_id !== "" ||
@@ -269,66 +291,179 @@ const MCrearPaciente = ({
     );
     formData.set(
       "gender_id",
-      paciente.gender_id || (dataSelected && dataSelected.gender_id)
+      paciente.gender_id
+        ? paciente.gender_id
+        : dataSelected && dataSelected.gender_id
+        ? dataSelected.gender_id
+        : ""
     );
     formData.set(
       "birthday",
-      paciente.birthday || (dataSelected && dataSelected.birthday)
+      paciente.birthday
+        ? paciente.birthday
+        : dataSelected && dataSelected.birthday
+        ? dataSelected.birthday
+        : ""
     );
-    formData.set("religion_id", 1 || dataSelected.religion_id);
     formData.set(
-      "department_id",
-      paciente.department_id || (dataSelected && dataSelected.department_id)
+      "religion_id",
+      paciente.religion_id
+        ? paciente.religion_id
+        : dataSelected.religion_id
+        ? dataSelected.religion_id
+        : ""
     );
+
     formData.set(
       "civil_status_id",
-      paciente.civil_status_id || (dataSelected && dataSelected.civil_status_id)
+      paciente.civil_status_id
+        ? paciente.civil_status_id
+          ? dataSelected && dataSelected.civil_status_id
+          : dataSelected.civil_status_id
+        : ""
     );
     formData.set(
       "grade_id",
-      paciente.grade_id || (dataSelected && dataSelected.grade_id)
+      paciente.grade_id
+        ? paciente.grade_id
+        : dataSelected && dataSelected.grade_id
+        ? dataSelected.grade_id
+        : ""
     );
     formData.set(
       "cellphone",
-      paciente.cellphone || (dataSelected && dataSelected.cellphone)
+      paciente.cellphone
+        ? paciente.cellphone
+        : dataSelected && dataSelected.cellphone
+        ? dataSelected.cellphone
+        : ""
     );
     formData.set(
       "phone",
-      paciente.phone || (dataSelected && dataSelected.phone)
+      paciente.phone
+        ? paciente.phone
+        : dataSelected && dataSelected.phone
+        ? dataSelected.phone
+        : ""
     );
-    formData.set("email", paciente.email || dataSelected.dataSelected.email);
+    formData.set(
+      "email",
+      paciente.email
+        ? paciente.email
+        : dataSelected && dataSelected.email
+        ? dataSelected.email
+        : ""
+    );
     formData.set(
       "emergency_phone",
-      paciente.emergy_phone || (dataSelected && dataSelected.emergency_phone)
+      paciente.emergency_phone
+        ? paciente.emergency_phone
+        : dataSelected && dataSelected.emergency_phone
+        ? dataSelected.emergency_phone
+        : ""
     );
     formData.set(
       "contact_emergency",
-      paciente.contact_emergency ||
-        (dataSelected && dataSelected.contact_emergency)
+      paciente.contact_emergency
+        ? paciente.contact_emergency
+        : dataSelected && dataSelected.contact_emergency
+        ? dataSelected.contact_emergency
+        : ""
     );
     formData.set("company_id", "");
     formData.set(
       "workstation",
-      paciente.workstation || (dataSelected && dataSelected.workstation)
+      paciente.workstation
+        ? paciente.workstation
+        : dataSelected && dataSelected.workstation
+        ? dataSelected.workstation
+        : ""
     );
     formData.set("birthplace", "");
     formData.set(
       "address",
-      paciente.address || (dataSelected && dataSelected.address_id)
+      paciente.address
+        ? paciente.address
+        : dataSelected && dataSelected.address && dataSelected.address.address
+        ? dataSelected.address.address
+        : ""
     );
     formData.set("reference", paciente.reference || "");
-    formData.set("district_id", paciente.district_id || "");
+    formData.set(
+      "country_b",
+      paciente.country_b
+        ? paciente.country_b
+        : dataSelected && dataSelected.country_b
+        ? dataSelected.country_b
+        : ""
+    );
+    formData.set(
+      "department_b",
+      paciente.department_b
+        ? paciente.department_b
+        : dataSelected && dataSelected.department_b
+        ? dataSelected.department_b
+        : ""
+    );
+    formData.set(
+      "province_b",
+      paciente.province_b
+        ? paciente.province_b
+        : dataSelected && dataSelected.province_b
+        ? dataSelected.province_b
+        : ""
+    );
+    formData.set(
+      "district_b",
+      paciente.district_b
+        ? paciente.district_b
+        : dataSelected && dataSelected.district_b
+        ? dataSelected.district_b
+        : ""
+    );
+    formData.set(
+      "country_id",
+      paciente.country_id
+        ? paciente.country_id
+        : dataSelected && dataSelected.country_id
+        ? dataSelected.country_id
+        : ""
+    );
+
     formData.set(
       "department_id",
-      paciente.district_id || (dataSelected && dataSelected.department_id)
+      paciente.department_id
+        ? paciente.department_id
+        : dataSelected && dataSelected.department_id
+        ? dataSelected.department_id
+        : ""
+    );
+    formData.set(
+      "province_id",
+      paciente.province_id
+        ? paciente.province_id
+        : dataSelected && dataSelected.province_id
+        ? dataSelected.province_id
+        : ""
+    );
+    formData.set(
+      "district_id",
+      paciente.district_id
+        ? paciente.district_id
+        : dataSelected && dataSelected.district_id
+        ? dataSelected.district_id
+        : ""
     );
     formData.set(
       "user_type_id",
-      paciente.user_type_id ||
-        (dataSelected && dataSelected.user && dataSelected.user.user_type_id)
+      paciente.user_type_id
+        ? paciente.user_type_id
+        : dataSelected && dataSelected.user && dataSelected.user.user_type_id
+        ? dataSelected.user.user_type_id
+        : ""
     );
     // formData.set("country_id", paciente.country_id || "");
-    formData.set("grade_id", "");
+    formData.set("photo", avatar && avatar.file ? avatar.file : "");
 
     fetchGETPOSTPUTDELETE(`patient/${dataSelected.id}`, formData, "POST").then(
       (data) => {
@@ -337,7 +472,7 @@ const MCrearPaciente = ({
           Swal.fire({
             icon: "success",
             title: "Éxito",
-            text: "Se actualizo el paciente correctamente.",
+            text: "Se actualizó el paciente correctamente.",
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Aceptar",
@@ -361,57 +496,98 @@ const MCrearPaciente = ({
     );
   };
 
-  const getProvinces = () => {
-    //devuelve solo el objeto con el id = a department_id
-    const provincias =
-      departamentos.length > 0 &&
-      departamentos.filter(
-        (data) => data.id === Number(paciente.department_id)
-      );
-
-    setProvinces(provincias);
-
-    const distritos =
-      provinces.length > 0 &&
-      provinces.map((data, i) =>
-        data.provinces.filter((item, j) =>
-          Number(item.id) === Number(paciente.province_id) ? item.districts : ""
-        )
-      );
-
-    setDistricts(distritos);
-  };
-  // console.log(dist2);
   useEffect(() => {
-    getProvinces();
-  }, [paciente]);
+    if (paciente.department_id && editar) {
+      const provincias =
+        departamentos.length > 0 &&
+        departamentos.filter(
+          (data) => data.id === Number(paciente.department_id)
+        );
 
-  const getProvinces1 = () => {
-    //devuelve solo el objeto con el id = a department_id
-    const provincias1 =
-      departamentos.length > 0 &&
-      departamentos.filter(
-        (data) => data.id === Number(paciente2.department_id)
-      );
+      setProvinces1(provincias);
+    } else {
+      const provincias =
+        departamentos.length > 0 &&
+        departamentos.filter(
+          (data) => data.id === Number(paciente.department_id)
+        );
 
-    setProvinces1(provincias1);
+      setProvinces1(provincias);
+    }
+  }, [departamentos, paciente.department_id]);
 
-    const distritos1 =
-      provinces1.length > 0 &&
-      provinces1.map((data, i) =>
-        data.provinces.filter((item, j) =>
-          Number(item.id) === Number(paciente2.province_id)
-            ? item.districts
-            : ""
-        )
-      );
-    setDistricts1(distritos1);
-  };
-
+  useEffect(() => {
+    if (paciente.department_id && editar) {
+      const distritos =
+        provinces1.length > 0 &&
+        provinces1.map((data, i) =>
+          data.provinces.filter((item, j) =>
+            Number(item.id) === Number(paciente.province_id)
+              ? item.districts
+              : ""
+          )
+        );
+      setDistricts1(distritos);
+    } else {
+      const distritos =
+        provinces1.length > 0 &&
+        provinces1.map((data, i) =>
+          data.provinces.filter((item, j) =>
+            Number(item.id) === Number(paciente.province_id)
+              ? item.districts
+              : ""
+          )
+        );
+      setDistricts1(distritos);
+    }
+  }, [provinces1, paciente.province_id]);
   console.log(dataSelected);
+
   useEffect(() => {
-    getProvinces1();
-  }, [paciente2]);
+    if (paciente.department_b && editar) {
+      const provincias =
+        departamentos.length > 0 &&
+        departamentos.filter(
+          (data) => data.id === Number(paciente.department_b)
+        );
+
+      setProvinces(provincias);
+    } else {
+      const provincias =
+        departamentos.length > 0 &&
+        departamentos.filter(
+          (data) => data.id === Number(paciente.department_b)
+        );
+
+      setProvinces(provincias);
+    }
+  }, [departamentos, paciente.department_b]);
+
+  useEffect(() => {
+    if (paciente.department_b && editar) {
+      const distritos =
+        provinces.length > 0 &&
+        provinces.map((data, i) =>
+          data.provinces.filter((item, j) =>
+            Number(item.id) === Number(paciente.province_b)
+              ? item.districts
+              : ""
+          )
+        );
+      setDistricts(distritos);
+    } else {
+      const distritos =
+        provinces.length > 0 &&
+        provinces.map((data, i) =>
+          data.provinces.filter((item, j) =>
+            Number(item.id) === Number(paciente.province_b)
+              ? item.districts
+              : ""
+          )
+        );
+      setDistricts(distritos);
+    }
+  }, [provinces, paciente.province_b]);
 
   return (
     <Modal
@@ -541,7 +717,7 @@ const MCrearPaciente = ({
                   }
                   onChange={(e) => handleChange(e)}
                 >
-                  <option selected>Seleccione</option>
+                  <option>Seleccione</option>
                   <option value="1">Masculino</option>
                   <option value="2">Femenino</option>
                 </select>
@@ -568,7 +744,7 @@ const MCrearPaciente = ({
                   value={dataSelected && dataSelected.religion_id}
                   onChange={(e) => handleChange(e)}
                 >
-                  <option value="">Seleccione</option>
+                  <option>Seleccione</option>
                   {religions.length > 0 &&
                     religions.map((data, i) => (
                       <option key={i} value={data.id}>
@@ -579,15 +755,23 @@ const MCrearPaciente = ({
               </div>
               <div>
                 <label htmlFor="">País: </label>
-                <select name="country_id" onChange={(e) => handleChange(e)}>
-                  <option value="">Seleccione</option>
+                <select
+                  value={paciente.country_b || ""}
+                  name="country_b"
+                  onChange={(e) => handleChange(e)}
+                >
+                  <option>Seleccione</option>
                   <option value="1">Perú</option>
                   <option value="2">Venezuela</option>
                 </select>
               </div>
               <div>
                 <label htmlFor="">Departmento:</label>
-                <select name="department_id" onChange={(e) => handleChange(e)}>
+                <select
+                  value={paciente.department_b || ""}
+                  name="department_b"
+                  onChange={(e) => handleChange(e)}
+                >
                   <option value="">Seleccione</option>
 
                   {departamentos.length > 0 &&
@@ -600,8 +784,12 @@ const MCrearPaciente = ({
               </div>
               <div>
                 <label htmlFor="">Provincia:</label>
-                <select name="province_id" onChange={(e) => handleChange(e)}>
-                  <option value="">Seleccione</option>
+                <select
+                  value={paciente.province_b}
+                  name="province_b"
+                  onChange={(e) => handleChange(e)}
+                >
+                  <option>Seleccione</option>
 
                   {provinces.length > 0 &&
                     provinces.map((data, i) =>
@@ -615,8 +803,12 @@ const MCrearPaciente = ({
               </div>
               <div>
                 <label htmlFor="">Distrito: </label>
-                <select name="district_id" onChange={(e) => handleChange(e)}>
-                  <option value="">Seleccione</option>
+                <select
+                  value={paciente.district_b || ""}
+                  name="district_b"
+                  onChange={(e) => handleChange(e)}
+                >
+                  <option>Seleccione</option>
                   {districts &&
                     districts[0] &&
                     districts[0][0] &&
@@ -634,8 +826,12 @@ const MCrearPaciente = ({
               </p>
               <div className="mt-2">
                 <label htmlFor="">País: </label>
-                <select>
-                  <option selected>Seleccione</option>
+                <select
+                  value={paciente.country_b || ""}
+                  name="country_id"
+                  onChange={(e) => handleChange(e)}
+                >
+                  <option>Seleccione</option>
                   <option value="1">Perú</option>
                   <option value="2">Venezuela</option>
                 </select>
@@ -644,15 +840,11 @@ const MCrearPaciente = ({
               <div>
                 <label htmlFor="">Departamento:</label>
                 <select
-                  // name="department_id2" onChange={(e) => handleChange(e)}
-                  onChange={(e) =>
-                    setPaciente2({
-                      ...paciente2,
-                      department_id: e.target.value,
-                    })
-                  }
+                  name="department_id"
+                  value={paciente.department_id}
+                  onChange={(e) => handleChange(e)}
                 >
-                  <option value="">Seleccione</option>
+                  <option>Seleccione</option>
 
                   {departamentos.length > 0 &&
                     departamentos.map((data, i) => (
@@ -667,11 +859,11 @@ const MCrearPaciente = ({
                 <label htmlFor="">Provincia:</label>
                 <select
                   // name="province_id" onChange={(e) => handleChange(e)}
-                  onChange={(e) =>
-                    setPaciente2({ ...paciente2, province_id: e.target.value })
-                  }
+                  value={paciente.province_id || ""}
+                  name="province_id"
+                  onChange={(e) => handleChange(e)}
                 >
-                  <option value="">Seleccione</option>
+                  <option>Seleccione</option>
                   {provinces1.length > 0 &&
                     provinces1.map((data, i) =>
                       data.provinces.map((prov, i) => (
@@ -687,14 +879,10 @@ const MCrearPaciente = ({
                 <label htmlFor="">Distrito: </label>
                 <select
                   name="district_id"
-                  onChange={(e) =>
-                    setPaciente2({
-                      ...paciente2,
-                      district_id: e.target.value,
-                    })
-                  }
+                  value={paciente.district_id || ""}
+                  onChange={(e) => handleChange(e)}
                 >
-                  <option value="">Seleccione</option>
+                  <option>Seleccione</option>
                   {districts1 &&
                     districts1[0] &&
                     districts1[0][0] &&
@@ -712,6 +900,13 @@ const MCrearPaciente = ({
                   placeholder=""
                   name="address"
                   id="reference"
+                  defaultValue={
+                    dataSelected &&
+                    dataSelected.address &&
+                    dataSelected.address.address
+                      ? dataSelected.address.address
+                      : ""
+                  }
                   onChange={handleChange}
                 />
               </div>
@@ -733,7 +928,7 @@ const MCrearPaciente = ({
                   }
                   onChange={(e) => handleChange(e)}
                 >
-                  <option selected>Seleccione</option>
+                  <option>Seleccione</option>
                   <option value="1">Casado</option>
                   <option value="2">Soltero</option>
                   <option value="3">Viudo</option>
@@ -743,7 +938,11 @@ const MCrearPaciente = ({
 
               <div>
                 <label htmlFor="">Grado de instrucción:</label>
-                <select name="grade_id" onChange={(e) => handleChange(e)}>
+                <select
+                  value={paciente.grade_id || ""}
+                  name="grade_id"
+                  onChange={(e) => handleChange(e)}
+                >
                   <option value="">Seleccione</option>
                   <option value="1">Primaria</option>
                   <option value="2">Secundaria</option>
@@ -877,14 +1076,21 @@ const MCrearPaciente = ({
               </div>
               <div>
                 {!imagenes ? (
-                  <UploadAvatar avatar={avatar} setAvatar={setAvatar} />
+                  <ImagenPaciente
+                    avatar={avatar}
+                    setAvatar={setAvatar}
+                    dataSelected={dataSelected}
+                  />
                 ) : (
                   <WebCamScreenshot />
                 )}
               </div>
             </div>
 
-            <div className="list-botones">
+            <div
+              className="list-botones"
+              style={{ display: "flex", justifyContent: "flex-end" }}
+            >
               <button className="botones" onClick={closeModal}>
                 Cancelar
               </button>

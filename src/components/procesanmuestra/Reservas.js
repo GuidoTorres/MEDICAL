@@ -10,8 +10,13 @@ import { paginacionOpciones } from "../../helpers/tablaOpciones";
 const Reservas = () => {
   const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
-
   const [getDateAttention, setGetDateAttention] = useState([]);
+  const [listServicio, setListServicio] = useState([]);
+  const [addRegistro, setAddRegistro] = useState(false);
+  const [generarAtencion, setGenerarAtencion] = useState(false);
+  const [editar, setEditar] = useState(false);
+  const [dataSelected, setDataSelected] = useState({});
+  const [formulario, setFormulario] = useState({});
 
   //clinic care , attention por ahora
   //patient care para la tencion
@@ -89,18 +94,15 @@ const Reservas = () => {
         color: "#555555",
       },
     },
-    {
-      name: "Generar atención",
-      button: true,
-      cell: (e) => (
-        <button
-          // onClick={() => handleDetalles(e)}
-          className="table__tablebutton"
-        >
-          <i className="fas fa-stethoscope"></i>
-        </button>
-      ),
-    },
+    // {
+    //   name: "Generar atención",
+    //   button: true,
+    //   cell: (e) => (
+    //     <button onClick={() => handleEditar(e)} className="table__tablebutton">
+    //       <i className="fas fa-stethoscope"></i>
+    //     </button>
+    //   ),
+    // },
     {
       name: "Atender",
       button: true,
@@ -114,6 +116,13 @@ const Reservas = () => {
       ),
     },
   ];
+  console.log(editar);
+
+  const handleEditar = (e) => {
+    setAddRegistro(true);
+    setDataSelected(e);
+    setEditar(true);
+  };
   //
   useEffect(() => {
     const filtrarElemento = () => {
@@ -145,7 +154,6 @@ const Reservas = () => {
     };
     filtrarElemento();
   }, [busqueda, getDateAttention]);
-  console.log(busqueda);
 
   const handleSearch = (e) => {
     setBusqueda(([e.target.name] = e.target.value));
@@ -213,6 +221,15 @@ const Reservas = () => {
           />
         </div>
       </div>
+      {generarAtencion && (
+        <MGenerarAtencion
+          generarAtencion={generarAtencion}
+          setGenerarAtencion={setGenerarAtencion}
+          dataSelected={dataSelected}
+          getAttention={getAttention}
+          formulario={formulario}
+        />
+      )}
     </div>
   );
 };

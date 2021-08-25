@@ -15,6 +15,8 @@ const Liquidacion = () => {
   const [openModalCargarInfo, setOpenModalCargarInfo] = useState(false);
   const [datos, setDatos] = useState({});
   const [liquidacion, setLiquidacion] = useState([]);
+  const [empresa, setEmpresa] = useState();
+  const [particular, setParticular] = useState();
 
   const getLiquidacion = () => {
     // console.log("a");
@@ -26,13 +28,24 @@ const Liquidacion = () => {
         setBusqueda("");
       });
   };
-  console.log(liquidacion);
 
   const handleCargarInfo = (e) => {
     setDatos(e);
     setOpenModalCargarInfo(true);
     // console.log(e);
   };
+
+  const filterTipoUsuario = () => {
+    // console.log("tipo de usuario");
+    const particular =
+      liquidacion && liquidacion.filter((item) => item.company_id === null);
+    setParticular(particular);
+
+    const empresa =
+      liquidacion && liquidacion.filter((item) => item.company_id !== null);
+    setEmpresa(empresa);
+  };
+  console.log(empresa);
 
   const typeStatus = (estado) => {
     switch (Number(estado)) {
@@ -44,6 +57,9 @@ const Liquidacion = () => {
         return "Aprobado";
     }
   };
+  useEffect(() => {
+    filterTipoUsuario();
+  }, [liquidacion]);
 
   // console.log(liquidacion);
   useEffect(() => {
@@ -229,27 +245,96 @@ const Liquidacion = () => {
     <div className="container">
       <div className="row">
         <div className="table-responsive">
-          <div className="adminregistro__option">
-            <div>
-              <input
-                type="text"
-                placeholder="Buscar"
-                name="busqueda"
-                value={busqueda}
-                onChange={handleSearch}
-              />
+          <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseOne"
+                  aria-expanded="true"
+                  aria-controls="collapseOne"
+                >
+                  Particular
+                </button>
+              </h2>
+              <div
+                id="collapseOne"
+                class="accordion-collapse collapse show"
+                aria-labelledby="headingOne"
+                data-bs-parent="#accordionExample"
+              >
+                <br></br>
+                <div className="adminregistro__option">
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Buscar"
+                      name="busqueda"
+                      value={busqueda}
+                      onChange={handleSearch}
+                    />
+                  </div>
+                </div>
+                <DataTable
+                  columns={columnas}
+                  data={particular}
+                  pagination
+                  paginationComponentOptions={paginacionOpciones}
+                  fixedHeader
+                  fixedHeaderScrollHeight="500px"
+                  noDataComponent={
+                    <i className="fas fa-inbox table__icono"></i>
+                  }
+                />
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTwo">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseTwo"
+                  aria-expanded="false"
+                  aria-controls="collapseTwo"
+                >
+                  Empresa
+                </button>
+              </h2>
+              <div
+                id="collapseTwo"
+                class="accordion-collapse collapse"
+                aria-labelledby="headingTwo"
+                data-bs-parent="#accordionExample"
+              >
+                <br></br>
+                <div className="adminregistro__option">
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Buscar"
+                      name="busqueda"
+                      value={busqueda}
+                      onChange={handleSearch}
+                    />
+                  </div>
+                </div>
+                <DataTable
+                  columns={columnas}
+                  data={empresa}
+                  pagination
+                  paginationComponentOptions={paginacionOpciones}
+                  fixedHeader
+                  fixedHeaderScrollHeight="500px"
+                  noDataComponent={
+                    <i className="fas fa-inbox table__icono"></i>
+                  }
+                />
+              </div>
             </div>
           </div>
-
-          <DataTable
-            columns={columnas}
-            data={listRegistro}
-            pagination
-            paginationComponentOptions={paginacionOpciones}
-            fixedHeader
-            fixedHeaderScrollHeight="500px"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
-          />
         </div>
       </div>
       {openModal && (

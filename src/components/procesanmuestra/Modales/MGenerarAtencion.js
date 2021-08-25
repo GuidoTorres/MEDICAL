@@ -1,16 +1,4 @@
-/* eslint-disable */
-import Modal from "react-modal";
-import { customStyles } from "../../../helpers/tablaOpciones";
-import React, { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-
-import DeclaracionJurada from "../FormatosPDF/DeclaracionJurada";
-import ConsentimientoInformado from "../FormatosPDF/ConsentimientoInformado";
-import FichaCovid19 from "../FormatosPDF/FichaCovid19";
-import {
-  fetchGETPOSTPUTDELETE,
-  fetchGETPOSTPUTDELETEJSON,
-} from "../../../helpers/fetch";
+import React from "react";
 
 const MGenerarAtencion = ({
   generarAtencion,
@@ -75,7 +63,6 @@ const MGenerarAtencion = ({
     generarDeclaracion();
     generarFicha();
   }, []);
-
 
   const getFecha = () => {
     let newDate = new Date();
@@ -200,7 +187,6 @@ const MGenerarAtencion = ({
     ficha.display = "block";
     ficha.visibility = "visible";
   };
-
   return (
     <Modal
       isOpen={generarAtencion}

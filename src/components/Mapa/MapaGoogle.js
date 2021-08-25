@@ -30,7 +30,7 @@ const Mapa = ({ dataMapa, setDataMapa, editar }) => {
         setDataMapa({ ...dataMapa, lat: e.latLng.lat(), lng: e.latLng.lng() })
       }
     >
-      {editar ? <Marker position={position} /> : <></>}
+      {editar ? <Marker position={position} /> : <Marker position={position} />}
     </GoogleMap>
   ) : (
     <></>

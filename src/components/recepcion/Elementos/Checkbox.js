@@ -1,10 +1,9 @@
 /* eslint-disable */
-import React from "react";
+import React, { useEffect } from "react";
 
 const Checkbox = ({ texto, id, i, handleChange }) => {
   return (
-    <div class="form-check">
-
+    <div key={i} id={`check${i}`} class="form-check">
       <input
         class="form-check-input"
         type="checkbox"
