@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
-import EmpresaAsignacion4 from './EmpresaAsignacion4';
+import { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
+import { paginacionOpciones } from "../../helpers/tablaOpciones";
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import EmpresaAsignacion4 from "./EmpresaAsignacion4";
 
 const EmpresaAsignacion = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [asignation, setAsignation] = useState([]);
   const [modaesCorporativo, setModaesCorporativo] = useState(false);
   const [data, setData] = useState([]);
-  const [listRegistro, setListRegistro] = useState('');
+  const [listRegistro, setListRegistro] = useState("");
 
   const getAsignacion = () => {
-    fetchGETPOSTPUTDELETE('company_employees')
+    fetchGETPOSTPUTDELETE("company_employees")
       .then((res) => res.json())
       .then((result) => setAsignation(result));
   };
@@ -20,122 +20,122 @@ const EmpresaAsignacion = () => {
   useEffect(() => {
     getAsignacion();
   }, []);
-  console.log(asignation);
+  // console.log(asignation);
   const columnas = [
     {
-      name: 'Ítem',
+      name: "Ítem",
       selector: (row, index) => (index += 1),
       sortable: true,
       grow: 0,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Tipo de documento',
+      name: "Tipo de documento",
       selector: (row) =>
         row.person && row.person.document_type_id === 3
-          ? 'Carné de extranjería'
+          ? "Carné de extranjería"
           : row.person && row.person.document_type_id === 2
-          ? 'Pasaporte'
+          ? "Pasaporte"
           : row.person && row.person.document_type_id === 1
-          ? 'DNI'
-          : '',
+          ? "DNI"
+          : "",
 
       sortable: true,
       grow: 2,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
     {
-      name: 'Nº de documento',
-      selector: (row) => (row.person && row.person.dni ? row.person.dni : ''),
+      name: "Nº de documento",
+      selector: (row) => (row.person && row.person.dni ? row.person.dni : ""),
       sortable: true,
       grow: 2,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
     {
-      name: 'Nombres',
-      selector: (row) => (row.person && row.person.name ? row.person.name : ''),
+      name: "Nombres",
+      selector: (row) => (row.person && row.person.name ? row.person.name : ""),
       grow: 2,
       sortable: true,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
     {
-      name: 'A. Paterno',
+      name: "A. Paterno",
       selector: (row) =>
-        row.person && row.person.pat_lastname ? row.person.pat_lastname : '',
+        row.person && row.person.pat_lastname ? row.person.pat_lastname : "",
       sortable: true,
       grow: 2,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
     {
-      name: 'A. Materno',
+      name: "A. Materno",
       selector: (row) =>
-        row.person && row.person.mom_lastname ? row.person.mom_lastname : '',
+        row.person && row.person.mom_lastname ? row.person.mom_lastname : "",
       sortable: true,
       grow: 2,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
     {
-      name: 'Correo',
+      name: "Correo",
       selector: (row) =>
-        row.person && row.person.email ? row.person.email : '',
+        row.person && row.person.email ? row.person.email : "",
       sortable: true,
       grow: 3,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
     {
-      name: 'Sexo',
+      name: "Sexo",
       selector: (row) =>
         row.person && row.person.gender_id === 1
-          ? 'Masculino'
+          ? "Masculino"
           : row.person.gender_id === 2
-          ? 'Femenino'
-          : '',
+          ? "Femenino"
+          : "",
       sortable: true,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
     {
-      name: 'Fecha de Nacimiento',
+      name: "Fecha de Nacimiento",
       selector: (row) =>
-        row.person.birthday && row.person.birthday ? row.person.birthday : '',
+        row.person.birthday && row.person.birthday ? row.person.birthday : "",
       sortable: true,
       grow: 2,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
     {
-      name: 'Cargo',
+      name: "Cargo",
       selector: (row) =>
-        row.person && row.person.workstation ? row.person.workstation : '',
+        row.person && row.person.workstation ? row.person.workstation : "",
       sortable: true,
       style: {
-        color: '#8f9196',
-        borderBotton: 'none',
+        color: "#8f9196",
+        borderBotton: "none",
       },
     },
   ];
@@ -144,14 +144,14 @@ const EmpresaAsignacion = () => {
     const filtrarElemento = () => {
       const search = asignation.filter((data) => {
         return data.person.dni
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
           .toLocaleLowerCase()
           .includes(busqueda) || data.person.pat_lastname === null
-          ? ' '
+          ? " "
           : data.person.pat_lastname
-              .normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '')
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
               .toLocaleLowerCase()
               .includes(busqueda);
       });
@@ -184,20 +184,20 @@ const EmpresaAsignacion = () => {
             </div>
             <div
               style={{
-                alignItems: 'center',
-                backgroundColor: '#009DCA',
-                borderRadius: '7px',
-                color: '#fff',
-                cursor: 'pointer',
-                display: 'flex',
-                justifyContent: 'center',
-                padding: '4px 6px',
+                alignItems: "center",
+                backgroundColor: "#009DCA",
+                borderRadius: "7px",
+                color: "#fff",
+                cursor: "pointer",
+                display: "flex",
+                justifyContent: "center",
+                padding: "4px 6px",
               }}
               onClick={modales}
             >
               <label
                 style={{
-                  cursor: 'pointer',
+                  cursor: "pointer",
                 }}
               >
                 Cargar <i className="fas fa-upload mx-1"></i>

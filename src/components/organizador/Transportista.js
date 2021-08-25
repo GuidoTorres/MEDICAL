@@ -21,7 +21,6 @@ const Transportista = () => {
     {
       name: 'Ítem',
       selector: (row, index) => (index += 1),
-      sortable: true,
       grow: 0,
       style: {
         borderBotton: 'none',
@@ -97,16 +96,16 @@ const Transportista = () => {
   };
 
   return (
-    <div className="container">
-      <div className="row">
+    <div className='container'>
+      <div className='row'>
         <h3>Lista de transportista</h3>
-        <div className="table-responsive">
-          <div className="adminregistro__option">
+        <div className='table-responsive'>
+          <div className='adminregistro__option'>
             <div>
               <input
-                type="text"
-                placeholder="Buscar"
-                name="busqueda"
+                type='text'
+                placeholder='Buscar'
+                name='busqueda'
                 value={busqueda}
                 onChange={handleSearch}
               />
@@ -121,8 +120,8 @@ const Transportista = () => {
             fixedHeader
             highlightOnHover
             striped
-            fixedHeaderScrollHeight="100%"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            fixedHeaderScrollHeight='100%'
+            noDataComponent={<i className='fas fa-inbox table__icono'></i>}
           />
         </div>
       </div>

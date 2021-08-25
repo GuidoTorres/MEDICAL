@@ -107,6 +107,7 @@ const MRegistroClinica = ({
         closing: w.hours.closing,
       };
     });
+
     setIdFecha(_workday[0].day);
 
     setWorkday(_workday);
@@ -413,8 +414,6 @@ const MRegistroClinica = ({
 
   //   if(encontrar){
 
-      
-
   //   }
 
   // }
@@ -659,7 +658,7 @@ const MRegistroClinica = ({
                           type="time"
                           name="closing"
                           id="horario-final1"
-                          defaultValue={workday.find((dia) => dia.day === 1) }
+                          defaultValue={workday.find((dia) => dia.day === 1)}
                           onChange={(e) => actualizarHorarioClosing(e, 1)}
                         />
                       </td>
