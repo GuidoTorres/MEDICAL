@@ -22,8 +22,6 @@ const EmpresaRegistro = () => {
     getEmployees();
   }, []);
 
-  console.log(employees);
-
   const importarExcel = (file) => {
     const formData = new FormData();
     formData.set('file', file);
@@ -50,7 +48,6 @@ const EmpresaRegistro = () => {
     {
       name: 'Ítem',
       selector: (row, index) => (index += 1),
-      sortable: true,
       grow: 0,
       style: {
         borderBotton: 'none',
@@ -67,8 +64,6 @@ const EmpresaRegistro = () => {
           : row.person && row.person.document_type_id === 1
           ? 'DNI'
           : '',
-
-      sortable: true,
       grow: 2,
       style: {
         color: '#8f9196',
@@ -88,7 +83,6 @@ const EmpresaRegistro = () => {
     {
       name: 'Nombres',
       selector: (row) => (row.person && row.person.name ? row.person.name : ''),
-      sortable: true,
       grow: 3,
       style: {
         color: '#8f9196',
@@ -99,7 +93,6 @@ const EmpresaRegistro = () => {
       name: 'A. Paterno',
       selector: (row) =>
         row.person && row.person.pat_lastname ? row.person.pat_lastname : '',
-      sortable: true,
       grow: 3,
       style: {
         color: '#8f9196',
@@ -110,7 +103,6 @@ const EmpresaRegistro = () => {
       name: 'A. Materno',
       selector: (row) =>
         row.person && row.person.mom_lastname ? row.person.mom_lastname : '',
-      sortable: true,
       grow: 3,
       style: {
         color: '#8f9196',
@@ -121,7 +113,6 @@ const EmpresaRegistro = () => {
       name: 'Correo',
       selector: (row) =>
         row.person && row.person.email ? row.person.email : '',
-      sortable: true,
       grow: 5,
       style: {
         color: '#8f9196',
@@ -136,7 +127,6 @@ const EmpresaRegistro = () => {
           : row.person.gender_id === 2
           ? 'Femenino'
           : '',
-      sortable: true,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -146,7 +136,6 @@ const EmpresaRegistro = () => {
       name: 'Fecha de Nacimiento',
       selector: (row) =>
         row.person && row.person.birthday ? row.person.birthday : '',
-      sortable: true,
       grow: 3,
       style: {
         color: '#8f9196',
@@ -157,7 +146,6 @@ const EmpresaRegistro = () => {
       name: 'Cargo',
       selector: (row) =>
         row.person && row.person.workstation ? row.person.workstation : '',
-      sortable: true,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -169,9 +157,9 @@ const EmpresaRegistro = () => {
       cell: (e) => (
         <button
           onClick={() => handleEliminar(e)}
-          className="table__tablebutton"
+          className='table__tablebutton'
         >
-          <i className="far fa-trash-alt"></i>
+          <i className='far fa-trash-alt'></i>
         </button>
       ),
     },
@@ -221,10 +209,12 @@ const EmpresaRegistro = () => {
     const filtrarElemento = () => {
       const search = employees.filter((data) => {
         return data.person.dni
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .toLocaleLowerCase()
-          .includes(busqueda) || data.person.pat_lastname === null
+          ? data.person.dni
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .toLocaleLowerCase()
+              .includes(busqueda)
+          : '' || data.person.pat_lastname === null
           ? ' '
           : data.person.pat_lastname
               .normalize('NFD')
@@ -237,17 +227,19 @@ const EmpresaRegistro = () => {
     filtrarElemento();
   }, [busqueda, employees]);
 
+  console.log(listRegistro);
+
   return (
-    <div className="container">
-      <div className="row">
-        <h3 className="titulo">Registro de trabajadores</h3>
-        <div className=" table-responsive">
-          <div className="adminregistro__option">
+    <div className='container'>
+      <div className='row'>
+        <h3 className='titulo'>Registro de trabajadores</h3>
+        <div className=' table-responsive'>
+          <div className='adminregistro__option'>
             <div>
               <input
-                type="text"
-                placeholder="Buscar"
-                name="busqueda"
+                type='text'
+                placeholder='Buscar'
+                name='busqueda'
                 value={busqueda}
                 onChange={handleOnChange}
               />
@@ -266,27 +258,27 @@ const EmpresaRegistro = () => {
               onClick={triggerClick}
             >
               <input
-                className="cargar"
-                type="file"
+                className='cargar'
+                type='file'
                 ref={fileRef}
-                id="file"
+                id='file'
                 onChange={subidaExcel}
                 style={{ display: 'none' }}
               />
-              <p className="pagregar">Subir</p>
-              <i className="fas fa-upload mx-1"></i>
+              <p className='pagregar'>Subir</p>
+              <i className='fas fa-upload mx-1'></i>
             </div>
           </div>
           <DataTable
-            className="dataTable"
-            id="table"
+            className='dataTable'
+            id='table'
             columns={columnas}
-            data={listRegistro}
+            data={employees}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="100%"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            fixedHeaderScrollHeight='100%'
+            noDataComponent={<i className='fas fa-inbox table__icono'></i>}
             striped
             highlightOnHover
           />

@@ -20,7 +20,7 @@ const EmpresaAsignacion = () => {
   useEffect(() => {
     getAsignacion();
   }, []);
-  console.log(asignation);
+  // console.log(asignation);
   const columnas = [
     {
       name: 'Ítem',
@@ -144,10 +144,12 @@ const EmpresaAsignacion = () => {
     const filtrarElemento = () => {
       const search = asignation.filter((data) => {
         return data.person.dni
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .toLocaleLowerCase()
-          .includes(busqueda) || data.person.pat_lastname === null
+          ? data.person.dni
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .toLocaleLowerCase()
+              .includes(busqueda)
+          : '' || data.person.pat_lastname === null
           ? ' '
           : data.person.pat_lastname
               .normalize('NFD')
@@ -168,16 +170,16 @@ const EmpresaAsignacion = () => {
   };
 
   return (
-    <div className="container">
-      <h3 className="title__modals">Asignar pruebas</h3>
-      <div className="row">
-        <div className=" table-responsive">
-          <div className="adminregistro__option mb-3">
+    <div className='container'>
+      <h3 className='title__modals'>Asignar pruebas</h3>
+      <div className='row'>
+        <div className=' table-responsive'>
+          <div className='adminregistro__option mb-3'>
             <div>
               <input
-                type="text"
-                placeholder="Buscar"
-                name="busqueda"
+                type='text'
+                placeholder='Buscar'
+                name='busqueda'
                 value={busqueda}
                 onChange={handleOnChange}
               />
@@ -200,20 +202,20 @@ const EmpresaAsignacion = () => {
                   cursor: 'pointer',
                 }}
               >
-                Cargar <i className="fas fa-upload mx-1"></i>
+                Cargar <i className='fas fa-upload mx-1'></i>
               </label>
             </div>
           </div>
           <DataTable
-            className="dataTable"
-            id="table"
+            className='dataTable'
+            id='table'
             columns={columnas}
             data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="100%"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            fixedHeaderScrollHeight='100%'
+            noDataComponent={<i className='fas fa-inbox table__icono'></i>}
             striped
             highlightOnHover
             selectableRows

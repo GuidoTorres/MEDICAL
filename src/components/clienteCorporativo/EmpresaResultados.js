@@ -11,12 +11,14 @@ const EmpresaResultados = () => {
   const [checboxValue, setChecboxValue] = useState({
     chekcboxEmail: false,
   });
+  const [switchxd, setAutomatico] = useState(0);
   const { chekcboxEmail } = checboxValue;
+
   const getResultado = () => {
     fetchGETPOSTPUTDELETEJSON('resultados/compania', {}, 'POST')
       .then((data) => data.json())
       .then((result) => {
-        setClinica(result);
+        setClinica(result.data);
       });
   };
   useEffect(() => {
@@ -31,116 +33,36 @@ const EmpresaResultados = () => {
       'POST'
     )
       .then((data) => data.json())
-      .then((data) => console.log(data));
+      .then(() => getResultado());
   };
 
-  const columnas = [
-    {
-      name: 'Ítem',
-      selector: (row, index) => (index += 1),
-      sortable: true,
-      grow: 0,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
-    },
-    {
-      name: 'Nombres y apellidos',
-      selector: (row) => (row && row.paciente ? row.paciente : ''),
-      sortable: true,
-      style: {
-        color: '#8f9196',
-        borderBotton: 'none',
-      },
-      grow: 3,
-    },
-    {
-      name: 'Tipo de documento',
-      selector: (row) => (row && row.tipo_documento ? row.tipo_documento : ''),
-      sortable: true,
-      grow: 2,
-      style: {
-        color: '#8f9196',
-        borderBotton: 'none',
-      },
-    },
-    {
-      name: 'Nº de documento',
-      selector: (row) => (row && row.dni ? row.dni : ''),
-      sortable: true,
-      grow: 2,
-      style: {
-        color: '#8f9196',
-        borderBotton: 'none',
-      },
-    },
-    {
-      name: 'Teléfono',
-      selector: (row) => (row && row.telefono ? row.telefono : ''),
-      sortable: true,
-      style: {
-        color: '#8f9196',
-        borderBotton: 'none',
-      },
-    },
-    {
-      name: 'Correo',
-      selector: (row) => (row && row.email ? row.email : ''),
-      sortable: true,
-      style: {
-        color: '#8f9196',
-        borderBotton: 'none',
-      },
-      grow: 2,
-    },
-    {
-      name: 'Estado',
-      selector: (row) =>
-        row.resultado === null
-          ? ''
-          : row.resultado.enviado === 0
-          ? 'No enviado'
-          : 'Enviado',
-      style: {
-        color: '#8f9196',
-        borderBotton: 'none',
-      },
-    },
-    {
-      name: 'Resultados',
-      button: true,
-      cell: (e) => (
-        <button type="button" className="table__tablebutton eliminar">
-          {e.resultado === null ? (
-            <i
-              className="far fa-file-pdf"
-              style={{ color: '#7c7c7c', cursor: 'unset' }}
-            ></i>
-          ) : (
-            <a
-              href={e.resultado.pdf}
-              alt=""
-              target="_blank"
-              rel="noreferrer"
-              style={{ color: '#009DCA' }}
-            >
-              <i className="far fa-file-pdf"></i>
-            </a>
-          )}
-        </button>
-      ),
-    },
-  ];
+  const cambioSwitch = () => {
+    fetchGETPOSTPUTDELETEJSON('company/update_status', {}, 'POST').then(
+      (data) => data.json()
+    );
+  };
+
+  useEffect(() => {
+    if (chekcboxEmail) {
+      setAutomatico(1);
+      cambioSwitch({ send_status: switchxd });
+      getResultado();
+    } else {
+      setAutomatico(0);
+      cambioSwitch({ send_status: switchxd });
+    }
+  }, [chekcboxEmail, switchxd]);
 
   useEffect(() => {
     const filtrarElemento = () => {
       const search = clinica.filter((data) => {
         return data.dni
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .toLocaleLowerCase()
-          .includes(busqueda);
+          ? data.dni
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .toLocaleLowerCase()
+              .includes(busqueda)
+          : '';
       });
       setListRegistro(search);
     };
@@ -154,51 +76,146 @@ const EmpresaResultados = () => {
     setChecboxValue({ ...checboxValue, [e.target.name]: e.target.checked });
   };
 
-  useEffect(() => {
-    if (chekcboxEmail) {
-      enviarEmail();
-    }
-  }, [chekcboxEmail]);
-
+  const columnas = [
+    {
+      name: 'Ítem',
+      selector: (row, index) => (index += 1),
+      grow: 0,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
+      name: 'Nombres y apellidos',
+      selector: (row) => (row && row.paciente ? row.paciente : ''),
+      center: true,
+      grow: 3,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+    {
+      name: 'Tipo de documento',
+      selector: (row) => (row && row.tipo_documento ? row.tipo_documento : ''),
+      center: true,
+      grow: 2,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+    {
+      name: 'Nº de documento',
+      selector: (row) => (row && row.dni ? row.dni : ''),
+      sortable: true,
+      center: true,
+      grow: 2,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+    {
+      name: 'Teléfono',
+      selector: (row) => (row && row.telefono ? row.telefono : ''),
+      center: true,
+      grow: 2,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+    {
+      name: 'Correo',
+      selector: (row) => (row && row.email ? row.email : ''),
+      center: true,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+      grow: 2,
+    },
+    {
+      name: 'Estado',
+      selector: (row) =>
+        row.resultado === null
+          ? 'falta generar resultado'
+          : row.resultado.enviado === 0
+          ? 'No enviado'
+          : 'Enviado',
+      grow: 2,
+      center: true,
+      style: {
+        color: '#8f9196',
+        borderBotton: 'none',
+      },
+    },
+    {
+      name: 'Resultados',
+      button: true,
+      cell: (e) => (
+        <button type='button' className='table__tablebutton eliminar'>
+          {e.resultado === null ? (
+            <i
+              className='far fa-file-pdf'
+              style={{ color: '#7c7c7c', cursor: 'unset' }}
+            ></i>
+          ) : (
+            <a
+              href={e.resultado.pdf}
+              alt=''
+              target='_blank'
+              rel='noreferrer'
+              style={{ color: '#009DCA' }}
+            >
+              <i className='far fa-file-pdf'></i>
+            </a>
+          )}
+        </button>
+      ),
+    },
+  ];
   return (
-    <div className=" container ">
-      <div className="row">
-        <div className=" table-responsive">
-          <div className="adminregistro__option">
+    <div className=' container '>
+      <div className='row'>
+        <div className=' table-responsive'>
+          <div className='adminregistro__option'>
             <div>
               <input
-                type="text"
-                placeholder="Buscar"
-                name="busqueda"
+                type='text'
+                placeholder='Buscar'
+                name='busqueda'
                 value={busqueda}
                 onChange={handleOnChange}
               />
             </div>
             <div>
-              <div className="switch">
+              <div className='switch'>
                 <input
-                  type="checkbox"
-                  id="check"
-                  name="chekcboxEmail"
+                  type='checkbox'
+                  id='check'
+                  name='chekcboxEmail'
                   value={chekcboxEmail}
                   onChange={handleOnChangeCheckbox}
                 />
-                <label htmlFor="check"></label>
+                <label htmlFor='check'></label>
               </div>
-              <button className="botones" onClick={enviarEmail}>
+              <button className='botones' onClick={enviarEmail}>
                 Enviar
               </button>
             </div>
           </div>
           <DataTable
-            className="dataTable"
+            className='dataTable'
             columns={columnas}
             data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader
-            fixedHeaderScrollHeight="100%"
-            noDataComponent={<i className="fas fa-inbox table__icono"></i>}
+            fixedHeaderScrollHeight='100%'
+            noDataComponent={<i className='fas fa-inbox table__icono'></i>}
             selectableRows
             onSelectedRowsChange={(e) => setData(e.selectedRows)}
           />

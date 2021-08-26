@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
@@ -8,18 +8,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment/locale/es';
 import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 import { messages } from '../../helpers/calendar-spain';
-
-//
-// import socketio from 'socket.io-client';
-// import Echo from 'laravel-echo';
-
-// const echo = new Echo({
-//   host: 'http://44.193.160.43:6001',
-//   broadcaster: 'socket.io',
-//   client: socketio,
-// });
-// echo.channel(``)
-// //
+import Mapa from '../../helpers/MultipleMarket';
 
 moment.locale('es');
 
@@ -33,6 +22,14 @@ const Calendario = () => {
   const [listRegistro, setListRegistro] = useState([]);
   const [listCalendario, setListCalendario] = useState([]);
   const [eventosList, setEventosList] = useState([]);
+
+  const [listaMateriales, setListaMateriales] = useState([]);
+  const [listartUbicacion, setListartUbicacion] = useState([]);
+  const [dataMapa, setDataMapa] = useState({
+    lat: 0,
+    lng: 0,
+  });
+
   const [nTranspor, setNTranspor] = useState('');
   const [cambioEstado, setCambioEstado] = useState(null);
   const [condicional, setCondicional] = useState(false);
@@ -47,29 +44,43 @@ const Calendario = () => {
   const { dni, name: personanombre, pat_lastname, mom_lastname } = person;
   const { name: nombreservicio } = category;
 
+  const listaTransportista = () => {
+    fetchGETPOSTPUTDELETEJSON('transportistas_asignados')
+      .then((data) => data.json())
+      .then((resp) => setListRegistro(resp));
+  };
   useEffect(() => {
-    const listaTransportista = () => {
-      fetchGETPOSTPUTDELETEJSON('transportistas_asignados')
-        .then((data) => data.json())
-        .then((resp) => setListRegistro(resp));
-    };
     listaTransportista();
   }, []);
-  console.log(listRegistro);
-  useEffect(() => {
-    if (!cambioEstado) {
-      const listFecha = () => {
-        fetchGETPOSTPUTDELETEJSON('timetable')
-          .then((data) => data.json())
-          .then((datos) => setListCalendario(datos));
-      };
-      listFecha();
-    }
-  }, [cambioEstado]);
 
-  useEffect(() => {
-    setEventosList(listCalendario);
-  }, [listCalendario]);
+  // const ubicacion = () => {
+  //   fetchGETPOSTPUTDELETEJSON('transportista/ubicaciones')
+  //     .then((data) => data.json())
+  //     .then((resp) => setListartUbicacion(resp.ubicaciones));
+  // };
+
+  // console.log(listartUbicacion);
+
+  // const ubicacion = useCallback(() => {
+  //   fetchGETPOSTPUTDELETEJSON('transportista/ubicaciones')
+  //     .then((data) => data.json())
+  //     .then((resp) => setListartUbicacion(resp.ubicaciones));
+  // }, []);
+  // useEffect(() => {
+  //   ubicacion();
+  // }, []);
+  // console.log(listartUbicacion);
+
+  const listFecha = (data) => {
+    fetchGETPOSTPUTDELETEJSON('timetable_transportistas/' + data)
+      .then((data) => data.json())
+      .then((datos) => setListCalendario(datos));
+  };
+
+  // console.log(listCalendario);
+  // useEffect(() => {
+  //   setEventosList(listCalendario);
+  // }, [listCalendario]);
 
   const handlePacienteUbicacion = () => {
     setMPaciente(true);
@@ -78,49 +89,63 @@ const Calendario = () => {
     setMHorario(true);
   };
 
+  const materiales = (data) => {
+    fetchGETPOSTPUTDELETEJSON(`transportista/${data}/pruebas-asignadas`)
+      .then((data) => data.json())
+      .then((resp) => setListaMateriales(resp));
+  };
+
+  const getCalendario = (e) => {
+    const datos = listRegistro.filter((item) => item.id === parseInt(e));
+    setCondicional(true);
+    setEventosList(datos[0].reservaciones_asignadas);
+    // console.log(eventosList);
+  };
+
   const handleOnChange = (e) => {
     setNTranspor({
       ...nTranspor,
       [e.target.name]: e.target.value,
     });
+    if (parseInt(e.target.value) !== 0) {
+      materiales(e.target.value);
+      getCalendario(e.target.value);
+      listFecha(e.target.value);
+    }
   };
 
-  setTimeout(() => {
-    setCondicional(true);
-  }, 1500);
-
   return (
-    <div className="container">
-      <div className="row">
+    <div className='container'>
+      <div className='row'>
         <h3>Horarios disponibles</h3>
-        <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
-          <div className="barra">
+        <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6'>
+          <div className='barra'>
             <span>Datos del solicitante</span>
-            <div className="organizador__datos">
+            <div className='organizador__datos'>
               <div>
                 <div>
                   <label>DNI:</label>
-                  <input type="text" name="dni" defaultValue={dni} />
+                  <input type='text' name='dni' defaultValue={dni} />
                 </div>
                 <div>
                   <label>Nombre:</label>
-                  <input type="text" name="name" defaultValue={personanombre} />
+                  <input type='text' name='name' defaultValue={personanombre} />
                 </div>
               </div>
               <div>
                 <div>
                   <label>A. Paterno:</label>
                   <input
-                    type="text"
-                    name="pat_lastname"
+                    type='text'
+                    name='pat_lastname'
                     defaultValue={pat_lastname}
                   />
                 </div>
                 <div>
                   <label>A. Materno:</label>
                   <input
-                    type="text"
-                    name="mom_lastname"
+                    type='text'
+                    name='mom_lastname'
                     defaultValue={mom_lastname}
                   />
                 </div>
@@ -129,15 +154,15 @@ const Calendario = () => {
                 <div>
                   <label>Distrito:</label>
                   <input
-                    type="text"
-                    name="distrito"
+                    type='text'
+                    name='distrito'
                     defaultValue={nombredistrito}
                   />
                 </div>
                 <div>
                   <label>Ubicación:</label>
                   <i
-                    className="fas fa-map-marker-alt"
+                    className='fas fa-map-marker-alt'
                     style={{ color: '#009DCA' }}
                     onClick={handlePacienteUbicacion}
                   ></i>
@@ -146,109 +171,104 @@ const Calendario = () => {
             </div>
           </div>
         </div>
-        <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
-          <div className="barra">
-            <span className="">Detalles del pedido</span>
-            <div className="organizador__detalle">
+        <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6'>
+          <div className='barra'>
+            <span className=''>Detalles del pedido</span>
+            <div className='organizador__detalle'>
               <div>
                 <label>Tipo de servicio:</label>
                 <input
-                  type="text"
-                  name="servico"
+                  type='text'
+                  name='servico'
                   defaultValue={nombreservicio}
                 />
               </div>
               <div>
                 <label>Plan de atención:</label>
                 <input
-                  type="text"
-                  name="descripcionservicio"
+                  type='text'
+                  name='descripcionservicio'
                   defaultValue={descripcionservicio}
                 />
               </div>
               <div>
                 <label>Cantidad:</label>
-                <input type="text" />
+                <input type='text' />
               </div>
             </div>
-
-            <span className="">Datos del transportista</span>
-            <div className="organizador__datostransportista">
+            <span className=''>Datos del transportista</span>
+            <div className='organizador__datostransportista'>
               <div>
                 <label>Transportista</label>
                 <select
-                  className="form-select"
-                  name="transportista"
+                  className='form-select'
+                  name='transportista'
                   onChange={handleOnChange}
                 >
-                  <option value="">Seleccionar</option>
+                  <option value='0'>Seleccionar</option>
                   {listRegistro.map((data, index) => {
                     return (
                       <option key={index} value={data.id}>
-                        {data.person.name}
+                        {data.person.name} {data.person.pat_lastname}
                       </option>
                     );
                   })}
                 </select>
               </div>
-              <div>
-                <label>Distrito</label>
-                <input type="text" />
-              </div>
-              <div>
-                <label>Ubicación:</label>
-                <i className="fas fa-map-marker-alt"></i>
-              </div>
             </div>
           </div>
         </div>
-        <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-          <div className="barra">
-            <div className="accordion" id="accordionExample">
-              <div className="accordion-item">
-                <h2 className="accordion-header" id="headingOne">
+
+        <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12'>
+          <div className='barra'>
+            <Mapa
+              dataMapa={dataMapa}
+              setDataMapa={setDataMapa}
+              listartUbicacion={listartUbicacion}
+            />
+          </div>
+        </div>
+
+        <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12'>
+          <div className='barra'>
+            <div className='accordion' id='accordionExample'>
+              <div className='accordion-item'>
+                <h2 className='accordion-header' id='headingOne'>
                   <button
-                    className="accordion-button"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapseOne"
-                    aria-expanded="true"
-                    aria-controls="collapseOne"
+                    className='accordion-button'
+                    type='button'
+                    data-bs-toggle='collapse'
+                    data-bs-target='#collapseOne'
+                    aria-expanded='true'
+                    aria-controls='collapseOne'
                   >
                     Material disponibles
                   </button>
                 </h2>
                 <div
-                  id="collapseOne"
-                  className="accordion-collapse collapse show"
-                  aria-labelledby="headingOne"
-                  data-bs-parent="#accordionExample"
+                  id='collapseOne'
+                  className='accordion-collapse collapse show'
+                  aria-labelledby='headingOne'
+                  data-bs-parent='#accordionExample'
                 >
-                  <div className="accordion-body">
-                    <table className="table">
+                  <div className='accordion-body'>
+                    <table className='table'>
                       <thead>
                         <tr>
-                          <th scope="col">Material</th>
-                          <th scope="col">Cantidad</th>
+                          <th scope='col'>Material</th>
+                          <th scope='col'>Cantidad</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>P. Antigeno(kit)</td>
-                          <td>Otto</td>
-                        </tr>
-                        <tr>
-                          <td>P. Electroquimioluminiscencia(kit)</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <td>P. Inmunocromatografía(kit)</td>
-                          <td>@twitter</td>
-                        </tr>
-                        <tr>
-                          <td>P. RT-PCR en tiempo real(kit)</td>
-                          <td>@twitter</td>
-                        </tr>
+                        {listaMateriales.map((data, index) => {
+                          const { servicio } = data;
+                          return (
+                            <tr key={index}>
+                              <td>{servicio.description}</td>
+                              <td>{data.cantidad}</td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>
@@ -258,15 +278,15 @@ const Calendario = () => {
           </div>
         </div>
       </div>
-      <div className="row mt-3">
-        <div className="col-12">
-          <div className="barra">
+      <div className='row mt-3'>
+        <div className='col-12'>
+          <div className='barra'>
             {condicional && (
               <Calendar
                 localizer={localizer}
-                events={eventosList}
-                startAccessor="start"
-                endAccessor="end"
+                events={listCalendario}
+                startAccessor='start'
+                endAccessor='end'
                 messages={messages}
                 selectable={true}
                 defaultView={Views.AGENDA}
@@ -276,8 +296,8 @@ const Calendario = () => {
         </div>
       </div>
       <div>
-        <button className="botones fab" onClick={hanleMHorario}>
-          <i className="fas fa-plus"></i>
+        <button className='botones fab' onClick={hanleMHorario}>
+          <i className='fas fa-plus'></i>
         </button>
       </div>
       {MPaciente && (

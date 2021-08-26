@@ -1,12 +1,12 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
-import Swal from "sweetalert2";
-import MapaGoogle from "../../Mapa/MapaGoogle";
+import React, { useEffect, useState } from 'react';
+import Modal from 'react-modal';
+import Swal from 'sweetalert2';
+import MapaGoogle from '../../Mapa/MapaGoogle';
 
-import { UploadAvatar } from "../../uploadAvatar/uploadAvatar";
-import { customStyles } from "../../../helpers/tablaOpciones";
-import { fetchGETPOSTPUTDELETE, fetchRUC } from "../../../helpers/fetch";
+import { UploadAvatar } from '../../uploadAvatar/uploadAvatar';
+import { customStyles } from '../../../helpers/tablaOpciones';
+import { fetchGETPOSTPUTDELETE, fetchRUC } from '../../../helpers/fetch';
 
 const MRegistroClinica = ({
   openModal,
@@ -43,13 +43,13 @@ const MRegistroClinica = ({
   const [districts, setDistricts] = useState();
   const [ubicacion, setUbicacion] = useState();
   const fechasDeSemana = [
-    { id: 1, name: "Lunes" },
-    { id: 2, name: "Martes" },
-    { id: 3, name: "Miércoles" },
-    { id: 4, name: "Jueves" },
-    { id: 5, name: "Viernes" },
-    { id: 6, name: "Sábado" },
-    { id: 7, name: "Domingo" },
+    { id: 1, name: 'Lunes' },
+    { id: 2, name: 'Martes' },
+    { id: 3, name: 'Miércoles' },
+    { id: 4, name: 'Jueves' },
+    { id: 5, name: 'Viernes' },
+    { id: 6, name: 'Sábado' },
+    { id: 7, name: 'Domingo' },
   ];
 
   const closeModal = () => {
@@ -59,7 +59,7 @@ const MRegistroClinica = ({
   };
 
   const getRuc = () => {
-    fetchRUC(data.ruc, "GET")
+    fetchRUC(data.ruc, 'GET')
       .then((res) => res.json())
       .then((res) => setRuc(res));
   };
@@ -105,6 +105,7 @@ const MRegistroClinica = ({
         closing: w.hours.closing,
       };
     });
+
     setIdFecha(_workday[0].day);
 
     setWorkday(_workday);
@@ -141,7 +142,7 @@ const MRegistroClinica = ({
     const arreglos = [...workday];
 
     if (e.target.checked) {
-      arreglos.push({ day: nro, opening: "00:00", closing: "23:59" });
+      arreglos.push({ day: nro, opening: '00:00', closing: '23:59' });
       setWorkday([...arreglos]);
     } else {
       if (workday.length > 1) {
@@ -163,17 +164,17 @@ const MRegistroClinica = ({
     if (document.getElementById(`check${nro}`).checked === true) {
       document
         .getElementById(`horario-ingreso${nro}`)
-        .removeAttribute("disabled");
+        .removeAttribute('disabled');
       document
         .getElementById(`horario-final${nro}`)
-        .removeAttribute("disabled");
+        .removeAttribute('disabled');
     } else {
       document
         .getElementById(`horario-ingreso${nro}`)
-        .setAttribute("disabled", "disabled");
+        .setAttribute('disabled', 'disabled');
       document
         .getElementById(`horario-final${nro}`)
-        .setAttribute("disabled", "disabled");
+        .setAttribute('disabled', 'disabled');
     }
   };
 
@@ -214,23 +215,23 @@ const MRegistroClinica = ({
     const formData = new FormData();
     // console.log(data);
 
-    formData.set("ruc", data.ruc || "");
-    formData.set("business_name", ruc.razonSocial || data.business_name || "");
-    formData.set("commercial_name", data.commercial_name || "");
-    formData.set("logo", avatar && avatar.file ? avatar.file : "");
-    formData.set("address", ruc.direccion || data.address || "");
-    formData.set("reference", data.reference || "");
-    formData.set("clinic_type_id", data.clinic_type_id || "");
-    formData.set("map_latitude", dataMapa ? dataMapa.lat : "");
-    formData.set("map_length", dataMapa ? dataMapa.lng : "");
+    formData.set('ruc', data.ruc || '');
+    formData.set('business_name', ruc.razonSocial || data.business_name || '');
+    formData.set('commercial_name', data.commercial_name || '');
+    formData.set('logo', avatar && avatar.file ? avatar.file : '');
+    formData.set('address', ruc.direccion || data.address || '');
+    formData.set('reference', data.reference || '');
+    formData.set('clinic_type_id', data.clinic_type_id || '');
+    formData.set('map_latitude', dataMapa ? dataMapa.lat : '');
+    formData.set('map_length', dataMapa ? dataMapa.lng : '');
 
-    formData.set("contacts[0][name]", data.name || "");
-    formData.set("contacts[0][phone]", data.phone || "");
-    formData.set("contacts[0][email]", data.email || "");
-    formData.set("contacts[0][contact_type]", 0);
-    formData.set("department_id", data.department_id || "");
-    formData.set("province_id", data.province_id || "");
-    formData.set("district_id", data.district_id || "");
+    formData.set('contacts[0][name]', data.name || '');
+    formData.set('contacts[0][phone]', data.phone || '');
+    formData.set('contacts[0][email]', data.email || '');
+    formData.set('contacts[0][contact_type]', 0);
+    formData.set('department_id', data.department_id || '');
+    formData.set('province_id', data.province_id || '');
+    formData.set('district_id', data.district_id || '');
 
     workday.map((w, index) => {
       formData.set(`work_days[${index}][day_id]`, Number(w.day));
@@ -239,27 +240,27 @@ const MRegistroClinica = ({
       formData.set(`work_days[${index}][closing]`, w.closing);
     });
 
-    fetchGETPOSTPUTDELETE("clinics", formData, "POST").then((resp) => {
+    fetchGETPOSTPUTDELETE('clinics', formData, 'POST').then((resp) => {
       if (resp.status === 200) {
         closeModal();
         Swal.fire({
-          icon: "success",
-          title: "Éxito",
-          text: "Se ha creado la clínica correctamente.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Aceptar",
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Se ha creado la clínica correctamente.',
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Aceptar',
         });
         getClinica();
       } else {
         closeModal();
         Swal.fire({
-          icon: "error",
-          title: "!Ups¡",
-          text: "Algo salió mal.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Cerrar",
+          icon: 'error',
+          title: '!Ups¡',
+          text: 'Algo salió mal.',
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Cerrar',
         });
       }
     });
@@ -268,21 +269,21 @@ const MRegistroClinica = ({
   const putClinics = (e) => {
     const formData = new FormData();
 
-    formData.set("corporation_id", 1);
-    formData.set("ruc", data.ruc || "");
-    formData.set("business_name", ruc.razonSocial || data.business_name || "");
-    formData.set("commercial_name", data.commercial_name || "");
-    formData.set("logo", avatar && avatar.file ? avatar.file : "");
-    formData.set("address", ruc.direccion || data.address || "");
-    formData.set("reference", data.reference || "");
-    formData.set("clinic_type_id", data.clinic_type_id.toString());
-    formData.set("map_latitude", dataMapa ? dataMapa.lat : "");
-    formData.set("map_length", dataMapa ? dataMapa.lng : "");
-    formData.set("contacts[0][name]", data.name || "");
-    formData.set("contacts[0][phone]", data.phone || "");
-    formData.set("contacts[0][email]", data.email || "");
-    formData.set("contacts[0][contact_type]", 0);
-    formData.set("district_id", data.district_id || "");
+    formData.set('corporation_id', 1);
+    formData.set('ruc', data.ruc || '');
+    formData.set('business_name', ruc.razonSocial || data.business_name || '');
+    formData.set('commercial_name', data.commercial_name || '');
+    formData.set('logo', avatar && avatar.file ? avatar.file : '');
+    formData.set('address', ruc.direccion || data.address || '');
+    formData.set('reference', data.reference || '');
+    formData.set('clinic_type_id', data.clinic_type_id.toString());
+    formData.set('map_latitude', dataMapa ? dataMapa.lat : '');
+    formData.set('map_length', dataMapa ? dataMapa.lng : '');
+    formData.set('contacts[0][name]', data.name || '');
+    formData.set('contacts[0][phone]', data.phone || '');
+    formData.set('contacts[0][email]', data.email || '');
+    formData.set('contacts[0][contact_type]', 0);
+    formData.set('district_id', data.district_id || '');
 
     // if (workday) {
     //   for (var [value] of Object.entries(workday)) {
@@ -305,29 +306,29 @@ const MRegistroClinica = ({
     fetchGETPOSTPUTDELETE(
       `clinics/update/${dataSelected.id}`,
       formData,
-      "POST"
+      'POST'
     ).then((resp) => {
       // console.log(resp);
       if (resp.status === 200) {
         closeModal();
         Swal.fire({
-          icon: "success",
-          title: "Éxito",
-          text: "Se actualizó la clínica correctamente.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Aceptar",
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Se actualizó la clínica correctamente.',
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Aceptar',
         });
         getClinica();
       } else {
         closeModal();
         Swal.fire({
-          icon: "error",
-          title: "!Ups¡",
-          text: "Algo salió mal.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Cerrar",
+          icon: 'error',
+          title: '!Ups¡',
+          text: 'Algo salió mal.',
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Cerrar',
         });
       }
     });
@@ -339,17 +340,17 @@ const MRegistroClinica = ({
     if (
       // data.address !== "" &&
       // data.address !== null &&
-      data.ruc !== "" &&
+      data.ruc !== '' &&
       data.ruc !== null &&
       // data.business_name !== "" &&
       // data.business_name !== null &&
-      data.name !== "" &&
+      data.name !== '' &&
       data.name !== null &&
-      data.phone !== "" &&
+      data.phone !== '' &&
       data.phone !== null &&
-      data.email !== "" &&
+      data.email !== '' &&
       data.email !== null &&
-      data.reference !== "" &&
+      data.reference !== '' &&
       data.reference !== null &&
       data.clinic_type_id !== null &&
       workday.length > 0 &&
@@ -370,15 +371,15 @@ const MRegistroClinica = ({
       // console.log(avatar);
       // console.log(dataMapa);
       Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Debe completar todos los datos",
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Debe completar todos los datos',
       });
     }
   };
 
   const getDepartments = () => {
-    fetchGETPOSTPUTDELETE("departamentos")
+    fetchGETPOSTPUTDELETE('departamentos')
       .then((res) => res.json())
       .then((res) => setDepartamentos(res.departments));
   };
@@ -391,7 +392,7 @@ const MRegistroClinica = ({
     if (encontrar !== -1) {
       return workday[encontrar].opening;
     } else {
-      return "";
+      return '';
     }
   };
 
@@ -400,7 +401,7 @@ const MRegistroClinica = ({
     if (encontrar !== -1) {
       return workday[encontrar].closing;
     } else {
-      return "";
+      return '';
     }
   };
 
@@ -429,7 +430,7 @@ const MRegistroClinica = ({
         provinces.length > 0 &&
         provinces.map((data1, i) =>
           data1.provinces.filter((item, j) =>
-            Number(item.id) === Number(data.province_id) ? item.districts : ""
+            Number(item.id) === Number(data.province_id) ? item.districts : ''
           )
         );
       setDistricts(distritos);
@@ -438,7 +439,7 @@ const MRegistroClinica = ({
         provinces.length > 0 &&
         provinces.map((data1, i) =>
           data1.provinces.filter((item, j) =>
-            Number(item.id) === Number(data.province_id) ? item.districts : ""
+            Number(item.id) === Number(data.province_id) ? item.districts : ''
           )
         );
 
@@ -452,26 +453,26 @@ const MRegistroClinica = ({
         isOpen={openModal}
         onRequestClose={closeModal}
         style={customStyles}
-        className="modal modal__clinica"
-        overlayClassName="modal-fondo ReactToMessage"
+        className='modal modal__clinica'
+        overlayClassName='modal-fondo ReactToMessage'
         closeTimeoutMS={200}
         preventScroll={true}
         ariaHideApp={false}
       >
-        <h3 className="title__modal">{"Registrar Clínica"}</h3>
-        <div className="container">
-          <form className="row mt-3 " onSubmit={(e) => submit(e)}>
-            <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6  mregistro__cliente mb-3">
-              <div className="mregistro__clinica">
+        <h3 className='title__modal'>{'Registrar Clínica'}</h3>
+        <div className='container'>
+          <form className='row mt-3 ' onSubmit={(e) => submit(e)}>
+            <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6  mregistro__cliente mb-3'>
+              <div className='mregistro__clinica'>
                 <div>
-                  <label htmlFor="validationCustom01">RUC:</label>
+                  <label htmlFor='validationCustom01'>RUC:</label>
                   <input
-                    type="text"
-                    name="ruc"
-                    id="ruc"
-                    style={{ border: "1px solid red !important" }}
+                    type='text'
+                    name='ruc'
+                    id='ruc'
+                    style={{ border: '1px solid red !important' }}
                     // disabled={editar ? true : false}
-                    defaultValue={data.ruc || ""}
+                    defaultValue={data.ruc || ''}
                     onChange={(e) => handleChange(e)}
                   />
                   {/* {error ? <p style={{color:'red'}}>Campo obligatorio</p> : null} */}
@@ -479,79 +480,79 @@ const MRegistroClinica = ({
                 <div>
                   <label>Razón social:</label>
                   <input
-                    type="text"
-                    name="business_name"
-                    id="business_name"
-                    defaultValue={ruc.razonSocial || data.business_name || ""}
+                    type='text'
+                    name='business_name'
+                    id='business_name'
+                    defaultValue={ruc.razonSocial || data.business_name || ''}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
                 <div>
-                  <label className="label_commercial">Nombre comercial:</label>
+                  <label className='label_commercial'>Nombre comercial:</label>
                   <input
-                    type="text"
-                    name="commercial_name"
-                    id="commercial_name"
-                    defaultValue={data.name || ""}
+                    type='text'
+                    name='commercial_name'
+                    id='commercial_name'
+                    defaultValue={data.name || ''}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
                 <div>
                   <label>Responsable:</label>
                   <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    defaultValue={data.name || ""}
+                    type='text'
+                    name='name'
+                    id='name'
+                    defaultValue={data.name || ''}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
                 <div>
                   <label>Teléfono:</label>
                   <input
-                    type="number"
-                    name="phone"
-                    id="phone"
-                    defaultValue={data.phone || ""}
+                    type='number'
+                    name='phone'
+                    id='phone'
+                    defaultValue={data.phone || ''}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
                 <div>
                   <label>Correo:</label>
                   <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    defaultValue={data.email || ""}
+                    type='email'
+                    name='email'
+                    id='email'
+                    defaultValue={data.email || ''}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
                 <div>
                   <label>Dirección:</label>
                   <input
-                    type="text"
-                    name="address"
-                    defaultValue={ruc.direccion || data.address || ""}
+                    type='text'
+                    name='address'
+                    defaultValue={ruc.direccion || data.address || ''}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
                 <div>
                   <label>Referencia:</label>
                   <input
-                    type="text"
-                    name="reference"
-                    defaultValue={data.reference || ""}
+                    type='text'
+                    name='reference'
+                    defaultValue={data.reference || ''}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>
                 <div>
                   <label>Departamento:</label>
                   <select
-                    value={data.department_id || ""}
-                    name="department_id"
+                    value={data.department_id || ''}
+                    name='department_id'
                     onChange={handleChange}
                   >
-                    <option value="">Seleccione</option>
+                    <option value=''>Seleccione</option>
 
                     {departamentos.length > 0 &&
                       departamentos.map((data, i) => (
@@ -564,11 +565,11 @@ const MRegistroClinica = ({
                 <div>
                   <label>Provincia:</label>
                   <select
-                    name="province_id"
+                    name='province_id'
                     onChange={(e) => handleChange(e)}
-                    value={data.province_id || ""}
+                    value={data.province_id || ''}
                   >
-                    <option value="">Seleccione</option>
+                    <option value=''>Seleccione</option>
                     {provinces.length > 0 &&
                       provinces.map((data, i) =>
                         data.provinces.map((prov, i) => (
@@ -582,11 +583,11 @@ const MRegistroClinica = ({
                 <div>
                   <label>Distrito:</label>
                   <select
-                    name="district_id"
+                    name='district_id'
                     onChange={(e) => handleChange(e)}
-                    value={data.district_id || ""}
+                    value={data.district_id || ''}
                   >
-                    <option value="">Seleccione</option>
+                    <option value=''>Seleccione</option>
                     {districts &&
                       districts[0] &&
                       districts[0][0] &&
@@ -598,64 +599,64 @@ const MRegistroClinica = ({
                   </select>
                 </div>
               </div>
-              <div className="mregistro__tipo">
+              <div className='mregistro__tipo'>
                 <h6>Tipo de Clínica</h6>
                 <div>
                   <div>
                     <input
-                      type="radio"
-                      className="form-check-input"
-                      name="clinic_type_id"
+                      type='radio'
+                      className='form-check-input'
+                      name='clinic_type_id'
                       // disabled={data.clinic_type_id === 2 ? true : false}
                       defaultChecked={data.clinic_type_id === 1 ? true : false}
                       onChange={(e) =>
                         e.target.checked === true
                           ? setData({ ...data, clinic_type_id: 1 })
-                          : ""
+                          : ''
                       }
                     />
                     <label>Toma muestra</label>
                   </div>
                   <div>
                     <input
-                      type="radio"
-                      className="form-check-input"
-                      name="clinic_type_id"
+                      type='radio'
+                      className='form-check-input'
+                      name='clinic_type_id'
                       // disabled={data.clinic_type_id === 1 ? true : false}
                       defaultChecked={data.clinic_type_id === 2 ? true : false}
                       onChange={(e) =>
                         e.target.checked === true
                           ? setData({ ...data, clinic_type_id: 2 })
-                          : ""
+                          : ''
                       }
                     />
                     <label>Toma y analiza muestra</label>
                   </div>
                 </div>
               </div>
-              <div className="mregistro__fecha">
+              <div className='mregistro__fecha'>
                 {/* <h6>
                   <strong>Días de atención</strong>
                 </h6> */}
 
-                <table className="table table-bordered">
+                <table className='table table-bordered'>
                   <thead>
                     <tr>
-                      <th scope="col">Días de atención</th>
-                      <th scope="col">Hora de Inicio</th>
-                      <th scope="col">Hora de Fin</th>
+                      <th scope='col'>Días de atención</th>
+                      <th scope='col'>Hora de Inicio</th>
+                      <th scope='col'>Hora de Fin</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <th scope="row">
-                        {" "}
+                      <th scope='row'>
+                        {' '}
                         <div>
                           <input
-                            type="checkbox"
-                            className="form-check-input"
-                            name="monday"
-                            id="check1"
+                            type='checkbox'
+                            className='form-check-input'
+                            name='monday'
+                            id='check1'
                             defaultChecked={
                               workday.find((w) => w.day === 1) ? true : false
                             }
@@ -666,33 +667,33 @@ const MRegistroClinica = ({
                       </th>
                       <td>
                         <input
-                          type="time"
-                          name="opening"
-                          id="horario-ingreso1"
-                          defaultValue={editar ? getWorkDay(1) : ""}
+                          type='time'
+                          name='opening'
+                          id='horario-ingreso1'
+                          defaultValue={editar ? getWorkDay(1) : ''}
                           onChange={(e) => actualizarHorarioOpening(e, 1)}
                         />
                       </td>
                       <td>
-                        {" "}
+                        {' '}
                         <input
-                          type="time"
-                          name="closing"
-                          id="horario-final1"
-                          defaultValue={editar ? getClosing(1) : ""}
+                          type='time'
+                          name='closing'
+                          id='horario-final1'
+                          defaultValue={editar ? getClosing(1) : ''}
                           onChange={(e) => actualizarHorarioClosing(e, 1)}
                         />
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">
-                        {" "}
+                      <th scope='row'>
+                        {' '}
                         <div>
                           <input
-                            type="checkbox"
-                            className="form-check-input"
-                            name="tuesday"
-                            id="check2"
+                            type='checkbox'
+                            className='form-check-input'
+                            name='tuesday'
+                            id='check2'
                             defaultChecked={
                               workday.find((w) => w.day === 2) ? true : false
                             }
@@ -703,33 +704,33 @@ const MRegistroClinica = ({
                       </th>
                       <td>
                         <input
-                          type="time"
-                          name="opening"
-                          id="horario-ingreso2"
-                          defaultValue={editar ? getWorkDay(2) : ""}
+                          type='time'
+                          name='opening'
+                          id='horario-ingreso2'
+                          defaultValue={editar ? getWorkDay(2) : ''}
                           onChange={(e) => actualizarHorarioOpening(e, 2)}
                         />
                       </td>
                       <td>
-                        {" "}
+                        {' '}
                         <input
-                          type="time"
-                          name="closing"
-                          id="horario-final2"
-                          defaultValue={editar ? getClosing(2) : ""}
+                          type='time'
+                          name='closing'
+                          id='horario-final2'
+                          defaultValue={editar ? getClosing(2) : ''}
                           onChange={(e) => actualizarHorarioClosing(e, 2)}
                         />
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">
-                        {" "}
+                      <th scope='row'>
+                        {' '}
                         <div>
                           <input
-                            type="checkbox"
-                            className="form-check-input"
-                            name="wednesday"
-                            id="check3"
+                            type='checkbox'
+                            className='form-check-input'
+                            name='wednesday'
+                            id='check3'
                             defaultChecked={
                               workday.find((w) => w.day === 3) ? true : false
                             }
@@ -740,33 +741,33 @@ const MRegistroClinica = ({
                       </th>
                       <td>
                         <input
-                          type="time"
-                          name="opening"
-                          id="horario-ingreso3"
-                          defaultValue={editar ? getWorkDay(3) : ""}
+                          type='time'
+                          name='opening'
+                          id='horario-ingreso3'
+                          defaultValue={editar ? getWorkDay(3) : ''}
                           onChange={(e) => actualizarHorarioOpening(e, 3)}
                         />
                       </td>
                       <td>
-                        {" "}
+                        {' '}
                         <input
-                          type="time"
-                          name="closing"
-                          id="horario-final3"
-                          defaultValue={editar ? getClosing(3) : ""}
+                          type='time'
+                          name='closing'
+                          id='horario-final3'
+                          defaultValue={editar ? getClosing(3) : ''}
                           onChange={(e) => actualizarHorarioClosing(e, 3)}
                         />
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">
-                        {" "}
+                      <th scope='row'>
+                        {' '}
                         <div>
                           <input
-                            type="checkbox"
-                            className="form-check-input"
-                            name="thursday"
-                            id="check4"
+                            type='checkbox'
+                            className='form-check-input'
+                            name='thursday'
+                            id='check4'
                             defaultChecked={
                               workday.find((w) => w.day === 4) ? true : false
                             }
@@ -777,33 +778,33 @@ const MRegistroClinica = ({
                       </th>
                       <td>
                         <input
-                          type="time"
-                          name="opening"
-                          id="horario-ingreso4"
-                          defaultValue={editar ? getWorkDay(4) : ""}
+                          type='time'
+                          name='opening'
+                          id='horario-ingreso4'
+                          defaultValue={editar ? getWorkDay(4) : ''}
                           onChange={(e) => actualizarHorarioOpening(e, 4)}
                         />
                       </td>
                       <td>
-                        {" "}
+                        {' '}
                         <input
-                          type="time"
-                          name="closing"
-                          id="horario-final4"
-                          defaultValue={editar ? getClosing(4) : ""}
+                          type='time'
+                          name='closing'
+                          id='horario-final4'
+                          defaultValue={editar ? getClosing(4) : ''}
                           onChange={(e) => actualizarHorarioClosing(e, 4)}
                         />
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">
-                        {" "}
+                      <th scope='row'>
+                        {' '}
                         <div>
                           <input
-                            type="checkbox"
-                            className="form-check-input"
-                            name="friday"
-                            id="check5"
+                            type='checkbox'
+                            className='form-check-input'
+                            name='friday'
+                            id='check5'
                             defaultChecked={
                               workday.find((w) => w.day === 5) ? true : false
                             }
@@ -814,33 +815,33 @@ const MRegistroClinica = ({
                       </th>
                       <td>
                         <input
-                          type="time"
-                          name="opening"
-                          id="horario-ingreso5"
-                          defaultValue={editar ? getWorkDay(5) : ""}
+                          type='time'
+                          name='opening'
+                          id='horario-ingreso5'
+                          defaultValue={editar ? getWorkDay(5) : ''}
                           onChange={(e) => actualizarHorarioOpening(e, 5)}
                         />
                       </td>
                       <td>
-                        {" "}
+                        {' '}
                         <input
-                          type="time"
-                          name="closing"
-                          id="horario-final5"
-                          defaultValue={editar ? getClosing(5) : ""}
+                          type='time'
+                          name='closing'
+                          id='horario-final5'
+                          defaultValue={editar ? getClosing(5) : ''}
                           onChange={(e) => actualizarHorarioClosing(e, 5)}
                         />
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">
-                        {" "}
+                      <th scope='row'>
+                        {' '}
                         <div>
                           <input
-                            type="checkbox"
-                            className="form-check-input"
-                            name="saturday"
-                            id="check6"
+                            type='checkbox'
+                            className='form-check-input'
+                            name='saturday'
+                            id='check6'
                             defaultChecked={
                               workday.find((w) => w.day === 6) ? true : false
                             }
@@ -851,33 +852,33 @@ const MRegistroClinica = ({
                       </th>
                       <td>
                         <input
-                          type="time"
-                          name="opening"
-                          id="horario-ingreso6"
-                          defaultValue={editar ? getWorkDay(6) : ""}
+                          type='time'
+                          name='opening'
+                          id='horario-ingreso6'
+                          defaultValue={editar ? getWorkDay(6) : ''}
                           onChange={(e) => actualizarHorarioOpening(e, 6)}
                         />
                       </td>
                       <td>
-                        {" "}
+                        {' '}
                         <input
-                          type="time"
-                          name="closing"
-                          id="horario-final6"
-                          defaultValue={editar ? getClosing(6) : ""}
+                          type='time'
+                          name='closing'
+                          id='horario-final6'
+                          defaultValue={editar ? getClosing(6) : ''}
                           onChange={(e) => actualizarHorarioClosing(e, 6)}
                         />
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">
-                        {" "}
+                      <th scope='row'>
+                        {' '}
                         <div>
                           <input
-                            type="checkbox"
-                            className="form-check-input"
-                            name="sunday"
-                            id="check7"
+                            type='checkbox'
+                            className='form-check-input'
+                            name='sunday'
+                            id='check7'
                             defaultChecked={
                               workday.find((w) => w.day === 7) ? true : false
                             }
@@ -888,20 +889,20 @@ const MRegistroClinica = ({
                       </th>
                       <td>
                         <input
-                          type="time"
-                          name="opening"
-                          id="horario-ingreso7"
-                          defaultValue={editar ? getWorkDay(7) : ""}
+                          type='time'
+                          name='opening'
+                          id='horario-ingreso7'
+                          defaultValue={editar ? getWorkDay(7) : ''}
                           onChange={(e) => actualizarHorarioOpening(e, 7)}
                         />
                       </td>
                       <td>
-                        {" "}
+                        {' '}
                         <input
-                          type="time"
-                          name="closing"
-                          id="horario-final7"
-                          defaultValue={editar ? getClosing(7) : ""}
+                          type='time'
+                          name='closing'
+                          id='horario-final7'
+                          defaultValue={editar ? getClosing(7) : ''}
                           onChange={(e) => actualizarHorarioClosing(e, 7)}
                         />
                       </td>
@@ -910,8 +911,8 @@ const MRegistroClinica = ({
                 </table>
               </div>
             </div>
-            <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 p-0">
-              <div className="mregistro__logo">
+            <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 p-0'>
+              <div className='mregistro__logo'>
                 <p>
                   Logo <span>(.jpg, .jpeg, .jpg)</span>
                 </p>
@@ -924,14 +925,14 @@ const MRegistroClinica = ({
                   />
                 </div>
               </div>
-              <div className="mregistro__ubicacion">
-                <div className="icons">
+              <div className='mregistro__ubicacion'>
+                <div className='icons'>
                   <p>
                     <strong>Ubicación</strong>
                   </p>
-                  <i className="fas fa-map-marker-alt"></i>
+                  <i className='fas fa-map-marker-alt'></i>
                 </div>
-                <div className="mapa">
+                <div className='mapa'>
                   <MapaGoogle
                     dataMapa={dataMapa}
                     setDataMapa={setDataMapa}
@@ -941,16 +942,16 @@ const MRegistroClinica = ({
                 </div>
               </div>
 
-              <div className="list-botones">
-                <button className="botones" onClick={closeModal}>
+              <div className='list-botones'>
+                <button className='botones' onClick={closeModal}>
                   Cancelar
                 </button>
                 {editar === true ? (
-                  <button className="botones" type="submit">
+                  <button className='botones' type='submit'>
                     Editar
                   </button>
                 ) : (
-                  <button className="botones" type="submit">
+                  <button className='botones' type='submit'>
                     Agregar
                   </button>
                 )}

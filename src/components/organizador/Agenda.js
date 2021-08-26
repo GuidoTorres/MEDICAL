@@ -22,12 +22,12 @@ const Agenda = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div className='container'>
       <Calendar
         localizer={localizer}
         events={listCalendario}
-        startAccessor="start"
-        endAccessor="end"
+        startAccessor='start'
+        endAccessor='end'
         messages={messages}
         selectable={true}
         defaultView={Views.AGENDA}

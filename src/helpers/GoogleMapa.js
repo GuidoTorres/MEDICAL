@@ -12,7 +12,7 @@ const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
   });
 
   const { map_latitude, map_length } = dataSelected;
-  console.log(dataSelected);
+  // console.log(dataSelected);
   const position = {
     lng: Number(map_length),
     lat: Number(map_latitude),
@@ -20,7 +20,7 @@ const Mapa = ({ dataMapa, setDataMapa, editar, dataSelected }) => {
 
   return isLoaded ? (
     <GoogleMap
-      id="transit-example"
+      id='transit-example'
       mapContainerStyle={mapContainerStyle}
       zoom={12}
       center={position}
