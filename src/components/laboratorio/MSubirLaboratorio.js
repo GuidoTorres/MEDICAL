@@ -7,8 +7,6 @@ import jsPDF from "jspdf";
 
 import antigenosi from "../../assets/pdf Imagen/antigenoSi.png";
 import antigenono from "../../assets/pdf Imagen/antigenoNo.png";
-import firma from "../../assets/pdf Imagen/Firma.png";
-import isos from "../../assets/pdf Imagen/isos.png";
 
 import { customStyles } from "../../helpers/tablaOpciones";
 //MODAL PARA SUBIR RESULTADOS DE PRUEBA DE ANTÍGENO
@@ -127,6 +125,7 @@ const MSubirLaboratorio = ({
 
     postResults(pdf);
   };
+  console.log(dataSelected);
 
   const postResults = (pdf) => {
     const formData = new FormData();

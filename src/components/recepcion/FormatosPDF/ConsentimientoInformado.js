@@ -57,7 +57,7 @@ const ConsentimientoInformado = ({ dataSelected, datos }) => {
 
   return (
     <>
-      {getAge() > 18 ? (
+      {getAge() < 18 ? (
         <>
           <h6>
             <strong>
