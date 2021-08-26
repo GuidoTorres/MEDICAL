@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
@@ -44,51 +44,43 @@ const Calendario = () => {
   const { dni, name: personanombre, pat_lastname, mom_lastname } = person;
   const { name: nombreservicio } = category;
 
+  const listaTransportista = () => {
+    fetchGETPOSTPUTDELETEJSON('transportistas_asignados')
+      .then((data) => data.json())
+      .then((resp) => setListRegistro(resp));
+  };
   useEffect(() => {
-    const listaTransportista = () => {
-      // fetchGETPOSTPUTDELETEJSON('transportistas_asignadas')
-      fetchGETPOSTPUTDELETEJSON('transportistas_asignados')
-        .then((data) => data.json())
-        .then((resp) => setListRegistro(resp));
-    };
     listaTransportista();
   }, []);
 
-  console.log(listRegistro);
+  // const ubicacion = () => {
+  //   fetchGETPOSTPUTDELETEJSON('transportista/ubicaciones')
+  //     .then((data) => data.json())
+  //     .then((resp) => setListartUbicacion(resp.ubicaciones));
+  // };
 
-  const ubicacion = () => {
-    fetchGETPOSTPUTDELETEJSON('transportista/ubicaciones')
+  // console.log(listartUbicacion);
+
+  // const ubicacion = useCallback(() => {
+  //   fetchGETPOSTPUTDELETEJSON('transportista/ubicaciones')
+  //     .then((data) => data.json())
+  //     .then((resp) => setListartUbicacion(resp.ubicaciones));
+  // }, []);
+  // useEffect(() => {
+  //   ubicacion();
+  // }, []);
+  // console.log(listartUbicacion);
+
+  const listFecha = (data) => {
+    fetchGETPOSTPUTDELETEJSON('timetable_transportistas/' + data)
       .then((data) => data.json())
-      .then((resp) => setListartUbicacion(resp.ubicaciones));
+      .then((datos) => setListCalendario(datos));
   };
 
-  useEffect(() => {
-    ubicacion();
-  }, []);
-
-  useEffect(() => {
-    const materiales = (data) => {
-      fetchGETPOSTPUTDELETEJSON(`transportista/${data}/pruebas-asignadas`)
-        .then((data) => data.json())
-        .then((resp) => setListaMateriales(resp));
-    };
-    materiales(nTranspor.transportista);
-  }, [nTranspor]);
-
-  useEffect(() => {
-    if (!cambioEstado) {
-      const listFecha = () => {
-        fetchGETPOSTPUTDELETEJSON('timetable')
-          .then((data) => data.json())
-          .then((datos) => setListCalendario(datos));
-      };
-      listFecha();
-    }
-  }, [cambioEstado]);
   // console.log(listCalendario);
-  useEffect(() => {
-    setEventosList(listCalendario);
-  }, [listCalendario]);
+  // useEffect(() => {
+  //   setEventosList(listCalendario);
+  // }, [listCalendario]);
 
   const handlePacienteUbicacion = () => {
     setMPaciente(true);
@@ -97,16 +89,30 @@ const Calendario = () => {
     setMHorario(true);
   };
 
+  const materiales = (data) => {
+    fetchGETPOSTPUTDELETEJSON(`transportista/${data}/pruebas-asignadas`)
+      .then((data) => data.json())
+      .then((resp) => setListaMateriales(resp));
+  };
+
+  const getCalendario = (e) => {
+    const datos = listRegistro.filter((item) => item.id === parseInt(e));
+    setCondicional(true);
+    setEventosList(datos[0].reservaciones_asignadas);
+    // console.log(eventosList);
+  };
+
   const handleOnChange = (e) => {
     setNTranspor({
       ...nTranspor,
       [e.target.name]: e.target.value,
     });
+    if (parseInt(e.target.value) !== 0) {
+      materiales(e.target.value);
+      getCalendario(e.target.value);
+      listFecha(e.target.value);
+    }
   };
-
-  setTimeout(() => {
-    setCondicional(true);
-  }, 1500);
 
   return (
     <div className='container'>
@@ -199,7 +205,7 @@ const Calendario = () => {
                   name='transportista'
                   onChange={handleOnChange}
                 >
-                  <option value=''>Seleccionar</option>
+                  <option value='0'>Seleccionar</option>
                   {listRegistro.map((data, index) => {
                     return (
                       <option key={index} value={data.id}>
@@ -254,10 +260,10 @@ const Calendario = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {listaMateriales.map((data) => {
+                        {listaMateriales.map((data, index) => {
                           const { servicio } = data;
                           return (
-                            <tr key={servicio.id}>
+                            <tr key={index}>
                               <td>{servicio.description}</td>
                               <td>{data.cantidad}</td>
                             </tr>
@@ -278,7 +284,7 @@ const Calendario = () => {
             {condicional && (
               <Calendar
                 localizer={localizer}
-                events={eventosList}
+                events={listCalendario}
                 startAccessor='start'
                 endAccessor='end'
                 messages={messages}
