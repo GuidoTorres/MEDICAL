@@ -334,6 +334,8 @@ const Liquidacion = () => {
                 />
               </div>
             </div>
+
+            
           </div>
         </div>
       </div>

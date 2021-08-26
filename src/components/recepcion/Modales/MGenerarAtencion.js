@@ -21,6 +21,7 @@ const MGenerarAtencion = ({
 }) => {
   const closeModal = () => {
     setGenerarAtencion(false);
+    setDatos(null);
   };
   const [datos, setDatos] = useState({});
   const [condicion, setCondicion] = useState({});
@@ -35,6 +36,21 @@ const MGenerarAtencion = ({
       .then((res) => res.json())
       .then((res) => setServices(res.data));
   };
+
+  const obtenerData = () => {
+    if (dataSelected) {
+      setDatos({
+        user_type_id:
+          dataSelected &&
+          dataSelected.user &&
+          dataSelected.user.user_type &&
+          dataSelected.user.user_type.id,
+      });
+    }
+  };
+  useEffect(() => {
+    obtenerData();
+  }, []);
 
   const generarDeclaracion = () => {
     let arr = Array.from({ length: 26 }, () => ({
@@ -108,6 +124,7 @@ const MGenerarAtencion = ({
       service_id: datos.service_id,
       clinic_id: 1,
       codebar: dataSelected.id,
+      user_type_id: datos.user_type_id,
       forms: [
         {
           signature: null,
@@ -167,6 +184,7 @@ const MGenerarAtencion = ({
       [e.target.name]: e.target.value,
     });
   };
+  console.log(datos);
 
   const mostrarDeclaracionJurada = () => {
     const declaracion = document.querySelector(".containerPDF").style;
@@ -234,7 +252,7 @@ const MGenerarAtencion = ({
                 (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
               )}
           </label>
-          <label htmlFor="">
+          {/* <label htmlFor="">
             <strong>Tipo de paciente: </strong>
             {dataSelected &&
             dataSelected.user &&
@@ -245,28 +263,30 @@ const MGenerarAtencion = ({
                   (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
                 )
               : "---"}
-          </label>
-          {/* <div
+          </label> */}
+          <div
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <label htmlFor=""><strong>Tipo de paciente: </strong></label>
+            <label htmlFor="">
+              <strong>Tipo de paciente: </strong>
+            </label>
             <select
               // class="form-select"
               aria-label="Default select example"
-              // name="clinic_id"
-              // id="categoria"
-              // onChange={handleOnChange}
-              style={{marginLeft:'5px'}}
+              name="user_type_id"
+              value={datos.user_type_id || ""}
+              onChange={handleOnChange}
+              style={{ marginLeft: "5px" }}
             >
               <option selected>Seleccione</option>
               <option value="1">Empresa</option>
               <option value="2">Particular</option>
             </select>
-          </div> */}
+          </div>
           <label htmlFor="">
             <strong>Empresa: </strong>
             {dataSelected &&
@@ -315,28 +335,56 @@ const MGenerarAtencion = ({
 
             <div>
               <label htmlFor="">Plan de atención:</label>
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                disabled={datos.clinic_id === "1" ? false : true}
-                name="service_id"
-                id="subcategoria"
-                onChange={(e) => {
-                  handleOnChange(e);
-                  // setPrueba(e.target);
-                }}
-              >
-                <option selected>Seleccione</option>
 
-                {services &&
-                  services[0] &&
-                  services[0].services &&
-                  services[0].services.map((data, i) => (
-                    <option key={i} title={data.name} value={data.id}>
-                      {data.abbreviation}
-                    </option>
-                  ))}
-              </select>
+              {datos.user_type_id == 1 ? (
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  disabled={datos.clinic_id === "1" ? false : true}
+                  name="service_id"
+                  id="subcategoria"
+                  onChange={(e) => {
+                    handleOnChange(e);
+                    // setPrueba(e.target);
+                  }}
+                >
+                  <option selected>Seleccione</option>
+                  {dataSelected &&
+                    dataSelected.user &&
+                    dataSelected.user.company &&
+                    dataSelected.user.company.company_service &&
+                    dataSelected.user.company.company_service
+                      .filter((item) => item.state === 1)
+                      .map((data, i) => (
+                        <option key={i} title={data.name} value={data.id}>
+                          {data.service.abbreviation}
+                        </option>
+                      ))}
+                </select>
+              ) : datos.user_type_id == 2 ? (
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  disabled={datos.clinic_id === "1" ? false : true}
+                  name="service_id"
+                  id="subcategoria"
+                  onChange={(e) => {
+                    handleOnChange(e);
+                    // setPrueba(e.target);
+                  }}
+                >
+                  <option selected>Seleccione</option>
+
+                  {services &&
+                    services[0] &&
+                    services[0].services &&
+                    services[0].services.map((data, i) => (
+                      <option key={i} title={data.name} value={data.id}>
+                        {data.abbreviation}
+                      </option>
+                    ))}
+                </select>
+              ) : null}
             </div>
           </div>
         </div>
