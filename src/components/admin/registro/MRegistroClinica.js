@@ -69,6 +69,7 @@ const MRegistroClinica = ({
       address: dataSelected.corporation.address.address,
       ruc: dataSelected.corporation.ruc,
       business_name: dataSelected.corporation.business_name,
+      commercial_name: dataSelected.corporation.commercial_name, //corigiendo
       name: dataSelected.corporation.contacts[0].name,
       phone: dataSelected.corporation.contacts[0].phone,
       email: dataSelected.corporation.contacts[0].email,
@@ -271,10 +272,10 @@ const MRegistroClinica = ({
 
     formData.set('corporation_id', 1);
     formData.set('ruc', data.ruc || '');
-    formData.set('business_name', ruc.razonSocial || data.business_name || '');
+    formData.set('business_name', ruc.razonSocial || '');
     formData.set('commercial_name', data.commercial_name || '');
     formData.set('logo', avatar && avatar.file ? avatar.file : '');
-    formData.set('address', ruc.direccion || data.address || '');
+    formData.set('address', data.address || '');
     formData.set('reference', data.reference || '');
     formData.set('clinic_type_id', data.clinic_type_id.toString());
     formData.set('map_latitude', dataMapa ? dataMapa.lat : '');
@@ -483,6 +484,7 @@ const MRegistroClinica = ({
                     type='text'
                     name='business_name'
                     id='business_name'
+                    disabled
                     defaultValue={ruc.razonSocial || data.business_name || ''}
                     onChange={(e) => handleChange(e)}
                   />
@@ -493,7 +495,7 @@ const MRegistroClinica = ({
                     type='text'
                     name='commercial_name'
                     id='commercial_name'
-                    defaultValue={data.name || ''}
+                    defaultValue={data.commercial_name || ''}
                     onChange={(e) => handleChange(e)}
                   />
                 </div>

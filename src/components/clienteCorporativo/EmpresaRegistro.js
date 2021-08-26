@@ -273,7 +273,7 @@ const EmpresaRegistro = () => {
             className='dataTable'
             id='table'
             columns={columnas}
-            data={employees}
+            data={listRegistro}
             pagination
             paginationComponentOptions={paginacionOpciones}
             fixedHeader

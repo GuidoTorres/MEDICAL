@@ -21,7 +21,7 @@ const Calendario = () => {
   const [MHorario, setMHorario] = useState(false);
   const [listRegistro, setListRegistro] = useState([]);
   const [listCalendario, setListCalendario] = useState([]);
-  const [eventosList, setEventosList] = useState([]);
+  // const [eventosList, setEventosList] = useState([]);
 
   const [listaMateriales, setListaMateriales] = useState([]);
   const [listartUbicacion, setListartUbicacion] = useState([]);
@@ -53,34 +53,20 @@ const Calendario = () => {
     listaTransportista();
   }, []);
 
-  // const ubicacion = () => {
-  //   fetchGETPOSTPUTDELETEJSON('transportista/ubicaciones')
-  //     .then((data) => data.json())
-  //     .then((resp) => setListartUbicacion(resp.ubicaciones));
-  // };
-
-  // console.log(listartUbicacion);
-
-  // const ubicacion = useCallback(() => {
-  //   fetchGETPOSTPUTDELETEJSON('transportista/ubicaciones')
-  //     .then((data) => data.json())
-  //     .then((resp) => setListartUbicacion(resp.ubicaciones));
-  // }, []);
-  // useEffect(() => {
-  //   ubicacion();
-  // }, []);
-  // console.log(listartUbicacion);
+  const ubicacion = useCallback(() => {
+    fetchGETPOSTPUTDELETEJSON('transportista/ubicaciones')
+      .then((data) => data.json())
+      .then((resp) => setListartUbicacion(resp.ubicaciones));
+  }, []);
+  useEffect(() => {
+    ubicacion();
+  }, []);
 
   const listFecha = (data) => {
     fetchGETPOSTPUTDELETEJSON('timetable_transportistas/' + data)
       .then((data) => data.json())
       .then((datos) => setListCalendario(datos));
   };
-
-  // console.log(listCalendario);
-  // useEffect(() => {
-  //   setEventosList(listCalendario);
-  // }, [listCalendario]);
 
   const handlePacienteUbicacion = () => {
     setMPaciente(true);
@@ -96,10 +82,9 @@ const Calendario = () => {
   };
 
   const getCalendario = (e) => {
-    const datos = listRegistro.filter((item) => item.id === parseInt(e));
+    //   const datos = listRegistro.filter((item) => item.id === parseInt(e));
     setCondicional(true);
-    setEventosList(datos[0].reservaciones_asignadas);
-    // console.log(eventosList);
+    //   // setEventosList(datos[0].reservaciones_asignadas);
   };
 
   const handleOnChange = (e) => {
@@ -308,7 +293,7 @@ const Calendario = () => {
           MHorario={MHorario}
           setMHorario={setMHorario}
           nTranspor={nTranspor}
-          setCambioEstado={setCambioEstado}
+          // setCambioEstado={setCambioEstado}
         />
       )}
     </div>
