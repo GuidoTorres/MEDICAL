@@ -25,7 +25,6 @@ const EmpresaAsignacion = () => {
     {
       name: 'Ítem',
       selector: (row, index) => (index += 1),
-      sortable: true,
       grow: 0,
       style: {
         borderBotton: 'none',
@@ -42,8 +41,6 @@ const EmpresaAsignacion = () => {
           : row.person && row.person.document_type_id === 1
           ? 'DNI'
           : '',
-
-      sortable: true,
       grow: 2,
       style: {
         color: '#8f9196',
@@ -53,8 +50,8 @@ const EmpresaAsignacion = () => {
     {
       name: 'Nº de documento',
       selector: (row) => (row.person && row.person.dni ? row.person.dni : ''),
-      sortable: true,
       grow: 2,
+      sortable: true,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -64,7 +61,6 @@ const EmpresaAsignacion = () => {
       name: 'Nombres',
       selector: (row) => (row.person && row.person.name ? row.person.name : ''),
       grow: 2,
-      sortable: true,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -74,7 +70,6 @@ const EmpresaAsignacion = () => {
       name: 'A. Paterno',
       selector: (row) =>
         row.person && row.person.pat_lastname ? row.person.pat_lastname : '',
-      sortable: true,
       grow: 2,
       style: {
         color: '#8f9196',
@@ -85,7 +80,6 @@ const EmpresaAsignacion = () => {
       name: 'A. Materno',
       selector: (row) =>
         row.person && row.person.mom_lastname ? row.person.mom_lastname : '',
-      sortable: true,
       grow: 2,
       style: {
         color: '#8f9196',
@@ -96,7 +90,6 @@ const EmpresaAsignacion = () => {
       name: 'Correo',
       selector: (row) =>
         row.person && row.person.email ? row.person.email : '',
-      sortable: true,
       grow: 3,
       style: {
         color: '#8f9196',
@@ -111,7 +104,6 @@ const EmpresaAsignacion = () => {
           : row.person.gender_id === 2
           ? 'Femenino'
           : '',
-      sortable: true,
       style: {
         color: '#8f9196',
         borderBotton: 'none',
@@ -121,7 +113,6 @@ const EmpresaAsignacion = () => {
       name: 'Fecha de Nacimiento',
       selector: (row) =>
         row.person.birthday && row.person.birthday ? row.person.birthday : '',
-      sortable: true,
       grow: 2,
       style: {
         color: '#8f9196',
@@ -132,7 +123,6 @@ const EmpresaAsignacion = () => {
       name: 'Cargo',
       selector: (row) =>
         row.person && row.person.workstation ? row.person.workstation : '',
-      sortable: true,
       style: {
         color: '#8f9196',
         borderBotton: 'none',

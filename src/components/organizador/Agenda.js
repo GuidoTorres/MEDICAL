@@ -32,7 +32,6 @@ const Agenda = () => {
         selectable={true}
         defaultView={Views.AGENDA}
       />
-      <h3>Agenda</h3>
     </div>
   );
 };

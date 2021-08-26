@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 // import { eventStartAddNew, eventStartList } from '../../actions/calendario';
 import { fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
 import { customStyles } from '../../helpers/tablaOpciones';
@@ -46,59 +46,59 @@ const OMHorario = ({ MHorario, setMHorario, nTranspor, setCambioEstado }) => {
       isOpen={MHorario}
       onRequestClose={closeModal}
       style={customStyles}
-      className="modal modal__horario"
-      overlayClassName="modal-fondo"
+      className='modal modal__horario'
+      overlayClassName='modal-fondo'
       closeTimeoutMS={200}
       ariaHideApp={false}
     >
-      <h3 className="title__modal">Evento</h3>
-      <form className="" onSubmit={handleSubmit}>
-        <div className="form-group mt-3">
+      <h3 className='title__modal'>Evento</h3>
+      <form className='' onSubmit={handleSubmit}>
+        <div className='form-group mt-3'>
           <label>Fecha inicio</label>
           <input
-            type="date"
-            name="attention_date"
+            type='date'
+            name='attention_date'
             value={attention_date}
             onChange={handleOnChange}
-            className="form-control"
+            className='form-control'
           />
         </div>
 
-        <div className="form-group mt-3">
+        <div className='form-group mt-3'>
           <label>Hora inicio</label>
           <input
-            type="time"
-            name="attention_time"
+            type='time'
+            name='attention_time'
             value={attention_time}
             onChange={handleOnChange}
-            className="form-control"
+            className='form-control'
           />
         </div>
-        <div className="form-group mt-3">
+        <div className='form-group mt-3'>
           <label>Hora fin</label>
           <input
-            type="time"
-            name="attention_time_end"
+            type='time'
+            name='attention_time_end'
             value={attention_time_end}
             onChange={handleOnChange}
-            className="form-control"
+            className='form-control'
           />
         </div>
-        <div className="form-group mt-3">
+        <div className='form-group mt-3'>
           <label>Enviar un comentario</label>
           <textarea
-            type="text"
-            className="form-control"
-            placeholder="Notas"
-            rows="5"
-            name="comments"
+            type='text'
+            className='form-control'
+            placeholder='Notas'
+            rows='5'
+            name='comments'
             value={comments}
             onChange={handleOnChange}
           ></textarea>
         </div>
-        <div className="mt-3">
-          <button type="submit" className="boton__horario">
-            <i className="far fa-save"></i>
+        <div className='mt-3'>
+          <button type='submit' className='boton__horario'>
+            <i className='far fa-save'></i>
             <span> Guardar</span>
           </button>
         </div>

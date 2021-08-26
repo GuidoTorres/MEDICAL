@@ -191,8 +191,15 @@ const EmpresaResultados = () => {
                 onChange={handleOnChange}
               />
             </div>
-            <div>
+
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
               <div className='switch'>
+                Envió automatico
                 <input
                   type='checkbox'
                   id='check'
@@ -202,9 +209,15 @@ const EmpresaResultados = () => {
                 />
                 <label htmlFor='check'></label>
               </div>
-              <button className='botones' onClick={enviarEmail}>
+
+              <button
+                className='botones ms-3'
+                onClick={enviarEmail}
+                style={{ height: '30px' }}
+              >
                 Enviar
               </button>
+              {/* </div> */}
             </div>
           </div>
           <DataTable
