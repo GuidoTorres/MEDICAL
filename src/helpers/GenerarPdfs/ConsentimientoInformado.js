@@ -1,12 +1,6 @@
 /* eslint-disable */
 import jsPDF from "jspdf";
-// import image from "../../assets/pdf Imagen/sintomas.png";
 import consentimiento from "../../assets/pdf Imagen/consentimiento.png";
-// import DeclaracionJurada from "./Modales/DeclaracionJurada";
-// import ConsentimientoInformado from "./Modales/ConsentimientoInformado";
-// import FichaCovid from "./Modales/FichaCovid";
-// import ficha1 from "../../assets/pdf Imagen/FichaCovid1.png";
-// import ficha2 from "../../assets/pdf Imagen/FichaCovid2.png";
 
 const data = {
   nombre: "Hector Torres Durand",
@@ -26,7 +20,6 @@ const getFecha = () => {
 };
 
 const generarConsentimientoInformado = (data) => {
-  console.log(data);
 
   if (data.consent !== null) {
     const doc = new jsPDF("p", "pt");

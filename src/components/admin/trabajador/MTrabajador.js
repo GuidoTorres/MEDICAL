@@ -5,8 +5,6 @@ import Swal from "sweetalert2";
 import Modal from "react-modal";
 import { fetchDNI, fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
 import { customStyles } from "../../../helpers/tablaOpciones";
-import { UploadAvatar } from "../../uploadAvatar/uploadAvatar";
-import MRegistroEmpresa from "../registro/MRegistroEmpresa";
 import ImagenTrabajador from "../../uploadAvatar/ImagenTrabajador";
 
 const MTrabajador = ({
@@ -21,7 +19,6 @@ const MTrabajador = ({
   const [avatar, setAvatar] = useState(null);
   const [trabajador, setTrabajador] = useState({});
   const [dni, setDni] = useState({});
-  const [error, setError] = useState(false);
 
   const closeModal = () => {
     setOpenModal(false);
@@ -46,33 +43,6 @@ const MTrabajador = ({
   console.log(dni);
 
   const postEmployee = () => {
-    // if (trabajador.dni === "" || null) {
-    //   document.getElementById("dni").style = "border:1px solid red !important";
-    // }
-    // if (trabajador.name === "" || null) {
-    //   document.getElementById("name").style = "border:1px solid red !important";
-    // }
-
-    // if (trabajador.pat_lastname === "" || null) {
-    //   document.getElementById("apellido1").style =
-    //     "border:1px solid red !important";
-    // }
-    // if (trabajador.mom_lastname === "" || null) {
-    //   document.getElementById("apellido2").style =
-    //     "border:1px solid red !important";
-    // }
-    // if (trabajador.email === "" || null) {
-    //   document.getElementById("email").style =
-    //     "border:1px solid red !important";
-    // }
-    // if (trabajador.cellphone === "" || null) {
-    //   document.getElementById("cell").style = "border:1px solid red !important";
-    // }
-
-    // if (trabajador.role_id === "" || null) {
-    //   document.getElementById("role").style = "border:1px solid red !important";
-    // }
-
     const formData = new FormData();
     formData.set("dni", trabajador.dni || "");
     formData.set("name", dni.nombres || trabajador.name || "");
@@ -176,17 +146,11 @@ const MTrabajador = ({
   };
 
   const handleOnChange = (e) => {
-    // if (editar === true) {
-    //   setEditarTrabajador({
-    //     ...editarTrabajador,
-    //     [e.target.name]: e.target.value,
-    //   });
-    // } else {
+
     setTrabajador({
       ...trabajador,
       [e.target.name]: e.target.value,
     });
-    // }
   };
 
   const handleSubmit = (e) => {
@@ -379,11 +343,7 @@ const MTrabajador = ({
                     <input
                       type="text"
                       name="vehicle_name"
-                      // defaultValue={
-                      //   dataSelected && dataSelected.cellphone
-                      //     ? dataSelected.cellphone
-                      //     : ""
-                      // }
+
                       onChange={handleOnChange}
                     />
                   </div>
@@ -392,11 +352,7 @@ const MTrabajador = ({
                     <input
                       type="text"
                       name="license_plate"
-                      // defaultValue={
-                      //   dataSelected && dataSelected.cellphone
-                      //     ? dataSelected.cellphone
-                      //     : ""
-                      // }
+
                       onChange={handleOnChange}
                     />
                   </div>
@@ -410,7 +366,6 @@ const MTrabajador = ({
             <div className="mregistro__ubicacion">
               <div className="icons">
                 <p>Fotografía</p>
-                {/* <i className="fab fa-algolia"></i> */}
               </div>
             </div>
             <div className="mregistro__logo">

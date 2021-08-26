@@ -7,35 +7,30 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
     if (e.target.value) {
       let pos = ficha.findIndex((arr) => arr.question_id === id);
       const arrs = [...ficha];
-      console.log(arrs[pos]);
 
       arrs[pos].answer = e.target.value;
       setFicha([...arrs]);
     } else {
       let pos = ficha.findIndex((arr) => arr.question_id === id);
       const arrs = [...ficha];
-      console.log(arrs[pos]);
       arrs[pos].answer = null;
       setFicha([...arrs]);
     }
     if (resp === "X" && e.target.checked) {
       let pos = ficha.findIndex((arr) => arr.question_id === id);
       const arrs = [...ficha];
-      console.log(arrs[pos]);
 
       arrs[pos].answer = resp;
       setFicha([...arrs]);
     } else if (resp === null) {
       let pos = ficha.findIndex((arr) => arr.question_id === id);
       const arrs = [...ficha];
-      console.log(arrs[pos]);
 
       arrs[pos].answer = null;
       setFicha([...arrs]);
     }
   };
 
-  // console.log(ficha);
   return (
     <div className="fichaCovid">
       <label className="titulo1 mt-2" htmlFor="">
@@ -172,7 +167,7 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
           ) : (
             ""
           )}
-          {i === 106 ? (
+          {i === 107 ? (
             <>
               <label> Si la respuesta es Si, marque según corresponda:</label>{" "}
               <br></br>{" "}
@@ -180,7 +175,7 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
           ) : (
             ""
           )}
-          {i === 114 ? (
+          {i === 115 ? (
             <>
               <label>
                 {" "}
@@ -194,14 +189,14 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
           ) : (
             ""
           )}
-          {i === 114 ? (
+          {i === 115 ? (
             <>
               <label> Hospitalizado:</label> <br></br>{" "}
             </>
           ) : (
             ""
           )}
-          {i === 120 ? (
+          {i === 121 ? (
             <>
               <label> Signos:</label> <br></br>{" "}
             </>
@@ -264,14 +259,14 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
             ""
           )}
 
-          {i === 144 ? (
+          {i === 146 ? (
             <>
               <label> Lugar de defunción:</label> <br></br>{" "}
             </>
           ) : (
             ""
           )}
-          {i === 151 ? (
+          {i === 153 ? (
             <>
               <label>
                 {" "}
@@ -282,7 +277,8 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
           ) : (
             ""
           )}
-          {i === 153 ? (
+
+          {i === 155 ? (
             <>
               <label> Tipo de prueba:</label> <br></br>{" "}
             </>
@@ -290,7 +286,7 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
             ""
           )}
 
-          {i === 156 ? (
+          {i === 158 ? (
             <>
               <label> Resultado:</label> <br></br>{" "}
             </>
@@ -298,7 +294,7 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
             ""
           )}
 
-          {i === 161 ? (
+          {i === 163 ? (
             <>
               <label> Tipo de prueba:</label> <br></br>{" "}
             </>
@@ -306,14 +302,14 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
             ""
           )}
 
-          {i === 164 ? (
+          {i === 166 ? (
             <>
               <label> Resultado:</label> <br></br>{" "}
             </>
           ) : (
             ""
           )}
-          {i === 169 ? (
+          {i === 171 ? (
             <>
               <label> Tipo de prueba:</label> <br></br>{" "}
             </>
@@ -321,7 +317,7 @@ const FichaCovid19 = ({ ficha, setFicha, formulario }) => {
             ""
           )}
 
-          {i === 172 ? (
+          {i === 174 ? (
             <>
               <label> Resultado:</label> <br></br>{" "}
             </>
