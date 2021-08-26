@@ -45,7 +45,13 @@ const Atencion = () => {
     },
     {
       name: "Nombres y apellidos",
-      selector: (row) => (row.fullName ? row.fullName : ""),
+      selector: (row) =>
+        row.fullName
+          ? row.fullName.replace(
+              /(^\w|\s\w)(\S*)/g,
+              (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+            )
+          : "",
       sortable: true,
       grow: 2,
       style: {

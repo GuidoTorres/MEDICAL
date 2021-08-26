@@ -48,9 +48,10 @@ const MGenerarAtencion = ({
 
     setDeclaracion(arr);
   };
+  console.log(dataSelected);
 
   const generarFicha = () => {
-    let arr = Array.from({ length: 155 }, () => ({
+    let arr = Array.from({ length: 177 }, () => ({
       question_id: null,
       answer: null,
     }));
@@ -75,7 +76,6 @@ const MGenerarAtencion = ({
     generarDeclaracion();
     generarFicha();
   }, []);
-
 
   const getFecha = () => {
     let newDate = new Date();
@@ -218,25 +218,57 @@ const MGenerarAtencion = ({
       <div className="generarAtencion">
         <div className="datosPaciente">
           <label htmlFor="">
-            Paciente:{" "}
-            {dataSelected.name +
+            <strong>Paciente: </strong>
+            {dataSelected.name.replace(
+              /(^\w|\s\w)(\S*)/g,
+              (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+            ) +
               " " +
-              dataSelected.pat_lastname +
+              dataSelected.pat_lastname.replace(
+                /(^\w|\s\w)(\S*)/g,
+                (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+              ) +
               " " +
-              dataSelected.mom_lastname}
-          </label>
-          <label htmlFor="">
-            Tipo de paciente:{" "}
-            {dataSelected.user &&
-              dataSelected.user.user_type &&
-              dataSelected.user.user_type &&
-              dataSelected.user.user_type.name.replace(
+              dataSelected.mom_lastname.replace(
                 /(^\w|\s\w)(\S*)/g,
                 (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
               )}
           </label>
           <label htmlFor="">
-            Empresa:{" "}
+            <strong>Tipo de paciente: </strong>
+            {dataSelected &&
+            dataSelected.user &&
+            dataSelected.user.user_type &&
+            dataSelected.user.user_type.name
+              ? dataSelected.user.user_type.name.replace(
+                  /(^\w|\s\w)(\S*)/g,
+                  (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+                )
+              : "---"}
+          </label>
+          {/* <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <label htmlFor=""><strong>Tipo de paciente: </strong></label>
+            <select
+              // class="form-select"
+              aria-label="Default select example"
+              // name="clinic_id"
+              // id="categoria"
+              // onChange={handleOnChange}
+              style={{marginLeft:'5px'}}
+            >
+              <option selected>Seleccione</option>
+              <option value="1">Empresa</option>
+              <option value="2">Particular</option>
+            </select>
+          </div> */}
+          <label htmlFor="">
+            <strong>Empresa: </strong>
             {dataSelected &&
             dataSelected.user &&
             dataSelected.user.company &&
@@ -245,11 +277,25 @@ const MGenerarAtencion = ({
               ? dataSelected.user.company.corporation.commercial_name
               : "---"}
           </label>
+
+          <label htmlFor="">
+            <strong>Teléfono: </strong>
+            {dataSelected &&
+            dataSelected.user &&
+            dataSelected.user.company &&
+            dataSelected.user.company.corporation &&
+            dataSelected.user.company.corporation.contacts &&
+            dataSelected.user.company.corporation.contacts &&
+            dataSelected.user.company.corporation.contacts[1] &&
+            dataSelected.user.company.corporation.contacts[1].phone
+              ? dataSelected.user.company.corporation.contacts[1].phone
+              : "---"}
+          </label>
         </div>
 
         <div className="container1">
           <label htmlFor="" className="mt-3">
-            <strong>Seleccionar servicio</strong>
+            <strong>Seleccionar servicio:</strong>
           </label>
 
           <div className="tipoServicio mt-3">
