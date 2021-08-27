@@ -28,7 +28,7 @@ const RegistroClinica = () => {
         setMetGetClinic(datos.data);
       });
   };
-
+  console.log(metGetClinic);
   // Funcion para filtra la clinica roma de la tabla
   // const filtrarMedical = () => {
   //   const clinics = metGetClinic.filter((item) => item.id !== 1);
