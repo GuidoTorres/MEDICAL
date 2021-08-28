@@ -21,20 +21,38 @@ const MGenerarAtencion = ({
 }) => {
   const closeModal = () => {
     setGenerarAtencion(false);
+    setDatos(null);
   };
   const [datos, setDatos] = useState({});
   const [condicion, setCondicion] = useState({});
 
   const [declaracion, setDeclaracion] = useState();
   const [ficha, setFicha] = useState();
+  const [consentimiento, setConsentimiento] = useState();
   const [services, setServices] = useState({});
   const [clinics, setClinics] = useState({});
+  const [postData, setPostData] = useState({});
 
   const getServices = () => {
     fetchGETPOSTPUTDELETE("services")
       .then((res) => res.json())
       .then((res) => setServices(res.data));
   };
+
+  const obtenerData = () => {
+    if (dataSelected) {
+      setDatos({
+        user_type_id:
+          dataSelected &&
+          dataSelected.user &&
+          dataSelected.user.user_type &&
+          dataSelected.user.user_type.id,
+      });
+    }
+  };
+  useEffect(() => {
+    obtenerData();
+  }, []);
 
   const generarDeclaracion = () => {
     let arr = Array.from({ length: 26 }, () => ({
@@ -48,7 +66,6 @@ const MGenerarAtencion = ({
 
     setDeclaracion(arr);
   };
-  console.log(dataSelected);
 
   const generarFicha = () => {
     let arr = Array.from({ length: 177 }, () => ({
@@ -64,6 +81,20 @@ const MGenerarAtencion = ({
     setFicha(arr);
   };
 
+  const generarConsentimiento = () => {
+    let arr = Array.from({ length: 3 }, () => ({
+      question_id: null,
+      answer: null,
+    }));
+
+    arr.map((item, a) => {
+      let data = a;
+      item.question_id = data + 1;
+    });
+
+    setConsentimiento(arr);
+  };
+
   const getClinics = () => {
     fetchGETPOSTPUTDELETE("clinics")
       .then((res) => res.json())
@@ -75,6 +106,7 @@ const MGenerarAtencion = ({
     getClinics();
     generarDeclaracion();
     generarFicha();
+    generarConsentimiento();
   }, []);
 
   const getFecha = () => {
@@ -100,64 +132,138 @@ const MGenerarAtencion = ({
 
   const crearAtencion = () => {
     console.log("crear atencion");
-    console.log(ficha);
-    const atencion = {
-      date_attention: getFecha() || "",
-      time_attention: getHora() || "",
-      people_id: dataSelected.id,
-      service_id: datos.service_id,
-      clinic_id: 1,
-      codebar: dataSelected.id,
-      forms: [
-        {
-          signature: null,
-          date_emision: getFecha(),
-          form_type_id: 1,
-          answers: declaracion,
-        },
-        {
-          signature: null,
-          date_emision: getFecha(),
-          form_type_id: 2,
-          answers: ficha,
-        },
-      ],
-    };
+    const data = declaracion.filter((item) => item.answer !== null);
+    const data1 = ficha.filter((item) => item.answer !== null);
+
+    if (datos.service_id == "5" && data.length > 0 && data1.length > 0) {
+      const atencion = {
+        date_attention: getFecha() || "",
+        time_attention: getHora() || "",
+        people_id: dataSelected.id,
+        service_id: datos.service_id,
+        clinic_id: 1,
+        codebar: dataSelected.id,
+        user_type_id: datos.user_type_id,
+        forms: [
+          {
+            signature: null,
+            date_emision: getFecha(),
+            form_type_id: 1,
+            answers: declaracion,
+          },
+          {
+            signature: null,
+            date_emision: getFecha(),
+            form_type_id: 2,
+            answers: ficha,
+          },
+          {
+            signature: null,
+            date_emision: getFecha(),
+            form_type_id: 3,
+            answers: consentimiento,
+          },
+        ],
+      };
+      fetchGETPOSTPUTDELETEJSON("attention", atencion, "POST").then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          closeModal();
+          Swal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Se generó la atención correctamente.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Aceptar",
+          }).then((resp) => {
+            if (resp.isConfirmed) {
+              getAttention();
+            }
+          });
+        } else {
+          closeModal();
+          Swal.fire({
+            icon: "error",
+            title: "Ups¡",
+            text: "Algo salió mal.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cerrar",
+          });
+        }
+      });
+    } else if (
+      datos.service_id == "4" ||
+      datos.service_id == "3" ||
+      datos.service_id == "2" ||
+      (datos.service_id == "1" && data.length > 0)
+    ) {
+      console.log("entro a las otras");
+
+      const atencion = {
+        date_attention: getFecha() || "",
+        time_attention: getHora() || "",
+        people_id: dataSelected.id,
+        service_id: datos.service_id,
+        clinic_id: 1,
+        codebar: dataSelected.id,
+        user_type_id: datos.user_type_id,
+        forms: [
+          {
+            signature: null,
+            date_emision: getFecha(),
+            form_type_id: 1,
+            answers: declaracion,
+          },
+
+          {
+            signature: null,
+            date_emision: getFecha(),
+            form_type_id: 3,
+            answers: consentimiento,
+          },
+        ],
+      };
+      fetchGETPOSTPUTDELETEJSON("attention", atencion, "POST").then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          closeModal();
+          Swal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Se generó la atención correctamente.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Aceptar",
+          }).then((resp) => {
+            if (resp.isConfirmed) {
+              getAttention();
+            }
+          });
+        } else {
+          closeModal();
+          Swal.fire({
+            icon: "error",
+            title: "Ups¡",
+            text: "Algo salió mal.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cerrar",
+          });
+        }
+      });
+    } else {
+      closeModal();
+      Swal.fire({
+        icon: "error",
+        title: "Fichas incompletas",
+        text: "Debe llenar todas las fichas para atender al paciente.",
+      });
+    }
 
     const prueba = document.getElementById("categoria").value;
     const prueba1 = document.getElementById("subcategoria").value;
-
-    console.log(prueba);
-    console.log(prueba1);
-
-    fetchGETPOSTPUTDELETEJSON("attention", atencion, "POST").then((res) => {
-      console.log(res);
-      if (res.status === 200) {
-        closeModal();
-        Swal.fire({
-          icon: "success",
-          title: "Éxito",
-          text: "Se generó la atención correctamente.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getAttention();
-          }
-        });
-      } else {
-        closeModal();
-        Swal.fire({
-          icon: "error",
-          title: "Ups¡",
-          text: "Algo salió mal.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Cerrar",
-        });
-      }
-    });
   };
 
   const handleOnChange = (e) => {
@@ -234,7 +340,7 @@ const MGenerarAtencion = ({
                 (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
               )}
           </label>
-          <label htmlFor="">
+          {/* <label htmlFor="">
             <strong>Tipo de paciente: </strong>
             {dataSelected &&
             dataSelected.user &&
@@ -245,28 +351,30 @@ const MGenerarAtencion = ({
                   (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
                 )
               : "---"}
-          </label>
-          {/* <div
+          </label> */}
+          <div
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <label htmlFor=""><strong>Tipo de paciente: </strong></label>
+            <label htmlFor="">
+              <strong>Tipo de paciente: </strong>
+            </label>
             <select
               // class="form-select"
               aria-label="Default select example"
-              // name="clinic_id"
-              // id="categoria"
-              // onChange={handleOnChange}
-              style={{marginLeft:'5px'}}
+              name="user_type_id"
+              value={datos.user_type_id || ""}
+              onChange={handleOnChange}
+              style={{ marginLeft: "5px" }}
             >
               <option selected>Seleccione</option>
               <option value="1">Empresa</option>
               <option value="2">Particular</option>
             </select>
-          </div> */}
+          </div>
           <label htmlFor="">
             <strong>Empresa: </strong>
             {dataSelected &&
@@ -315,28 +423,56 @@ const MGenerarAtencion = ({
 
             <div>
               <label htmlFor="">Plan de atención:</label>
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                disabled={datos.clinic_id === "1" ? false : true}
-                name="service_id"
-                id="subcategoria"
-                onChange={(e) => {
-                  handleOnChange(e);
-                  // setPrueba(e.target);
-                }}
-              >
-                <option selected>Seleccione</option>
 
-                {services &&
-                  services[0] &&
-                  services[0].services &&
-                  services[0].services.map((data, i) => (
-                    <option key={i} title={data.name} value={data.id}>
-                      {data.abbreviation}
-                    </option>
-                  ))}
-              </select>
+              {datos.user_type_id == 1 ? (
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  disabled={datos.clinic_id === "1" ? false : true}
+                  name="service_id"
+                  id="subcategoria"
+                  onChange={(e) => {
+                    handleOnChange(e);
+                    // setPrueba(e.target);
+                  }}
+                >
+                  <option selected>Seleccione</option>
+                  {dataSelected &&
+                    dataSelected.user &&
+                    dataSelected.user.company &&
+                    dataSelected.user.company.company_service &&
+                    dataSelected.user.company.company_service
+                      .filter((item) => item.state === 1)
+                      .map((data, i) => (
+                        <option key={i} title={data.name} value={data.id}>
+                          {data.service.abbreviation}
+                        </option>
+                      ))}
+                </select>
+              ) : datos.user_type_id == 2 ? (
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  disabled={datos.clinic_id === "1" ? false : true}
+                  name="service_id"
+                  id="subcategoria"
+                  onChange={(e) => {
+                    handleOnChange(e);
+                    // setPrueba(e.target);
+                  }}
+                >
+                  <option selected>Seleccione</option>
+
+                  {services &&
+                    services[0] &&
+                    services[0].services &&
+                    services[0].services.map((data, i) => (
+                      <option key={i} title={data.name} value={data.id}>
+                        {data.abbreviation}
+                      </option>
+                    ))}
+                </select>
+              ) : null}
             </div>
           </div>
         </div>
@@ -384,6 +520,8 @@ const MGenerarAtencion = ({
                 dataSelected={dataSelected}
                 datos={datos}
                 formulario={formulario}
+                consentimiento={consentimiento}
+                setConsentimiento={setConsentimiento}
               />
             </div>
 

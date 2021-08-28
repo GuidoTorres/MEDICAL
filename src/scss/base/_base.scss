@@ -299,16 +299,16 @@ input[type='checkbox'] {
   height: initial;
   width: 75%;
   max-height: 700px;
-  max-width: 475px;
+  max-width: 575px;
 }
 
-.modal__subcategoria {
-  height: initial;
-  width: 85%;
-  max-height: 568px;
-  max-width: 655px;
-  border: 1px solid red;
-}
+// .modal__subcategoria {
+//   height: initial;
+//   width: 85%;
+//   max-height: 868px;
+//   max-width: 655px;
+
+// }
 
 // TODO MODAL ADMIN EDITAR SERVICIO
 .modal__EServicio {
@@ -527,8 +527,8 @@ input[type='checkbox'] {
 .modal__subcategoria {
   height: initial;
   width: 75%;
-  max-height: 468px;
-  max-width: 655px;
+  max-height: 768px;
+  max-width: 685px;
 }
 
 // *momentaneo, luego se elimina
@@ -699,9 +699,9 @@ input[type='checkbox'] {
   }
 }
 @media screen and (min-height: 630px) {
-  .modal__subcategoria {
-    height: 42%;
-  }
+  // .modal__subcategoria {
+  //   height: 42%;
+  // }
   .modal__hprecio {
     height: 43%;
   }
@@ -710,9 +710,9 @@ input[type='checkbox'] {
   }
 }
 @media screen and (min-width: 481px) {
-  .modal__subcategoria {
-    width: 50%;
-  }
+  // .modal__subcategoria {
+  //   width: 50%;
+  // }
   .modal__barcode {
     height: auto;
     max-width: 315px;

@@ -18,6 +18,22 @@ const Liquidacion = () => {
   const [empresa, setEmpresa] = useState();
   const [particular, setParticular] = useState();
 
+  const conditionalRowStyles = [
+    // You can also pass a callback to style for additional customization
+    {
+      when: (row) =>
+        row.fechas && row.fechas.before && row.fechas.dias_transcurridos,
+      style: (row) => ({
+        backgroundColor:
+          row.fechas.before - row.fechas.dias_transcurridos <= 1
+            ? "#FE9A9D"
+            : row.fechas.before - row.fechas.dias_transcurridos <= 4
+            ? "#FCCA88"
+            : "",
+      }),
+    },
+  ];
+
   const getLiquidacion = () => {
     // console.log("a");
     fetchGETPOSTPUTDELETE("settlement")
@@ -66,9 +82,133 @@ const Liquidacion = () => {
     getLiquidacion();
   }, []);
 
-  // console.log(liquidacion);
-
   const columnas = [
+    {
+      name: "Ítem",
+      selector: (row, index) => (index += 1),
+      sortable: true,
+      grow: 0,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Nombres y apellidos",
+
+      selector: (row) =>
+        row.company &&
+        row.company.corporation &&
+        row.company.corporation.commercial_name
+          ? row.company.corporation.business_name
+          : row.detail.length > 0
+          ? row.detail[0].attention.person.name
+          : "",
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "DNI",
+      selector: (row) =>
+        row.company && row.company.corporation && row.company.corporation.ruc
+          ? row.company.corporation.ruc
+          : row.detail.length > 0
+          ? row.detail[0].attention.person.dni
+          : "",
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Fecha",
+      selector: "date_issue",
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Sub total",
+      selector: "subtotal",
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Impuesto",
+      selector: "igv",
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Total",
+      selector: "amount",
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+
+    {
+      name: "Estado",
+      selector: (row) => typeStatus(row.isapproved),
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    // {
+    //   name: "Vencimiento",
+    //   selector: (row) => (row.isapproved === 2 ? row.date || "10 días" : "---"),
+    //   sortable: true,
+    //   style: {
+    //     borderBotton: "none",
+    //     color: "#555555",
+    //   },
+    // },
+    {
+      name: "Detalles",
+      button: true,
+      cell: (e) => (
+        <button
+          onClick={() => handleDetalles(e)}
+          className="table__tablebutton"
+        >
+          <i className="fas fa-info-circle"></i>
+        </button>
+      ),
+    },
+    {
+      name: "Cargar Información",
+      button: true,
+      cell: (e) =>
+        e.isapproved === 2 ? (
+          <button
+            onClick={() => handleCargarInfo(e)}
+            className="table__tablebutton"
+          >
+            <i className="fas fa-folder-open"></i>
+          </button>
+        ) : (
+          <i className="fas fa-folder-open icon-gray"></i>
+        ),
+    },
+  ];
+
+  const columnas1 = [
     {
       name: "Ítem",
       selector: (row, index) => (index += 1),
@@ -83,7 +223,9 @@ const Liquidacion = () => {
       name: "Razón social",
 
       selector: (row) =>
-        row.company
+        row.company &&
+        row.company.corporation &&
+        row.company.corporation.commercial_name
           ? row.company.corporation.business_name
           : row.detail.length > 0
           ? row.detail[0].attention.person.name
@@ -97,7 +239,7 @@ const Liquidacion = () => {
     {
       name: "RUC",
       selector: (row) =>
-        row.company
+        row.company && row.company.corporation && row.company.corporation.ruc
           ? row.company.corporation.ruc
           : row.detail.length > 0
           ? row.detail[0].attention.person.dni
@@ -156,8 +298,12 @@ const Liquidacion = () => {
     },
     {
       name: "Vencimiento",
-      selector: (row) => (row.isapproved === 2 ? row.date || "10 días" : "---"),
+      selector: (row) =>
+        row.fechas && row.fechas.dias_transcurridos
+          ? row.fechas.before - row.fechas.dias_transcurridos + " días"
+          : "---",
       sortable: true,
+
       style: {
         borderBotton: "none",
         color: "#555555",
@@ -322,12 +468,13 @@ const Liquidacion = () => {
                   </div>
                 </div>
                 <DataTable
-                  columns={columnas}
+                  columns={columnas1}
                   data={empresa}
                   pagination
                   paginationComponentOptions={paginacionOpciones}
                   fixedHeader
                   fixedHeaderScrollHeight="500px"
+                  conditionalRowStyles={conditionalRowStyles}
                   noDataComponent={
                     <i className="fas fa-inbox table__icono"></i>
                   }

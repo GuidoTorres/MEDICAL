@@ -167,57 +167,112 @@ const Atencion = () => {
   };
 
   const generarAtencion = (e) => {
-    // setGenerateAttention({
-    //   date_creation: getFecha() || "",
-    //   time_attention: getHora(),
-    //   people_id: e.id || "",
-    //   service_id:
-    //     e.service_details && e.service_details.service_category_id
-    //       ? e.service_details.service_category_id
-    //       : "",
-    //   clinic_id: 1 || "",
-    //   codebar: "0213000011111",
-    // });
-    Swal.fire({
-      title: "¿Desea Atender al paciente?",
-      text: `${e.fullName ? e.fullName : "No hay datos"}`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Atender",
-    }).then((result) => {
-      console.log(result);
-      if (result.isConfirmed) {
-        fetchGETPOSTPUTDELETEJSON(`attention/attend/${e.id}`).then((data) => {
-          if (data.status === 200) {
-            Swal.fire({
-              icon: "success",
-              title: "Éxito",
-              text: "Se generó la atención correctamente.",
-              confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
-              confirmButtonText: "Aceptar",
-            }).then((resp) => {
-              if (resp.isConfirmed) {
-                getAttention();
+    console.log(e.llenado_formulario);
+    console.log(e);
+
+    if (e.service_details.id === 5) {
+      if (e.llenado_formulario === 24) {
+        Swal.fire({
+          title: "¿Desea Atender al paciente?",
+          text: `${e.fullName ? e.fullName : "No hay datos"}`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Atender",
+        }).then((result) => {
+          console.log(result);
+          if (result.isConfirmed) {
+            fetchGETPOSTPUTDELETEJSON(`attention/attend/${e.id}`).then(
+              (data) => {
+                if (data.status === 200) {
+                  Swal.fire({
+                    icon: "success",
+                    title: "Éxito",
+                    text: "Se generó la atención correctamente.",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Aceptar",
+                  }).then((resp) => {
+                    if (resp.isConfirmed) {
+                      getAttention();
+                    }
+                  });
+                } else {
+                  Swal.fire({
+                    icon: "error",
+                    title: "Ups¡",
+                    text: "Algo salió mal.",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Cerrar",
+                  });
+                }
               }
-            });
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "Ups¡",
-              text: "Algo salió mal.",
-              confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
-              confirmButtonText: "Cerrar",
-            });
+            );
           }
         });
-        // .then((datos) => setAttention(datos.data));
-        // Swal.fire("Éxito!", "Se genero la atención correctamente.", "success");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Fichas incompletas",
+          text: "Debe llenar todas las fichas para atender al paciente.",
+        });
       }
-    });
+    } else if (
+      e.service_details.id === 4 ||
+      e.service_details.id === 3 ||
+      e.service_details.id === 2 ||
+      e.service_details.id === 1
+    ) {
+      if (e.llenado_formulario === 8) {
+        Swal.fire({
+          title: "¿Desea Atender al paciente?",
+          text: `${e.fullName ? e.fullName : "No hay datos"}`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Atender",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            fetchGETPOSTPUTDELETEJSON(`attention/attend/${e.id}`).then(
+              (data) => {
+                if (data.status === 200) {
+                  Swal.fire({
+                    icon: "success",
+                    title: "Éxito",
+                    text: "Se generó la atención correctamente.",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Aceptar",
+                  }).then((resp) => {
+                    if (resp.isConfirmed) {
+                      getAttention();
+                    }
+                  });
+                } else {
+                  Swal.fire({
+                    icon: "error",
+                    title: "Ups¡",
+                    text: "Algo salió mal.",
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Cerrar",
+                  });
+                }
+              }
+            );
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Fichas incompletas",
+          text: "Debe llenar todas las fichas para atender al paciente.",
+        });
+      }
+    }
   };
 
   const handleSearch = (e) => {

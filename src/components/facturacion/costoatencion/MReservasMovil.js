@@ -1,26 +1,20 @@
-/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { customStyles } from "../../../helpers/tablaOpciones";
-import MMAParticulares from "./MMAParticulares";
-import Swal from "sweetalert2";
 import { fetchGETPOSTPUTDELETEJSON } from "../../../helpers/fetch";
-import MPrecio from "./MPrecio";
+import Swal from "sweetalert2";
 
-const MMParticulares = ({
-  openModalLiquidarParticular,
-  setOpenModalLiquidarParticular,
-  dataParticular,
-  setBusqueda,
-  getParticulares,
+const MReservasMovil = ({
+  openModalMovil,
+  setOpenModalMovil,
+  dataMovil,
+  getMovil,
   setClearRows,
 }) => {
-  useEffect(() => {
-    setBusqueda(null);
-    return () => {
-      setBusqueda(null);
-    };
-  }, []);
+  const closeModal = () => {
+    setOpenModalMovil(false);
+  };
+  console.log(dataMovil);
 
   const [openModalCrear, setOpenModalCrear] = useState(false);
   const [openModalPrecio, setOpenModalPrecio] = useState(false);
@@ -34,12 +28,10 @@ const MMParticulares = ({
   const [services, setServices] = useState([]);
 
   const obtenServicios = () => {
-    const array = dataParticular.map((d) => ({
+    const array = dataMovil.map((d) => ({
       servicio: d.service ? d.service.description : "",
       total: d.amount,
     }));
-
-    console.log(dataParticular);
 
     let serviceMap = array.map((item) => {
       return [item.servicio, item];
@@ -59,7 +51,7 @@ const MMParticulares = ({
     let suma = 0;
     let igv = 0;
     let totalPrecio = 0;
-    dataParticular.map((d) => {
+    dataMovil.map((d) => {
       if (estado === 2) {
         suma += Number(d.subtotal) || 0;
         igv += Number(d.igv) || 0;
@@ -86,9 +78,9 @@ const MMParticulares = ({
     // console.log(dataParticular);
   };
 
-  const closeModal = () => {
-    setOpenModalLiquidarParticular(false);
-  };
+  // const closeModal = () => {
+  //   setOpenModalLiquidarParticular(false);
+  // };
 
   const enviarfechaActual = () => {
     let fecha = new Date(); //Fecha actual
@@ -104,7 +96,7 @@ const MMParticulares = ({
     fetchGETPOSTPUTDELETEJSON("settlement", body, "POST")
       .then((info) => info.json())
       .then((info) => {
-        getParticulares();
+        getMovil();
         if (info.resp === "Settlement Create") {
           setClearRows(true);
           setClearRows(false);
@@ -127,7 +119,7 @@ const MMParticulares = ({
   const handleLiquidarEmpresa = () => {
     if (codigo !== null && codigo !== "") {
       const array = [];
-      dataParticular.map((d) => array.push({ attention_id: d.id }));
+      dataMovil.map((d) => array.push({ attention_id: d.id }));
       // console.log(data);
       // console.log(dataEmpresa);
       const liquidacion = {
@@ -160,10 +152,9 @@ const MMParticulares = ({
   useEffect(() => {
     obtenServicios();
   }, []);
-
   return (
     <Modal
-      isOpen={openModalLiquidarParticular}
+      isOpen={openModalMovil}
       onRequestClose={closeModal}
       style={customStyles}
       className="modal  mfacturacion__particular"
@@ -222,20 +213,32 @@ const MMParticulares = ({
                   </tr>
                 </thead>
                 <tbody>
-                  {dataParticular.map((d) => (
+                  {dataMovil.map((d, i) => (
                     <tr key={d.id}>
-                      <td>{d.id}</td>
+                      <td>{i + 1}</td>
                       <td>{d.person ? d.person.dni : ""}</td>
-                      <td>{d.date_attention}</td>
-                      <td>{d.person ? d.person.name : ""}</td>
-                      <td>{d.service ? d.service.description : ""}</td>
-                      <td>{d.service ? d.service.name : ""}</td>
+                      <td>{d.attention_time ? d.attention_time : ""}</td>
+                      <td>
+                        {d.sample &&
+                          d.sample[0] &&
+                          d.sample[0].attention.person.name}
+                      </td>
+                      <td>{"Covid-19"}</td>
+                      <td>
+                        {d.sample &&
+                          d.sample[0] &&
+                          d.sample[0].attention.service.abbreviation}
+                      </td>
                       <td>
                         {estado === 1
                           ? calcularSubtotal(
-                              d.service ? d.service.description : ""
+                              d.sample &&
+                                d.sample[0] &&
+                                d.sample[0].attention.service.description
+                                ? d.sample[0].attention.service.description
+                                : ""
                             )
-                          : d.subtotal}
+                          : d.total_cost}
                       </td>
                     </tr>
                   ))}
@@ -281,12 +284,12 @@ const MMParticulares = ({
         <button className="liquidacion-icon" onClick={editar}>
           <i className="fas fa-pen-square"></i> Edital precio(s)
         </button>
-        {openModalCrear && (
+        {/* {openModalCrear && (
           <MMAParticulares
             openModalCrear={openModalCrear}
             setOpenModalCrear={setOpenModalCrear}
           />
-        )}
+        )} */}
         <div className="list-botones">
           <button className="botones" onClick={closeModal}>
             Retroceder
@@ -296,7 +299,7 @@ const MMParticulares = ({
           </button>
         </div>
       </div>
-      {openModalPrecio && (
+      {/* {openModalPrecio && (
         <MPrecio
           openModalPrecio={openModalPrecio}
           setOpenModalPrecio={setOpenModalPrecio}
@@ -308,9 +311,9 @@ const MMParticulares = ({
           calcularValores={calcularValores}
           tipo={"P"}
         />
-      )}
+      )} */}
     </Modal>
   );
 };
 
-export default MMParticulares;
+export default MReservasMovil;

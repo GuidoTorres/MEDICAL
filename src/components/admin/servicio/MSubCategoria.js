@@ -19,7 +19,7 @@ const MSubCategoria = ({ setOpenSubModal, openSubModal, subCategoria }) => {
       preventScroll={true}
       ariaHideApp={false}
     >
-      <h3 className="title__modal">Sub Categorias</h3>
+      <h3 className="title__modal">Sub Categorías</h3>
       <div className="container">
         <div className="row mt-3">
           <div className="col-12 mregistro__servicios">
@@ -28,11 +28,11 @@ const MSubCategoria = ({ setOpenSubModal, openSubModal, subCategoria }) => {
                 <thead>
                   <tr>
                     <th scope="col">Id</th>
-                    <th scope="col text-center">Subcategoria</th>
+                    <th scope="col text-center">Subcategoría</th>
                     <th scope="col text-center">Abreviatura</th>
                     <th scope="col text-center">Precio vitrina</th>
-                    <th scope="col text-center">Precio vitrina</th>
-                    <th scope="col text-center">Precio vitrina</th>
+                    <th scope="col text-center">Precio límite superior</th>
+                    <th scope="col text-center">Precio límite inferior</th>
                   </tr>
                 </thead>
                 <tbody>
