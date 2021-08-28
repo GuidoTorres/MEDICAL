@@ -60,12 +60,28 @@ const Usuarios = ({ history }) => {
     {
       name: "Nombres y apellidos",
       selector: (row) =>
-        row.name
-          ? row.name.replace(
-              /(^\w|\s\w)(\S*)/g,
-              (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
-            )
-          : "",
+        `${
+          row.name
+            ? row.name.replace(
+                /(^\w|\s\w)(\S*)/g,
+                (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+              )
+            : ""
+        } ${
+          row.pat_lastname
+            ? row.pat_lastname.replace(
+                /(^\w|\s\w)(\S*)/g,
+                (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+              )
+            : ""
+        } ${
+          row.mom_lastname
+            ? row.mom_lastname.replace(
+                /(^\w|\s\w)(\S*)/g,
+                (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+              )
+            : ""
+        }`,
       sortable: true,
       grow: 2,
       style: {

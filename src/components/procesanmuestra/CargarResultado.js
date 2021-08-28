@@ -1,16 +1,16 @@
 /* eslint-disable */
-import React, { useEffect, useRef, useState } from 'react';
-import DataTable from 'react-data-table-component';
+import React, { useEffect, useRef, useState } from "react";
+import DataTable from "react-data-table-component";
 
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 // import { historial } from '../../data/PHistorial';
-import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import { paginacionOpciones } from "../../helpers/tablaOpciones";
 
 const CargarResultado = () => {
   const inputRef = useRef(null);
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [listResult, setListResult] = useState([]);
   const [result, setResult] = useState({});
   const [id, setId] = useState();
@@ -18,7 +18,7 @@ const CargarResultado = () => {
 
   const getResult = () => {
     //cargar un pdf con los resultados
-    fetchGETPOSTPUTDELETE('atenciones/resultado-pendiente', null, 'POST')
+    fetchGETPOSTPUTDELETE("atenciones/resultado-pendiente", null, "POST")
       .then((info) => info.json())
       .then((datos) => setResult(datos));
   };
@@ -29,13 +29,13 @@ const CargarResultado = () => {
 
   const columnas = [
     {
-      name: 'Item',
+      name: "Item",
       selector: (row, index) => (index += 1),
       sortable: true,
       grow: 0,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     // {
@@ -55,49 +55,55 @@ const CargarResultado = () => {
     //   },
     // },
     {
-      name: 'Nº documento',
-      selector: (row) => (row.dni ? row.dni : ''),
+      name: "Nº documento",
+      selector: (row) => (row.dni ? row.dni : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Nombre',
-      selector: (row) => (row.paciente ? row.paciente : ''),
+      name: "Nombre",
+      selector: (row) =>
+        row.paciente
+          ? row.paciente.replace(
+              /(^\w|\s\w)(\S*)/g,
+              (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+            )
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
 
     {
-      name: 'Tipo prueba',
-      selector: (row) => (row.prueba ? row.prueba : ''),
+      name: "Tipo prueba",
+      selector: (row) => (row.prueba ? row.prueba : ""),
 
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Fecha solicitud',
-      selector: (row) => (row.fecha_solicitud ? row.fecha_solicitud : ''),
+      name: "Fecha solicitud",
+      selector: (row) => (row.fecha_solicitud ? row.fecha_solicitud : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Cargar Resultados',
+      name: "Cargar Resultados",
       button: true,
       cell: (e) => (
         <button onClick={() => onChangeFile(e)} className="table__tablebutton">
-          <i className="far fa-file-pdf" style={{ color: 'grey' }}></i>
+          <i className="far fa-file-pdf" style={{ color: "grey" }}></i>
         </button>
       ),
     },
@@ -116,21 +122,21 @@ const CargarResultado = () => {
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : '') ||
+              : "") ||
             (data.dni
               ? data.dni.toString().toLowerCase().includes(busqueda)
-              : '') ||
+              : "") ||
             (data.paciente
               ? data.paciente.toString().toLowerCase().includes(busqueda)
-              : '') ||
+              : "") ||
             (data.prueba
               ? data.prueba
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : '' || data.fecha_solicitud
+              : "" || data.fecha_solicitud
               ? fecha_solicitud.toString().toLowerCase().includes(busqueda)
-              : '')
+              : "")
           );
         });
       setListResult(search);
@@ -153,8 +159,8 @@ const CargarResultado = () => {
     // console.log('upload');
 
     const formData = new FormData();
-    formData.set('id', resultado.id);
-    formData.set('pdf', e.target.files[0]);
+    formData.set("id", resultado.id);
+    formData.set("pdf", e.target.files[0]);
 
     if (e.target.files[0] !== undefined) {
       CargarPdf(formData);
@@ -163,17 +169,17 @@ const CargarResultado = () => {
 
   const CargarPdf = (pdf) => {
     // console.log('entro al if ');
-    fetchGETPOSTPUTDELETE('result', pdf, 'POST').then((info) => {
-      inputRef.current.value = '';
+    fetchGETPOSTPUTDELETE("result", pdf, "POST").then((info) => {
+      inputRef.current.value = "";
       setResultado({});
       if (info.status === 200) {
         Swal.fire({
-          icon: 'success',
-          title: 'Éxito',
-          text: 'Se guardó el pdf correctamente.',
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Aceptar',
+          icon: "success",
+          title: "Éxito",
+          text: "Se guardó el pdf correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
         }).then((resp) => {
           if (resp.isConfirmed) {
             getResult();
@@ -181,14 +187,14 @@ const CargarResultado = () => {
         });
       } else {
         Swal.fire({
-          icon: 'error',
-          title: '!Ups¡',
-          text: 'Algo salió mal.',
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Cerrar',
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
         });
-        inputRef.current.value = '';
+        inputRef.current.value = "";
       }
     });
   };
@@ -215,7 +221,7 @@ const CargarResultado = () => {
               id="file-input"
               ref={inputRef}
               onChange={upload}
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
             />
           </div>
 
@@ -231,7 +237,7 @@ const CargarResultado = () => {
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: 'grey' }}>No hay datos</p>
+                <p style={{ color: "grey" }}>No hay datos</p>
               </div>
             }
           />

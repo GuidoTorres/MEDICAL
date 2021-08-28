@@ -30,8 +30,7 @@ const DeclaracionJurada = ({
     // //Bloquear checks de la parte de sintomas si se selecciona ningun sintoma
     const sintoma = document.querySelectorAll(".sintoma");
     const sintoma1 = document.querySelectorAll(".sintoma1");
-    console.log(declaracion);
-    if (data.id === 1 && e.target.checked  && declaracion[0].answer === "Si") {
+    if (data.id === 1 && e.target.checked && declaracion[0].answer === "Si") {
       for (var i = 1; i < sintoma.length; i++) {
         sintoma[i].disabled = true;
         sintoma[i].disabled = true;
@@ -178,7 +177,7 @@ const DeclaracionJurada = ({
                     value=""
                     id={`no${data.id}`}
                     onChange={(e) => {
-                      handleChange(e, data, e.target.checked ? "Si" : null);
+                      handleChange(e, data, e.target.checked ? "No" : null);
                     }}
                   />
                   <label className="form-check-label" for="flexCheckDefault">

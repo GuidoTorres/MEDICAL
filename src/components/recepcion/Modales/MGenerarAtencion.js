@@ -28,8 +28,10 @@ const MGenerarAtencion = ({
 
   const [declaracion, setDeclaracion] = useState();
   const [ficha, setFicha] = useState();
+  const [consentimiento, setConsentimiento] = useState();
   const [services, setServices] = useState({});
   const [clinics, setClinics] = useState({});
+  const [postData, setPostData] = useState({});
 
   const getServices = () => {
     fetchGETPOSTPUTDELETE("services")
@@ -64,7 +66,6 @@ const MGenerarAtencion = ({
 
     setDeclaracion(arr);
   };
-  console.log(dataSelected);
 
   const generarFicha = () => {
     let arr = Array.from({ length: 177 }, () => ({
@@ -80,6 +81,20 @@ const MGenerarAtencion = ({
     setFicha(arr);
   };
 
+  const generarConsentimiento = () => {
+    let arr = Array.from({ length: 3 }, () => ({
+      question_id: null,
+      answer: null,
+    }));
+
+    arr.map((item, a) => {
+      let data = a;
+      item.question_id = data + 1;
+    });
+
+    setConsentimiento(arr);
+  };
+
   const getClinics = () => {
     fetchGETPOSTPUTDELETE("clinics")
       .then((res) => res.json())
@@ -91,6 +106,7 @@ const MGenerarAtencion = ({
     getClinics();
     generarDeclaracion();
     generarFicha();
+    generarConsentimiento();
   }, []);
 
   const getFecha = () => {
@@ -116,65 +132,138 @@ const MGenerarAtencion = ({
 
   const crearAtencion = () => {
     console.log("crear atencion");
-    console.log(ficha);
-    const atencion = {
-      date_attention: getFecha() || "",
-      time_attention: getHora() || "",
-      people_id: dataSelected.id,
-      service_id: datos.service_id,
-      clinic_id: 1,
-      codebar: dataSelected.id,
-      user_type_id: datos.user_type_id,
-      forms: [
-        {
-          signature: null,
-          date_emision: getFecha(),
-          form_type_id: 1,
-          answers: declaracion,
-        },
-        {
-          signature: null,
-          date_emision: getFecha(),
-          form_type_id: 2,
-          answers: ficha,
-        },
-      ],
-    };
+    const data = declaracion.filter((item) => item.answer !== null);
+    const data1 = ficha.filter((item) => item.answer !== null);
+
+    if (datos.service_id == "5" && data.length > 0 && data1.length > 0) {
+      const atencion = {
+        date_attention: getFecha() || "",
+        time_attention: getHora() || "",
+        people_id: dataSelected.id,
+        service_id: datos.service_id,
+        clinic_id: 1,
+        codebar: dataSelected.id,
+        user_type_id: datos.user_type_id,
+        forms: [
+          {
+            signature: null,
+            date_emision: getFecha(),
+            form_type_id: 1,
+            answers: declaracion,
+          },
+          {
+            signature: null,
+            date_emision: getFecha(),
+            form_type_id: 2,
+            answers: ficha,
+          },
+          {
+            signature: null,
+            date_emision: getFecha(),
+            form_type_id: 3,
+            answers: consentimiento,
+          },
+        ],
+      };
+      fetchGETPOSTPUTDELETEJSON("attention", atencion, "POST").then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          closeModal();
+          Swal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Se generó la atención correctamente.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Aceptar",
+          }).then((resp) => {
+            if (resp.isConfirmed) {
+              getAttention();
+            }
+          });
+        } else {
+          closeModal();
+          Swal.fire({
+            icon: "error",
+            title: "Ups¡",
+            text: "Algo salió mal.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cerrar",
+          });
+        }
+      });
+    } else if (
+      datos.service_id == "4" ||
+      datos.service_id == "3" ||
+      datos.service_id == "2" ||
+      (datos.service_id == "1" && data.length > 0)
+    ) {
+      console.log("entro a las otras");
+
+      const atencion = {
+        date_attention: getFecha() || "",
+        time_attention: getHora() || "",
+        people_id: dataSelected.id,
+        service_id: datos.service_id,
+        clinic_id: 1,
+        codebar: dataSelected.id,
+        user_type_id: datos.user_type_id,
+        forms: [
+          {
+            signature: null,
+            date_emision: getFecha(),
+            form_type_id: 1,
+            answers: declaracion,
+          },
+
+          {
+            signature: null,
+            date_emision: getFecha(),
+            form_type_id: 3,
+            answers: consentimiento,
+          },
+        ],
+      };
+      fetchGETPOSTPUTDELETEJSON("attention", atencion, "POST").then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          closeModal();
+          Swal.fire({
+            icon: "success",
+            title: "Éxito",
+            text: "Se generó la atención correctamente.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Aceptar",
+          }).then((resp) => {
+            if (resp.isConfirmed) {
+              getAttention();
+            }
+          });
+        } else {
+          closeModal();
+          Swal.fire({
+            icon: "error",
+            title: "Ups¡",
+            text: "Algo salió mal.",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Cerrar",
+          });
+        }
+      });
+    } else {
+      closeModal();
+      Swal.fire({
+        icon: "error",
+        title: "Fichas incompletas",
+        text: "Debe llenar todas las fichas para atender al paciente.",
+      });
+    }
 
     const prueba = document.getElementById("categoria").value;
     const prueba1 = document.getElementById("subcategoria").value;
-
-    console.log(prueba);
-    console.log(prueba1);
-
-    fetchGETPOSTPUTDELETEJSON("attention", atencion, "POST").then((res) => {
-      console.log(res);
-      if (res.status === 200) {
-        closeModal();
-        Swal.fire({
-          icon: "success",
-          title: "Éxito",
-          text: "Se generó la atención correctamente.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Aceptar",
-        }).then((resp) => {
-          if (resp.isConfirmed) {
-            getAttention();
-          }
-        });
-      } else {
-        closeModal();
-        Swal.fire({
-          icon: "error",
-          title: "Ups¡",
-          text: "Algo salió mal.",
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Cerrar",
-        });
-      }
-    });
   };
 
   const handleOnChange = (e) => {
@@ -184,7 +273,6 @@ const MGenerarAtencion = ({
       [e.target.name]: e.target.value,
     });
   };
-  console.log(datos);
 
   const mostrarDeclaracionJurada = () => {
     const declaracion = document.querySelector(".containerPDF").style;
@@ -432,6 +520,8 @@ const MGenerarAtencion = ({
                 dataSelected={dataSelected}
                 datos={datos}
                 formulario={formulario}
+                consentimiento={consentimiento}
+                setConsentimiento={setConsentimiento}
               />
             </div>
 

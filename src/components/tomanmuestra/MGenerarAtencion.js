@@ -1,35 +1,33 @@
 /* eslint-disable */
 import Modal from "react-modal";
-import { customStyles } from "../../../helpers/tablaOpciones";
+import { customStyles } from "../../helpers/tablaOpciones";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-import DeclaracionJurada from "../../recepcion/FormatosPDF/DeclaracionJurada";
-import ConsentimientoInformado from "../../recepcion/FormatosPDF/ConsentimientoInformado";
-import FichaCovid19 from "../../recepcion/FormatosPDF/FichaCovid19";
+import DeclaracionJurada from "../recepcion/FormatosPDF/DeclaracionJurada";
+import ConsentimientoInformado from "../recepcion/FormatosPDF/ConsentimientoInformado";
+import FichaCovid19 from "../recepcion/FormatosPDF/FichaCovid19";
 import {
   fetchGETPOSTPUTDELETE,
   fetchGETPOSTPUTDELETEJSON,
-} from "../../../helpers/fetch";
+} from "../../helpers/fetch";
 
 const MGenerarAtencion = ({
   openGenerarAtencion,
   setOpenGenerarAtencion,
   dataSelected,
-  getAttention,
   formulario,
 }) => {
   const closeModal = () => {
     setOpenGenerarAtencion(false);
+    setDatos(null);
   };
-
   const [datos, setDatos] = useState({});
   const [condicion, setCondicion] = useState({});
 
   const [declaracion, setDeclaracion] = useState();
   const [ficha, setFicha] = useState();
   const [consentimiento, setConsentimiento] = useState();
-
   const [services, setServices] = useState({});
   const [clinics, setClinics] = useState({});
 
@@ -205,6 +203,7 @@ const MGenerarAtencion = ({
       [e.target.name]: e.target.value,
     });
   };
+  console.log(datos);
 
   const mostrarDeclaracionJurada = () => {
     const declaracion = document.querySelector(".containerPDF").style;
@@ -238,8 +237,6 @@ const MGenerarAtencion = ({
     ficha.display = "block";
     ficha.visibility = "visible";
   };
-
-
   return (
     <Modal
       isOpen={openGenerarAtencion}

@@ -1,98 +1,120 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
-import Swal from 'sweetalert2';
+import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
 
 import {
   fetchGETPOSTPUTDELETE,
   fetchGETPOSTPUTDELETEJSON,
-} from '../../helpers/fetch';
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
-import MReserva from './MReserva';
+} from "../../helpers/fetch";
+import { paginacionOpciones } from "../../helpers/tablaOpciones";
+import MGenerarAtencion from "./MGenerarAtencion";
+import MReserva from "./MReserva";
 
 const Reservas = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [dataBarCode, setDataBarCode] = useState({});
   const [codigoHistorial, setCodigoHistorial] = useState(false);
+  const [openGenerarAtencion, setOpenGenerarAtencion] = useState(false);
 
   const [getDateAttention, setGetDateAttention] = useState([]);
-
+  const [dataSelected, setDataSelected] = useState([]);
+  const [formulario, setFormulario] = useState([]);
   const getAttention = () => {
-    fetchGETPOSTPUTDELETEJSON('atenciones/clinica', null, 'POST')
+    fetchGETPOSTPUTDELETEJSON("atenciones/clinica", null, "POST")
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos));
   };
 
+  const getForms = () => {
+    fetchGETPOSTPUTDELETE("forms")
+      .then((res) => res.json())
+      .then((res) => setFormulario(res.data));
+  };
   useEffect(() => {
     getAttention();
+    getForms();
   }, []);
+
   // console.log(getDateAttention);
   const columnas = [
     {
-      name: 'Item',
+      name: "Item",
       selector: (row, index) => (index += 1),
       sortable: true,
       grow: 0,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Tipo de documento',
-      selector: (row) => (row.tipo_documento ? row.tipo_documento : ''),
+      name: "Tipo de documento",
+      selector: (row) => (row.tipo_documento ? row.tipo_documento : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Nº documento',
-      selector: (row) => (row.dni ? row.dni : ''),
+      name: "Nº documento",
+      selector: (row) => (row.dni ? row.dni : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Nombre',
-      selector: (row) => (row.paciente ? row.paciente : ''),
+      name: "Nombre",
+      selector: (row) => (row.paciente ? row.paciente : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
 
     {
-      name: 'Tipo prueba',
+      name: "Tipo prueba",
       // selector:'tipo',
 
-      selector: (row) => (row.prueba ? row.prueba : ''),
+      selector: (row) => (row.prueba ? row.prueba : ""),
 
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Fecha solicitud',
+      name: "Fecha solicitud",
       // selector:'solicitud',
 
-      selector: (row) => (row.fecha_solicitud ? row.fecha_solicitud : ''),
+      selector: (row) => (row.fecha_solicitud ? row.fecha_solicitud : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Atender',
+      name: "Generar atención",
+      button: true,
+      cell: (e) => (
+        <button
+          className="table__tablebutton editar"
+          onClick={() => generarAtencion(e)}
+        >
+          <i className="fas fa-stethoscope"></i>
+        </button>
+      ),
+    },
+    {
+      name: "Atender",
       button: true,
       cell: (e) => (
         <button
@@ -104,6 +126,11 @@ const Reservas = () => {
       ),
     },
   ];
+  const generarAtencion = (e) => {
+    setOpenGenerarAtencion(true);
+    setDataSelected(e);
+  };
+
   //
   useEffect(() => {
     const filtrarElemento = () => {
@@ -142,30 +169,33 @@ const Reservas = () => {
     setBusqueda(([e.target.name] = e.target.value));
   };
   const handleDetalles = (e) => {
-    Swal.fire({
-      title: '¿Atender paciente?',
-      text: `${e.person.name + ' ' + e.person.pat_lastname}`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Atender',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        fetchGETPOSTPUTDELETE(`attention/attend/${e.id}`).then((data) => {
-          console.log(data);
-          if (data.status === 200) {
-            Swal.fire(
-              'Éxito!',
-              'Se generó la atención correctamente.',
-              'success'
-            );
+    console.log(e);
+    // Swal.fire({
+    //   title: "¿Atender paciente?",
+    //   text: `${e.paciente ? e.paciente : ""}`,
+    //   icon: "warning",
+    //   showCancelButton: true,
+    //   confirmButtonColor: "#3085d6",
+    //   cancelButtonColor: "#d33",
+    //   confirmButtonText: "Atender",
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
+    //     fetchGETPOSTPUTDELETE(`attention/attend/${e.atencion_id}`).then(
+    //       (data) => {
+    //         console.log(data);
+    //         if (data.status === 200) {
+    //           Swal.fire(
+    //             "Éxito!",
+    //             "Se generó la atención correctamente.",
+    //             "success"
+    //           );
 
-            getAttention();
-          }
-        });
-      }
-    });
+    //           getAttention();
+    //         }
+    //       }
+    //     );
+    //   }
+    // });
   };
 
   const filtrarClinica = () => {
@@ -176,6 +206,7 @@ const Reservas = () => {
     setDataBarCode(e);
     setCodigoHistorial(true);
   };
+
   //
   return (
     <div className="container">
@@ -205,7 +236,7 @@ const Reservas = () => {
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: 'lightgrey' }}>No hay datos</p>
+                <p style={{ color: "lightgrey" }}>No hay datos</p>
               </div>
             }
           />
@@ -217,6 +248,16 @@ const Reservas = () => {
           setOpenModal={setOpenModal}
           dataBarCode={dataBarCode}
           codigoHistorial={codigoHistorial}
+        />
+      )}
+
+      {openGenerarAtencion && (
+        <MGenerarAtencion
+          openGenerarAtencion={openGenerarAtencion}
+          setOpenGenerarAtencion={setOpenGenerarAtencion}
+          dataSelected={dataSelected}
+          formulario={formulario}
+          getAttention = {getAttention}
         />
       )}
     </div>

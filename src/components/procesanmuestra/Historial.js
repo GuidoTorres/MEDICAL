@@ -1,16 +1,16 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
+import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
 
-import { historial } from '../../data/PHistorial';
+import { historial } from "../../data/PHistorial";
 import {
   fetchGETPOSTPUTDELETE,
   fetchGETPOSTPUTDELETEJSON,
-} from '../../helpers/fetch';
-import { paginacionOpciones } from '../../helpers/tablaOpciones';
+} from "../../helpers/fetch";
+import { paginacionOpciones } from "../../helpers/tablaOpciones";
 
 const Historial = () => {
-  const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
   const [getDateAttention, setGetDateAttention] = useState([]);
 
@@ -19,7 +19,7 @@ const Historial = () => {
   const getAttention = () => {
     // fetchGETPOSTPUTDELETE(`resultados/clinica/${getDateAttention[0].clinic_id}`)
 
-    fetchGETPOSTPUTDELETE('resultados/clinica', null, 'POST')
+    fetchGETPOSTPUTDELETE("resultados/clinica", null, "POST")
       .then((data) => data.json())
       .then((datos) => setGetDateAttention(datos));
   };
@@ -30,92 +30,101 @@ const Historial = () => {
 
   const columnas = [
     {
-      name: 'Item',
+      name: "Item",
       selector: (row, index) => (index += 1),
       sortable: true,
       grow: 0,
       // align: center,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
         // textAlign: "center",
       },
     },
     {
-      name: 'Tipo de documento',
-      selector: (row) => (row.tipo_documento ? row.tipo_documento : ''),
+      name: "Tipo de documento",
+      selector: (row) => (row.tipo_documento ? row.tipo_documento : ""),
 
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Nº documento',
-      selector: (row) => (row.dni ? row.dni : ''),
+      name: "Nº documento",
+      selector: (row) => (row.dni ? row.dni : ""),
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
     {
-      name: 'Nombres y apellidos',
-      selector: (row) => (row.paciente ? row.paciente : ''),
+      name: "Nombres y apellidos",
+      selector: (row) =>
+        row.paciente
+          ? row.paciente.replace(
+              /(^\w|\s\w)(\S*)/g,
+              (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+            )
+          : "",
       sortable: true,
       style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
-    },
-
-    {
-      name: 'Tipo de prueba',
-      selector: (row) => (row.prueba ? row.prueba : ''),
-
-      sortable: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
-    },
-    {
-      name: 'Fecha solicitud',
-      selector: (row) => (row.fecha_solicitud ? row.fecha_solicitud : ''),
-      sortable: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
-      },
-    },
-    {
-      name: 'Fecha entrega',
-      selector: (row) => (row.fecha_atencion ? row.fecha_atencion : ''),
-      sortable: true,
-      style: {
-        borderBotton: 'none',
-        color: '#555555',
+        borderBotton: "none",
+        color: "#555555",
       },
     },
 
     {
-      name: 'Detalles',
+      name: "Tipo de prueba",
+      selector: (row) => (row.prueba ? row.prueba : ""),
+
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Fecha solicitud",
+      selector: (row) => (row.fecha_solicitud ? row.fecha_solicitud : ""),
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+    {
+      name: "Fecha entrega",
+      selector: (row) => (row.fecha_atencion ? row.fecha_atencion : ""),
+      sortable: true,
+      style: {
+        borderBotton: "none",
+        color: "#555555",
+      },
+    },
+
+    {
+      name: "Detalles",
       button: true,
       cell: (e) =>
         e.resultado.pdf === null ? (
           <button className="table__tablebutton">
-            <i className="far fa-file-pdf" style={{ color: 'grey' }}></i>
+            <i className="far fa-file-pdf" style={{ color: "grey" }}></i>
           </button>
         ) : (
           <a
             href={e.resultado.pdf}
             download
             target="_blank"
-            style={{ color: 'grey' }}
+            style={{ color: "grey" }}
           >
             <button disabled className="table__tablebutton">
-              <i className="far fa-file-pdf" style={{ color: 'red' }}></i>
+              <i
+                className="far fa-file-pdf"
+                style={{ color: "red", cursor: "pointer" }}
+              ></i>
             </button>
           </a>
         ),
@@ -131,21 +140,21 @@ const Historial = () => {
                 .toString()
                 .toLowerCase()
                 .includes(busqueda.toLowerCase())
-            : '') ||
+            : "") ||
           (data.dni
             ? data.dni.toString().toLowerCase().includes(busqueda)
-            : '') ||
+            : "") ||
           (data.paciente
             ? data.paciente.toString().toLowerCase().includes(busqueda)
-            : '') ||
+            : "") ||
           (data.prueba
             ? data.prueba
                 .toString()
                 .toLowerCase()
                 .includes(busqueda.toLowerCase())
-            : '' || data.fecha_solicitud
+            : "" || data.fecha_solicitud
             ? fecha_solicitud.toString().toLowerCase().includes(busqueda)
-            : '')
+            : "")
         );
       });
       setListRegistro(search);
@@ -185,7 +194,7 @@ const Historial = () => {
             noDataComponent={
               <div className="spinner">
                 <i className="fas fa-inbox table__icono"></i>
-                <p style={{ color: 'grey' }}>No hay datos</p>
+                <p style={{ color: "grey" }}>No hay datos</p>
               </div>
             }
           />

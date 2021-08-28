@@ -2,10 +2,14 @@
 import React, { useEffect, useState } from "react";
 import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
 
-const ConsentimientoInformado = ({ dataSelected, datos }) => {
+const ConsentimientoInformado = ({
+  dataSelected,
+  datos,
+  consentimiento,
+  setConsentimiento,
+}) => {
   const [servicio, setServicio] = useState({});
   const [tipoPrueba, setTipoPrueba] = useState({});
-  const [textoPrueba, setTextoPrueba] = useState({});
   const getFecha = () => {
     let newDate = new Date();
     let date = newDate.getDate();
@@ -55,6 +59,27 @@ const ConsentimientoInformado = ({ dataSelected, datos }) => {
     filterServices();
   }, [datos]);
 
+  const handleChange = (e, id) => {
+
+
+    if (e.target.value !== "" || undefined) {
+      let pos = consentimiento.findIndex((arr) => arr.question_id === id);
+
+      const arrs = [...consentimiento];
+      arrs[pos].answer = e.target.value;
+      setConsentimiento([...arrs]);
+    } else {
+      if (consentimiento.length > 1) {
+        let pos = consentimiento.findIndex((arr) => arr.question_id === id);
+
+        const arrs = [...consentimiento];
+        arrs[pos].answer = null;
+        setConsentimiento([...arrs]);
+        // console.log(declaracion);
+      }
+    }
+  };
+
   return (
     <>
       {getAge() < 18 ? (
@@ -71,15 +96,29 @@ const ConsentimientoInformado = ({ dataSelected, datos }) => {
 
           <p>
             Yo:{" "}
-            <span style={{ fontWeight: "bold" }}>
+            {/* <span style={{ fontWeight: "bold" }}>
               {dataSelected.name +
                 " " +
                 dataSelected.pat_lastname +
                 " " +
                 dataSelected.mom_lastname}
-            </span>{" "}
+            </span>{" "} */}
+            <input
+              type="text"
+              className="form-control"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+              onChange={(e) => handleChange(e, 2)}
+            />
             con DNI Nº{" "}
-            <span style={{ fontWeight: "bold" }}>{dataSelected.dni}</span>{" "}
+            <input
+              type="text"
+              className="form-control"
+              aria-label="Username"
+              aria-describedby="basic-addon1"
+              onChange={(e) => handleChange(e, 3)}
+            />
+            {/* <span style={{ fontWeight: "bold" }}>{dataSelected.dni}</span>{" "} */}
             declaro que he sido informado de forma verbal clar y sencialla sobre
             la TOMA DE MUESTRAS BIOLÓGICAS, he podido aclarar mis dudas sobre
             qué es, cómo se hace, para qué sirve, qué riesgo conlleva y por qué

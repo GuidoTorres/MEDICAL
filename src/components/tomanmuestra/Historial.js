@@ -83,7 +83,7 @@ const Historial = () => {
       },
     },
     {
-      name: 'Fecha entrega',
+      name: 'Fecha atención',
       selector: (row) => (row.fecha_atencion ? row.fecha_atencion : ''),
       sortable: true,
       style: {

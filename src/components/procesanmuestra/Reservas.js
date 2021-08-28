@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { historial } from "../../data/PHistorial";
 import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 import { paginacionOpciones } from "../../helpers/tablaOpciones";
+import MGenerarAtencion from "./Modales/MGenerarAtencion";
 
 const Reservas = () => {
   const [busqueda, setBusqueda] = useState("");
@@ -17,6 +18,7 @@ const Reservas = () => {
   const [editar, setEditar] = useState(false);
   const [dataSelected, setDataSelected] = useState({});
   const [formulario, setFormulario] = useState({});
+  const [openGenerarAtencion, setOpenGenerarAtencion] = useState(false);
 
   //clinic care , attention por ahora
   //patient care para la tencion
@@ -28,8 +30,15 @@ const Reservas = () => {
       .then((datos) => setGetDateAttention(datos));
   };
 
+  const getForms = () => {
+    fetchGETPOSTPUTDELETE("forms")
+      .then((res) => res.json())
+      .then((res) => setFormulario(res.data));
+  };
+
   useEffect(() => {
     getAttention();
+    getForms();
   }, []);
 
   const columnas = [
@@ -47,6 +56,7 @@ const Reservas = () => {
       name: "Tipo de documento",
       selector: (row) => (row.tipo_documento ? row.tipo_documento : ""),
       sortable: true,
+      grow: 0,
       style: {
         borderBotton: "none",
         color: "#555555",
@@ -56,6 +66,7 @@ const Reservas = () => {
       name: "Nº documento",
       selector: (row) => (row.dni ? row.dni : ""),
       sortable: true,
+      grow: 0,
       style: {
         borderBotton: "none",
         color: "#555555",
@@ -63,7 +74,13 @@ const Reservas = () => {
     },
     {
       name: "Nombre",
-      selector: (row) => (row.paciente ? row.paciente : ""),
+      selector: (row) =>
+        row.paciente
+          ? row.paciente.replace(
+              /(^\w|\s\w)(\S*)/g,
+              (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+            )
+          : "",
       sortable: true,
       style: {
         borderBotton: "none",
@@ -94,15 +111,15 @@ const Reservas = () => {
         color: "#555555",
       },
     },
-    // {
-    //   name: "Generar atención",
-    //   button: true,
-    //   cell: (e) => (
-    //     <button onClick={() => handleEditar(e)} className="table__tablebutton">
-    //       <i className="fas fa-stethoscope"></i>
-    //     </button>
-    //   ),
-    // },
+    {
+      name: "Generar atención",
+      button: true,
+      cell: (e) => (
+        <button onClick={() => openGenerar(e)} className="table__tablebutton">
+          <i className="fas fa-stethoscope"></i>
+        </button>
+      ),
+    },
     {
       name: "Atender",
       button: true,
@@ -116,13 +133,17 @@ const Reservas = () => {
       ),
     },
   ];
-  console.log(editar);
 
-  const handleEditar = (e) => {
-    setAddRegistro(true);
+  const openGenerar = (e) => {
+    setOpenGenerarAtencion(true);
     setDataSelected(e);
-    setEditar(true);
   };
+
+  // const handleEditar = (e) => {
+  //   setAddRegistro(true);
+  //   setDataSelected(e);
+  //   setEditar(true);
+  // };
   //
   useEffect(() => {
     const filtrarElemento = () => {
@@ -221,10 +242,11 @@ const Reservas = () => {
           />
         </div>
       </div>
-      {generarAtencion && (
+
+      {openGenerarAtencion && (
         <MGenerarAtencion
-          generarAtencion={generarAtencion}
-          setGenerarAtencion={setGenerarAtencion}
+          openGenerarAtencion={openGenerarAtencion}
+          setOpenGenerarAtencion={setOpenGenerarAtencion}
           dataSelected={dataSelected}
           getAttention={getAttention}
           formulario={formulario}

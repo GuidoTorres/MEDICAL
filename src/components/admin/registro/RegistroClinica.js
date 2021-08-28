@@ -66,7 +66,7 @@ const RegistroClinica = () => {
             }`
           : '',
       sortable: true,
-      grow: 2,
+      grow: 1.9,
       style: {
         borderBotton: 'none',
         color: '#555555',

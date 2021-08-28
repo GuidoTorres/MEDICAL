@@ -39,6 +39,8 @@ const MMParticulares = ({
       total: d.amount,
     }));
 
+    console.log(dataParticular);
+
     let serviceMap = array.map((item) => {
       return [item.servicio, item];
     });
