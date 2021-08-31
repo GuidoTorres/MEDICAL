@@ -480,14 +480,14 @@ const MGenerarAtencion = ({
           <div className="containerBotones mt-3">
             <button
               type="button"
-              class="botones btn btn-primary"
+              className="botones btn btn-primary"
               onClick={() => mostrarDeclaracionJurada()}
             >
               Declaración jurada
             </button>
             <button
               type="button"
-              class="botones btn btn-primary"
+              className="botones btn btn-primary"
               onClick={() => mostrarConsentimiento(dataSelected)}
             >
               Consentimiento informado
@@ -496,7 +496,7 @@ const MGenerarAtencion = ({
             {datos.service_id === "5" ? (
               <button
                 type="button"
-                class="botones btn btn-primary"
+                className="botones btn btn-primary"
                 onClick={() => mostrarFichaCovid()}
               >
                 Ficha COVID 19
@@ -530,6 +530,7 @@ const MGenerarAtencion = ({
                 ficha={ficha}
                 setFicha={setFicha}
                 formulario={formulario}
+                dataSelected = {dataSelected}
               />
             </div>
           </div>
@@ -537,14 +538,14 @@ const MGenerarAtencion = ({
         <div className="botones2">
           <button
             type="button"
-            class="botones btn btn-primary"
+            className="botones btn btn-primary"
             onClick={closeModal}
           >
             Cancelar
           </button>
           <button
             type="button"
-            class="botones btn btn-primary"
+            className="botones btn btn-primary"
             onClick={() => crearAtencion()}
           >
             Finalizar
