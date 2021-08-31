@@ -19,7 +19,7 @@ const Liquidacion = () => {
   const [particular, setParticular] = useState();
 
   const conditionalRowStyles = [
-    // You can also pass a callback to style for additional customization
+    // Cambio de color en la tabla dependiendo de la fecha que devuelve el backend en el json
     {
       when: (row) =>
         row.fechas && row.fechas.before && row.fechas.dias_transcurridos,

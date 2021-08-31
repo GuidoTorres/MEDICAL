@@ -4,6 +4,7 @@ import Checkbox from "./Checkbox";
 import Input from "./Input";
 
 const Element = ({ data, i, handleChange }) => {
+
   switch (data.tipo) {
     case "date":
       return (
