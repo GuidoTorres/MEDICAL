@@ -12,6 +12,7 @@ const getFecha = () => {
 };
 
 const generarDeclaracionJurada = (data) => {
+  console.log(data && data.declaration);
   const doc = new jsPDF("p", "pt");
   doc.setProperties({
     title: "Declaración jurada",
@@ -47,13 +48,19 @@ const generarDeclaracionJurada = (data) => {
     405,
     147,
     `${
-      data.patient_details.civil_status_id === 1
+      data && data.patient_details && data.patient_details.civil_status_id === 1
         ? "Casado"
-        : data.patient_details.civil_status_id === 2
+        : data &&
+          data.patient_details &&
+          data.patient_details.civil_status_id === 2
         ? "Soltero"
-        : data.patient_details.civil_status_id === 3
+        : data &&
+          data.patient_details &&
+          data.patient_details.civil_status_id === 3
         ? "Viudo"
-        : data.patient_details.civil_status_id === 4
+        : data &&
+          data.patient_details &&
+          data.patient_details.civil_status_id === 4
         ? "Divorciado"
         : ""
     }`
@@ -63,9 +70,9 @@ const generarDeclaracionJurada = (data) => {
     115,
     163,
     `${
-      data.patient_details.civil_status_id === 1
+      data && data.patient_details && data.patient_details.gender_id === 1
         ? "Masculino"
-        : data.patient_details.civil_status_id === 2
+        : data && data.patient_details && data.patient_details.gender_id === 2
         ? "Femenino"
         : ""
     }`
@@ -81,13 +88,13 @@ const generarDeclaracionJurada = (data) => {
     90,
     195,
     `${
-      data.patient_details.grade_id === 1
+      data && data.patient_details && data.patient_details.grade_id === 1
         ? "Primaria"
-        : data.patient_details.grade_id === 2
+        : data && data.patient_details && data.patient_details.grade_id === 2
         ? "Secundaria"
-        : data.patient_details.grade_id === 3
+        : data && data.patient_details && data.patient_details.grade_id === 3
         ? "Universidad"
-        : data.patient_details.grade_id === 4
+        : data && data.patient_details && data.patient_details.grade_id === 4
         ? "Tecnico"
         : ""
     }`
@@ -96,17 +103,16 @@ const generarDeclaracionJurada = (data) => {
   doc.text(
     330,
     195,
-    `${data.patient_details.cellphone ? data.patient_details.cellphone : ""}`
+    `${
+      data && data.patient_details && data.patient_details.cellphone
+        ? data.patient_details.cellphone
+        : ""
+    }`
   );
 
   // doc.text(308, 130, `${data.dire}`);
 
-  if (
-    data &&
-    data.declaration &&
-    data.declaration.answers &&
-    data.declaration.answers.length > 0
-  ) {
+  if (data.declaration.answers.length > 0) {
     if (
       data.declaration.answers[0].answer === "Si" ||
       data.declaration.answers[0].answer === "Sí"
@@ -197,93 +203,153 @@ const generarDeclaracionJurada = (data) => {
     }
 
     // //CONDICIONES-------------------------------------
-
     if (
-      data.declaration.answers[13].answer === "Si" ||
-      data.declaration.answers[13].answer === "Sí"
+      data &&
+      data.declaration &&
+      data.declaration.answers[13] &&
+      data.declaration.answers[13].answer &&
+      data.declaration.answers[13].answer !== undefined
     ) {
-      doc.text(500, 310, "X");
-    } else {
       if (
-        data.declaration.answers[14].answer === "Si" ||
-        data.declaration.answers[14].answer === "Sí"
+        (data &&
+          data.declaration &&
+          data.declaration.answers[13] &&
+          data.declaration.answers[13].answer &&
+          data.declaration.answers[13].answer === "Si") ||
+        data.declaration.answers[13].answer === "Sí"
       ) {
-        doc.text(500, 340, "X");
-      }
+        console.log("if");
+        doc.text(500, 310, "X");
+      } else {
+        if (
+          (data &&
+            data.declaration &&
+            data.declaration.answers[14] &&
+            data.declaration.answers[14].answer &&
+            data.declaration.answers[14].answer === "Si") ||
+          data.declaration.answers[14].answer === "Sí"
+        ) {
+          doc.text(500, 340, "X");
+        }
 
-      if (
-        data.declaration.answers[15].answer === "Si" ||
-        data.declaration.answers[15].answer === "Sí"
-      ) {
-        doc.text(500, 370, "X");
-      }
+        if (
+          (data &&
+            data.declaration &&
+            data.declaration.answers[15] &&
+            data.declaration.answers[15].answer &&
+            data.declaration.answers[15].answer === "Si") ||
+          data.declaration.answers[15].answer === "Sí"
+        ) {
+          doc.text(500, 370, "X");
+        }
 
-      if (
-        data.declaration.answers[16].answer === "Si" ||
-        data.declaration.answers[16].answer === "Sí"
-      ) {
-        doc.text(500, 400, "X");
-      }
+        if (
+          (data &&
+            data.declaration &&
+            data.declaration.answers[16] &&
+            data.declaration.answers[16].answer &&
+            data.declaration.answers[16].answer === "Si") ||
+          data.declaration.answers[16].answer === "Sí"
+        ) {
+          doc.text(500, 400, "X");
+        }
 
-      if (
-        data.declaration.answers[17].answer === "Si" ||
-        data.declaration.answers[17].answer === "Sí"
-      ) {
-        doc.text(500, 428, "X");
-      }
+        if (
+          (data &&
+            data.declaration &&
+            data.declaration.answers[17] &&
+            data.declaration.answers[17].answer &&
+            data.declaration.answers[17].answer === "Si") ||
+          data.declaration.answers[17].answer === "Sí"
+        ) {
+          doc.text(500, 428, "X");
+        }
 
-      if (
-        data.declaration.answers[18].answer === "Si" ||
-        data.declaration.answers[18].answer === "Sí"
-      ) {
-        doc.text(500, 450, "X");
-      }
-      if (
-        data.declaration.answers[19].answer === "Si" ||
-        data.declaration.answers[19].answer === "Sí"
-      ) {
-        doc.text(500, 480, "X");
-      }
-      if (
-        data.declaration.answers[20].answer === "Si" ||
-        data.declaration.answers[20].answer === "Sí"
-      ) {
-        doc.text(500, 510, "X");
-      }
+        if (
+          (data &&
+            data.declaration &&
+            data.declaration.answers[18] &&
+            data.declaration.answers[18].answer &&
+            data.declaration.answers[18].answer === "Si") ||
+          data.declaration.answers[18].answer === "Sí"
+        ) {
+          doc.text(500, 450, "X");
+        }
+        if (
+          (data &&
+            data.declaration &&
+            data.declaration.answers[19] &&
+            data.declaration.answers[19].answer &&
+            data.declaration.answers[19].answer === "Si") ||
+          data.declaration.answers[19].answer === "Sí"
+        ) {
+          doc.text(500, 480, "X");
+        }
+        if (
+          (data &&
+            data.declaration &&
+            data.declaration.answers[20] &&
+            data.declaration.answers[20].answer &&
+            data.declaration.answers[20].answer === "Si") ||
+          data.declaration.answers[20].answer === "Sí"
+        ) {
+          doc.text(500, 510, "X");
+        }
 
-      if (
-        data.declaration.answers[21].answer === "Si" ||
-        data.declaration.answers[21].answer === "Sí"
-      ) {
-        doc.text(500, 540, "X");
-      }
+        if (
+          (data &&
+            data.declaration &&
+            data.declaration.answers[21] &&
+            data.declaration.answers[21].answer &&
+            data.declaration.answers[21].answer === "Si") ||
+          data.declaration.answers[21].answer === "Sí"
+        ) {
+          doc.text(500, 540, "X");
+        }
 
-      if (
-        data.declaration.answers[22].answer === "Si" ||
-        data.declaration.answers[22].answer === "Sí"
-      ) {
-        doc.text(500, 577, "X");
-      }
+        if (
+          (data &&
+            data.declaration &&
+            data.declaration.answers[22] &&
+            data.declaration.answers[22].answer &&
+            data.declaration.answers[22].answer === "Si") ||
+          data.declaration.answers[22].answer === "Sí"
+        ) {
+          doc.text(500, 577, "X");
+        }
 
-      if (
-        data.declaration.answers[23].answer === "Si" ||
-        data.declaration.answers[23].answer === "Sí"
-      ) {
-        doc.text(500, 615, "X");
-      }
+        if (
+          (data &&
+            data.declaration &&
+            data.declaration.answers[23] &&
+            data.declaration.answers[23].answer &&
+            data.declaration.answers[23].answer === "Si") ||
+          data.declaration.answers[23].answer === "Sí"
+        ) {
+          doc.text(500, 615, "X");
+        }
 
-      if (
-        data.declaration.answers[24].answer === "Si" ||
-        data.declaration.answers[24].answer === "Sí"
-      ) {
-        doc.text(500, 640, "X");
-      }
+        if (
+          (data &&
+            data.declaration &&
+            data.declaration.answers[24] &&
+            data.declaration.answers[24].answer &&
+            data.declaration.answers[24].answer === "Si") ||
+          data.declaration.answers[24].answer === "Sí"
+        ) {
+          doc.text(500, 640, "X");
+        }
 
-      if (
-        data.declaration.answers[25].answer === "Si" ||
-        data.declaration.answers[25].answer === "Sí"
-      ) {
-        doc.text(500, 670, "X");
+        if (
+          (data &&
+            data.declaration &&
+            data.declaration.answers[25] &&
+            data.declaration.answers[25].answer &&
+            data.declaration.answers[25].answer === "Si") ||
+          data.declaration.answers[14].answer === "Sí"
+        ) {
+          doc.text(500, 670, "X");
+        }
       }
     }
 

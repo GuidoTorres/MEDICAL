@@ -35,9 +35,9 @@ const Servicio = () => {
               <thead>
                 <tr>
                   <th scope="col">Tipo de prueba</th>
-                  <th scope="col">Costo Limite inferior</th>
-                  <th scope="col">Costo Limite superior</th>
                   <th scope="col">Precio de vitrina</th>
+                  <th scope="col">Costo Limite superior</th>
+                  <th scope="col">Costo Limite inferior</th>
                 </tr>
               </thead>
               <tbody>
@@ -45,10 +45,9 @@ const Servicio = () => {
                   getServicio[0].services.map((servicio, i) => (
                     <tr key={i}>
                       <td>{servicio.name ? servicio.name : ""}</td>
-
                       <td>
-                        {servicio.limite_inferior
-                          ? servicio.limite_inferior
+                        {servicio.last_price && servicio.last_price.amount
+                          ? servicio.last_price.amount
                           : ""}
                       </td>
                       <td>
@@ -56,9 +55,10 @@ const Servicio = () => {
                           ? servicio.limite_superior
                           : ""}
                       </td>
+
                       <td>
-                        {servicio.last_price && servicio.last_price.amount
-                          ? servicio.last_price.amount
+                        {servicio.limite_inferior
+                          ? servicio.limite_inferior
                           : ""}
                       </td>
                     </tr>

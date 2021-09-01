@@ -135,6 +135,8 @@ const MSubirRapida = ({
 
       doc.text(292, 278, "null");
     }
+    // window.open(doc.output("bloburl"), "_blank");
+
     const pdf = new File([doc.output("blob")], "myDoc.pdf", {
       type: "application/pdf",
     });

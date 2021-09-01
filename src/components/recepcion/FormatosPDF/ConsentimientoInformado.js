@@ -10,6 +10,7 @@ const ConsentimientoInformado = ({
 }) => {
   const [servicio, setServicio] = useState({});
   const [tipoPrueba, setTipoPrueba] = useState({});
+  // console.log(datos);
   const getFecha = () => {
     let newDate = new Date();
     let date = newDate.getDate();

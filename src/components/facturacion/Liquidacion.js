@@ -338,39 +338,39 @@ const Liquidacion = () => {
     },
   ];
 
-  useEffect(() => {
-    const filtrarElemento = () => {
-      if (busqueda !== "" && busqueda !== null) {
-        const search = liquidacion.filter((data) => {
-          return (
-            data.id.toString().includes(busqueda) ||
-            (data.company
-              ? data.company.corporation.business_name
-                  .toString()
-                  .toLowerCase()
-                  .includes(busqueda.toLowerCase())
-              : "") ||
-            (data.company
-              ? data.company.corporation.ruc.toString().includes(busqueda)
-              : "") ||
-            (data.date_issue
-              ? data.date_issue.toString().includes(busqueda)
-              : "") ||
-            (data.subtotal
-              ? data.subtotal.toString().includes(busqueda)
-              : "") ||
-            (data.igv ? data.igv.toString().includes(busqueda) : "") ||
-            (data.amount ? data.amount.toString().includes(busqueda) : "")
-          );
-        });
-        setListRegistro(search);
-      } else {
-        setListRegistro(liquidacion);
-      }
-    };
-    filtrarElemento();
-    return () => setListRegistro([]);
-  }, [busqueda]);
+  // useEffect(() => {
+  //   const filtrarElemento = () => {
+  //     if (busqueda !== "" && busqueda !== null) {
+  //       const search = liquidacion.filter((data) => {
+  //         return (
+  //           data.id.toString().includes(busqueda) ||
+  //           (data.company
+  //             ? data.company.corporation.business_name
+  //                 .toString()
+  //                 .toLowerCase()
+  //                 .includes(busqueda.toLowerCase())
+  //             : "") ||
+  //           (data.company
+  //             ? data.company.corporation.ruc.toString().includes(busqueda)
+  //             : "") ||
+  //           (data.date_issue
+  //             ? data.date_issue.toString().includes(busqueda)
+  //             : "") ||
+  //           (data.subtotal
+  //             ? data.subtotal.toString().includes(busqueda)
+  //             : "") ||
+  //           (data.igv ? data.igv.toString().includes(busqueda) : "") ||
+  //           (data.amount ? data.amount.toString().includes(busqueda) : "")
+  //         );
+  //       });
+  //       setListRegistro(search);
+  //     } else {
+  //       setListRegistro(liquidacion);
+  //     }
+  //   };
+  //   filtrarElemento();
+  //   return () => setListRegistro([]);
+  // }, [busqueda]);
   //
   const handleDetalles = (e) => {
     // console.log(e);
