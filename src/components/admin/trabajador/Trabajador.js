@@ -107,6 +107,12 @@ const Trabajador = () => {
                 .toString()
                 .toLowerCase()
                 .includes(busqueda.toLowerCase())
+            : "") ||
+          (data.dni
+            ? data.dni
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
             : "")
         );
       });

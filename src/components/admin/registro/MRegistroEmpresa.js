@@ -14,6 +14,7 @@ const MRegistroEmpresa = ({
   setDataSelected,
   editar,
   setEditar,
+  servicios,
 }) => {
   const [avatar, setAvatar] = useState(null);
   const [empresa, setEmpresa] = useState({
@@ -26,7 +27,6 @@ const MRegistroEmpresa = ({
   const [service, setService] = useState([]);
   const [types, setTypes] = useState([]);
   const [ruc, setRuc] = useState({});
-  const [servicios, setServicios] = useState({});
   const [error, setError] = useState(false);
   const [estado, setEstado] = useState([]);
   const [status, setStatus] = useState();
@@ -44,13 +44,7 @@ const MRegistroEmpresa = ({
         setTypes(datos.types);
       });
   };
-  const getServices = () => {
-    fetchGETPOSTPUTDELETE("services")
-      .then((info) => info.json())
-      .then((datos) => setServicios(datos.data));
-  };
 
-  console.log(dataSelected);
 
   useEffect(() => {
     if (editar) {
@@ -70,7 +64,6 @@ const MRegistroEmpresa = ({
   };
   useEffect(() => {
     getCorporationTypes();
-    getServices()
   }, []);
 
   useEffect(() => {
@@ -94,7 +87,6 @@ const MRegistroEmpresa = ({
 
     setService([...data1]);
   }, []);
-  console.log(service);
   const handleService = (e, data) => {
     //editar
     if (e.target.checked && editar) {
@@ -122,9 +114,7 @@ const MRegistroEmpresa = ({
         (arreglo) => arreglo.service_id === data.id
       );
       const arreglos = [...service];
-      console.log(position);
       arreglos[position].state = 1;
-      console.log(arreglos);
 
       setService([...arreglos]);
     } else if (e.target.checked === false && editar === false) {
@@ -132,7 +122,6 @@ const MRegistroEmpresa = ({
         (arreglo) => arreglo.service_id === data.id
       );
       const arreglos = [...service];
-      console.log(position);
       arreglos[position].state = 0;
 
       setService([...arreglos]);

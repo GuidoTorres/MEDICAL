@@ -138,7 +138,13 @@ const SubirLaboratorio = () => {
             ? data.date_creation.toString().includes(busqueda)
             : "") ||
           (data.person
-            ? `${data.person.name} ${data.person.pat_lastname}`
+            ? data.person.name
+                .toString()
+                .toLowerCase()
+                .includes(busqueda.toLowerCase())
+            : "") ||
+          (data.person
+            ? data.person.pat_lastname
                 .toString()
                 .toLowerCase()
                 .includes(busqueda.toLowerCase())

@@ -19,6 +19,7 @@ const Particulares = () => {
   const [clearRows, setClearRows] = useState(false);
   const [listRegistro, setListRegistro] = useState([]);
   const [listRegistroEmpresas, setListRegistroEmpresas] = useState([]);
+  const [listRegistroMovil, setListRegistroMovil] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [openModalEmpresa, setOpenModalEmpresa] = useState(false);
 
@@ -344,6 +345,7 @@ const Particulares = () => {
       },
     },
   ];
+  console.log(listRegistroEmpresas);
 
   useEffect(() => {
     const filtrarElemento = () => {
@@ -416,29 +418,35 @@ const Particulares = () => {
         setListRegistroEmpresas(searchEmpresas);
 
         /* Filtro para filtro para movil*/
-        // const searchMovil = movil.filter((data) => {
-        //   return (
-        //     // data.id.toString().includes(busqueda) ||
-        //     (data.nombre
-        //       ? data.nombre
-        //           .toString()
-        //           .toLowerCase()
-        //           .includes(busqueda.toLowerCase())
-        //       : "") ||
-        //     (data.ruc ? data.ruc.toString().includes(busqueda) : "") ||
-        //     (data.cant_atenciones
-        //       ? data.cant_atenciones.toString().includes(busqueda)
-        //       : "") ||
-        //     (data.sub_total
-        //       ? data.sub_total.toString().includes(busqueda)
-        //       : "") ||
-        //     (data.igv ? data.igv.toString().includes(busqueda) : "") ||
-        //     (data.total ? data.total.toString().includes(busqueda) : "")
-        //   );
-        // });
+        const searchMovil = movil.filter((data) => {
+          return (
+            // data.id.toString().includes(busqueda) ||
+            (data.users &&
+            data.users[0] &&
+            data.users[0].person &&
+            data.users[0].person.name
+              ? data.users[0].person.name
+                  .toString()
+                  .toLowerCase()
+                  .includes(busqueda.toLowerCase())
+              : "") ||
+            (data.users &&
+            data.users[0] &&
+            data.users[0].person &&
+            data.users[0].person.dni
+              ? data.users[0].person.dni.toString().includes(busqueda)
+              : "") ||
+            (data && data.modality && data.modality.name
+              ? data.modality.name.toString().toLowerCase().includes(busqueda)
+              : "") ||
+            (data.sub_total ? data.sub_total.toString().includes(busqueda) : "")
+          );
+        });
+        setListRegistroMovil(searchMovil);
       } else {
         setListRegistro(particulares);
         setListRegistroEmpresas(empresas);
+        setListRegistroMovil(movil);
       }
     };
 
@@ -533,10 +541,10 @@ const Particulares = () => {
                   fixedHeader
                   fixedHeaderScrollHeight="500px"
                   noDataComponent={
-                    <i className="fas fa-inbox table__icono"></i>
-                  }
-                  noDataComponent={
-                    <i className="fas fa-inbox table__icono"></i>
+                    <div className="spinner">
+                      <i className="fas fa-inbox table__icono"></i>
+                      <p style={{ color: "grey" }}>No hay datos</p>
+                    </div>
                   }
                   selectableRows
                   onSelectedRowsChange={(e) =>
@@ -573,7 +581,10 @@ const Particulares = () => {
                   fixedHeader
                   fixedHeaderScrollHeight="500px"
                   noDataComponent={
-                    <i className="fas fa-inbox table__icono"></i>
+                    <div className="spinner">
+                      <i className="fas fa-inbox table__icono"></i>
+                      <p style={{ color: "grey" }}>No hay datos</p>
+                    </div>
                   }
                   // selectableRows
                 />
@@ -606,7 +617,7 @@ const Particulares = () => {
                 </button>
                 <DataTable
                   columns={columnasMovil}
-                  data={movil}
+                  data={listRegistroMovil}
                   contextMessage={mensajesTablaFacturacion}
                   pagination
                   clearSelectedRows={clearRows}
@@ -614,7 +625,10 @@ const Particulares = () => {
                   fixedHeader
                   fixedHeaderScrollHeight="500px"
                   noDataComponent={
-                    <i className="fas fa-inbox table__icono"></i>
+                    <div className="spinner">
+                      <i className="fas fa-inbox table__icono"></i>
+                      <p style={{ color: "grey" }}>No hay datos</p>
+                    </div>
                   }
                   selectableRows
                   onSelectedRowsChange={(e) => setDataMovil(e.selectedRows)}

@@ -35,6 +35,7 @@ const RegistroClinica = () => {
   //   console.log(clinics);
   //   setClinicasFiltradas(clinics);
   // };
+  
 
   useEffect(() => {
     getClinica();

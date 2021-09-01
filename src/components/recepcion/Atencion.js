@@ -12,13 +12,7 @@ import {
 const Atencion = () => {
   const [busqueda, setBusqueda] = useState("");
   const [listRegistro, setListRegistro] = useState([]);
-  const [openModalBar, setOpenModalBar] = useState(false);
-  const [dataBarCode, setDataBarCode] = useState({});
   const [attention, setAttention] = useState([]);
-  const [generateAttention, setGenerateAttention] = useState({});
-
-  //clinic care es el optimo
-  // por ahora usar clinics get
 
   const getAttention = () => {
     fetchGETPOSTPUTDELETE("attention_clinic")
@@ -29,8 +23,6 @@ const Atencion = () => {
   useEffect(() => {
     getAttention();
   }, []);
-
-  // console.log(attention);
 
   const columnas = [
     {
@@ -59,22 +51,6 @@ const Atencion = () => {
         borderBotton: "none",
       },
     },
-    // {
-    //   name: "Tipo de documento",
-    //   selector: (row) =>
-    //     row.person && row.person.document_type_id === 3
-    //       ? "Carné de extranjería"
-    //       : row.person && row.person.document_type_id === 2
-    //       ? "Pasaporte"
-    //       : row.person && row.person.document_type_id === 1
-    //       ? "DNI"
-    //       : "",
-    //   sortable: true,
-    //   style: {
-    //     color: "#8f9196",
-    //     borderBotton: "none",
-    //   },
-    // },
     {
       name: "Nº de documento",
       selector: (row) => (row.DNI ? row.DNI : ""),
@@ -105,18 +81,6 @@ const Atencion = () => {
         borderBotton: "none",
       },
     },
-    // {
-    //   name: "Código de barras",
-    //   button: true,
-    //   cell: (e) => (
-    //     <button
-    //       className="table__tablebutton editar"
-    //       onClick={() => openBarcode(e)}
-    //     >
-    //       <i className="fas fa-barcode"></i>
-    //     </button>
-    //   ),
-    // },
     {
       name: "Atención",
       button: true,
@@ -161,15 +125,7 @@ const Atencion = () => {
     filtrarElemento();
   }, [busqueda, attention]);
 
-  const openBarcode = (e) => {
-    setDataBarCode(e);
-    setOpenModalBar(true);
-  };
-
   const generarAtencion = (e) => {
-    console.log(e.llenado_formulario);
-    console.log(e);
-
     if (e.service_details.id === 5) {
       if (e.llenado_formulario === 24) {
         Swal.fire({
@@ -312,14 +268,6 @@ const Atencion = () => {
           />
         </div>
       </div>
-
-      {openModalBar && (
-        <CodigoBarras
-          openModalBar={openModalBar}
-          setOpenModalBar={setOpenModalBar}
-          dataBarCode={dataBarCode}
-        />
-      )}
     </div>
   );
 };

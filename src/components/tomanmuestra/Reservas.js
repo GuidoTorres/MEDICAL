@@ -169,33 +169,84 @@ const Reservas = () => {
     setBusqueda(([e.target.name] = e.target.value));
   };
   const handleDetalles = (e) => {
-    console.log(e);
-    // Swal.fire({
-    //   title: "¿Atender paciente?",
-    //   text: `${e.paciente ? e.paciente : ""}`,
-    //   icon: "warning",
-    //   showCancelButton: true,
-    //   confirmButtonColor: "#3085d6",
-    //   cancelButtonColor: "#d33",
-    //   confirmButtonText: "Atender",
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-    //     fetchGETPOSTPUTDELETE(`attention/attend/${e.atencion_id}`).then(
-    //       (data) => {
-    //         console.log(data);
-    //         if (data.status === 200) {
-    //           Swal.fire(
-    //             "Éxito!",
-    //             "Se generó la atención correctamente.",
-    //             "success"
-    //           );
+    if (e.servicio_id === 5) {
+      if (e.llenado_formulario === 24) {
 
-    //           getAttention();
-    //         }
-    //       }
-    //     );
-    //   }
-    // });
+        Swal.fire({
+          title: "¿Atender paciente?",
+          text: `${e.paciente ? e.paciente : ""}`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Atender",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            fetchGETPOSTPUTDELETE(`attention/attend/${e.atencion_id}`).then(
+              (data) => {
+                console.log(data);
+                if (data.status === 200) {
+                  Swal.fire(
+                    "Éxito!",
+                    "Se generó la atención correctamente.",
+                    "success"
+                  );
+                  getAttention();
+                }
+              }
+            );
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Fichas incompletas",
+          text: "Debe llenar todas las fichas para atender al paciente.",
+        });
+      }
+    } else if (
+      e.servicio_id === 4 ||
+      e.servicio_id === 3 ||
+      e.servicio_id === 2 ||
+      e.servicio_id === 1
+    ) {
+      console.log("if servicios diferente a molecular");
+
+      if (e.llenado_formulario === 8) {
+
+        Swal.fire({
+          title: "¿Atender paciente?",
+          text: `${e.paciente ? e.paciente : ""}`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Atender",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            fetchGETPOSTPUTDELETE(`attention/attend/${e.atencion_id}`).then(
+              (data) => {
+                console.log(data);
+                if (data.status === 200) {
+                  Swal.fire(
+                    "Éxito!",
+                    "Se generó la atención correctamente.",
+                    "success"
+                  );
+                  getAttention();
+                }
+              }
+            );
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Fichas incompletas",
+          text: "Debe llenar todas las fichas para atender al paciente.",
+        });
+      }
+    }
   };
 
   const filtrarClinica = () => {
@@ -257,7 +308,7 @@ const Reservas = () => {
           setOpenGenerarAtencion={setOpenGenerarAtencion}
           dataSelected={dataSelected}
           formulario={formulario}
-          getAttention = {getAttention}
+          getAttention={getAttention}
         />
       )}
     </div>

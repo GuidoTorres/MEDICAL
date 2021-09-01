@@ -31,7 +31,6 @@ const MGenerarAtencion = ({
   const [consentimiento, setConsentimiento] = useState();
   const [services, setServices] = useState({});
   const [clinics, setClinics] = useState({});
-  const [postData, setPostData] = useState({});
 
   const getServices = () => {
     fetchGETPOSTPUTDELETE("services")
@@ -444,7 +443,7 @@ const MGenerarAtencion = ({
                     dataSelected.user.company.company_service
                       .filter((item) => item.state === 1)
                       .map((data, i) => (
-                        <option key={i} title={data.name} value={data.id}>
+                        <option key={i} value={data.service.id}>
                           {data.service.abbreviation}
                         </option>
                       ))}
@@ -480,14 +479,14 @@ const MGenerarAtencion = ({
           <div className="containerBotones mt-3">
             <button
               type="button"
-              class="botones btn btn-primary"
+              className="botones btn btn-primary"
               onClick={() => mostrarDeclaracionJurada()}
             >
               Declaración jurada
             </button>
             <button
               type="button"
-              class="botones btn btn-primary"
+              className="botones btn btn-primary"
               onClick={() => mostrarConsentimiento(dataSelected)}
             >
               Consentimiento informado
@@ -496,7 +495,7 @@ const MGenerarAtencion = ({
             {datos.service_id === "5" ? (
               <button
                 type="button"
-                class="botones btn btn-primary"
+                className="botones btn btn-primary"
                 onClick={() => mostrarFichaCovid()}
               >
                 Ficha COVID 19
@@ -512,6 +511,7 @@ const MGenerarAtencion = ({
                 condicion={condicion}
                 setCondicion={setCondicion}
                 formulario={formulario}
+
               />
             </div>
 
@@ -530,6 +530,7 @@ const MGenerarAtencion = ({
                 ficha={ficha}
                 setFicha={setFicha}
                 formulario={formulario}
+                dataSelected={dataSelected}
               />
             </div>
           </div>
@@ -537,14 +538,14 @@ const MGenerarAtencion = ({
         <div className="botones2">
           <button
             type="button"
-            class="botones btn btn-primary"
+            className="botones btn btn-primary"
             onClick={closeModal}
           >
             Cancelar
           </button>
           <button
             type="button"
-            class="botones btn btn-primary"
+            className="botones btn btn-primary"
             onClick={() => crearAtencion()}
           >
             Finalizar
