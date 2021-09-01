@@ -27,7 +27,6 @@ const CodigoBarrasHistorial = ({
   const closeModal = () => {
     setCodigoHistorial(false);
   };
-  console.log(dataBarCode);
 
   const descargar = () => {
     const data = document.querySelector("#canvas");

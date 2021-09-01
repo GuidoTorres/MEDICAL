@@ -27,6 +27,7 @@ const MHistorialPrecios = ({ precios, setPrecios, id }) => {
       .then((res) => res.json())
       .then((res) => setHistorial(res));
   };
+  console.log(historial);
 
   const getLabels = () => {
     const colors = [
@@ -118,15 +119,21 @@ const MHistorialPrecios = ({ precios, setPrecios, id }) => {
             </button>
           </div>
         </div>
-
-        <div
-          class="tab-pane fade show active"
-          id="home"
-          role="tabpanel"
-          aria-labelledby="home-tab"
-        >
-          <Line className=" mt-5" data={data} />
-        </div>
+        {historial.data !== undefined ? (
+          <div
+            class="tab-pane fade show active"
+            id="home"
+            role="tabpanel"
+            aria-labelledby="home-tab"
+          >
+            <Line className=" mt-5" data={data} />
+          </div>
+        ) : (
+          <div className="spinner mt-5" >
+            <i className="fas fa-inbox table__icono"></i>
+            <p style={{ color: "lightgrey" }}>No hay datos</p>
+          </div>
+        )}
       </div>
     </Modal>
   );

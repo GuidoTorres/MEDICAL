@@ -3,8 +3,6 @@ import React, { useEffect } from "react";
 import Element from "../Elementos/Element";
 
 const FichaCovid19 = ({ ficha, setFicha, formulario, dataSelected }) => {
-  console.log(dataSelected);
-  console.log(ficha);
   const obtenerDatos = () => {
     const arrs = [...ficha];
     arrs[10].answer = dataSelected.name

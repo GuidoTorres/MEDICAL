@@ -65,13 +65,31 @@ const MLiquidacion = ({
     doc.text(
       95,
       106,
-      datos.company ? datos.company.corporation.business_name : ""
+      datos &&
+        datos.company &&
+        datos.company.corporation &&
+        datos.company.corporation.business_name
+        ? datos.company.corporation.business_name
+        : ""
     );
-    doc.text(95, 115, datos.company ? datos.company.corporation.ruc : "");
+    doc.text(
+      95,
+      115,
+      datos &&
+        datos.company &&
+        datos.company.corporation &&
+        datos.company.corporation.business_name
+        ? datos.company.corporation.ruc
+        : ""
+    );
     doc.text(
       95,
       124,
-      datos.company
+      datos &&
+        datos.company &&
+        datos.company.corporation &&
+        datos.company.corporation.address &&
+        datos.company.corporation.address.address
         ? datos.company.corporation.address.address.length > 52
           ? datos.company.corporation.address.address
               .toString()
@@ -82,7 +100,10 @@ const MLiquidacion = ({
     doc.text(
       95,
       132,
-      datos.company
+      datos.company &&
+        datos.company.corporation &&
+        datos.company.corporation.address &&
+        datos.company.corporation.address.address
         ? datos.company.corporation.address.address.length > 52
           ? datos.company.corporation.address.address
               .toString()
@@ -242,7 +263,10 @@ const MLiquidacion = ({
           <input
             readOnly
             value={
-              datos.company
+              datos &&
+              datos.company &&
+              datos.company.corporation &&
+              datos.company.corporation.business_name
                 ? datos.company.corporation.business_name
                 : datos.detail
                 ? datos.detail[0].attention.person.name
@@ -263,7 +287,10 @@ const MLiquidacion = ({
           <input
             readOnly
             value={
-              datos.company
+              datos.company &&
+              datos.company &&
+              datos.company.corporation &&
+              datos.company.corporation.ru
                 ? datos.company.corporation.ruc
                 : datos.detail
                 ? datos.detail[0].attention.person.dni

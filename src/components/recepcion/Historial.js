@@ -57,10 +57,13 @@ const Historial = () => {
     },
     {
       name: "Nombres y apellidos",
-      selector: (row) => (row.fullName ? row.fullName.replace(
-        /(^\w|\s\w)(\S*)/g,
-        (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
-      ) : ""),
+      selector: (row) =>
+        row.fullName
+          ? row.fullName.replace(
+              /(^\w|\s\w)(\S*)/g,
+              (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
+            )
+          : "",
       sortable: true,
       grow: 1,
       style: {
@@ -117,7 +120,7 @@ const Historial = () => {
           <i
             class="far fa-file-pdf"
             onClick={() => {
-              generarDeclaracionJurada(e);
+              e.declaration.answers ? generarDeclaracionJurada(e) : "";
             }}
           ></i>{" "}
         </button>
@@ -145,9 +148,7 @@ const Historial = () => {
           <i
             class="far fa-file-pdf"
             onClick={() => {
-              // convertirImagen(e);
               generarFichaCovid(e);
-              // generarFichaCovid();
             }}
           ></i>{" "}
         </button>
@@ -167,7 +168,9 @@ const Historial = () => {
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
               : "") ||
-            (data.dni ? data.dni.toString().includes(busqueda) : "") ||
+            (data.DNI
+              ? data.DNI.toString().includes(busqueda.toLocaleLowerCase())
+              : "") ||
             (data.type_user
               ? data.type_user
                   .toString()
@@ -239,27 +242,6 @@ const Historial = () => {
         setCodigoHistorial={setCodigoHistorial}
         dataBarCode={dataBarCode}
       />
-
-      {/* 
-
-      <DeclaracionJurada
-
-        declaracionJurada={declaracionJurada}
-        setDeclaracionJurada = {setDeclaracionJurada}
-      
-      />
-
-      <ConsentimientoInformado
-      
-        consentimiento={consentimiento}
-        setConsentimiento={setConsetimiento}
-      />
-
-      <FichaCovid
-
-        fichaCov = {fichaCov}
-        setFichaCov ={setFichaCov}
-      /> */}
     </>
   );
 };
