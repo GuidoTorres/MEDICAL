@@ -15,7 +15,6 @@ const MReservasMovil = ({
   const closeModal = () => {
     setOpenModalMovil(false);
   };
-  // console.log(dataMovil);
 
   // const [openModalCrear, setOpenModalCrear] = useState(false);
   const [openModalPrecio, setOpenModalPrecio] = useState(false);
@@ -94,7 +93,7 @@ const MReservasMovil = ({
   };
 
   const postLiquidacion = (body) => {
-    console.log(body);
+    // console.log(body);
     fetchGETPOSTPUTDELETEJSON('settlement', body, 'POST')
       .then((info) => info.json())
       .then((info) => {
@@ -122,9 +121,11 @@ const MReservasMovil = ({
     if (codigo !== null && codigo !== '') {
       const array = [];
       dataMovil.map((d) => array.push({ attention_id: d.id }));
-      // console.log(data);
-      // console.log(dataEmpresa);
+      const dataID = dataMovil[0].users[0].person.id;
+      const dataID_Att = dataMovil[0].id;
       const liquidacion = {
+        id: dataID_Att,
+        user_id: dataID,
         code: codigo,
         observation: observacion,
         isapproved: estado,
@@ -135,9 +136,9 @@ const MReservasMovil = ({
         // company_id: dataEmpresa.id,
       };
       // console.log(liquidacion);
-      postLiquidacion(liquidacion);
-      console.log(liquidacion);
-      // modoprueba()
+      // postLiquidacion(liquidacion);
+      // console.log(liquidacion);
+      modoprueba(liquidacion);
       closeModal();
     } else {
       Swal.fire({
@@ -147,9 +148,33 @@ const MReservasMovil = ({
       });
     }
   };
-  // const modoprueba=()=>{
-  //   fetchGETPOSTPUTDELETEJSON('')
-  // }
+  const modoprueba = (liquidacion) => {
+    // console.log(liquidacion);
+    const dataID_Att = dataMovil[0].id;
+    fetchGETPOSTPUTDELETEJSON(
+      'liquidacion/liquidar_reservacion/' + dataID_Att,
+      liquidacion,
+      'POST'
+    )
+      .then((res) => res.json())
+      .then((info) => {
+        if (info.resp === 'liquidacion de reserva') {
+          setClearRows(true);
+          setClearRows(false);
+          Swal.fire(
+            'Liquidación exitosa!',
+            'Se ha creado correctamente la liquidación',
+            'success'
+          );
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ocurrió un error, inténtelo nuevamente',
+          });
+        }
+      });
+  };
 
   useEffect(() => {
     calcularValores();

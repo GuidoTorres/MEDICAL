@@ -17,6 +17,7 @@ const Liquidacion = () => {
   const [liquidacion, setLiquidacion] = useState([]);
   const [empresa, setEmpresa] = useState();
   const [particular, setParticular] = useState();
+  const [listMovil, setListMovil] = useState([]);
 
   const conditionalRowStyles = [
     // Cambio de color en la tabla dependiendo de la fecha que devuelve el backend en el json
@@ -44,11 +45,11 @@ const Liquidacion = () => {
         setBusqueda('');
       });
   };
+  // console.log(liquidacion);
 
   const handleCargarInfo = (e) => {
     setDatos(e);
     setOpenModalCargarInfo(true);
-    // console.log(e);
   };
 
   const filterTipoUsuario = () => {
@@ -60,8 +61,13 @@ const Liquidacion = () => {
     const empresa =
       liquidacion && liquidacion.filter((item) => item.company_id !== null);
     setEmpresa(empresa);
+
+    const movil =
+      liquidacion && liquidacion.filter((item) => item.user_id !== null);
+    setListMovil(movil);
+    // console.log(movil);
   };
-  // console.log(empresa);
+  // console.log(listMovil);
 
   const typeStatus = (estado) => {
     switch (Number(estado)) {
@@ -338,6 +344,124 @@ const Liquidacion = () => {
     },
   ];
 
+  const columnas2 = [
+    {
+      name: 'Ítem',
+      selector: (row, index) => (index += 1),
+      sortable: true,
+      grow: 0,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
+      name: 'Razón social',
+
+      selector: (row) =>
+        row.company &&
+        row.company.corporation &&
+        row.company.corporation.commercial_name
+          ? row.company.corporation.business_name
+          : row.detail.length > 0
+          ? row.detail[0].attention.person.name
+          : '',
+      sortable: true,
+      grow: 2,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
+      name: 'RUC',
+      selector: 'nombre',
+      selector: (row) =>
+        row.company && row.company.corporation && row.company.corporation.ruc
+          ? row.company.corporation.ruc
+          : row.detail.length > 0
+          ? row.detail[0].attention.person.dni
+          : '',
+      sortable: true,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
+      name: 'Fecha',
+      selector: 'date_issue',
+      sortable: true,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
+      name: 'Sub total',
+      selector: 'subtotal',
+      sortable: true,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
+      name: 'Impuesto',
+      selector: 'igv',
+      sortable: true,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
+      name: 'Total',
+      selector: 'amount',
+      sortable: true,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+
+    {
+      name: 'Estado',
+      selector: (row) => typeStatus(row.isapproved),
+      sortable: true,
+      style: {
+        borderBotton: 'none',
+        color: '#555555',
+      },
+    },
+    {
+      name: 'Detalles',
+      button: true,
+      cell: (e) => (
+        <button
+          onClick={() => handleDetalles(e)}
+          className='table__tablebutton'
+        >
+          <i className='fas fa-info-circle'></i>
+        </button>
+      ),
+    },
+    {
+      name: 'Cargar Información',
+      button: true,
+      cell: (e) =>
+        e.isapproved === 2 ? (
+          <button
+            // onClick={() => handleCargarInfo(e)}
+            className='table__tablebutton'
+          >
+            <i className='fas fa-folder-open'></i>
+          </button>
+        ) : (
+          <i className='fas fa-folder-open icon-gray'></i>
+        ),
+    },
+  ];
   // useEffect(() => {
   //   const filtrarElemento = () => {
   //     if (busqueda !== "" && busqueda !== null) {
@@ -501,30 +625,24 @@ const Liquidacion = () => {
                 aria-labelledby='headingThree'
                 data-bs-parent='#accordionExample'
               >
-                <button
-                  className='botones mt-3 mb-1'
-                  // onClick={handleDetallesMovil}
-                >
-                  Liquidar
-                </button>
-                {/* <DataTable
-                  columns={columnasMovil}
-                  data={listRegistroMovil}
-                  contextMessage={mensajesTablaFacturacion}
+                <DataTable
+                  columns={columnas2}
+                  data={listMovil}
+                  // contextMessage={mensajesTablaFacturacion}
                   pagination
-                  clearSelectedRows={clearRows}
+                  // clearSelectedRows={clearRows}
                   paginationComponentOptions={paginacionOpciones}
                   fixedHeader
-                  fixedHeaderScrollHeight="500px"
+                  fixedHeaderScrollHeight='500px'
                   noDataComponent={
-                    <div className="spinner">
-                      <i className="fas fa-inbox table__icono"></i>
-                      <p style={{ color: "grey" }}>No hay datos</p>
+                    <div className='spinner'>
+                      <i className='fas fa-inbox table__icono'></i>
+                      <p style={{ color: 'grey' }}>No hay datos</p>
                     </div>
                   }
                   selectableRows
-                  onSelectedRowsChange={(e) => setDataMovil(e.selectedRows)}
-                /> */}
+                  // onSelectedRowsChange={(e) => setDataMovil(e.selectedRows)}
+                />
               </div>
             </div>
             {/*  */}

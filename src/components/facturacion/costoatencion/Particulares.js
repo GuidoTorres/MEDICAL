@@ -64,13 +64,13 @@ const Particulares = () => {
         setBusqueda('');
       });
   };
-
+  console.log(movil);
   useEffect(() => {
     getEmpresas();
     getParticulares();
     getMovil();
   }, []);
-  console.log(movil);
+  // console.log(movil);
 
   // console.log(empresas);
 
