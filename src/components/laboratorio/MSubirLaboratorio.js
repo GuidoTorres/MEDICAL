@@ -59,26 +59,26 @@ const MSubirLaboratorio = ({
     );
     doc.text(
       395,
-      151,
+      144,
       `${dataSelected.person.gender_id === 1 ? "Masculino" : "Femenino"}`
     );
     // doc.text(328, 135, `${e && e.genero === null ? 'Masculino' : ''}`);
 
-    doc.text(105, 151, `${dataSelected.id ? dataSelected.id : ""}`);
+    doc.text(98, 143, `${dataSelected.id ? dataSelected.id : ""}`);
     doc.text(
       65,
-      172,
+      165,
       `${dataSelected.person.dni ? dataSelected.person.dni : ""}`
     );
     doc.text(
       496,
-      171,
+      164,
       `${dataSelected.date_attention ? dataSelected.date_attention : ""}`
     );
 
     doc.text(
-      100,
-      192,
+      95,
+      185,
       `${
         (dataSelected &&
           dataSelected.person &&
@@ -111,12 +111,12 @@ const MSubirLaboratorio = ({
           : ""
       }`
     );
-    doc.text(383, 192, getAge());
+    doc.text(383, 185, getAge());
 
     if (result.result === "0" || 0) {
-      doc.text(280, 275, `No detectado`);
+      doc.text(280, 267, `No detectado`);
     } else if (result.result === "1" || 1) {
-      doc.text(280, 275, `Detectado`);
+      doc.text(280, 267, `Detectado`);
     }
     // window.open(doc.output("bloburl"), "_blank");
     const pdf = new File([doc.output("blob")], "myDoc.pdf", {
