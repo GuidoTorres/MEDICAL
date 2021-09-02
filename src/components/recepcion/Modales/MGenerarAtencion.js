@@ -67,7 +67,7 @@ const MGenerarAtencion = ({
   };
 
   const generarFicha = () => {
-    let arr = Array.from({ length: 177 }, () => ({
+    let arr = Array.from({ length: 178 }, () => ({
       question_id: null,
       answer: null,
     }));
