@@ -57,7 +57,7 @@ const generarConsentimientoInformado = (data) => {
         "FAST"
       );
     }
-    if (getAge() < 18) {
+    if (getAge() > 18) {
       doc.setFillColor(255, 255, 255);
       doc.rect(20, 80, 550, 100, "F");
       doc.setFontSize(11);

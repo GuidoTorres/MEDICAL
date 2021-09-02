@@ -130,26 +130,27 @@ const SubirLaboratorio = () => {
   useEffect(() => {
     const filtrarElemento = () => {
       const search = filterData.filter((data) => {
-        return (
-          (data.person && data.person.dni
-            ? data.person.dni.toString().includes(busqueda)
-            : "") ||
+        return (data.person && data.person.dni
+          ? data.person.dni.toString().includes(busqueda)
+          : "") ||
           (data.date_creation
             ? data.date_creation.toString().includes(busqueda)
             : "") ||
-          (data.person
-            ? data.person.name
-                .toString()
-                .toLowerCase()
-                .includes(busqueda.toLowerCase())
-            : "") ||
-          (data.person
-            ? data.person.pat_lastname
-                .toString()
-                .toLowerCase()
-                .includes(busqueda.toLowerCase())
-            : "")
-        );
+          data.date_creation
+          ? data.date_creation.toString().includes(busqueda)
+          : "" ||
+              (data.person
+                ? data.person.name
+                    .toString()
+                    .toLowerCase()
+                    .includes(busqueda.toLowerCase())
+                : "") ||
+              (data.person
+                ? data.person.pat_lastname
+                    .toString()
+                    .toLowerCase()
+                    .includes(busqueda.toLowerCase())
+                : "");
       });
       setListRegistro(search);
     };

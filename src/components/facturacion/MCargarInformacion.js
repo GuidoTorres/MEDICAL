@@ -3,6 +3,7 @@ import { customStyles } from "../../helpers/tablaOpciones";
 import Modal from "react-modal";
 import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 const MCargarInformacion = ({
   openModalCargarInfo,
@@ -15,20 +16,41 @@ const MCargarInformacion = ({
     setOpenModalCargarInfo(false);
   };
 
+  console.log(datos);
+
   const subirArchivo = () => {
     const formData = new FormData();
     // formData.append("liquidacion", datos.id);
     formData.append("file", pdf);
 
     fetchGETPOSTPUTDELETE(
-      `billing/${datos.detail[0].attention_id}`,
+      `billing/${datos.detail[0].settlement_id}`,
       formData,
       "POST"
-    )
-      .then((info) => info.json())
-      .then((info) => {
-        console.log(info);
-      });
+    ).then((info) => {
+      if (info.status === 200) {
+        closeModal();
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Se cargó el resultado correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
+        });
+        getAtencion();
+      } else {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
+        });
+      }
+    });
 
     closeModal();
   };
