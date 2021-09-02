@@ -1,18 +1,18 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import DataTable from "react-data-table-component";
-import { fetchGETPOSTPUTDELETE } from "../../../helpers/fetch";
-import Swal from "sweetalert2";
+import DataTable from 'react-data-table-component';
+import { fetchGETPOSTPUTDELETE } from '../../../helpers/fetch';
+import Swal from 'sweetalert2';
 
 import {
   paginacionOpciones,
   mensajesTablaFacturacion,
-} from "../../../helpers/tablaOpciones";
-import MParticulares from "./MParticulares";
-import MEmpresa from "./MEmpresa";
-import MMParticulares from "./MMParticulares";
-import MReservasMovil from "./MReservasMovil";
+} from '../../../helpers/tablaOpciones';
+import MParticulares from './MParticulares';
+import MEmpresa from './MEmpresa';
+import MMParticulares from './MMParticulares';
+import MReservasMovil from './MReservasMovil';
 
 const Particulares = () => {
   const [busqueda, setBusqueda] = useState(null);
@@ -36,137 +36,137 @@ const Particulares = () => {
   const [openModalMovil, setOpenModalMovil] = useState(false);
 
   const getEmpresas = () => {
-    fetchGETPOSTPUTDELETE("liquidacion/empresas")
+    fetchGETPOSTPUTDELETE('liquidacion/empresas')
       .then((info) => info.json())
       .then((info) => {
         setEmpresas(info);
         setBusqueda(null);
-        setBusqueda("");
+        setBusqueda('');
       });
   };
 
   const getParticulares = () => {
-    fetchGETPOSTPUTDELETE("settlement_particular")
+    fetchGETPOSTPUTDELETE('settlement_particular')
       .then((info) => info.json())
       .then((info) => {
         setParticulares(info.data);
         setBusqueda(null);
-        setBusqueda("");
+        setBusqueda('');
       });
   };
 
   const getMovil = () => {
-    fetchGETPOSTPUTDELETE("liquidacion/pending_reservation")
+    fetchGETPOSTPUTDELETE('liquidacion/pending_reservation')
       .then((info) => info.json())
       .then((info) => {
         setMovil(info);
         setBusqueda(null);
-        setBusqueda("");
+        setBusqueda('');
       });
   };
-
+  console.log(movil);
   useEffect(() => {
     getEmpresas();
     getParticulares();
     getMovil();
   }, []);
-  console.log(movil);
+  // console.log(movil);
 
   // console.log(empresas);
 
   const columnas = [
     {
-      name: "Ítem",
+      name: 'Ítem',
       selector: (row, index) => (index += 1),
       sortable: true,
       grow: 0,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nombre",
-      selector: (row) => (row.person ? row.person.name : ""),
+      name: 'Nombre',
+      selector: (row) => (row.person ? row.person.name : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Apellido",
+      name: 'Apellido',
       selector: (row) =>
         row.person
-          ? row.person.pat_lastname + " " + row.person.mom_lastname
-          : "",
+          ? row.person.pat_lastname + ' ' + row.person.mom_lastname
+          : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "DNI",
-      selector: (row) => (row.person ? row.person.dni : ""),
+      name: 'DNI',
+      selector: (row) => (row.person ? row.person.dni : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Fecha",
-      selector: (row) => (row.date_attention ? row.date_attention : ""),
+      name: 'Fecha',
+      selector: (row) => (row.date_attention ? row.date_attention : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Tipo de servicio",
-      selector: (row) => (row.service ? row.service.description : ""),
+      name: 'Tipo de servicio',
+      selector: (row) => (row.service ? row.service.description : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Plan de atención",
-      selector: (row) => (row.service ? row.service.abbreviation : ""),
+      name: 'Plan de atención',
+      selector: (row) => (row.service ? row.service.abbreviation : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "SubTotal",
-      selector: "subtotal",
+      name: 'SubTotal',
+      selector: 'subtotal',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Impuesto",
-      selector: "igv",
+      name: 'Impuesto',
+      selector: 'igv',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Total",
+      name: 'Total',
       selector: (row) => row.amount,
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     // {
@@ -185,77 +185,77 @@ const Particulares = () => {
 
   const columnasEmpresa = [
     {
-      name: "Item",
+      name: 'Item',
       selector: (row, index) => (index += 1),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Razón social",
-      selector: "nombre",
+      name: 'Razón social',
+      selector: 'nombre',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Ruc",
-      selector: "ruc",
+      name: 'Ruc',
+      selector: 'ruc',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Cant. atenciones",
-      selector: "cant_atenciones",
+      name: 'Cant. atenciones',
+      selector: 'cant_atenciones',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Sub total",
-      selector: "sub_total",
+      name: 'Sub total',
+      selector: 'sub_total',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Impuesto",
-      selector: "igv",
+      name: 'Impuesto',
+      selector: 'igv',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Total",
-      selector: "total",
+      name: 'Total',
+      selector: 'total',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Detalles",
+      name: 'Detalles',
       button: true,
       cell: (e) => (
         <button
           onClick={() => handleDetallesEmpresa(e)}
-          className="table__tablebutton"
+          className='table__tablebutton'
         >
-          <i className="far fa-folder-open"></i>
+          <i className='far fa-folder-open'></i>
         </button>
       ),
     },
@@ -263,17 +263,17 @@ const Particulares = () => {
 
   const columnasMovil = [
     {
-      name: "Item",
+      name: 'Item',
       selector: (row, index) => (index += 1),
       sortable: true,
       grow: 0,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nombres y apellidos",
+      name: 'Nombres y apellidos',
       selector: (row) =>
         row.users &&
         row.users[0] &&
@@ -283,73 +283,73 @@ const Particulares = () => {
               /(^\w|\s\w)(\S*)/g,
               (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
             ) +
-            " " +
+            ' ' +
             row.users[0].person.pat_lastname.replace(
               /(^\w|\s\w)(\S*)/g,
               (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
             ) +
-            " " +
+            ' ' +
             row.users[0].person.mom_lastname.replace(
               /(^\w|\s\w)(\S*)/g,
               (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase()
             )
-          : "",
+          : '',
       sortable: true,
       grow: 2,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "DNI",
+      name: 'DNI',
       selector: (row) =>
         row.users &&
         row.users[0] &&
         row.users[0].person &&
         row.users[0].person.dni
           ? row.users[0].person.dni
-          : "",
+          : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Modalidad",
+      name: 'Modalidad',
       selector: (row) =>
-        row.modality && row.modality.name ? row.modality.name : "",
+        row.modality && row.modality.name ? row.modality.name : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Voucher",
-      selector: (row) => (row.voucher_type === 1 ? "Boleta" : "Factura"),
+      name: 'Voucher',
+      selector: (row) => (row.voucher_type === 1 ? 'Boleta' : 'Factura'),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Total",
-      selector: (row) => (row.total_cost ? row.total_cost : ""),
+      name: 'Total',
+      selector: (row) => (row.total_cost ? row.total_cost : ''),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
   ];
-  console.log(listRegistroEmpresas);
+  // console.log(listRegistroEmpresas);
 
   useEffect(() => {
     const filtrarElemento = () => {
-      if (busqueda !== "" && busqueda !== null) {
+      if (busqueda !== '' && busqueda !== null) {
         const search = particulares.filter((data) => {
           return (
             // data.id.toString().includes(busqueda) ||
@@ -358,38 +358,38 @@ const Particulares = () => {
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : "") ||
+              : '') ||
             (data.person
               ? data.person.pat_lastname
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : "") ||
+              : '') ||
             (data.person
               ? data.person.mom_lastname
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : "") ||
+              : '') ||
             (data.person
               ? data.person.dni.toString().includes(busqueda)
-              : "") ||
+              : '') ||
             (data.date_attention
               ? data.date_attention.toString().includes(busqueda)
-              : "") ||
+              : '') ||
             (data.service
               ? data.service.description
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : "") ||
+              : '') ||
             (data.service
               ? data.service.abbreviation
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : "") ||
-            (data.amount ? data.amount.toString().includes(busqueda) : "")
+              : '') ||
+            (data.amount ? data.amount.toString().includes(busqueda) : '')
           );
         });
         setListRegistro(search);
@@ -403,16 +403,16 @@ const Particulares = () => {
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : "") ||
-            (data.ruc ? data.ruc.toString().includes(busqueda) : "") ||
+              : '') ||
+            (data.ruc ? data.ruc.toString().includes(busqueda) : '') ||
             (data.cant_atenciones
               ? data.cant_atenciones.toString().includes(busqueda)
-              : "") ||
+              : '') ||
             (data.sub_total
               ? data.sub_total.toString().includes(busqueda)
-              : "") ||
-            (data.igv ? data.igv.toString().includes(busqueda) : "") ||
-            (data.total ? data.total.toString().includes(busqueda) : "")
+              : '') ||
+            (data.igv ? data.igv.toString().includes(busqueda) : '') ||
+            (data.total ? data.total.toString().includes(busqueda) : '')
           );
         });
         setListRegistroEmpresas(searchEmpresas);
@@ -429,17 +429,17 @@ const Particulares = () => {
                   .toString()
                   .toLowerCase()
                   .includes(busqueda.toLowerCase())
-              : "") ||
+              : '') ||
             (data.users &&
             data.users[0] &&
             data.users[0].person &&
             data.users[0].person.dni
               ? data.users[0].person.dni.toString().includes(busqueda)
-              : "") ||
+              : '') ||
             (data && data.modality && data.modality.name
               ? data.modality.name.toString().toLowerCase().includes(busqueda)
-              : "") ||
-            (data.sub_total ? data.sub_total.toString().includes(busqueda) : "")
+              : '') ||
+            (data.sub_total ? data.sub_total.toString().includes(busqueda) : '')
           );
         });
         setListRegistroMovil(searchMovil);
@@ -457,13 +457,13 @@ const Particulares = () => {
     // setOpenModal(true);
     // console.log(dataParticular);
     if (dataParticular.length > 0) {
-      console.log(dataParticular);
+      // console.log(dataParticular);
       setOpenModalLiquidarParticular(true);
     } else {
       Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Debe elegir al menos un paciente",
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Debe elegir al menos un paciente',
       });
     }
   };
@@ -472,13 +472,13 @@ const Particulares = () => {
     // setOpenModal(true);
     // console.log(dataParticular);
     if (dataMovil.length > 0) {
-      console.log(dataMovil);
+      // console.log(dataMovil);
       setOpenModalMovil(true);
     } else {
       Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Debe elegir al menos un paciente",
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Debe elegir al menos un paciente',
       });
     }
   };
@@ -493,42 +493,42 @@ const Particulares = () => {
   };
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="table-responsive">
-          <div className="adminregistro__option">
+    <div className='container'>
+      <div className='row'>
+        <div className='table-responsive'>
+          <div className='adminregistro__option'>
             <div>
               <input
-                type="text"
-                placeholder="Buscar"
-                name="busqueda"
+                type='text'
+                placeholder='Buscar'
+                name='busqueda'
                 value={busqueda}
                 onChange={handleSearch}
               />
             </div>
           </div>
 
-          <div class="accordion" id="accordionExample">
-            <div className="accordion-item">
-              <h2 className="accordion-header" id="headingOne">
+          <div class='accordion' id='accordionExample'>
+            <div className='accordion-item'>
+              <h2 className='accordion-header' id='headingOne'>
                 <button
-                  className="accordion-button"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseOne"
-                  aria-expanded="true"
-                  aria-controls="collapseOne"
+                  className='accordion-button'
+                  type='button'
+                  data-bs-toggle='collapse'
+                  data-bs-target='#collapseOne'
+                  aria-expanded='true'
+                  aria-controls='collapseOne'
                 >
                   Particular
                 </button>
               </h2>
               <div
-                id="collapseOne"
-                className="accordion-collapse collapse show"
-                aria-labelledby="headingOne"
-                data-bs-parent="#accordionExample"
+                id='collapseOne'
+                className='accordion-collapse collapse show'
+                aria-labelledby='headingOne'
+                data-bs-parent='#accordionExample'
               >
-                <button className="botones mt-3 mb-1" onClick={handleDetalles}>
+                <button className='botones mt-3 mb-1' onClick={handleDetalles}>
                   Liquidar
                 </button>
                 <DataTable
@@ -539,11 +539,11 @@ const Particulares = () => {
                   clearSelectedRows={clearRows}
                   paginationComponentOptions={paginacionOpciones}
                   fixedHeader
-                  fixedHeaderScrollHeight="500px"
+                  fixedHeaderScrollHeight='500px'
                   noDataComponent={
-                    <div className="spinner">
-                      <i className="fas fa-inbox table__icono"></i>
-                      <p style={{ color: "grey" }}>No hay datos</p>
+                    <div className='spinner'>
+                      <i className='fas fa-inbox table__icono'></i>
+                      <p style={{ color: 'grey' }}>No hay datos</p>
                     </div>
                   }
                   selectableRows
@@ -554,24 +554,24 @@ const Particulares = () => {
                 />
               </div>
             </div>
-            <div className="accordion-item">
-              <h2 className="accordion-header" id="headingTwo">
+            <div className='accordion-item'>
+              <h2 className='accordion-header' id='headingTwo'>
                 <button
-                  className="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseTwo"
-                  aria-expanded="false"
-                  aria-controls="collapseTwo"
+                  className='accordion-button collapsed'
+                  type='button'
+                  data-bs-toggle='collapse'
+                  data-bs-target='#collapseTwo'
+                  aria-expanded='false'
+                  aria-controls='collapseTwo'
                 >
                   Empresa
                 </button>
               </h2>
               <div
-                id="collapseTwo"
-                className="accordion-collapse collapse"
-                aria-labelledby="headingTwo"
-                data-bs-parent="#accordionExample"
+                id='collapseTwo'
+                className='accordion-collapse collapse'
+                aria-labelledby='headingTwo'
+                data-bs-parent='#accordionExample'
               >
                 <DataTable
                   columns={columnasEmpresa}
@@ -579,38 +579,38 @@ const Particulares = () => {
                   pagination
                   paginationComponentOptions={paginacionOpciones}
                   fixedHeader
-                  fixedHeaderScrollHeight="500px"
+                  fixedHeaderScrollHeight='500px'
                   noDataComponent={
-                    <div className="spinner">
-                      <i className="fas fa-inbox table__icono"></i>
-                      <p style={{ color: "grey" }}>No hay datos</p>
+                    <div className='spinner'>
+                      <i className='fas fa-inbox table__icono'></i>
+                      <p style={{ color: 'grey' }}>No hay datos</p>
                     </div>
                   }
                   // selectableRows
                 />
               </div>
             </div>
-            <div className="accordion-item">
-              <h2 class="accordion-header" id="headingThree">
+            <div className='accordion-item'>
+              <h2 class='accordion-header' id='headingThree'>
                 <button
-                  class="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseThree"
-                  aria-expanded="false"
-                  aria-controls="collapseThree"
+                  class='accordion-button collapsed'
+                  type='button'
+                  data-bs-toggle='collapse'
+                  data-bs-target='#collapseThree'
+                  aria-expanded='false'
+                  aria-controls='collapseThree'
                 >
                   Reservas móvil
                 </button>
               </h2>
               <div
-                id="collapseThree"
-                class="accordion-collapse collapse"
-                aria-labelledby="headingThree"
-                data-bs-parent="#accordionExample"
+                id='collapseThree'
+                class='accordion-collapse collapse'
+                aria-labelledby='headingThree'
+                data-bs-parent='#accordionExample'
               >
                 <button
-                  className="botones mt-3 mb-1"
+                  className='botones mt-3 mb-1'
                   onClick={handleDetallesMovil}
                 >
                   Liquidar
@@ -623,11 +623,11 @@ const Particulares = () => {
                   clearSelectedRows={clearRows}
                   paginationComponentOptions={paginacionOpciones}
                   fixedHeader
-                  fixedHeaderScrollHeight="500px"
+                  fixedHeaderScrollHeight='500px'
                   noDataComponent={
-                    <div className="spinner">
-                      <i className="fas fa-inbox table__icono"></i>
-                      <p style={{ color: "grey" }}>No hay datos</p>
+                    <div className='spinner'>
+                      <i className='fas fa-inbox table__icono'></i>
+                      <p style={{ color: 'grey' }}>No hay datos</p>
                     </div>
                   }
                   selectableRows

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
-import { customStyles } from "../../../helpers/tablaOpciones";
-import { fetchGETPOSTPUTDELETEJSON } from "../../../helpers/fetch";
-import Swal from "sweetalert2";
+import React, { useEffect, useState } from 'react';
+import Modal from 'react-modal';
+import { customStyles } from '../../../helpers/tablaOpciones';
+import { fetchGETPOSTPUTDELETEJSON } from '../../../helpers/fetch';
+import Swal from 'sweetalert2';
+import MPrecio from './MPrecio';
 
 const MReservasMovil = ({
   openModalMovil,
@@ -14,22 +15,21 @@ const MReservasMovil = ({
   const closeModal = () => {
     setOpenModalMovil(false);
   };
-  console.log(dataMovil);
 
-  const [openModalCrear, setOpenModalCrear] = useState(false);
+  // const [openModalCrear, setOpenModalCrear] = useState(false);
   const [openModalPrecio, setOpenModalPrecio] = useState(false);
   const [subtotal, setSubTotal] = useState(0);
   const [igv, setIgv] = useState(0);
   const [total, setTotal] = useState(0);
-  const [fechaActual, setFechaActual] = useState("");
-  const [observacion, setObservacion] = useState("");
-  const [codigo, setCodigo] = useState("");
+  const [fechaActual, setFechaActual] = useState('');
+  const [observacion, setObservacion] = useState('');
+  const [codigo, setCodigo] = useState('');
   const [estado, setEstado] = useState(2); // 1 - pediente, 2 - aprobado
   const [services, setServices] = useState([]);
 
   const obtenServicios = () => {
     const array = dataMovil.map((d) => ({
-      servicio: d.service ? d.service.description : "",
+      servicio: d.service ? d.service.description : '',
       total: d.amount,
     }));
 
@@ -58,7 +58,7 @@ const MReservasMovil = ({
         totalPrecio += Number(d.amount);
       } else {
         const { total } = services.filter(
-          (s) => s.servicio === (d.service ? d.service.description : "")
+          (s) => s.servicio === (d.service ? d.service.description : '')
         )[0];
         const sub = (total * 0.82).toFixed(2);
         const calcIgv = (total * 0.18).toFixed(2);
@@ -87,29 +87,30 @@ const MReservasMovil = ({
     let mes = fecha.getMonth() + 1; //obteniendo mes
     let dia = fecha.getDate(); //obteniendo dia
     let ano = fecha.getFullYear(); //obteniendo año
-    if (dia < 10) dia = "0" + dia; //agrega cero si el menor de 10
-    if (mes < 10) mes = "0" + mes; //agrega cero si el menor de 10
-    setFechaActual(ano + "-" + mes + "-" + dia);
+    if (dia < 10) dia = '0' + dia; //agrega cero si el menor de 10
+    if (mes < 10) mes = '0' + mes; //agrega cero si el menor de 10
+    setFechaActual(ano + '-' + mes + '-' + dia);
   };
 
   const postLiquidacion = (body) => {
-    fetchGETPOSTPUTDELETEJSON("settlement", body, "POST")
+    // console.log(body);
+    fetchGETPOSTPUTDELETEJSON('settlement', body, 'POST')
       .then((info) => info.json())
       .then((info) => {
         getMovil();
-        if (info.resp === "Settlement Create") {
+        if (info.resp === 'Settlement Create') {
           setClearRows(true);
           setClearRows(false);
           Swal.fire(
-            "Liquidación exitosa!",
-            "Se ha creado correctamente la liquidación",
-            "success"
+            'Liquidación exitosa!',
+            'Se ha creado correctamente la liquidación',
+            'success'
           );
         } else {
           Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Ocurrió un error, inténtelo nuevamente",
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ocurrió un error, inténtelo nuevamente',
           });
         }
       });
@@ -117,12 +118,14 @@ const MReservasMovil = ({
   };
 
   const handleLiquidarEmpresa = () => {
-    if (codigo !== null && codigo !== "") {
+    if (codigo !== null && codigo !== '') {
       const array = [];
       dataMovil.map((d) => array.push({ attention_id: d.id }));
-      // console.log(data);
-      // console.log(dataEmpresa);
+      const dataID = dataMovil[0].users[0].person.id;
+      const dataID_Att = dataMovil[0].id;
       const liquidacion = {
+        id: dataID_Att,
+        user_id: dataID,
         code: codigo,
         observation: observacion,
         isapproved: estado,
@@ -133,15 +136,44 @@ const MReservasMovil = ({
         // company_id: dataEmpresa.id,
       };
       // console.log(liquidacion);
-      postLiquidacion(liquidacion);
+      // postLiquidacion(liquidacion);
+      // console.log(liquidacion);
+      modoprueba(liquidacion);
       closeModal();
     } else {
       Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Debe ingresar código de factura",
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Debe ingresar código de factura',
       });
     }
+  };
+  const modoprueba = (liquidacion) => {
+    // console.log(liquidacion);
+    const dataID_Att = dataMovil[0].id;
+    fetchGETPOSTPUTDELETEJSON(
+      'liquidacion/liquidar_reservacion/' + dataID_Att,
+      liquidacion,
+      'POST'
+    )
+      .then((res) => res.json())
+      .then((info) => {
+        if (info.resp === 'liquidacion de reserva') {
+          setClearRows(true);
+          setClearRows(false);
+          Swal.fire(
+            'Liquidación exitosa!',
+            'Se ha creado correctamente la liquidación',
+            'success'
+          );
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ocurrió un error, inténtelo nuevamente',
+          });
+        }
+      });
   };
 
   useEffect(() => {
@@ -157,17 +189,17 @@ const MReservasMovil = ({
       isOpen={openModalMovil}
       onRequestClose={closeModal}
       style={customStyles}
-      className="modal  mfacturacion__particular"
-      overlayClassName="modal-fondo ReactToMessage"
+      className='modal  mfacturacion__particular'
+      overlayClassName='modal-fondo ReactToMessage'
       closeTimeoutMS={200}
       preventScroll={true}
       ariaHideApp={false}
     >
-      <h3 className="title__modal">Detalles de atención</h3>
-      <div className="container">
-        <div className="row">
-          <div className="col-12 fmparticular">
-            <div className="box-grid">
+      <h3 className='title__modal'>Detalles de atención</h3>
+      <div className='container'>
+        <div className='row'>
+          <div className='col-12 fmparticular'>
+            <div className='box-grid'>
               {/* <div className="fmparticular__tipo group-input__label">
                 <label>Razón social</label>
                 <input type="text" readOnly defaultValue={dataEmpresa.nombre} />
@@ -176,18 +208,18 @@ const MReservasMovil = ({
                 <label>Ruc</label>
                 <input type="text" readOnly defaultValue={dataEmpresa.ruc} />
               </div> */}
-              <div className="fmparticular__tipo group-input__label">
+              <div className='fmparticular__tipo group-input__label'>
                 <label>Factura</label>
                 <input
-                  type="text"
+                  type='text'
                   value={codigo}
                   onChange={(e) => setCodigo(e.target.value)}
-                  placeholder="Ingrese código de factura"
+                  placeholder='Ingrese código de factura'
                 />
               </div>
-              <div className="fmparticular__tipo group-input__label">
+              <div className='fmparticular__tipo group-input__label'>
                 <label>Fecha de emisión</label>
-                <input type="date" value={fechaActual} readOnly />
+                <input type='date' value={fechaActual} readOnly />
               </div>
             </div>
             {/* <div>
@@ -199,31 +231,51 @@ const MReservasMovil = ({
                 ></i>
               </div>
             </div> */}
-            <div className="table-responsive">
-              <table className="table">
+            <div className='table-responsive'>
+              <table className='table'>
                 <thead>
                   <tr>
-                    <th scope="col">Item</th>
-                    <th scope="col">DNI</th>
-                    <th scope="col">Hora</th>
-                    <th scope="col">Nombres y apellidos</th>
-                    <th scope="col">Tipo de prueba</th>
-                    <th scope="col">Servicio</th>
-                    <th scope="col">Costo</th>
+                    <th scope='col'>Item</th>
+                    <th scope='col'>DNI</th>
+                    <th scope='col'>Hora</th>
+                    <th scope='col'>Nombres y apellidos</th>
+                    <th scope='col'>Tipo de prueba</th>
+                    <th scope='col'>Servicio</th>
+                    <th scope='col'>Costo</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {dataMovil.map((d, i) => (
+                  {dataMovil.map((item) => {
+                    // console.log(item);
+                    const { sample } = item;
+                    return sample.map((data, id) => {
+                      const { person, service } = data.attention;
+
+                      return (
+                        <tr key={data.id}>
+                          <td>{id + 1}</td>
+                          <td>{person.dni}</td>
+                          <td>{data.attention.time_attention}</td>
+                          <td>{person.name}</td>
+                          <td>{'Covid-19'}</td>
+                          <td>{service.abbreviation}</td>
+                          <td>{data.attention.amount}</td>
+                        </tr>
+                      );
+                    });
+                  })}
+
+                  {/* {dataMovil.map((d, i) => (
                     <tr key={d.id}>
                       <td>{i + 1}</td>
-                      <td>{d.person ? d.person.dni : ""}</td>
-                      <td>{d.attention_time ? d.attention_time : ""}</td>
+                      <td>{d.person ? d.person.dni : ''}</td>
+                      <td>{d.attention_time ? d.attention_time : ''}</td>
                       <td>
                         {d.sample &&
                           d.sample[0] &&
                           d.sample[0].attention.person.name}
                       </td>
-                      <td>{"Covid-19"}</td>
+                      <td>{'Covid-19'}</td>
                       <td>
                         {d.sample &&
                           d.sample[0] &&
@@ -236,15 +288,15 @@ const MReservasMovil = ({
                                 d.sample[0] &&
                                 d.sample[0].attention.service.description
                                 ? d.sample[0].attention.service.description
-                                : ""
+                                : ''
                             )
                           : d.total_cost}
                       </td>
                     </tr>
-                  ))}
+                  ))} */}
 
                   <tr>
-                    <td colSpan="5">
+                    <td colSpan='5'>
                       <strong>Obvervación</strong>
                     </td>
                     <td>
@@ -255,7 +307,7 @@ const MReservasMovil = ({
                     </td>
                   </tr>
                   <tr>
-                    <td colSpan="5">
+                    <td colSpan='5'>
                       <textarea
                         onChange={(e) => setObservacion(e.target.value)}
                       ></textarea>
@@ -268,7 +320,7 @@ const MReservasMovil = ({
                     </td>
                   </tr>
                   <tr>
-                    <td colSpan="5"></td>
+                    <td colSpan='5'></td>
                     <td>
                       <strong>Total</strong>
                     </td>
@@ -281,8 +333,8 @@ const MReservasMovil = ({
             </div>
           </div>
         </div>
-        <button className="liquidacion-icon" onClick={editar}>
-          <i className="fas fa-pen-square"></i> Edital precio(s)
+        <button className='liquidacion-icon' onClick={editar}>
+          <i className='fas fa-pen-square'></i> Edital precio(s)
         </button>
         {/* {openModalCrear && (
           <MMAParticulares
@@ -290,28 +342,28 @@ const MReservasMovil = ({
             setOpenModalCrear={setOpenModalCrear}
           />
         )} */}
-        <div className="list-botones">
-          <button className="botones" onClick={closeModal}>
+        <div className='list-botones'>
+          <button className='botones' onClick={closeModal}>
             Retroceder
           </button>
-          <button className="botones" onClick={handleLiquidarEmpresa}>
+          <button className='botones' onClick={handleLiquidarEmpresa}>
             Liquidar
           </button>
         </div>
       </div>
-      {/* {openModalPrecio && (
+      {openModalPrecio && (
         <MPrecio
           openModalPrecio={openModalPrecio}
           setOpenModalPrecio={setOpenModalPrecio}
-          data={dataParticular}
+          // data={dataParticular}
           setEstado={setEstado}
           services={services}
           setServices={setServices}
           obtenServicios={obtenServicios}
           calcularValores={calcularValores}
-          tipo={"P"}
+          tipo={'P'}
         />
-      )} */}
+      )}
     </Modal>
   );
 };
