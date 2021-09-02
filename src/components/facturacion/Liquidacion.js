@@ -1,12 +1,12 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import DataTable from "react-data-table-component";
-import { fetchGETPOSTPUTDELETE } from "../../helpers/fetch";
+import DataTable from 'react-data-table-component';
+import { fetchGETPOSTPUTDELETE } from '../../helpers/fetch';
 
-import { paginacionOpciones } from "../../helpers/tablaOpciones";
-import MCargarInformacion from "./MCargarInformacion";
-import MLiquidacion from "./MLiquidacion";
+import { paginacionOpciones } from '../../helpers/tablaOpciones';
+import MCargarInformacion from './MCargarInformacion';
+import MLiquidacion from './MLiquidacion';
 
 const Liquidacion = () => {
   const [busqueda, setBusqueda] = useState(null);
@@ -26,22 +26,22 @@ const Liquidacion = () => {
       style: (row) => ({
         backgroundColor:
           row.fechas.before - row.fechas.dias_transcurridos <= 1
-            ? "#FE9A9D"
+            ? '#FE9A9D'
             : row.fechas.before - row.fechas.dias_transcurridos <= 4
-            ? "#FCCA88"
-            : "",
+            ? '#FCCA88'
+            : '',
       }),
     },
   ];
 
   const getLiquidacion = () => {
     // console.log("a");
-    fetchGETPOSTPUTDELETE("settlement")
+    fetchGETPOSTPUTDELETE('settlement')
       .then((info) => info.json())
       .then((info) => {
         // console.log(info);
         setLiquidacion(info.data);
-        setBusqueda("");
+        setBusqueda('');
       });
   };
 
@@ -61,16 +61,16 @@ const Liquidacion = () => {
       liquidacion && liquidacion.filter((item) => item.company_id !== null);
     setEmpresa(empresa);
   };
-  console.log(empresa);
+  // console.log(empresa);
 
   const typeStatus = (estado) => {
     switch (Number(estado)) {
       case 0:
-        return "Rechazado";
+        return 'Rechazado';
       case 1:
-        return "Pendiente";
+        return 'Pendiente';
       case 2:
-        return "Aprobado";
+        return 'Aprobado';
     }
   };
   useEffect(() => {
@@ -84,17 +84,17 @@ const Liquidacion = () => {
 
   const columnas = [
     {
-      name: "Ítem",
+      name: 'Ítem',
       selector: (row, index) => (index += 1),
       sortable: true,
       grow: 0,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Nombres y apellidos",
+      name: 'Nombres y apellidos',
 
       selector: (row) =>
         row.company &&
@@ -103,71 +103,71 @@ const Liquidacion = () => {
           ? row.company.corporation.business_name
           : row.detail.length > 0
           ? row.detail[0].attention.person.name
-          : "",
+          : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "DNI",
+      name: 'DNI',
       selector: (row) =>
         row.company && row.company.corporation && row.company.corporation.ruc
           ? row.company.corporation.ruc
           : row.detail.length > 0
           ? row.detail[0].attention.person.dni
-          : "",
+          : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Fecha",
-      selector: "date_issue",
+      name: 'Fecha',
+      selector: 'date_issue',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Sub total",
-      selector: "subtotal",
+      name: 'Sub total',
+      selector: 'subtotal',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Impuesto",
-      selector: "igv",
+      name: 'Impuesto',
+      selector: 'igv',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Total",
-      selector: "amount",
+      name: 'Total',
+      selector: 'amount',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
 
     {
-      name: "Estado",
+      name: 'Estado',
       selector: (row) => typeStatus(row.isapproved),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     // {
@@ -180,47 +180,47 @@ const Liquidacion = () => {
     //   },
     // },
     {
-      name: "Detalles",
+      name: 'Detalles',
       button: true,
       cell: (e) => (
         <button
           onClick={() => handleDetalles(e)}
-          className="table__tablebutton"
+          className='table__tablebutton'
         >
-          <i className="fas fa-info-circle"></i>
+          <i className='fas fa-info-circle'></i>
         </button>
       ),
     },
     {
-      name: "Cargar Información",
+      name: 'Cargar Información',
       button: true,
       cell: (e) =>
         e.isapproved === 2 ? (
           <button
             onClick={() => handleCargarInfo(e)}
-            className="table__tablebutton"
+            className='table__tablebutton'
           >
-            <i className="fas fa-folder-open"></i>
+            <i className='fas fa-folder-open'></i>
           </button>
         ) : (
-          <i className="fas fa-folder-open icon-gray"></i>
+          <i className='fas fa-folder-open icon-gray'></i>
         ),
     },
   ];
 
   const columnas1 = [
     {
-      name: "Ítem",
+      name: 'Ítem',
       selector: (row, index) => (index += 1),
       sortable: true,
       grow: 0,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Razón social",
+      name: 'Razón social',
 
       selector: (row) =>
         row.company &&
@@ -229,111 +229,111 @@ const Liquidacion = () => {
           ? row.company.corporation.business_name
           : row.detail.length > 0
           ? row.detail[0].attention.person.name
-          : "",
+          : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "RUC",
+      name: 'RUC',
       selector: (row) =>
         row.company && row.company.corporation && row.company.corporation.ruc
           ? row.company.corporation.ruc
           : row.detail.length > 0
           ? row.detail[0].attention.person.dni
-          : "",
+          : '',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Fecha",
-      selector: "date_issue",
+      name: 'Fecha',
+      selector: 'date_issue',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Sub total",
-      selector: "subtotal",
+      name: 'Sub total',
+      selector: 'subtotal',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Impuesto",
-      selector: "igv",
+      name: 'Impuesto',
+      selector: 'igv',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Total",
-      selector: "amount",
+      name: 'Total',
+      selector: 'amount',
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
 
     {
-      name: "Estado",
+      name: 'Estado',
       selector: (row) => typeStatus(row.isapproved),
       sortable: true,
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Vencimiento",
+      name: 'Vencimiento',
       selector: (row) =>
         row.fechas && row.fechas.dias_transcurridos
-          ? row.fechas.before - row.fechas.dias_transcurridos + " días"
-          : "---",
+          ? row.fechas.before - row.fechas.dias_transcurridos + ' días'
+          : '---',
       sortable: true,
 
       style: {
-        borderBotton: "none",
-        color: "#555555",
+        borderBotton: 'none',
+        color: '#555555',
       },
     },
     {
-      name: "Detalles",
+      name: 'Detalles',
       button: true,
       cell: (e) => (
         <button
           onClick={() => handleDetalles(e)}
-          className="table__tablebutton"
+          className='table__tablebutton'
         >
-          <i className="fas fa-info-circle"></i>
+          <i className='fas fa-info-circle'></i>
         </button>
       ),
     },
     {
-      name: "Cargar Información",
+      name: 'Cargar Información',
       button: true,
       cell: (e) =>
         e.isapproved === 2 ? (
           <button
             onClick={() => handleCargarInfo(e)}
-            className="table__tablebutton"
+            className='table__tablebutton'
           >
-            <i className="fas fa-folder-open"></i>
+            <i className='fas fa-folder-open'></i>
           </button>
         ) : (
-          <i className="fas fa-folder-open icon-gray"></i>
+          <i className='fas fa-folder-open icon-gray'></i>
         ),
     },
   ];
@@ -384,40 +384,40 @@ const Liquidacion = () => {
   };
 
   const exportarArchivoExcel = () => {
-    console.log("aaa");
+    console.log('aaa');
   };
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="table-responsive">
-          <div class="accordion" id="accordionExample">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingOne">
+    <div className='container'>
+      <div className='row'>
+        <div className='table-responsive'>
+          <div class='accordion' id='accordionExample'>
+            <div class='accordion-item'>
+              <h2 class='accordion-header' id='headingOne'>
                 <button
-                  class="accordion-button"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseOne"
-                  aria-expanded="true"
-                  aria-controls="collapseOne"
+                  class='accordion-button'
+                  type='button'
+                  data-bs-toggle='collapse'
+                  data-bs-target='#collapseOne'
+                  aria-expanded='true'
+                  aria-controls='collapseOne'
                 >
                   Particular
                 </button>
               </h2>
               <div
-                id="collapseOne"
-                class="accordion-collapse collapse show"
-                aria-labelledby="headingOne"
-                data-bs-parent="#accordionExample"
+                id='collapseOne'
+                class='accordion-collapse collapse show'
+                aria-labelledby='headingOne'
+                data-bs-parent='#accordionExample'
               >
                 <br></br>
-                <div className="adminregistro__option">
+                <div className='adminregistro__option'>
                   <div>
                     <input
-                      type="text"
-                      placeholder="Buscar"
-                      name="busqueda"
+                      type='text'
+                      placeholder='Buscar'
+                      name='busqueda'
                       value={busqueda}
                       onChange={handleSearch}
                     />
@@ -429,39 +429,39 @@ const Liquidacion = () => {
                   pagination
                   paginationComponentOptions={paginacionOpciones}
                   fixedHeader
-                  fixedHeaderScrollHeight="500px"
+                  fixedHeaderScrollHeight='500px'
                   noDataComponent={
-                    <i className="fas fa-inbox table__icono"></i>
+                    <i className='fas fa-inbox table__icono'></i>
                   }
                 />
               </div>
             </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingTwo">
+            <div class='accordion-item'>
+              <h2 class='accordion-header' id='headingTwo'>
                 <button
-                  class="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseTwo"
-                  aria-expanded="false"
-                  aria-controls="collapseTwo"
+                  class='accordion-button collapsed'
+                  type='button'
+                  data-bs-toggle='collapse'
+                  data-bs-target='#collapseTwo'
+                  aria-expanded='false'
+                  aria-controls='collapseTwo'
                 >
                   Empresa
                 </button>
               </h2>
               <div
-                id="collapseTwo"
-                class="accordion-collapse collapse"
-                aria-labelledby="headingTwo"
-                data-bs-parent="#accordionExample"
+                id='collapseTwo'
+                class='accordion-collapse collapse'
+                aria-labelledby='headingTwo'
+                data-bs-parent='#accordionExample'
               >
                 <br></br>
-                <div className="adminregistro__option">
+                <div className='adminregistro__option'>
                   <div>
                     <input
-                      type="text"
-                      placeholder="Buscar"
-                      name="busqueda"
+                      type='text'
+                      placeholder='Buscar'
+                      name='busqueda'
                       value={busqueda}
                       onChange={handleSearch}
                     />
@@ -473,14 +473,61 @@ const Liquidacion = () => {
                   pagination
                   paginationComponentOptions={paginacionOpciones}
                   fixedHeader
-                  fixedHeaderScrollHeight="500px"
+                  fixedHeaderScrollHeight='500px'
                   conditionalRowStyles={conditionalRowStyles}
                   noDataComponent={
-                    <i className="fas fa-inbox table__icono"></i>
+                    <i className='fas fa-inbox table__icono'></i>
                   }
                 />
               </div>
             </div>
+            {/*  */}
+            <div className='accordion-item'>
+              <h2 class='accordion-header' id='headingThree'>
+                <button
+                  class='accordion-button collapsed'
+                  type='button'
+                  data-bs-toggle='collapse'
+                  data-bs-target='#collapseThree'
+                  aria-expanded='false'
+                  aria-controls='collapseThree'
+                >
+                  Reservas móvil
+                </button>
+              </h2>
+              <div
+                id='collapseThree'
+                class='accordion-collapse collapse'
+                aria-labelledby='headingThree'
+                data-bs-parent='#accordionExample'
+              >
+                <button
+                  className='botones mt-3 mb-1'
+                  // onClick={handleDetallesMovil}
+                >
+                  Liquidar
+                </button>
+                {/* <DataTable
+                  columns={columnasMovil}
+                  data={listRegistroMovil}
+                  contextMessage={mensajesTablaFacturacion}
+                  pagination
+                  clearSelectedRows={clearRows}
+                  paginationComponentOptions={paginacionOpciones}
+                  fixedHeader
+                  fixedHeaderScrollHeight="500px"
+                  noDataComponent={
+                    <div className="spinner">
+                      <i className="fas fa-inbox table__icono"></i>
+                      <p style={{ color: "grey" }}>No hay datos</p>
+                    </div>
+                  }
+                  selectableRows
+                  onSelectedRowsChange={(e) => setDataMovil(e.selectedRows)}
+                /> */}
+              </div>
+            </div>
+            {/*  */}
           </div>
         </div>
       </div>

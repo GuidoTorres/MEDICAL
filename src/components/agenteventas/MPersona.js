@@ -4,7 +4,11 @@ import Modal from 'react-modal';
 import Swal from 'sweetalert2';
 
 import { customStyles } from '../../helpers/tablaOpciones';
-import { fetchDNI, fetchGETPOSTPUTDELETEJSON } from '../../helpers/fetch';
+import {
+  fetchDNI,
+  fetchGETPOSTPUTDELETE,
+  fetchGETPOSTPUTDELETEJSON,
+} from '../../helpers/fetch';
 
 const MPersona = ({
   openModal,
@@ -15,12 +19,32 @@ const MPersona = ({
   setEditar,
   getParticularDiscount,
 }) => {
+  const [listaServicos, setListaServicos] = useState([]);
   const [persona, setPersona] = useState({
     name: '',
     pat_lastname: '',
   });
   const [services, setServices] = useState({});
   const [dni, setDni] = useState({});
+
+  const getServiciosxd = () => {
+    fetchGETPOSTPUTDELETE('services')
+      .then((info) => info.json())
+      .then((datos) => setListaServicos(datos.data));
+  };
+
+  useEffect(() => {
+    getServiciosxd();
+  }, []);
+
+  const pruebaSolicitad = () => {
+    listaServicos.map((item) => console.log(item));
+  };
+  useEffect(() => {
+    pruebaSolicitad();
+  }, []);
+
+  // console.log(listaServicos);
 
   const closeModal = () => {
     setOpenModal(false);
@@ -142,51 +166,51 @@ const MPersona = ({
     );
   };
 
-  console.log(dataSelected);
+  // console.log(dataSelected);
   return (
     <Modal
       isOpen={openModal}
       onRequestClose={closeModal}
       style={customStyles}
-      className="modal modal__persona"
+      className='modal modal__persona'
       closeTimeoutMS={200}
       preventScroll={true}
-      overlayClassName="modal-fondo"
+      overlayClassName='modal-fondo'
       ariaHideApp={false}
     >
       {editar ? (
-        <h3 className="title__modal mb-3">Editar precio particular</h3>
+        <h3 className='title__modal mb-3'>Editar precio particular</h3>
       ) : (
-        <h3 className="title__modal mb-3">Precio particular</h3>
+        <h3 className='title__modal mb-3'>Precio particular</h3>
       )}
-      <div className="container">
-        <div className="row">
-          <div className="col-12 mventas__persona">
+      <div className='container'>
+        <div className='row'>
+          <div className='col-12 mventas__persona'>
             <p>
               <strong>Tipo de paciente</strong>
             </p>
-            <div className="mt-2">
+            <div className='mt-2'>
               <div>
                 <label>Tipo de documento</label>
                 <select
-                  class="form-select"
-                  aria-label="Default select example"
-                  name="document_type_id"
+                  class='form-select'
+                  aria-label='Default select example'
+                  name='document_type_id'
                   onChange={(e) => handleChange(e)}
                   style={{ width: '163px' }}
                 >
                   <option selected>Seleccione</option>
-                  <option value="1">DNI</option>
-                  <option value="2">Pasaporte</option>
-                  <option value="3">Carne de extranjeria</option>
+                  <option value='1'>DNI</option>
+                  <option value='2'>Pasaporte</option>
+                  <option value='3'>Carne de extranjeria</option>
                 </select>
               </div>
               <div>
                 <label>Número de documento</label>
                 <input
-                  type="number"
-                  name="dni"
-                  maxLength="8"
+                  type='number'
+                  name='dni'
+                  maxLength='8'
                   defaultValue={
                     dataSelected &&
                     dataSelected.user &&
@@ -209,8 +233,8 @@ const MPersona = ({
               <div>
                 <label>Nombres</label>
                 <input
-                  type="text"
-                  name="name"
+                  type='text'
+                  name='name'
                   defaultValue={
                     dni && dni.nombres
                       ? dni.nombres
@@ -227,8 +251,8 @@ const MPersona = ({
               <div>
                 <label>Apellidos</label>
                 <input
-                  type="text"
-                  name="pat_lastname"
+                  type='text'
+                  name='pat_lastname'
                   defaultValue={
                     dni && dni.apellidoPaterno && dni.apellidoMaterno
                       ? dni.apellidoPaterno + ' ' + dni.apellidoMaterno
@@ -246,14 +270,14 @@ const MPersona = ({
             <p>
               <strong>Datos de descuento</strong>
             </p>
-            <div className="mt-2">
+            <div className='mt-2'>
               <div>
                 <label>Prueba solicitada</label>
 
                 <select
-                  class="form-select"
-                  aria-label="Default select example"
-                  name="service_id"
+                  class='form-select'
+                  aria-label='Default select example'
+                  name='service_id'
                   defaultValue={
                     dataSelected &&
                     dataSelected.service &&
@@ -264,18 +288,32 @@ const MPersona = ({
                   onChange={(e) => handleChange(e)}
                   style={{ width: '163px' }}
                 >
-                  <option selected>Seleccione</option>
-                  <option value="5">Antígeno</option>
-                  <option value="6">Electroquimioluminiscencia</option>
-                  <option value="7">Inmunocromatografia</option>
-                  <option value="8">RT-PCR</option>
+                  //TODO ESTO CORREGIR
+                  <option key={0} value=''>
+                    Seleccione
+                  </option>
+                  {listaServicos.map((item) => {
+                    const { services } = item;
+                    return services.map((data) => {
+                      return (
+                        <option key={data.id} value={data.id}>
+                          {data.abbreviation}
+                        </option>
+                      );
+                    });
+                  })}
+                  {/* <option selected>Seleccione</option>
+                  <option value='5'>Antígeno</option>
+                  <option value='6'>Electroquimioluminiscencia</option>
+                  <option value='7'>Inmunocromatografia</option>
+                  <option value='8'>RT-PCR</option> */}
                 </select>
               </div>
               <div>
                 <label>Porcentaje descuento</label>
                 <input
-                  type="number"
-                  name="percent"
+                  type='number'
+                  name='percent'
                   defaultValue={
                     dataSelected && dataSelected.percent
                       ? dataSelected.percent
@@ -287,8 +325,8 @@ const MPersona = ({
               <div>
                 <label>Monto</label>
                 <input
-                  type="number"
-                  name="amount"
+                  type='number'
+                  name='amount'
                   defaultValue={
                     dataSelected && dataSelected.amount
                       ? dataSelected.amount
@@ -300,8 +338,8 @@ const MPersona = ({
               <div>
                 <label>Número de pruebas(des)</label>
                 <input
-                  type="number"
-                  name="quantity"
+                  type='number'
+                  name='quantity'
                   defaultValue={
                     dataSelected && dataSelected.quantity
                       ? dataSelected.quantity
@@ -311,20 +349,20 @@ const MPersona = ({
                 />
               </div>
             </div>
-            <div className="list-botones">
-              <button className="botones" onClick={closeModal}>
+            <div className='list-botones'>
+              <button className='botones' onClick={closeModal}>
                 Cancelar
               </button>
 
               {editar ? (
                 <button
-                  className="botones"
+                  className='botones'
                   onClick={actualizarDescuentoParticular}
                 >
                   Editar
                 </button>
               ) : (
-                <button className="botones" onClick={crearDescuentoParticular}>
+                <button className='botones' onClick={crearDescuentoParticular}>
                   Agregar
                 </button>
               )}
