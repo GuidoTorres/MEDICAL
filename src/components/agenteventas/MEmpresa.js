@@ -1,12 +1,10 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
-import Modal from 'react-modal';
-import Swal from 'sweetalert2';
-import {
-  fetchGETPOSTPUTDELETEJSON,
-} from '../../helpers/fetch';
+import React, { useEffect, useState } from "react";
+import Modal from "react-modal";
+import Swal from "sweetalert2";
+import { fetchGETPOSTPUTDELETEJSON } from "../../helpers/fetch";
 
-import { customStyles } from '../../helpers/tablaOpciones';
+import { customStyles } from "../../helpers/tablaOpciones";
 
 const MEmpresa = ({
   openModal,
@@ -39,17 +37,17 @@ const MEmpresa = ({
       services: discount,
     };
 
-    fetchGETPOSTPUTDELETEJSON('company_discount', data, 'POST').then((res) => {
+    fetchGETPOSTPUTDELETEJSON("company_discount", data, "POST").then((res) => {
       // console.log(resp);
       if (res.status === 200) {
         closeModal();
         Swal.fire({
-          icon: 'success',
-          title: 'Éxito',
-          text: 'Se editó el precio de la empresa correctamente.',
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Aceptar',
+          icon: "success",
+          title: "Éxito",
+          text: "Se editó el precio de la empresa correctamente.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Aceptar",
         }).then((resp) => {
           if (resp.isConfirmed) {
             getClinica();
@@ -58,12 +56,12 @@ const MEmpresa = ({
       } else {
         closeModal();
         Swal.fire({
-          icon: 'error',
-          title: '!Ups¡',
-          text: 'Algo salió mal.',
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Cerrar',
+          icon: "error",
+          title: "!Ups¡",
+          text: "Algo salió mal.",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Cerrar",
         });
       }
     });
@@ -147,7 +145,6 @@ const MEmpresa = ({
 
       setDiscount(arreglos);
     } else if (total1 > 0) {
-
       document.getElementById(`percent-${id}`).value = total1.toFixed();
       arreglos[position].percent = total1.toFixed();
       arreglos[position].amount = value;
@@ -160,8 +157,6 @@ const MEmpresa = ({
   useEffect(() => {
     filtrarServicios();
   }, [dataSelected]);
-
-  
 
   return (
     <Modal
@@ -196,7 +191,11 @@ const MEmpresa = ({
                 aria-label=""
                 aria-describedby="basic-addon1"
                 disabled
-                defaultValue={dataSelected.corporation.business_name}
+                defaultValue={
+                  dataSelected &&
+                  dataSelected.corporation &&
+                  dataSelected.corporation.business_name
+                }
               />
             </div>
 
@@ -209,7 +208,11 @@ const MEmpresa = ({
                 aria-label=""
                 aria-describedby="basic-addon1"
                 disabled
-                defaultValue={dataSelected.corporation.ruc}
+                defaultValue={
+                  dataSelected &&
+                  dataSelected.corporation &&
+                  dataSelected.corporation.ruc
+                }
               />
             </div>
 
@@ -238,7 +241,7 @@ const MEmpresa = ({
                   dataSelected.corporation.contacts[0] &&
                   dataSelected.corporation.contacts[0].name
                     ? dataSelected.corporation.contacts[0].name
-                    : ''
+                    : ""
                 }
                 disabled
               />
@@ -258,7 +261,7 @@ const MEmpresa = ({
                   dataSelected.corporation.contacts[0] &&
                   dataSelected.corporation.contacts[0].phone
                     ? dataSelected.corporation.contacts[0].phone
-                    : ''
+                    : ""
                 }
                 disabled
               />
@@ -277,7 +280,7 @@ const MEmpresa = ({
                   dataSelected.corporation.contacts[0] &&
                   dataSelected.corporation.contacts[0].email
                     ? dataSelected.corporation.contacts[0].email
-                    : ''
+                    : ""
                 }
                 disabled
               />
@@ -300,23 +303,23 @@ const MEmpresa = ({
                   getServicio[0].services.map((servicio, i) => (
                     <tr key={i}>
                       <td>
-                        {servicio.abbreviation ? servicio.abbreviation : ''}
+                        {servicio.abbreviation ? servicio.abbreviation : ""}
                       </td>
 
                       <td>
                         {servicio.limite_inferior
                           ? servicio.limite_inferior
-                          : ''}
+                          : ""}
                       </td>
                       <td>
                         {servicio.limite_superior
                           ? servicio.limite_superior
-                          : ''}
+                          : ""}
                       </td>
                       <td>
                         {servicio.last_price && servicio.last_price.amount
                           ? servicio.last_price.amount
-                          : ''}
+                          : ""}
                       </td>
                     </tr>
                   ))}
@@ -326,26 +329,26 @@ const MEmpresa = ({
 
           <div className="contenedor2">
             <label htmlFor="">
-              {' '}
+              {" "}
               <strong>Servicios de la empresa</strong>
             </label>
 
             <table className="table">
               <thead>
                 <tr>
-                  <th scope="col" style={{ width: '20%', textAlign: 'center' }}>
+                  <th scope="col" style={{ width: "20%", textAlign: "center" }}>
                     Estado
                   </th>
-                  <th scope="col" style={{ width: '40%', textAlign: 'center' }}>
+                  <th scope="col" style={{ width: "40%", textAlign: "center" }}>
                     Tipos de prueba
                   </th>
-                  <th scope="col" style={{ width: '5%', textAlign: 'center' }}>
+                  <th scope="col" style={{ width: "5%", textAlign: "center" }}>
                     Seleccionar
                   </th>
-                  <th scope="col" style={{ width: '20%', textAlign: 'center' }}>
+                  <th scope="col" style={{ width: "20%", textAlign: "center" }}>
                     Descuento(%)
                   </th>
-                  <th scope="col" style={{ width: '20%', textAlign: 'center' }}>
+                  <th scope="col" style={{ width: "20%", textAlign: "center" }}>
                     Total
                   </th>
                 </tr>
@@ -354,16 +357,16 @@ const MEmpresa = ({
                 {filterServices.length > 0 &&
                   filterServices.map((data, index) => (
                     <tr key={index}>
-                      <td style={{ textAlign: 'center' }}>
+                      <td style={{ textAlign: "center" }}>
                         {data.last_discount.state === 1 ? (
                           <span
                             class="badge badge-success"
                             onClick={(e) => handleChange(e, data, index, 0)}
                             style={{
-                              backgroundColor: 'green',
-                              borderRadius: '10px',
-                              opacity: '0.8',
-                              cursor: 'pointer',
+                              backgroundColor: "green",
+                              borderRadius: "10px",
+                              opacity: "0.8",
+                              cursor: "pointer",
                             }}
                           >
                             Activo
@@ -373,26 +376,26 @@ const MEmpresa = ({
                             class="badge badge-success"
                             onClick={(e) => handleChange(e, data, index, 1)}
                             style={{
-                              backgroundColor: 'red',
-                              borderRadius: '10px',
-                              opacity: '0.7',
-                              cursor: 'pointer',
+                              backgroundColor: "red",
+                              borderRadius: "10px",
+                              opacity: "0.7",
+                              cursor: "pointer",
                             }}
                           >
                             Inactivo
                           </span>
                         )}
                       </td>
-                      <td style={{width: '20%', textAlign: 'center'}}>
-                        {data.abbreviation ? data.abbreviation : ''}
+                      <td style={{ width: "20%", textAlign: "center" }}>
+                        {data.abbreviation ? data.abbreviation : ""}
                       </td>
                       <td>
                         <div
                           className="form-check"
                           style={{
-                            display: 'flex',
-                            flexAlign: 'center',
-                            justifyContent: 'center',
+                            display: "flex",
+                            flexAlign: "center",
+                            justifyContent: "center",
                           }}
                         >
                           <input
@@ -423,7 +426,7 @@ const MEmpresa = ({
                       <td>
                         <input
                           type="number"
-                          style={{ width: '80px' }}
+                          style={{ width: "80px" }}
                           className="form-input"
                           id={`percent-${data.id}`}
                           placeholder=""
@@ -440,7 +443,7 @@ const MEmpresa = ({
                         <div className="input-group mb-3">
                           <input
                             type="number"
-                            style={{ width: '80px' }}
+                            style={{ width: "80px" }}
                             id={`amount-${data.id}`}
                             placeholder=""
                             aria-label=""
@@ -449,7 +452,7 @@ const MEmpresa = ({
                             defaultValue={
                               data.last_discount && data.last_discount.amount
                                 ? data.last_discount.amount
-                                : ''
+                                : ""
                             }
                             onChange={(e) =>
                               editarPercent(e, data.id, data.id, data)
@@ -473,7 +476,11 @@ const MEmpresa = ({
                 className="form-control"
                 placeholder=""
                 aria-label=""
-                defaultValue={dataSelected.billing.before}
+                defaultValue={
+                  dataSelected &&
+                  dataSelected.billing &&
+                  dataSelected.billing.before
+                }
                 aria-describedby="basic-addon1"
                 onChange={(e) =>
                   setDataFacturacion({
@@ -492,7 +499,11 @@ const MEmpresa = ({
                 placeholder=""
                 aria-label=""
                 aria-describedby="basic-addon1"
-                defaultValue={dataSelected.billing.credit}
+                defaultValue={
+                  dataSelected &&
+                  dataSelected.billing &&
+                  dataSelected.billing.credit
+                }
                 onChange={(e) =>
                   setDataFacturacion({
                     ...dataFacturacion,
@@ -519,7 +530,7 @@ const MEmpresa = ({
             </div>
           </div>
         </div>
-      </div>{' '}
+      </div>{" "}
     </Modal>
   );
 };

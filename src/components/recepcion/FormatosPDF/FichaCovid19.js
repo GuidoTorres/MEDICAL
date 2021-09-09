@@ -465,7 +465,7 @@ const FichaCovid19 = ({ ficha, setFicha, formulario, dataSelected }) => {
           ) : (
             ""
           )}
-          {i === 7 ? (
+          {i === 6 ? (
             <>
               <label>5. Inst. Adm:</label> <br></br>{" "}
             </>
